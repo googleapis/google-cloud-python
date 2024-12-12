@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -47,6 +47,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -211,8 +219,11 @@ class RegistrationServiceRestInterceptor:
     def pre_create_endpoint(
         self,
         request: registration_service.CreateEndpointRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[registration_service.CreateEndpointRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        registration_service.CreateEndpointRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for create_endpoint
 
         Override in a subclass to manipulate the request or metadata
@@ -234,8 +245,11 @@ class RegistrationServiceRestInterceptor:
     def pre_create_namespace(
         self,
         request: registration_service.CreateNamespaceRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[registration_service.CreateNamespaceRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        registration_service.CreateNamespaceRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for create_namespace
 
         Override in a subclass to manipulate the request or metadata
@@ -257,8 +271,11 @@ class RegistrationServiceRestInterceptor:
     def pre_create_service(
         self,
         request: registration_service.CreateServiceRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[registration_service.CreateServiceRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        registration_service.CreateServiceRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for create_service
 
         Override in a subclass to manipulate the request or metadata
@@ -278,8 +295,11 @@ class RegistrationServiceRestInterceptor:
     def pre_delete_endpoint(
         self,
         request: registration_service.DeleteEndpointRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[registration_service.DeleteEndpointRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        registration_service.DeleteEndpointRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for delete_endpoint
 
         Override in a subclass to manipulate the request or metadata
@@ -290,8 +310,11 @@ class RegistrationServiceRestInterceptor:
     def pre_delete_namespace(
         self,
         request: registration_service.DeleteNamespaceRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[registration_service.DeleteNamespaceRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        registration_service.DeleteNamespaceRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for delete_namespace
 
         Override in a subclass to manipulate the request or metadata
@@ -302,8 +325,11 @@ class RegistrationServiceRestInterceptor:
     def pre_delete_service(
         self,
         request: registration_service.DeleteServiceRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[registration_service.DeleteServiceRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        registration_service.DeleteServiceRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for delete_service
 
         Override in a subclass to manipulate the request or metadata
@@ -314,8 +340,10 @@ class RegistrationServiceRestInterceptor:
     def pre_get_endpoint(
         self,
         request: registration_service.GetEndpointRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[registration_service.GetEndpointRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        registration_service.GetEndpointRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_endpoint
 
         Override in a subclass to manipulate the request or metadata
@@ -335,8 +363,10 @@ class RegistrationServiceRestInterceptor:
     def pre_get_iam_policy(
         self,
         request: iam_policy_pb2.GetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -356,8 +386,11 @@ class RegistrationServiceRestInterceptor:
     def pre_get_namespace(
         self,
         request: registration_service.GetNamespaceRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[registration_service.GetNamespaceRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        registration_service.GetNamespaceRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for get_namespace
 
         Override in a subclass to manipulate the request or metadata
@@ -377,8 +410,10 @@ class RegistrationServiceRestInterceptor:
     def pre_get_service(
         self,
         request: registration_service.GetServiceRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[registration_service.GetServiceRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        registration_service.GetServiceRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_service
 
         Override in a subclass to manipulate the request or metadata
@@ -398,8 +433,11 @@ class RegistrationServiceRestInterceptor:
     def pre_list_endpoints(
         self,
         request: registration_service.ListEndpointsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[registration_service.ListEndpointsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        registration_service.ListEndpointsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for list_endpoints
 
         Override in a subclass to manipulate the request or metadata
@@ -421,8 +459,11 @@ class RegistrationServiceRestInterceptor:
     def pre_list_namespaces(
         self,
         request: registration_service.ListNamespacesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[registration_service.ListNamespacesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        registration_service.ListNamespacesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for list_namespaces
 
         Override in a subclass to manipulate the request or metadata
@@ -444,8 +485,11 @@ class RegistrationServiceRestInterceptor:
     def pre_list_services(
         self,
         request: registration_service.ListServicesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[registration_service.ListServicesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        registration_service.ListServicesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for list_services
 
         Override in a subclass to manipulate the request or metadata
@@ -467,8 +511,10 @@ class RegistrationServiceRestInterceptor:
     def pre_set_iam_policy(
         self,
         request: iam_policy_pb2.SetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -488,8 +534,11 @@ class RegistrationServiceRestInterceptor:
     def pre_test_iam_permissions(
         self,
         request: iam_policy_pb2.TestIamPermissionsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.TestIamPermissionsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -511,8 +560,11 @@ class RegistrationServiceRestInterceptor:
     def pre_update_endpoint(
         self,
         request: registration_service.UpdateEndpointRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[registration_service.UpdateEndpointRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        registration_service.UpdateEndpointRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for update_endpoint
 
         Override in a subclass to manipulate the request or metadata
@@ -534,8 +586,11 @@ class RegistrationServiceRestInterceptor:
     def pre_update_namespace(
         self,
         request: registration_service.UpdateNamespaceRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[registration_service.UpdateNamespaceRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        registration_service.UpdateNamespaceRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for update_namespace
 
         Override in a subclass to manipulate the request or metadata
@@ -557,8 +612,11 @@ class RegistrationServiceRestInterceptor:
     def pre_update_service(
         self,
         request: registration_service.UpdateServiceRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[registration_service.UpdateServiceRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        registration_service.UpdateServiceRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for update_service
 
         Override in a subclass to manipulate the request or metadata
@@ -578,8 +636,10 @@ class RegistrationServiceRestInterceptor:
     def pre_get_location(
         self,
         request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -601,8 +661,10 @@ class RegistrationServiceRestInterceptor:
     def pre_list_locations(
         self,
         request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -759,7 +821,7 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gcs_endpoint.Endpoint:
             r"""Call the create endpoint method over HTTP.
 
@@ -770,8 +832,10 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.gcs_endpoint.Endpoint:
@@ -784,6 +848,7 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
             http_options = (
                 _BaseRegistrationServiceRestTransport._BaseCreateEndpoint._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_endpoint(request, metadata)
             transcoded_request = _BaseRegistrationServiceRestTransport._BaseCreateEndpoint._get_transcoded_request(
                 http_options, request
@@ -797,6 +862,33 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
             query_params = _BaseRegistrationServiceRestTransport._BaseCreateEndpoint._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.servicedirectory_v1beta1.RegistrationServiceClient.CreateEndpoint",
+                    extra={
+                        "serviceName": "google.cloud.servicedirectory.v1beta1.RegistrationService",
+                        "rpcName": "CreateEndpoint",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegistrationServiceRestTransport._CreateEndpoint._get_response(
@@ -819,7 +911,29 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
             pb_resp = gcs_endpoint.Endpoint.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_endpoint(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gcs_endpoint.Endpoint.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.servicedirectory_v1beta1.RegistrationServiceClient.create_endpoint",
+                    extra={
+                        "serviceName": "google.cloud.servicedirectory.v1beta1.RegistrationService",
+                        "rpcName": "CreateEndpoint",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateNamespace(
@@ -858,7 +972,7 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gcs_namespace.Namespace:
             r"""Call the create namespace method over HTTP.
 
@@ -869,8 +983,10 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.gcs_namespace.Namespace:
@@ -885,6 +1001,7 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
             http_options = (
                 _BaseRegistrationServiceRestTransport._BaseCreateNamespace._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_namespace(
                 request, metadata
             )
@@ -900,6 +1017,33 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
             query_params = _BaseRegistrationServiceRestTransport._BaseCreateNamespace._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.servicedirectory_v1beta1.RegistrationServiceClient.CreateNamespace",
+                    extra={
+                        "serviceName": "google.cloud.servicedirectory.v1beta1.RegistrationService",
+                        "rpcName": "CreateNamespace",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegistrationServiceRestTransport._CreateNamespace._get_response(
@@ -922,7 +1066,29 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
             pb_resp = gcs_namespace.Namespace.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_namespace(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gcs_namespace.Namespace.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.servicedirectory_v1beta1.RegistrationServiceClient.create_namespace",
+                    extra={
+                        "serviceName": "google.cloud.servicedirectory.v1beta1.RegistrationService",
+                        "rpcName": "CreateNamespace",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateService(
@@ -961,7 +1127,7 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gcs_service.Service:
             r"""Call the create service method over HTTP.
 
@@ -972,8 +1138,10 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.gcs_service.Service:
@@ -987,6 +1155,7 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
             http_options = (
                 _BaseRegistrationServiceRestTransport._BaseCreateService._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_service(request, metadata)
             transcoded_request = _BaseRegistrationServiceRestTransport._BaseCreateService._get_transcoded_request(
                 http_options, request
@@ -1000,6 +1169,33 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
             query_params = _BaseRegistrationServiceRestTransport._BaseCreateService._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.servicedirectory_v1beta1.RegistrationServiceClient.CreateService",
+                    extra={
+                        "serviceName": "google.cloud.servicedirectory.v1beta1.RegistrationService",
+                        "rpcName": "CreateService",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegistrationServiceRestTransport._CreateService._get_response(
@@ -1022,7 +1218,29 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
             pb_resp = gcs_service.Service.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_service(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gcs_service.Service.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.servicedirectory_v1beta1.RegistrationServiceClient.create_service",
+                    extra={
+                        "serviceName": "google.cloud.servicedirectory.v1beta1.RegistrationService",
+                        "rpcName": "CreateService",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteEndpoint(
@@ -1060,7 +1278,7 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete endpoint method over HTTP.
 
@@ -1071,13 +1289,16 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseRegistrationServiceRestTransport._BaseDeleteEndpoint._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_endpoint(request, metadata)
             transcoded_request = _BaseRegistrationServiceRestTransport._BaseDeleteEndpoint._get_transcoded_request(
                 http_options, request
@@ -1087,6 +1308,33 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
             query_params = _BaseRegistrationServiceRestTransport._BaseDeleteEndpoint._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.servicedirectory_v1beta1.RegistrationServiceClient.DeleteEndpoint",
+                    extra={
+                        "serviceName": "google.cloud.servicedirectory.v1beta1.RegistrationService",
+                        "rpcName": "DeleteEndpoint",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegistrationServiceRestTransport._DeleteEndpoint._get_response(
@@ -1138,7 +1386,7 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete namespace method over HTTP.
 
@@ -1149,13 +1397,16 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseRegistrationServiceRestTransport._BaseDeleteNamespace._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_namespace(
                 request, metadata
             )
@@ -1167,6 +1418,33 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
             query_params = _BaseRegistrationServiceRestTransport._BaseDeleteNamespace._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.servicedirectory_v1beta1.RegistrationServiceClient.DeleteNamespace",
+                    extra={
+                        "serviceName": "google.cloud.servicedirectory.v1beta1.RegistrationService",
+                        "rpcName": "DeleteNamespace",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegistrationServiceRestTransport._DeleteNamespace._get_response(
@@ -1218,7 +1496,7 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete service method over HTTP.
 
@@ -1229,13 +1507,16 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseRegistrationServiceRestTransport._BaseDeleteService._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_service(request, metadata)
             transcoded_request = _BaseRegistrationServiceRestTransport._BaseDeleteService._get_transcoded_request(
                 http_options, request
@@ -1245,6 +1526,33 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
             query_params = _BaseRegistrationServiceRestTransport._BaseDeleteService._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.servicedirectory_v1beta1.RegistrationServiceClient.DeleteService",
+                    extra={
+                        "serviceName": "google.cloud.servicedirectory.v1beta1.RegistrationService",
+                        "rpcName": "DeleteService",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegistrationServiceRestTransport._DeleteService._get_response(
@@ -1296,7 +1604,7 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> endpoint.Endpoint:
             r"""Call the get endpoint method over HTTP.
 
@@ -1309,8 +1617,10 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.endpoint.Endpoint:
@@ -1323,6 +1633,7 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
             http_options = (
                 _BaseRegistrationServiceRestTransport._BaseGetEndpoint._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_endpoint(request, metadata)
             transcoded_request = _BaseRegistrationServiceRestTransport._BaseGetEndpoint._get_transcoded_request(
                 http_options, request
@@ -1332,6 +1643,33 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
             query_params = _BaseRegistrationServiceRestTransport._BaseGetEndpoint._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.servicedirectory_v1beta1.RegistrationServiceClient.GetEndpoint",
+                    extra={
+                        "serviceName": "google.cloud.servicedirectory.v1beta1.RegistrationService",
+                        "rpcName": "GetEndpoint",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegistrationServiceRestTransport._GetEndpoint._get_response(
@@ -1353,7 +1691,29 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
             pb_resp = endpoint.Endpoint.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_endpoint(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = endpoint.Endpoint.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.servicedirectory_v1beta1.RegistrationServiceClient.get_endpoint",
+                    extra={
+                        "serviceName": "google.cloud.servicedirectory.v1beta1.RegistrationService",
+                        "rpcName": "GetEndpoint",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetIamPolicy(
@@ -1392,7 +1752,7 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> policy_pb2.Policy:
             r"""Call the get iam policy method over HTTP.
 
@@ -1402,8 +1762,10 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.policy_pb2.Policy:
@@ -1488,6 +1850,7 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
             http_options = (
                 _BaseRegistrationServiceRestTransport._BaseGetIamPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
             transcoded_request = _BaseRegistrationServiceRestTransport._BaseGetIamPolicy._get_transcoded_request(
                 http_options, request
@@ -1501,6 +1864,33 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
             query_params = _BaseRegistrationServiceRestTransport._BaseGetIamPolicy._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.servicedirectory_v1beta1.RegistrationServiceClient.GetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.servicedirectory.v1beta1.RegistrationService",
+                        "rpcName": "GetIamPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegistrationServiceRestTransport._GetIamPolicy._get_response(
@@ -1523,7 +1913,29 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
             pb_resp = resp
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_iam_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.servicedirectory_v1beta1.RegistrationServiceClient.get_iam_policy",
+                    extra={
+                        "serviceName": "google.cloud.servicedirectory.v1beta1.RegistrationService",
+                        "rpcName": "GetIamPolicy",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetNamespace(
@@ -1561,7 +1973,7 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> namespace.Namespace:
             r"""Call the get namespace method over HTTP.
 
@@ -1572,8 +1984,10 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.namespace.Namespace:
@@ -1588,6 +2002,7 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
             http_options = (
                 _BaseRegistrationServiceRestTransport._BaseGetNamespace._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_namespace(request, metadata)
             transcoded_request = _BaseRegistrationServiceRestTransport._BaseGetNamespace._get_transcoded_request(
                 http_options, request
@@ -1597,6 +2012,33 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
             query_params = _BaseRegistrationServiceRestTransport._BaseGetNamespace._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.servicedirectory_v1beta1.RegistrationServiceClient.GetNamespace",
+                    extra={
+                        "serviceName": "google.cloud.servicedirectory.v1beta1.RegistrationService",
+                        "rpcName": "GetNamespace",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegistrationServiceRestTransport._GetNamespace._get_response(
@@ -1618,7 +2060,29 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
             pb_resp = namespace.Namespace.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_namespace(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = namespace.Namespace.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.servicedirectory_v1beta1.RegistrationServiceClient.get_namespace",
+                    extra={
+                        "serviceName": "google.cloud.servicedirectory.v1beta1.RegistrationService",
+                        "rpcName": "GetNamespace",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetService(
@@ -1656,7 +2120,7 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> service.Service:
             r"""Call the get service method over HTTP.
 
@@ -1670,8 +2134,10 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.service.Service:
@@ -1685,6 +2151,7 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
             http_options = (
                 _BaseRegistrationServiceRestTransport._BaseGetService._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_service(request, metadata)
             transcoded_request = _BaseRegistrationServiceRestTransport._BaseGetService._get_transcoded_request(
                 http_options, request
@@ -1694,6 +2161,33 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
             query_params = _BaseRegistrationServiceRestTransport._BaseGetService._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.servicedirectory_v1beta1.RegistrationServiceClient.GetService",
+                    extra={
+                        "serviceName": "google.cloud.servicedirectory.v1beta1.RegistrationService",
+                        "rpcName": "GetService",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegistrationServiceRestTransport._GetService._get_response(
@@ -1715,7 +2209,29 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
             pb_resp = service.Service.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_service(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = service.Service.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.servicedirectory_v1beta1.RegistrationServiceClient.get_service",
+                    extra={
+                        "serviceName": "google.cloud.servicedirectory.v1beta1.RegistrationService",
+                        "rpcName": "GetService",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListEndpoints(
@@ -1753,7 +2269,7 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> registration_service.ListEndpointsResponse:
             r"""Call the list endpoints method over HTTP.
 
@@ -1764,8 +2280,10 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.registration_service.ListEndpointsResponse:
@@ -1777,6 +2295,7 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
             http_options = (
                 _BaseRegistrationServiceRestTransport._BaseListEndpoints._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_endpoints(request, metadata)
             transcoded_request = _BaseRegistrationServiceRestTransport._BaseListEndpoints._get_transcoded_request(
                 http_options, request
@@ -1786,6 +2305,33 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
             query_params = _BaseRegistrationServiceRestTransport._BaseListEndpoints._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.servicedirectory_v1beta1.RegistrationServiceClient.ListEndpoints",
+                    extra={
+                        "serviceName": "google.cloud.servicedirectory.v1beta1.RegistrationService",
+                        "rpcName": "ListEndpoints",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegistrationServiceRestTransport._ListEndpoints._get_response(
@@ -1807,7 +2353,31 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
             pb_resp = registration_service.ListEndpointsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_endpoints(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        registration_service.ListEndpointsResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.servicedirectory_v1beta1.RegistrationServiceClient.list_endpoints",
+                    extra={
+                        "serviceName": "google.cloud.servicedirectory.v1beta1.RegistrationService",
+                        "rpcName": "ListEndpoints",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListNamespaces(
@@ -1845,7 +2415,7 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> registration_service.ListNamespacesResponse:
             r"""Call the list namespaces method over HTTP.
 
@@ -1856,8 +2426,10 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.registration_service.ListNamespacesResponse:
@@ -1869,6 +2441,7 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
             http_options = (
                 _BaseRegistrationServiceRestTransport._BaseListNamespaces._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_namespaces(request, metadata)
             transcoded_request = _BaseRegistrationServiceRestTransport._BaseListNamespaces._get_transcoded_request(
                 http_options, request
@@ -1878,6 +2451,33 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
             query_params = _BaseRegistrationServiceRestTransport._BaseListNamespaces._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.servicedirectory_v1beta1.RegistrationServiceClient.ListNamespaces",
+                    extra={
+                        "serviceName": "google.cloud.servicedirectory.v1beta1.RegistrationService",
+                        "rpcName": "ListNamespaces",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegistrationServiceRestTransport._ListNamespaces._get_response(
@@ -1899,7 +2499,31 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
             pb_resp = registration_service.ListNamespacesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_namespaces(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        registration_service.ListNamespacesResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.servicedirectory_v1beta1.RegistrationServiceClient.list_namespaces",
+                    extra={
+                        "serviceName": "google.cloud.servicedirectory.v1beta1.RegistrationService",
+                        "rpcName": "ListNamespaces",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListServices(
@@ -1937,7 +2561,7 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> registration_service.ListServicesResponse:
             r"""Call the list services method over HTTP.
 
@@ -1948,8 +2572,10 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.registration_service.ListServicesResponse:
@@ -1961,6 +2587,7 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
             http_options = (
                 _BaseRegistrationServiceRestTransport._BaseListServices._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_services(request, metadata)
             transcoded_request = _BaseRegistrationServiceRestTransport._BaseListServices._get_transcoded_request(
                 http_options, request
@@ -1970,6 +2597,33 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
             query_params = _BaseRegistrationServiceRestTransport._BaseListServices._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.servicedirectory_v1beta1.RegistrationServiceClient.ListServices",
+                    extra={
+                        "serviceName": "google.cloud.servicedirectory.v1beta1.RegistrationService",
+                        "rpcName": "ListServices",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegistrationServiceRestTransport._ListServices._get_response(
@@ -1991,7 +2645,31 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
             pb_resp = registration_service.ListServicesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_services(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        registration_service.ListServicesResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.servicedirectory_v1beta1.RegistrationServiceClient.list_services",
+                    extra={
+                        "serviceName": "google.cloud.servicedirectory.v1beta1.RegistrationService",
+                        "rpcName": "ListServices",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _SetIamPolicy(
@@ -2030,7 +2708,7 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> policy_pb2.Policy:
             r"""Call the set iam policy method over HTTP.
 
@@ -2040,8 +2718,10 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.policy_pb2.Policy:
@@ -2126,6 +2806,7 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
             http_options = (
                 _BaseRegistrationServiceRestTransport._BaseSetIamPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
             transcoded_request = _BaseRegistrationServiceRestTransport._BaseSetIamPolicy._get_transcoded_request(
                 http_options, request
@@ -2139,6 +2820,33 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
             query_params = _BaseRegistrationServiceRestTransport._BaseSetIamPolicy._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.servicedirectory_v1beta1.RegistrationServiceClient.SetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.servicedirectory.v1beta1.RegistrationService",
+                        "rpcName": "SetIamPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegistrationServiceRestTransport._SetIamPolicy._get_response(
@@ -2161,7 +2869,29 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
             pb_resp = resp
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_set_iam_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.servicedirectory_v1beta1.RegistrationServiceClient.set_iam_policy",
+                    extra={
+                        "serviceName": "google.cloud.servicedirectory.v1beta1.RegistrationService",
+                        "rpcName": "SetIamPolicy",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _TestIamPermissions(
@@ -2200,7 +2930,7 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> iam_policy_pb2.TestIamPermissionsResponse:
             r"""Call the test iam permissions method over HTTP.
 
@@ -2210,8 +2940,10 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.iam_policy_pb2.TestIamPermissionsResponse:
@@ -2221,6 +2953,7 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
             http_options = (
                 _BaseRegistrationServiceRestTransport._BaseTestIamPermissions._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata
             )
@@ -2236,6 +2969,33 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
             query_params = _BaseRegistrationServiceRestTransport._BaseTestIamPermissions._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.servicedirectory_v1beta1.RegistrationServiceClient.TestIamPermissions",
+                    extra={
+                        "serviceName": "google.cloud.servicedirectory.v1beta1.RegistrationService",
+                        "rpcName": "TestIamPermissions",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -2260,7 +3020,29 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
             pb_resp = resp
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_test_iam_permissions(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.servicedirectory_v1beta1.RegistrationServiceClient.test_iam_permissions",
+                    extra={
+                        "serviceName": "google.cloud.servicedirectory.v1beta1.RegistrationService",
+                        "rpcName": "TestIamPermissions",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateEndpoint(
@@ -2299,7 +3081,7 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gcs_endpoint.Endpoint:
             r"""Call the update endpoint method over HTTP.
 
@@ -2310,8 +3092,10 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.gcs_endpoint.Endpoint:
@@ -2324,6 +3108,7 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
             http_options = (
                 _BaseRegistrationServiceRestTransport._BaseUpdateEndpoint._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_endpoint(request, metadata)
             transcoded_request = _BaseRegistrationServiceRestTransport._BaseUpdateEndpoint._get_transcoded_request(
                 http_options, request
@@ -2337,6 +3122,33 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
             query_params = _BaseRegistrationServiceRestTransport._BaseUpdateEndpoint._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.servicedirectory_v1beta1.RegistrationServiceClient.UpdateEndpoint",
+                    extra={
+                        "serviceName": "google.cloud.servicedirectory.v1beta1.RegistrationService",
+                        "rpcName": "UpdateEndpoint",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegistrationServiceRestTransport._UpdateEndpoint._get_response(
@@ -2359,7 +3171,29 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
             pb_resp = gcs_endpoint.Endpoint.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_endpoint(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gcs_endpoint.Endpoint.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.servicedirectory_v1beta1.RegistrationServiceClient.update_endpoint",
+                    extra={
+                        "serviceName": "google.cloud.servicedirectory.v1beta1.RegistrationService",
+                        "rpcName": "UpdateEndpoint",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateNamespace(
@@ -2398,7 +3232,7 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gcs_namespace.Namespace:
             r"""Call the update namespace method over HTTP.
 
@@ -2409,8 +3243,10 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.gcs_namespace.Namespace:
@@ -2425,6 +3261,7 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
             http_options = (
                 _BaseRegistrationServiceRestTransport._BaseUpdateNamespace._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_namespace(
                 request, metadata
             )
@@ -2440,6 +3277,33 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
             query_params = _BaseRegistrationServiceRestTransport._BaseUpdateNamespace._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.servicedirectory_v1beta1.RegistrationServiceClient.UpdateNamespace",
+                    extra={
+                        "serviceName": "google.cloud.servicedirectory.v1beta1.RegistrationService",
+                        "rpcName": "UpdateNamespace",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegistrationServiceRestTransport._UpdateNamespace._get_response(
@@ -2462,7 +3326,29 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
             pb_resp = gcs_namespace.Namespace.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_namespace(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gcs_namespace.Namespace.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.servicedirectory_v1beta1.RegistrationServiceClient.update_namespace",
+                    extra={
+                        "serviceName": "google.cloud.servicedirectory.v1beta1.RegistrationService",
+                        "rpcName": "UpdateNamespace",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateService(
@@ -2501,7 +3387,7 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gcs_service.Service:
             r"""Call the update service method over HTTP.
 
@@ -2512,8 +3398,10 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.gcs_service.Service:
@@ -2527,6 +3415,7 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
             http_options = (
                 _BaseRegistrationServiceRestTransport._BaseUpdateService._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_service(request, metadata)
             transcoded_request = _BaseRegistrationServiceRestTransport._BaseUpdateService._get_transcoded_request(
                 http_options, request
@@ -2540,6 +3429,33 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
             query_params = _BaseRegistrationServiceRestTransport._BaseUpdateService._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.servicedirectory_v1beta1.RegistrationServiceClient.UpdateService",
+                    extra={
+                        "serviceName": "google.cloud.servicedirectory.v1beta1.RegistrationService",
+                        "rpcName": "UpdateService",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegistrationServiceRestTransport._UpdateService._get_response(
@@ -2562,7 +3478,29 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
             pb_resp = gcs_service.Service.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_service(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gcs_service.Service.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.servicedirectory_v1beta1.RegistrationServiceClient.update_service",
+                    extra={
+                        "serviceName": "google.cloud.servicedirectory.v1beta1.RegistrationService",
+                        "rpcName": "UpdateService",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -2764,7 +3702,7 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.Location:
             r"""Call the get location method over HTTP.
 
@@ -2774,8 +3712,10 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.Location: Response from GetLocation method.
@@ -2784,6 +3724,7 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
             http_options = (
                 _BaseRegistrationServiceRestTransport._BaseGetLocation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_location(request, metadata)
             transcoded_request = _BaseRegistrationServiceRestTransport._BaseGetLocation._get_transcoded_request(
                 http_options, request
@@ -2793,6 +3734,33 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
             query_params = _BaseRegistrationServiceRestTransport._BaseGetLocation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.servicedirectory_v1beta1.RegistrationServiceClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.servicedirectory.v1beta1.RegistrationService",
+                        "rpcName": "GetLocation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegistrationServiceRestTransport._GetLocation._get_response(
@@ -2813,6 +3781,27 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.servicedirectory_v1beta1.RegistrationServiceAsyncClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.servicedirectory.v1beta1.RegistrationService",
+                        "rpcName": "GetLocation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -2854,7 +3843,7 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.ListLocationsResponse:
             r"""Call the list locations method over HTTP.
 
@@ -2864,8 +3853,10 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
@@ -2874,6 +3865,7 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
             http_options = (
                 _BaseRegistrationServiceRestTransport._BaseListLocations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
             transcoded_request = _BaseRegistrationServiceRestTransport._BaseListLocations._get_transcoded_request(
                 http_options, request
@@ -2883,6 +3875,33 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
             query_params = _BaseRegistrationServiceRestTransport._BaseListLocations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.servicedirectory_v1beta1.RegistrationServiceClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.servicedirectory.v1beta1.RegistrationService",
+                        "rpcName": "ListLocations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegistrationServiceRestTransport._ListLocations._get_response(
@@ -2903,6 +3922,27 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.servicedirectory_v1beta1.RegistrationServiceAsyncClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.servicedirectory.v1beta1.RegistrationService",
+                        "rpcName": "ListLocations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property

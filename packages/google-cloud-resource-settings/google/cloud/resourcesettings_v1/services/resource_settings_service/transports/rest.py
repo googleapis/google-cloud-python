@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -37,6 +37,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -93,8 +101,10 @@ class ResourceSettingsServiceRestInterceptor:
     def pre_get_setting(
         self,
         request: resource_settings.GetSettingRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[resource_settings.GetSettingRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        resource_settings.GetSettingRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_setting
 
         Override in a subclass to manipulate the request or metadata
@@ -116,8 +126,10 @@ class ResourceSettingsServiceRestInterceptor:
     def pre_list_settings(
         self,
         request: resource_settings.ListSettingsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[resource_settings.ListSettingsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        resource_settings.ListSettingsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_settings
 
         Override in a subclass to manipulate the request or metadata
@@ -139,8 +151,10 @@ class ResourceSettingsServiceRestInterceptor:
     def pre_update_setting(
         self,
         request: resource_settings.UpdateSettingRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[resource_settings.UpdateSettingRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        resource_settings.UpdateSettingRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_setting
 
         Override in a subclass to manipulate the request or metadata
@@ -297,7 +311,7 @@ class ResourceSettingsServiceRestTransport(_BaseResourceSettingsServiceRestTrans
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resource_settings.Setting:
             r"""Call the get setting method over HTTP.
 
@@ -307,8 +321,10 @@ class ResourceSettingsServiceRestTransport(_BaseResourceSettingsServiceRestTrans
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resource_settings.Setting:
@@ -318,6 +334,7 @@ class ResourceSettingsServiceRestTransport(_BaseResourceSettingsServiceRestTrans
             http_options = (
                 _BaseResourceSettingsServiceRestTransport._BaseGetSetting._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_setting(request, metadata)
             transcoded_request = _BaseResourceSettingsServiceRestTransport._BaseGetSetting._get_transcoded_request(
                 http_options, request
@@ -327,6 +344,33 @@ class ResourceSettingsServiceRestTransport(_BaseResourceSettingsServiceRestTrans
             query_params = _BaseResourceSettingsServiceRestTransport._BaseGetSetting._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.resourcesettings_v1.ResourceSettingsServiceClient.GetSetting",
+                    extra={
+                        "serviceName": "google.cloud.resourcesettings.v1.ResourceSettingsService",
+                        "rpcName": "GetSetting",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ResourceSettingsServiceRestTransport._GetSetting._get_response(
@@ -348,7 +392,29 @@ class ResourceSettingsServiceRestTransport(_BaseResourceSettingsServiceRestTrans
             pb_resp = resource_settings.Setting.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_setting(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resource_settings.Setting.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.resourcesettings_v1.ResourceSettingsServiceClient.get_setting",
+                    extra={
+                        "serviceName": "google.cloud.resourcesettings.v1.ResourceSettingsService",
+                        "rpcName": "GetSetting",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListSettings(
@@ -386,7 +452,7 @@ class ResourceSettingsServiceRestTransport(_BaseResourceSettingsServiceRestTrans
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resource_settings.ListSettingsResponse:
             r"""Call the list settings method over HTTP.
 
@@ -396,8 +462,10 @@ class ResourceSettingsServiceRestTransport(_BaseResourceSettingsServiceRestTrans
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resource_settings.ListSettingsResponse:
@@ -407,6 +475,7 @@ class ResourceSettingsServiceRestTransport(_BaseResourceSettingsServiceRestTrans
             http_options = (
                 _BaseResourceSettingsServiceRestTransport._BaseListSettings._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_settings(request, metadata)
             transcoded_request = _BaseResourceSettingsServiceRestTransport._BaseListSettings._get_transcoded_request(
                 http_options, request
@@ -416,6 +485,33 @@ class ResourceSettingsServiceRestTransport(_BaseResourceSettingsServiceRestTrans
             query_params = _BaseResourceSettingsServiceRestTransport._BaseListSettings._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.resourcesettings_v1.ResourceSettingsServiceClient.ListSettings",
+                    extra={
+                        "serviceName": "google.cloud.resourcesettings.v1.ResourceSettingsService",
+                        "rpcName": "ListSettings",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ResourceSettingsServiceRestTransport._ListSettings._get_response(
@@ -437,7 +533,31 @@ class ResourceSettingsServiceRestTransport(_BaseResourceSettingsServiceRestTrans
             pb_resp = resource_settings.ListSettingsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_settings(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resource_settings.ListSettingsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.resourcesettings_v1.ResourceSettingsServiceClient.list_settings",
+                    extra={
+                        "serviceName": "google.cloud.resourcesettings.v1.ResourceSettingsService",
+                        "rpcName": "ListSettings",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateSetting(
@@ -476,7 +596,7 @@ class ResourceSettingsServiceRestTransport(_BaseResourceSettingsServiceRestTrans
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resource_settings.Setting:
             r"""Call the update setting method over HTTP.
 
@@ -486,8 +606,10 @@ class ResourceSettingsServiceRestTransport(_BaseResourceSettingsServiceRestTrans
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resource_settings.Setting:
@@ -497,6 +619,7 @@ class ResourceSettingsServiceRestTransport(_BaseResourceSettingsServiceRestTrans
             http_options = (
                 _BaseResourceSettingsServiceRestTransport._BaseUpdateSetting._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_setting(request, metadata)
             transcoded_request = _BaseResourceSettingsServiceRestTransport._BaseUpdateSetting._get_transcoded_request(
                 http_options, request
@@ -510,6 +633,33 @@ class ResourceSettingsServiceRestTransport(_BaseResourceSettingsServiceRestTrans
             query_params = _BaseResourceSettingsServiceRestTransport._BaseUpdateSetting._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.resourcesettings_v1.ResourceSettingsServiceClient.UpdateSetting",
+                    extra={
+                        "serviceName": "google.cloud.resourcesettings.v1.ResourceSettingsService",
+                        "rpcName": "UpdateSetting",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -534,7 +684,29 @@ class ResourceSettingsServiceRestTransport(_BaseResourceSettingsServiceRestTrans
             pb_resp = resource_settings.Setting.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_setting(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resource_settings.Setting.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.resourcesettings_v1.ResourceSettingsServiceClient.update_setting",
+                    extra={
+                        "serviceName": "google.cloud.resourcesettings.v1.ResourceSettingsService",
+                        "rpcName": "UpdateSetting",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property

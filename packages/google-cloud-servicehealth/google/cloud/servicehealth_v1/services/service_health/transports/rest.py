@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -38,6 +38,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -118,8 +126,10 @@ class ServiceHealthRestInterceptor:
     def pre_get_event(
         self,
         request: event_resources.GetEventRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[event_resources.GetEventRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        event_resources.GetEventRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_event
 
         Override in a subclass to manipulate the request or metadata
@@ -139,8 +149,11 @@ class ServiceHealthRestInterceptor:
     def pre_get_organization_event(
         self,
         request: event_resources.GetOrganizationEventRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[event_resources.GetOrganizationEventRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        event_resources.GetOrganizationEventRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for get_organization_event
 
         Override in a subclass to manipulate the request or metadata
@@ -162,8 +175,11 @@ class ServiceHealthRestInterceptor:
     def pre_get_organization_impact(
         self,
         request: event_resources.GetOrganizationImpactRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[event_resources.GetOrganizationImpactRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        event_resources.GetOrganizationImpactRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for get_organization_impact
 
         Override in a subclass to manipulate the request or metadata
@@ -185,8 +201,10 @@ class ServiceHealthRestInterceptor:
     def pre_list_events(
         self,
         request: event_resources.ListEventsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[event_resources.ListEventsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        event_resources.ListEventsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_events
 
         Override in a subclass to manipulate the request or metadata
@@ -208,9 +226,10 @@ class ServiceHealthRestInterceptor:
     def pre_list_organization_events(
         self,
         request: event_resources.ListOrganizationEventsRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        event_resources.ListOrganizationEventsRequest, Sequence[Tuple[str, str]]
+        event_resources.ListOrganizationEventsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for list_organization_events
 
@@ -233,9 +252,10 @@ class ServiceHealthRestInterceptor:
     def pre_list_organization_impacts(
         self,
         request: event_resources.ListOrganizationImpactsRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        event_resources.ListOrganizationImpactsRequest, Sequence[Tuple[str, str]]
+        event_resources.ListOrganizationImpactsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for list_organization_impacts
 
@@ -258,8 +278,10 @@ class ServiceHealthRestInterceptor:
     def pre_get_location(
         self,
         request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -281,8 +303,10 @@ class ServiceHealthRestInterceptor:
     def pre_list_locations(
         self,
         request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -423,7 +447,7 @@ class ServiceHealthRestTransport(_BaseServiceHealthRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> event_resources.Event:
             r"""Call the get event method over HTTP.
 
@@ -433,8 +457,10 @@ class ServiceHealthRestTransport(_BaseServiceHealthRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.event_resources.Event:
@@ -449,6 +475,7 @@ class ServiceHealthRestTransport(_BaseServiceHealthRestTransport):
             http_options = (
                 _BaseServiceHealthRestTransport._BaseGetEvent._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_event(request, metadata)
             transcoded_request = (
                 _BaseServiceHealthRestTransport._BaseGetEvent._get_transcoded_request(
@@ -462,6 +489,33 @@ class ServiceHealthRestTransport(_BaseServiceHealthRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.servicehealth_v1.ServiceHealthClient.GetEvent",
+                    extra={
+                        "serviceName": "google.cloud.servicehealth.v1.ServiceHealth",
+                        "rpcName": "GetEvent",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ServiceHealthRestTransport._GetEvent._get_response(
@@ -483,7 +537,29 @@ class ServiceHealthRestTransport(_BaseServiceHealthRestTransport):
             pb_resp = event_resources.Event.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_event(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = event_resources.Event.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.servicehealth_v1.ServiceHealthClient.get_event",
+                    extra={
+                        "serviceName": "google.cloud.servicehealth.v1.ServiceHealth",
+                        "rpcName": "GetEvent",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetOrganizationEvent(
@@ -520,7 +596,7 @@ class ServiceHealthRestTransport(_BaseServiceHealthRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> event_resources.OrganizationEvent:
             r"""Call the get organization event method over HTTP.
 
@@ -531,8 +607,10 @@ class ServiceHealthRestTransport(_BaseServiceHealthRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.event_resources.OrganizationEvent:
@@ -547,6 +625,7 @@ class ServiceHealthRestTransport(_BaseServiceHealthRestTransport):
             http_options = (
                 _BaseServiceHealthRestTransport._BaseGetOrganizationEvent._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_organization_event(
                 request, metadata
             )
@@ -558,6 +637,33 @@ class ServiceHealthRestTransport(_BaseServiceHealthRestTransport):
             query_params = _BaseServiceHealthRestTransport._BaseGetOrganizationEvent._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.servicehealth_v1.ServiceHealthClient.GetOrganizationEvent",
+                    extra={
+                        "serviceName": "google.cloud.servicehealth.v1.ServiceHealth",
+                        "rpcName": "GetOrganizationEvent",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ServiceHealthRestTransport._GetOrganizationEvent._get_response(
@@ -579,7 +685,31 @@ class ServiceHealthRestTransport(_BaseServiceHealthRestTransport):
             pb_resp = event_resources.OrganizationEvent.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_organization_event(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = event_resources.OrganizationEvent.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.servicehealth_v1.ServiceHealthClient.get_organization_event",
+                    extra={
+                        "serviceName": "google.cloud.servicehealth.v1.ServiceHealth",
+                        "rpcName": "GetOrganizationEvent",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetOrganizationImpact(
@@ -617,7 +747,7 @@ class ServiceHealthRestTransport(_BaseServiceHealthRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> event_resources.OrganizationImpact:
             r"""Call the get organization impact method over HTTP.
 
@@ -628,8 +758,10 @@ class ServiceHealthRestTransport(_BaseServiceHealthRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.event_resources.OrganizationImpact:
@@ -643,6 +775,7 @@ class ServiceHealthRestTransport(_BaseServiceHealthRestTransport):
             http_options = (
                 _BaseServiceHealthRestTransport._BaseGetOrganizationImpact._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_organization_impact(
                 request, metadata
             )
@@ -654,6 +787,33 @@ class ServiceHealthRestTransport(_BaseServiceHealthRestTransport):
             query_params = _BaseServiceHealthRestTransport._BaseGetOrganizationImpact._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.servicehealth_v1.ServiceHealthClient.GetOrganizationImpact",
+                    extra={
+                        "serviceName": "google.cloud.servicehealth.v1.ServiceHealth",
+                        "rpcName": "GetOrganizationImpact",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ServiceHealthRestTransport._GetOrganizationImpact._get_response(
@@ -675,7 +835,31 @@ class ServiceHealthRestTransport(_BaseServiceHealthRestTransport):
             pb_resp = event_resources.OrganizationImpact.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_organization_impact(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = event_resources.OrganizationImpact.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.servicehealth_v1.ServiceHealthClient.get_organization_impact",
+                    extra={
+                        "serviceName": "google.cloud.servicehealth.v1.ServiceHealth",
+                        "rpcName": "GetOrganizationImpact",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListEvents(
@@ -712,7 +896,7 @@ class ServiceHealthRestTransport(_BaseServiceHealthRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> event_resources.ListEventsResponse:
             r"""Call the list events method over HTTP.
 
@@ -723,8 +907,10 @@ class ServiceHealthRestTransport(_BaseServiceHealthRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.event_resources.ListEventsResponse:
@@ -736,6 +922,7 @@ class ServiceHealthRestTransport(_BaseServiceHealthRestTransport):
             http_options = (
                 _BaseServiceHealthRestTransport._BaseListEvents._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_events(request, metadata)
             transcoded_request = (
                 _BaseServiceHealthRestTransport._BaseListEvents._get_transcoded_request(
@@ -749,6 +936,33 @@ class ServiceHealthRestTransport(_BaseServiceHealthRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.servicehealth_v1.ServiceHealthClient.ListEvents",
+                    extra={
+                        "serviceName": "google.cloud.servicehealth.v1.ServiceHealth",
+                        "rpcName": "ListEvents",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ServiceHealthRestTransport._ListEvents._get_response(
@@ -770,7 +984,31 @@ class ServiceHealthRestTransport(_BaseServiceHealthRestTransport):
             pb_resp = event_resources.ListEventsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_events(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = event_resources.ListEventsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.servicehealth_v1.ServiceHealthClient.list_events",
+                    extra={
+                        "serviceName": "google.cloud.servicehealth.v1.ServiceHealth",
+                        "rpcName": "ListEvents",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListOrganizationEvents(
@@ -808,7 +1046,7 @@ class ServiceHealthRestTransport(_BaseServiceHealthRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> event_resources.ListOrganizationEventsResponse:
             r"""Call the list organization events method over HTTP.
 
@@ -819,8 +1057,10 @@ class ServiceHealthRestTransport(_BaseServiceHealthRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.event_resources.ListOrganizationEventsResponse:
@@ -832,6 +1072,7 @@ class ServiceHealthRestTransport(_BaseServiceHealthRestTransport):
             http_options = (
                 _BaseServiceHealthRestTransport._BaseListOrganizationEvents._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_organization_events(
                 request, metadata
             )
@@ -843,6 +1084,33 @@ class ServiceHealthRestTransport(_BaseServiceHealthRestTransport):
             query_params = _BaseServiceHealthRestTransport._BaseListOrganizationEvents._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.servicehealth_v1.ServiceHealthClient.ListOrganizationEvents",
+                    extra={
+                        "serviceName": "google.cloud.servicehealth.v1.ServiceHealth",
+                        "rpcName": "ListOrganizationEvents",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ServiceHealthRestTransport._ListOrganizationEvents._get_response(
@@ -864,7 +1132,31 @@ class ServiceHealthRestTransport(_BaseServiceHealthRestTransport):
             pb_resp = event_resources.ListOrganizationEventsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_organization_events(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        event_resources.ListOrganizationEventsResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.servicehealth_v1.ServiceHealthClient.list_organization_events",
+                    extra={
+                        "serviceName": "google.cloud.servicehealth.v1.ServiceHealth",
+                        "rpcName": "ListOrganizationEvents",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListOrganizationImpacts(
@@ -902,7 +1194,7 @@ class ServiceHealthRestTransport(_BaseServiceHealthRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> event_resources.ListOrganizationImpactsResponse:
             r"""Call the list organization impacts method over HTTP.
 
@@ -913,8 +1205,10 @@ class ServiceHealthRestTransport(_BaseServiceHealthRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.event_resources.ListOrganizationImpactsResponse:
@@ -926,6 +1220,7 @@ class ServiceHealthRestTransport(_BaseServiceHealthRestTransport):
             http_options = (
                 _BaseServiceHealthRestTransport._BaseListOrganizationImpacts._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_organization_impacts(
                 request, metadata
             )
@@ -937,6 +1232,33 @@ class ServiceHealthRestTransport(_BaseServiceHealthRestTransport):
             query_params = _BaseServiceHealthRestTransport._BaseListOrganizationImpacts._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.servicehealth_v1.ServiceHealthClient.ListOrganizationImpacts",
+                    extra={
+                        "serviceName": "google.cloud.servicehealth.v1.ServiceHealth",
+                        "rpcName": "ListOrganizationImpacts",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -960,7 +1282,33 @@ class ServiceHealthRestTransport(_BaseServiceHealthRestTransport):
             pb_resp = event_resources.ListOrganizationImpactsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_organization_impacts(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        event_resources.ListOrganizationImpactsResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.servicehealth_v1.ServiceHealthClient.list_organization_impacts",
+                    extra={
+                        "serviceName": "google.cloud.servicehealth.v1.ServiceHealth",
+                        "rpcName": "ListOrganizationImpacts",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -1062,7 +1410,7 @@ class ServiceHealthRestTransport(_BaseServiceHealthRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.Location:
             r"""Call the get location method over HTTP.
 
@@ -1072,8 +1420,10 @@ class ServiceHealthRestTransport(_BaseServiceHealthRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.Location: Response from GetLocation method.
@@ -1082,6 +1432,7 @@ class ServiceHealthRestTransport(_BaseServiceHealthRestTransport):
             http_options = (
                 _BaseServiceHealthRestTransport._BaseGetLocation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_location(request, metadata)
             transcoded_request = _BaseServiceHealthRestTransport._BaseGetLocation._get_transcoded_request(
                 http_options, request
@@ -1093,6 +1444,33 @@ class ServiceHealthRestTransport(_BaseServiceHealthRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.servicehealth_v1.ServiceHealthClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.servicehealth.v1.ServiceHealth",
+                        "rpcName": "GetLocation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ServiceHealthRestTransport._GetLocation._get_response(
@@ -1113,6 +1491,27 @@ class ServiceHealthRestTransport(_BaseServiceHealthRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.servicehealth_v1.ServiceHealthAsyncClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.servicehealth.v1.ServiceHealth",
+                        "rpcName": "GetLocation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -1153,7 +1552,7 @@ class ServiceHealthRestTransport(_BaseServiceHealthRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.ListLocationsResponse:
             r"""Call the list locations method over HTTP.
 
@@ -1163,8 +1562,10 @@ class ServiceHealthRestTransport(_BaseServiceHealthRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
@@ -1173,6 +1574,7 @@ class ServiceHealthRestTransport(_BaseServiceHealthRestTransport):
             http_options = (
                 _BaseServiceHealthRestTransport._BaseListLocations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
             transcoded_request = _BaseServiceHealthRestTransport._BaseListLocations._get_transcoded_request(
                 http_options, request
@@ -1182,6 +1584,33 @@ class ServiceHealthRestTransport(_BaseServiceHealthRestTransport):
             query_params = _BaseServiceHealthRestTransport._BaseListLocations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.servicehealth_v1.ServiceHealthClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.servicehealth.v1.ServiceHealth",
+                        "rpcName": "ListLocations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ServiceHealthRestTransport._ListLocations._get_response(
@@ -1202,6 +1631,27 @@ class ServiceHealthRestTransport(_BaseServiceHealthRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.servicehealth_v1.ServiceHealthAsyncClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.servicehealth.v1.ServiceHealth",
+                        "rpcName": "ListLocations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property

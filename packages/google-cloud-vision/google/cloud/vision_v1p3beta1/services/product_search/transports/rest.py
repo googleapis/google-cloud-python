@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -39,6 +39,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -195,9 +203,10 @@ class ProductSearchRestInterceptor:
     def pre_add_product_to_product_set(
         self,
         request: product_search_service.AddProductToProductSetRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        product_search_service.AddProductToProductSetRequest, Sequence[Tuple[str, str]]
+        product_search_service.AddProductToProductSetRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for add_product_to_product_set
 
@@ -209,8 +218,11 @@ class ProductSearchRestInterceptor:
     def pre_create_product(
         self,
         request: product_search_service.CreateProductRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[product_search_service.CreateProductRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        product_search_service.CreateProductRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for create_product
 
         Override in a subclass to manipulate the request or metadata
@@ -232,9 +244,10 @@ class ProductSearchRestInterceptor:
     def pre_create_product_set(
         self,
         request: product_search_service.CreateProductSetRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        product_search_service.CreateProductSetRequest, Sequence[Tuple[str, str]]
+        product_search_service.CreateProductSetRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for create_product_set
 
@@ -257,9 +270,10 @@ class ProductSearchRestInterceptor:
     def pre_create_reference_image(
         self,
         request: product_search_service.CreateReferenceImageRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        product_search_service.CreateReferenceImageRequest, Sequence[Tuple[str, str]]
+        product_search_service.CreateReferenceImageRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for create_reference_image
 
@@ -282,8 +296,11 @@ class ProductSearchRestInterceptor:
     def pre_delete_product(
         self,
         request: product_search_service.DeleteProductRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[product_search_service.DeleteProductRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        product_search_service.DeleteProductRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for delete_product
 
         Override in a subclass to manipulate the request or metadata
@@ -294,9 +311,10 @@ class ProductSearchRestInterceptor:
     def pre_delete_product_set(
         self,
         request: product_search_service.DeleteProductSetRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        product_search_service.DeleteProductSetRequest, Sequence[Tuple[str, str]]
+        product_search_service.DeleteProductSetRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for delete_product_set
 
@@ -308,9 +326,10 @@ class ProductSearchRestInterceptor:
     def pre_delete_reference_image(
         self,
         request: product_search_service.DeleteReferenceImageRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        product_search_service.DeleteReferenceImageRequest, Sequence[Tuple[str, str]]
+        product_search_service.DeleteReferenceImageRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for delete_reference_image
 
@@ -322,8 +341,11 @@ class ProductSearchRestInterceptor:
     def pre_get_product(
         self,
         request: product_search_service.GetProductRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[product_search_service.GetProductRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        product_search_service.GetProductRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for get_product
 
         Override in a subclass to manipulate the request or metadata
@@ -345,8 +367,11 @@ class ProductSearchRestInterceptor:
     def pre_get_product_set(
         self,
         request: product_search_service.GetProductSetRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[product_search_service.GetProductSetRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        product_search_service.GetProductSetRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for get_product_set
 
         Override in a subclass to manipulate the request or metadata
@@ -368,9 +393,10 @@ class ProductSearchRestInterceptor:
     def pre_get_reference_image(
         self,
         request: product_search_service.GetReferenceImageRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        product_search_service.GetReferenceImageRequest, Sequence[Tuple[str, str]]
+        product_search_service.GetReferenceImageRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for get_reference_image
 
@@ -393,9 +419,10 @@ class ProductSearchRestInterceptor:
     def pre_import_product_sets(
         self,
         request: product_search_service.ImportProductSetsRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        product_search_service.ImportProductSetsRequest, Sequence[Tuple[str, str]]
+        product_search_service.ImportProductSetsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for import_product_sets
 
@@ -418,8 +445,11 @@ class ProductSearchRestInterceptor:
     def pre_list_products(
         self,
         request: product_search_service.ListProductsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[product_search_service.ListProductsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        product_search_service.ListProductsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for list_products
 
         Override in a subclass to manipulate the request or metadata
@@ -441,9 +471,10 @@ class ProductSearchRestInterceptor:
     def pre_list_product_sets(
         self,
         request: product_search_service.ListProductSetsRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        product_search_service.ListProductSetsRequest, Sequence[Tuple[str, str]]
+        product_search_service.ListProductSetsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for list_product_sets
 
@@ -466,10 +497,10 @@ class ProductSearchRestInterceptor:
     def pre_list_products_in_product_set(
         self,
         request: product_search_service.ListProductsInProductSetRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         product_search_service.ListProductsInProductSetRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for list_products_in_product_set
 
@@ -492,9 +523,10 @@ class ProductSearchRestInterceptor:
     def pre_list_reference_images(
         self,
         request: product_search_service.ListReferenceImagesRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        product_search_service.ListReferenceImagesRequest, Sequence[Tuple[str, str]]
+        product_search_service.ListReferenceImagesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for list_reference_images
 
@@ -517,10 +549,10 @@ class ProductSearchRestInterceptor:
     def pre_remove_product_from_product_set(
         self,
         request: product_search_service.RemoveProductFromProductSetRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         product_search_service.RemoveProductFromProductSetRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for remove_product_from_product_set
 
@@ -532,8 +564,11 @@ class ProductSearchRestInterceptor:
     def pre_update_product(
         self,
         request: product_search_service.UpdateProductRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[product_search_service.UpdateProductRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        product_search_service.UpdateProductRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for update_product
 
         Override in a subclass to manipulate the request or metadata
@@ -555,9 +590,10 @@ class ProductSearchRestInterceptor:
     def pre_update_product_set(
         self,
         request: product_search_service.UpdateProductSetRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        product_search_service.UpdateProductSetRequest, Sequence[Tuple[str, str]]
+        product_search_service.UpdateProductSetRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for update_product_set
 
@@ -747,7 +783,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the add product to product
             set method over HTTP.
@@ -759,13 +795,16 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
             """
 
             http_options = (
                 _BaseProductSearchRestTransport._BaseAddProductToProductSet._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_add_product_to_product_set(
                 request, metadata
             )
@@ -781,6 +820,33 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             query_params = _BaseProductSearchRestTransport._BaseAddProductToProductSet._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vision_v1p3beta1.ProductSearchClient.AddProductToProductSet",
+                    extra={
+                        "serviceName": "google.cloud.vision.v1p3beta1.ProductSearch",
+                        "rpcName": "AddProductToProductSet",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ProductSearchRestTransport._AddProductToProductSet._get_response(
@@ -833,7 +899,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> product_search_service.Product:
             r"""Call the create product method over HTTP.
 
@@ -843,8 +909,10 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.product_search_service.Product:
@@ -854,6 +922,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             http_options = (
                 _BaseProductSearchRestTransport._BaseCreateProduct._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_product(request, metadata)
             transcoded_request = _BaseProductSearchRestTransport._BaseCreateProduct._get_transcoded_request(
                 http_options, request
@@ -867,6 +936,33 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             query_params = _BaseProductSearchRestTransport._BaseCreateProduct._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vision_v1p3beta1.ProductSearchClient.CreateProduct",
+                    extra={
+                        "serviceName": "google.cloud.vision.v1p3beta1.ProductSearch",
+                        "rpcName": "CreateProduct",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ProductSearchRestTransport._CreateProduct._get_response(
@@ -889,7 +985,29 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             pb_resp = product_search_service.Product.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_product(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = product_search_service.Product.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.vision_v1p3beta1.ProductSearchClient.create_product",
+                    extra={
+                        "serviceName": "google.cloud.vision.v1p3beta1.ProductSearch",
+                        "rpcName": "CreateProduct",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateProductSet(
@@ -927,7 +1045,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> product_search_service.ProductSet:
             r"""Call the create product set method over HTTP.
 
@@ -937,8 +1055,10 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.product_search_service.ProductSet:
@@ -953,6 +1073,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             http_options = (
                 _BaseProductSearchRestTransport._BaseCreateProductSet._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_product_set(
                 request, metadata
             )
@@ -968,6 +1089,33 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             query_params = _BaseProductSearchRestTransport._BaseCreateProductSet._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vision_v1p3beta1.ProductSearchClient.CreateProductSet",
+                    extra={
+                        "serviceName": "google.cloud.vision.v1p3beta1.ProductSearch",
+                        "rpcName": "CreateProductSet",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ProductSearchRestTransport._CreateProductSet._get_response(
@@ -990,7 +1138,31 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             pb_resp = product_search_service.ProductSet.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_product_set(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = product_search_service.ProductSet.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.vision_v1p3beta1.ProductSearchClient.create_product_set",
+                    extra={
+                        "serviceName": "google.cloud.vision.v1p3beta1.ProductSearch",
+                        "rpcName": "CreateProductSet",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateReferenceImage(
@@ -1028,7 +1200,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> product_search_service.ReferenceImage:
             r"""Call the create reference image method over HTTP.
 
@@ -1038,8 +1210,10 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.product_search_service.ReferenceImage:
@@ -1051,6 +1225,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             http_options = (
                 _BaseProductSearchRestTransport._BaseCreateReferenceImage._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_reference_image(
                 request, metadata
             )
@@ -1066,6 +1241,33 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             query_params = _BaseProductSearchRestTransport._BaseCreateReferenceImage._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vision_v1p3beta1.ProductSearchClient.CreateReferenceImage",
+                    extra={
+                        "serviceName": "google.cloud.vision.v1p3beta1.ProductSearch",
+                        "rpcName": "CreateReferenceImage",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ProductSearchRestTransport._CreateReferenceImage._get_response(
@@ -1088,7 +1290,31 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             pb_resp = product_search_service.ReferenceImage.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_reference_image(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = product_search_service.ReferenceImage.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.vision_v1p3beta1.ProductSearchClient.create_reference_image",
+                    extra={
+                        "serviceName": "google.cloud.vision.v1p3beta1.ProductSearch",
+                        "rpcName": "CreateReferenceImage",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteProduct(
@@ -1125,7 +1351,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete product method over HTTP.
 
@@ -1135,13 +1361,16 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseProductSearchRestTransport._BaseDeleteProduct._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_product(request, metadata)
             transcoded_request = _BaseProductSearchRestTransport._BaseDeleteProduct._get_transcoded_request(
                 http_options, request
@@ -1151,6 +1380,33 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             query_params = _BaseProductSearchRestTransport._BaseDeleteProduct._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vision_v1p3beta1.ProductSearchClient.DeleteProduct",
+                    extra={
+                        "serviceName": "google.cloud.vision.v1p3beta1.ProductSearch",
+                        "rpcName": "DeleteProduct",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ProductSearchRestTransport._DeleteProduct._get_response(
@@ -1201,7 +1457,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete product set method over HTTP.
 
@@ -1211,13 +1467,16 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseProductSearchRestTransport._BaseDeleteProductSet._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_product_set(
                 request, metadata
             )
@@ -1229,6 +1488,33 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             query_params = _BaseProductSearchRestTransport._BaseDeleteProductSet._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vision_v1p3beta1.ProductSearchClient.DeleteProductSet",
+                    extra={
+                        "serviceName": "google.cloud.vision.v1p3beta1.ProductSearch",
+                        "rpcName": "DeleteProductSet",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ProductSearchRestTransport._DeleteProductSet._get_response(
@@ -1279,7 +1565,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete reference image method over HTTP.
 
@@ -1289,13 +1575,16 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseProductSearchRestTransport._BaseDeleteReferenceImage._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_reference_image(
                 request, metadata
             )
@@ -1307,6 +1596,33 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             query_params = _BaseProductSearchRestTransport._BaseDeleteReferenceImage._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vision_v1p3beta1.ProductSearchClient.DeleteReferenceImage",
+                    extra={
+                        "serviceName": "google.cloud.vision.v1p3beta1.ProductSearch",
+                        "rpcName": "DeleteReferenceImage",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ProductSearchRestTransport._DeleteReferenceImage._get_response(
@@ -1357,7 +1673,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> product_search_service.Product:
             r"""Call the get product method over HTTP.
 
@@ -1367,8 +1683,10 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.product_search_service.Product:
@@ -1378,6 +1696,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             http_options = (
                 _BaseProductSearchRestTransport._BaseGetProduct._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_product(request, metadata)
             transcoded_request = (
                 _BaseProductSearchRestTransport._BaseGetProduct._get_transcoded_request(
@@ -1391,6 +1710,33 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vision_v1p3beta1.ProductSearchClient.GetProduct",
+                    extra={
+                        "serviceName": "google.cloud.vision.v1p3beta1.ProductSearch",
+                        "rpcName": "GetProduct",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ProductSearchRestTransport._GetProduct._get_response(
@@ -1412,7 +1758,29 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             pb_resp = product_search_service.Product.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_product(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = product_search_service.Product.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.vision_v1p3beta1.ProductSearchClient.get_product",
+                    extra={
+                        "serviceName": "google.cloud.vision.v1p3beta1.ProductSearch",
+                        "rpcName": "GetProduct",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetProductSet(
@@ -1449,7 +1817,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> product_search_service.ProductSet:
             r"""Call the get product set method over HTTP.
 
@@ -1459,8 +1827,10 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.product_search_service.ProductSet:
@@ -1475,6 +1845,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             http_options = (
                 _BaseProductSearchRestTransport._BaseGetProductSet._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_product_set(request, metadata)
             transcoded_request = _BaseProductSearchRestTransport._BaseGetProductSet._get_transcoded_request(
                 http_options, request
@@ -1484,6 +1855,33 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             query_params = _BaseProductSearchRestTransport._BaseGetProductSet._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vision_v1p3beta1.ProductSearchClient.GetProductSet",
+                    extra={
+                        "serviceName": "google.cloud.vision.v1p3beta1.ProductSearch",
+                        "rpcName": "GetProductSet",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ProductSearchRestTransport._GetProductSet._get_response(
@@ -1505,7 +1903,31 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             pb_resp = product_search_service.ProductSet.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_product_set(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = product_search_service.ProductSet.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.vision_v1p3beta1.ProductSearchClient.get_product_set",
+                    extra={
+                        "serviceName": "google.cloud.vision.v1p3beta1.ProductSearch",
+                        "rpcName": "GetProductSet",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetReferenceImage(
@@ -1542,7 +1964,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> product_search_service.ReferenceImage:
             r"""Call the get reference image method over HTTP.
 
@@ -1552,8 +1974,10 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.product_search_service.ReferenceImage:
@@ -1565,6 +1989,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             http_options = (
                 _BaseProductSearchRestTransport._BaseGetReferenceImage._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_reference_image(
                 request, metadata
             )
@@ -1576,6 +2001,33 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             query_params = _BaseProductSearchRestTransport._BaseGetReferenceImage._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vision_v1p3beta1.ProductSearchClient.GetReferenceImage",
+                    extra={
+                        "serviceName": "google.cloud.vision.v1p3beta1.ProductSearch",
+                        "rpcName": "GetReferenceImage",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ProductSearchRestTransport._GetReferenceImage._get_response(
@@ -1597,7 +2049,31 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             pb_resp = product_search_service.ReferenceImage.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_reference_image(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = product_search_service.ReferenceImage.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.vision_v1p3beta1.ProductSearchClient.get_reference_image",
+                    extra={
+                        "serviceName": "google.cloud.vision.v1p3beta1.ProductSearch",
+                        "rpcName": "GetReferenceImage",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ImportProductSets(
@@ -1635,7 +2111,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the import product sets method over HTTP.
 
@@ -1645,8 +2121,10 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1659,6 +2137,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             http_options = (
                 _BaseProductSearchRestTransport._BaseImportProductSets._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_import_product_sets(
                 request, metadata
             )
@@ -1674,6 +2153,33 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             query_params = _BaseProductSearchRestTransport._BaseImportProductSets._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vision_v1p3beta1.ProductSearchClient.ImportProductSets",
+                    extra={
+                        "serviceName": "google.cloud.vision.v1p3beta1.ProductSearch",
+                        "rpcName": "ImportProductSets",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ProductSearchRestTransport._ImportProductSets._get_response(
@@ -1694,7 +2200,29 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_import_product_sets(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.vision_v1p3beta1.ProductSearchClient.import_product_sets",
+                    extra={
+                        "serviceName": "google.cloud.vision.v1p3beta1.ProductSearch",
+                        "rpcName": "ImportProductSets",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListProducts(
@@ -1731,7 +2259,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> product_search_service.ListProductsResponse:
             r"""Call the list products method over HTTP.
 
@@ -1741,8 +2269,10 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.product_search_service.ListProductsResponse:
@@ -1752,6 +2282,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             http_options = (
                 _BaseProductSearchRestTransport._BaseListProducts._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_products(request, metadata)
             transcoded_request = _BaseProductSearchRestTransport._BaseListProducts._get_transcoded_request(
                 http_options, request
@@ -1761,6 +2292,33 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             query_params = _BaseProductSearchRestTransport._BaseListProducts._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vision_v1p3beta1.ProductSearchClient.ListProducts",
+                    extra={
+                        "serviceName": "google.cloud.vision.v1p3beta1.ProductSearch",
+                        "rpcName": "ListProducts",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ProductSearchRestTransport._ListProducts._get_response(
@@ -1782,7 +2340,31 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             pb_resp = product_search_service.ListProductsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_products(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        product_search_service.ListProductsResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.vision_v1p3beta1.ProductSearchClient.list_products",
+                    extra={
+                        "serviceName": "google.cloud.vision.v1p3beta1.ProductSearch",
+                        "rpcName": "ListProducts",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListProductSets(
@@ -1819,7 +2401,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> product_search_service.ListProductSetsResponse:
             r"""Call the list product sets method over HTTP.
 
@@ -1829,8 +2411,10 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.product_search_service.ListProductSetsResponse:
@@ -1840,6 +2424,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             http_options = (
                 _BaseProductSearchRestTransport._BaseListProductSets._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_product_sets(
                 request, metadata
             )
@@ -1851,6 +2436,33 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             query_params = _BaseProductSearchRestTransport._BaseListProductSets._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vision_v1p3beta1.ProductSearchClient.ListProductSets",
+                    extra={
+                        "serviceName": "google.cloud.vision.v1p3beta1.ProductSearch",
+                        "rpcName": "ListProductSets",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ProductSearchRestTransport._ListProductSets._get_response(
@@ -1872,7 +2484,31 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             pb_resp = product_search_service.ListProductSetsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_product_sets(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        product_search_service.ListProductSetsResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.vision_v1p3beta1.ProductSearchClient.list_product_sets",
+                    extra={
+                        "serviceName": "google.cloud.vision.v1p3beta1.ProductSearch",
+                        "rpcName": "ListProductSets",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListProductsInProductSet(
@@ -1910,7 +2546,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> product_search_service.ListProductsInProductSetResponse:
             r"""Call the list products in product
             set method over HTTP.
@@ -1922,8 +2558,10 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.product_search_service.ListProductsInProductSetResponse:
@@ -1935,6 +2573,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             http_options = (
                 _BaseProductSearchRestTransport._BaseListProductsInProductSet._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_products_in_product_set(
                 request, metadata
             )
@@ -1946,6 +2585,33 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             query_params = _BaseProductSearchRestTransport._BaseListProductsInProductSet._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vision_v1p3beta1.ProductSearchClient.ListProductsInProductSet",
+                    extra={
+                        "serviceName": "google.cloud.vision.v1p3beta1.ProductSearch",
+                        "rpcName": "ListProductsInProductSet",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1969,7 +2635,33 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             pb_resp = product_search_service.ListProductsInProductSetResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_products_in_product_set(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        product_search_service.ListProductsInProductSetResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.vision_v1p3beta1.ProductSearchClient.list_products_in_product_set",
+                    extra={
+                        "serviceName": "google.cloud.vision.v1p3beta1.ProductSearch",
+                        "rpcName": "ListProductsInProductSet",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListReferenceImages(
@@ -2006,7 +2698,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> product_search_service.ListReferenceImagesResponse:
             r"""Call the list reference images method over HTTP.
 
@@ -2016,8 +2708,10 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.product_search_service.ListReferenceImagesResponse:
@@ -2027,6 +2721,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             http_options = (
                 _BaseProductSearchRestTransport._BaseListReferenceImages._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_reference_images(
                 request, metadata
             )
@@ -2038,6 +2733,33 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             query_params = _BaseProductSearchRestTransport._BaseListReferenceImages._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vision_v1p3beta1.ProductSearchClient.ListReferenceImages",
+                    extra={
+                        "serviceName": "google.cloud.vision.v1p3beta1.ProductSearch",
+                        "rpcName": "ListReferenceImages",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ProductSearchRestTransport._ListReferenceImages._get_response(
@@ -2059,7 +2781,33 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             pb_resp = product_search_service.ListReferenceImagesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_reference_images(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        product_search_service.ListReferenceImagesResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.vision_v1p3beta1.ProductSearchClient.list_reference_images",
+                    extra={
+                        "serviceName": "google.cloud.vision.v1p3beta1.ProductSearch",
+                        "rpcName": "ListReferenceImages",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _RemoveProductFromProductSet(
@@ -2098,7 +2846,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the remove product from
             product set method over HTTP.
@@ -2110,13 +2858,16 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
             """
 
             http_options = (
                 _BaseProductSearchRestTransport._BaseRemoveProductFromProductSet._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_remove_product_from_product_set(
                 request, metadata
             )
@@ -2132,6 +2883,33 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             query_params = _BaseProductSearchRestTransport._BaseRemoveProductFromProductSet._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vision_v1p3beta1.ProductSearchClient.RemoveProductFromProductSet",
+                    extra={
+                        "serviceName": "google.cloud.vision.v1p3beta1.ProductSearch",
+                        "rpcName": "RemoveProductFromProductSet",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -2186,7 +2964,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> product_search_service.Product:
             r"""Call the update product method over HTTP.
 
@@ -2196,8 +2974,10 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.product_search_service.Product:
@@ -2207,6 +2987,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             http_options = (
                 _BaseProductSearchRestTransport._BaseUpdateProduct._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_product(request, metadata)
             transcoded_request = _BaseProductSearchRestTransport._BaseUpdateProduct._get_transcoded_request(
                 http_options, request
@@ -2220,6 +3001,33 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             query_params = _BaseProductSearchRestTransport._BaseUpdateProduct._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vision_v1p3beta1.ProductSearchClient.UpdateProduct",
+                    extra={
+                        "serviceName": "google.cloud.vision.v1p3beta1.ProductSearch",
+                        "rpcName": "UpdateProduct",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ProductSearchRestTransport._UpdateProduct._get_response(
@@ -2242,7 +3050,29 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             pb_resp = product_search_service.Product.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_product(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = product_search_service.Product.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.vision_v1p3beta1.ProductSearchClient.update_product",
+                    extra={
+                        "serviceName": "google.cloud.vision.v1p3beta1.ProductSearch",
+                        "rpcName": "UpdateProduct",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateProductSet(
@@ -2280,7 +3110,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> product_search_service.ProductSet:
             r"""Call the update product set method over HTTP.
 
@@ -2290,8 +3120,10 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.product_search_service.ProductSet:
@@ -2306,6 +3138,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             http_options = (
                 _BaseProductSearchRestTransport._BaseUpdateProductSet._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_product_set(
                 request, metadata
             )
@@ -2321,6 +3154,33 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             query_params = _BaseProductSearchRestTransport._BaseUpdateProductSet._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.vision_v1p3beta1.ProductSearchClient.UpdateProductSet",
+                    extra={
+                        "serviceName": "google.cloud.vision.v1p3beta1.ProductSearch",
+                        "rpcName": "UpdateProductSet",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ProductSearchRestTransport._UpdateProductSet._get_response(
@@ -2343,7 +3203,31 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             pb_resp = product_search_service.ProductSet.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_product_set(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = product_search_service.ProductSet.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.vision_v1p3beta1.ProductSearchClient.update_product_set",
+                    extra={
+                        "serviceName": "google.cloud.vision.v1p3beta1.ProductSearch",
+                        "rpcName": "UpdateProductSet",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property

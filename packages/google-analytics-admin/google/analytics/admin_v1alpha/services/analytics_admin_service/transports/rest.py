@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -52,6 +52,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -1176,9 +1184,10 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_acknowledge_user_data_collection(
         self,
         request: analytics_admin.AcknowledgeUserDataCollectionRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        analytics_admin.AcknowledgeUserDataCollectionRequest, Sequence[Tuple[str, str]]
+        analytics_admin.AcknowledgeUserDataCollectionRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for acknowledge_user_data_collection
 
@@ -1201,10 +1210,10 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_approve_display_video360_advertiser_link_proposal(
         self,
         request: analytics_admin.ApproveDisplayVideo360AdvertiserLinkProposalRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         analytics_admin.ApproveDisplayVideo360AdvertiserLinkProposalRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for approve_display_video360_advertiser_link_proposal
 
@@ -1228,8 +1237,10 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_archive_audience(
         self,
         request: analytics_admin.ArchiveAudienceRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.ArchiveAudienceRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.ArchiveAudienceRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for archive_audience
 
         Override in a subclass to manipulate the request or metadata
@@ -1240,9 +1251,10 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_archive_custom_dimension(
         self,
         request: analytics_admin.ArchiveCustomDimensionRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        analytics_admin.ArchiveCustomDimensionRequest, Sequence[Tuple[str, str]]
+        analytics_admin.ArchiveCustomDimensionRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for archive_custom_dimension
 
@@ -1254,8 +1266,11 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_archive_custom_metric(
         self,
         request: analytics_admin.ArchiveCustomMetricRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.ArchiveCustomMetricRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.ArchiveCustomMetricRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for archive_custom_metric
 
         Override in a subclass to manipulate the request or metadata
@@ -1266,9 +1281,10 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_batch_create_access_bindings(
         self,
         request: analytics_admin.BatchCreateAccessBindingsRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        analytics_admin.BatchCreateAccessBindingsRequest, Sequence[Tuple[str, str]]
+        analytics_admin.BatchCreateAccessBindingsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for batch_create_access_bindings
 
@@ -1291,9 +1307,10 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_batch_delete_access_bindings(
         self,
         request: analytics_admin.BatchDeleteAccessBindingsRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        analytics_admin.BatchDeleteAccessBindingsRequest, Sequence[Tuple[str, str]]
+        analytics_admin.BatchDeleteAccessBindingsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for batch_delete_access_bindings
 
@@ -1305,9 +1322,10 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_batch_get_access_bindings(
         self,
         request: analytics_admin.BatchGetAccessBindingsRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        analytics_admin.BatchGetAccessBindingsRequest, Sequence[Tuple[str, str]]
+        analytics_admin.BatchGetAccessBindingsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for batch_get_access_bindings
 
@@ -1330,9 +1348,10 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_batch_update_access_bindings(
         self,
         request: analytics_admin.BatchUpdateAccessBindingsRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        analytics_admin.BatchUpdateAccessBindingsRequest, Sequence[Tuple[str, str]]
+        analytics_admin.BatchUpdateAccessBindingsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for batch_update_access_bindings
 
@@ -1355,10 +1374,10 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_cancel_display_video360_advertiser_link_proposal(
         self,
         request: analytics_admin.CancelDisplayVideo360AdvertiserLinkProposalRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         analytics_admin.CancelDisplayVideo360AdvertiserLinkProposalRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for cancel_display_video360_advertiser_link_proposal
 
@@ -1381,8 +1400,11 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_create_access_binding(
         self,
         request: analytics_admin.CreateAccessBindingRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.CreateAccessBindingRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.CreateAccessBindingRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for create_access_binding
 
         Override in a subclass to manipulate the request or metadata
@@ -1404,8 +1426,11 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_create_ad_sense_link(
         self,
         request: analytics_admin.CreateAdSenseLinkRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.CreateAdSenseLinkRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.CreateAdSenseLinkRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for create_ad_sense_link
 
         Override in a subclass to manipulate the request or metadata
@@ -1427,8 +1452,10 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_create_audience(
         self,
         request: analytics_admin.CreateAudienceRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.CreateAudienceRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.CreateAudienceRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_audience
 
         Override in a subclass to manipulate the request or metadata
@@ -1450,8 +1477,11 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_create_big_query_link(
         self,
         request: analytics_admin.CreateBigQueryLinkRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.CreateBigQueryLinkRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.CreateBigQueryLinkRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for create_big_query_link
 
         Override in a subclass to manipulate the request or metadata
@@ -1473,9 +1503,10 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_create_calculated_metric(
         self,
         request: analytics_admin.CreateCalculatedMetricRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        analytics_admin.CreateCalculatedMetricRequest, Sequence[Tuple[str, str]]
+        analytics_admin.CreateCalculatedMetricRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for create_calculated_metric
 
@@ -1498,8 +1529,11 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_create_channel_group(
         self,
         request: analytics_admin.CreateChannelGroupRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.CreateChannelGroupRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.CreateChannelGroupRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for create_channel_group
 
         Override in a subclass to manipulate the request or metadata
@@ -1521,9 +1555,10 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_create_connected_site_tag(
         self,
         request: analytics_admin.CreateConnectedSiteTagRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        analytics_admin.CreateConnectedSiteTagRequest, Sequence[Tuple[str, str]]
+        analytics_admin.CreateConnectedSiteTagRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for create_connected_site_tag
 
@@ -1546,8 +1581,11 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_create_conversion_event(
         self,
         request: analytics_admin.CreateConversionEventRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.CreateConversionEventRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.CreateConversionEventRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for create_conversion_event
 
         Override in a subclass to manipulate the request or metadata
@@ -1569,8 +1607,11 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_create_custom_dimension(
         self,
         request: analytics_admin.CreateCustomDimensionRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.CreateCustomDimensionRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.CreateCustomDimensionRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for create_custom_dimension
 
         Override in a subclass to manipulate the request or metadata
@@ -1592,8 +1633,11 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_create_custom_metric(
         self,
         request: analytics_admin.CreateCustomMetricRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.CreateCustomMetricRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.CreateCustomMetricRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for create_custom_metric
 
         Override in a subclass to manipulate the request or metadata
@@ -1615,8 +1659,10 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_create_data_stream(
         self,
         request: analytics_admin.CreateDataStreamRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.CreateDataStreamRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.CreateDataStreamRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_data_stream
 
         Override in a subclass to manipulate the request or metadata
@@ -1638,10 +1684,10 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_create_display_video360_advertiser_link(
         self,
         request: analytics_admin.CreateDisplayVideo360AdvertiserLinkRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         analytics_admin.CreateDisplayVideo360AdvertiserLinkRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for create_display_video360_advertiser_link
 
@@ -1664,10 +1710,10 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_create_display_video360_advertiser_link_proposal(
         self,
         request: analytics_admin.CreateDisplayVideo360AdvertiserLinkProposalRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         analytics_admin.CreateDisplayVideo360AdvertiserLinkProposalRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for create_display_video360_advertiser_link_proposal
 
@@ -1690,8 +1736,11 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_create_event_create_rule(
         self,
         request: analytics_admin.CreateEventCreateRuleRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.CreateEventCreateRuleRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.CreateEventCreateRuleRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for create_event_create_rule
 
         Override in a subclass to manipulate the request or metadata
@@ -1713,8 +1762,11 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_create_event_edit_rule(
         self,
         request: analytics_admin.CreateEventEditRuleRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.CreateEventEditRuleRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.CreateEventEditRuleRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for create_event_edit_rule
 
         Override in a subclass to manipulate the request or metadata
@@ -1736,8 +1788,11 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_create_expanded_data_set(
         self,
         request: analytics_admin.CreateExpandedDataSetRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.CreateExpandedDataSetRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.CreateExpandedDataSetRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for create_expanded_data_set
 
         Override in a subclass to manipulate the request or metadata
@@ -1759,8 +1814,11 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_create_firebase_link(
         self,
         request: analytics_admin.CreateFirebaseLinkRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.CreateFirebaseLinkRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.CreateFirebaseLinkRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for create_firebase_link
 
         Override in a subclass to manipulate the request or metadata
@@ -1782,8 +1840,11 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_create_google_ads_link(
         self,
         request: analytics_admin.CreateGoogleAdsLinkRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.CreateGoogleAdsLinkRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.CreateGoogleAdsLinkRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for create_google_ads_link
 
         Override in a subclass to manipulate the request or metadata
@@ -1805,8 +1866,10 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_create_key_event(
         self,
         request: analytics_admin.CreateKeyEventRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.CreateKeyEventRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.CreateKeyEventRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_key_event
 
         Override in a subclass to manipulate the request or metadata
@@ -1826,10 +1889,10 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_create_measurement_protocol_secret(
         self,
         request: analytics_admin.CreateMeasurementProtocolSecretRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         analytics_admin.CreateMeasurementProtocolSecretRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for create_measurement_protocol_secret
 
@@ -1852,8 +1915,10 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_create_property(
         self,
         request: analytics_admin.CreatePropertyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.CreatePropertyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.CreatePropertyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_property
 
         Override in a subclass to manipulate the request or metadata
@@ -1873,8 +1938,11 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_create_rollup_property(
         self,
         request: analytics_admin.CreateRollupPropertyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.CreateRollupPropertyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.CreateRollupPropertyRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for create_rollup_property
 
         Override in a subclass to manipulate the request or metadata
@@ -1896,9 +1964,10 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_create_rollup_property_source_link(
         self,
         request: analytics_admin.CreateRollupPropertySourceLinkRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        analytics_admin.CreateRollupPropertySourceLinkRequest, Sequence[Tuple[str, str]]
+        analytics_admin.CreateRollupPropertySourceLinkRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for create_rollup_property_source_link
 
@@ -1921,9 +1990,10 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_create_search_ads360_link(
         self,
         request: analytics_admin.CreateSearchAds360LinkRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        analytics_admin.CreateSearchAds360LinkRequest, Sequence[Tuple[str, str]]
+        analytics_admin.CreateSearchAds360LinkRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for create_search_ads360_link
 
@@ -1946,10 +2016,10 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_create_sk_ad_network_conversion_value_schema(
         self,
         request: analytics_admin.CreateSKAdNetworkConversionValueSchemaRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         analytics_admin.CreateSKAdNetworkConversionValueSchemaRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for create_sk_ad_network_conversion_value_schema
 
@@ -1972,9 +2042,10 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_create_subproperty_event_filter(
         self,
         request: analytics_admin.CreateSubpropertyEventFilterRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        analytics_admin.CreateSubpropertyEventFilterRequest, Sequence[Tuple[str, str]]
+        analytics_admin.CreateSubpropertyEventFilterRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for create_subproperty_event_filter
 
@@ -1997,8 +2068,11 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_delete_access_binding(
         self,
         request: analytics_admin.DeleteAccessBindingRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.DeleteAccessBindingRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.DeleteAccessBindingRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for delete_access_binding
 
         Override in a subclass to manipulate the request or metadata
@@ -2009,8 +2083,10 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_delete_account(
         self,
         request: analytics_admin.DeleteAccountRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.DeleteAccountRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.DeleteAccountRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_account
 
         Override in a subclass to manipulate the request or metadata
@@ -2021,8 +2097,11 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_delete_ad_sense_link(
         self,
         request: analytics_admin.DeleteAdSenseLinkRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.DeleteAdSenseLinkRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.DeleteAdSenseLinkRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for delete_ad_sense_link
 
         Override in a subclass to manipulate the request or metadata
@@ -2033,8 +2112,11 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_delete_big_query_link(
         self,
         request: analytics_admin.DeleteBigQueryLinkRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.DeleteBigQueryLinkRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.DeleteBigQueryLinkRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for delete_big_query_link
 
         Override in a subclass to manipulate the request or metadata
@@ -2045,9 +2127,10 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_delete_calculated_metric(
         self,
         request: analytics_admin.DeleteCalculatedMetricRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        analytics_admin.DeleteCalculatedMetricRequest, Sequence[Tuple[str, str]]
+        analytics_admin.DeleteCalculatedMetricRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for delete_calculated_metric
 
@@ -2059,8 +2142,11 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_delete_channel_group(
         self,
         request: analytics_admin.DeleteChannelGroupRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.DeleteChannelGroupRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.DeleteChannelGroupRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for delete_channel_group
 
         Override in a subclass to manipulate the request or metadata
@@ -2071,9 +2157,10 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_delete_connected_site_tag(
         self,
         request: analytics_admin.DeleteConnectedSiteTagRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        analytics_admin.DeleteConnectedSiteTagRequest, Sequence[Tuple[str, str]]
+        analytics_admin.DeleteConnectedSiteTagRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for delete_connected_site_tag
 
@@ -2085,8 +2172,11 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_delete_conversion_event(
         self,
         request: analytics_admin.DeleteConversionEventRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.DeleteConversionEventRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.DeleteConversionEventRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for delete_conversion_event
 
         Override in a subclass to manipulate the request or metadata
@@ -2097,8 +2187,10 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_delete_data_stream(
         self,
         request: analytics_admin.DeleteDataStreamRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.DeleteDataStreamRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.DeleteDataStreamRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_data_stream
 
         Override in a subclass to manipulate the request or metadata
@@ -2109,10 +2201,10 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_delete_display_video360_advertiser_link(
         self,
         request: analytics_admin.DeleteDisplayVideo360AdvertiserLinkRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         analytics_admin.DeleteDisplayVideo360AdvertiserLinkRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for delete_display_video360_advertiser_link
 
@@ -2124,10 +2216,10 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_delete_display_video360_advertiser_link_proposal(
         self,
         request: analytics_admin.DeleteDisplayVideo360AdvertiserLinkProposalRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         analytics_admin.DeleteDisplayVideo360AdvertiserLinkProposalRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for delete_display_video360_advertiser_link_proposal
 
@@ -2139,8 +2231,11 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_delete_event_create_rule(
         self,
         request: analytics_admin.DeleteEventCreateRuleRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.DeleteEventCreateRuleRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.DeleteEventCreateRuleRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for delete_event_create_rule
 
         Override in a subclass to manipulate the request or metadata
@@ -2151,8 +2246,11 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_delete_event_edit_rule(
         self,
         request: analytics_admin.DeleteEventEditRuleRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.DeleteEventEditRuleRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.DeleteEventEditRuleRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for delete_event_edit_rule
 
         Override in a subclass to manipulate the request or metadata
@@ -2163,8 +2261,11 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_delete_expanded_data_set(
         self,
         request: analytics_admin.DeleteExpandedDataSetRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.DeleteExpandedDataSetRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.DeleteExpandedDataSetRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for delete_expanded_data_set
 
         Override in a subclass to manipulate the request or metadata
@@ -2175,8 +2276,11 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_delete_firebase_link(
         self,
         request: analytics_admin.DeleteFirebaseLinkRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.DeleteFirebaseLinkRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.DeleteFirebaseLinkRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for delete_firebase_link
 
         Override in a subclass to manipulate the request or metadata
@@ -2187,8 +2291,11 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_delete_google_ads_link(
         self,
         request: analytics_admin.DeleteGoogleAdsLinkRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.DeleteGoogleAdsLinkRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.DeleteGoogleAdsLinkRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for delete_google_ads_link
 
         Override in a subclass to manipulate the request or metadata
@@ -2199,8 +2306,10 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_delete_key_event(
         self,
         request: analytics_admin.DeleteKeyEventRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.DeleteKeyEventRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.DeleteKeyEventRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_key_event
 
         Override in a subclass to manipulate the request or metadata
@@ -2211,10 +2320,10 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_delete_measurement_protocol_secret(
         self,
         request: analytics_admin.DeleteMeasurementProtocolSecretRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         analytics_admin.DeleteMeasurementProtocolSecretRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for delete_measurement_protocol_secret
 
@@ -2226,8 +2335,10 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_delete_property(
         self,
         request: analytics_admin.DeletePropertyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.DeletePropertyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.DeletePropertyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_property
 
         Override in a subclass to manipulate the request or metadata
@@ -2247,9 +2358,10 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_delete_rollup_property_source_link(
         self,
         request: analytics_admin.DeleteRollupPropertySourceLinkRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        analytics_admin.DeleteRollupPropertySourceLinkRequest, Sequence[Tuple[str, str]]
+        analytics_admin.DeleteRollupPropertySourceLinkRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for delete_rollup_property_source_link
 
@@ -2261,9 +2373,10 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_delete_search_ads360_link(
         self,
         request: analytics_admin.DeleteSearchAds360LinkRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        analytics_admin.DeleteSearchAds360LinkRequest, Sequence[Tuple[str, str]]
+        analytics_admin.DeleteSearchAds360LinkRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for delete_search_ads360_link
 
@@ -2275,10 +2388,10 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_delete_sk_ad_network_conversion_value_schema(
         self,
         request: analytics_admin.DeleteSKAdNetworkConversionValueSchemaRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         analytics_admin.DeleteSKAdNetworkConversionValueSchemaRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for delete_sk_ad_network_conversion_value_schema
 
@@ -2290,9 +2403,10 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_delete_subproperty_event_filter(
         self,
         request: analytics_admin.DeleteSubpropertyEventFilterRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        analytics_admin.DeleteSubpropertyEventFilterRequest, Sequence[Tuple[str, str]]
+        analytics_admin.DeleteSubpropertyEventFilterRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for delete_subproperty_event_filter
 
@@ -2304,10 +2418,10 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_fetch_automated_ga4_configuration_opt_out(
         self,
         request: analytics_admin.FetchAutomatedGa4ConfigurationOptOutRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         analytics_admin.FetchAutomatedGa4ConfigurationOptOutRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for fetch_automated_ga4_configuration_opt_out
 
@@ -2330,9 +2444,10 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_fetch_connected_ga4_property(
         self,
         request: analytics_admin.FetchConnectedGa4PropertyRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        analytics_admin.FetchConnectedGa4PropertyRequest, Sequence[Tuple[str, str]]
+        analytics_admin.FetchConnectedGa4PropertyRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for fetch_connected_ga4_property
 
@@ -2355,8 +2470,10 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_get_access_binding(
         self,
         request: analytics_admin.GetAccessBindingRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.GetAccessBindingRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.GetAccessBindingRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_access_binding
 
         Override in a subclass to manipulate the request or metadata
@@ -2378,8 +2495,10 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_get_account(
         self,
         request: analytics_admin.GetAccountRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.GetAccountRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.GetAccountRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_account
 
         Override in a subclass to manipulate the request or metadata
@@ -2399,8 +2518,10 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_get_ad_sense_link(
         self,
         request: analytics_admin.GetAdSenseLinkRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.GetAdSenseLinkRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.GetAdSenseLinkRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_ad_sense_link
 
         Override in a subclass to manipulate the request or metadata
@@ -2422,9 +2543,10 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_get_attribution_settings(
         self,
         request: analytics_admin.GetAttributionSettingsRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        analytics_admin.GetAttributionSettingsRequest, Sequence[Tuple[str, str]]
+        analytics_admin.GetAttributionSettingsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for get_attribution_settings
 
@@ -2447,8 +2569,10 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_get_audience(
         self,
         request: analytics_admin.GetAudienceRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.GetAudienceRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.GetAudienceRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_audience
 
         Override in a subclass to manipulate the request or metadata
@@ -2468,8 +2592,10 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_get_big_query_link(
         self,
         request: analytics_admin.GetBigQueryLinkRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.GetBigQueryLinkRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.GetBigQueryLinkRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_big_query_link
 
         Override in a subclass to manipulate the request or metadata
@@ -2491,8 +2617,11 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_get_calculated_metric(
         self,
         request: analytics_admin.GetCalculatedMetricRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.GetCalculatedMetricRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.GetCalculatedMetricRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for get_calculated_metric
 
         Override in a subclass to manipulate the request or metadata
@@ -2514,8 +2643,10 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_get_channel_group(
         self,
         request: analytics_admin.GetChannelGroupRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.GetChannelGroupRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.GetChannelGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_channel_group
 
         Override in a subclass to manipulate the request or metadata
@@ -2537,8 +2668,11 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_get_conversion_event(
         self,
         request: analytics_admin.GetConversionEventRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.GetConversionEventRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.GetConversionEventRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for get_conversion_event
 
         Override in a subclass to manipulate the request or metadata
@@ -2560,8 +2694,11 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_get_custom_dimension(
         self,
         request: analytics_admin.GetCustomDimensionRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.GetCustomDimensionRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.GetCustomDimensionRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for get_custom_dimension
 
         Override in a subclass to manipulate the request or metadata
@@ -2583,8 +2720,10 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_get_custom_metric(
         self,
         request: analytics_admin.GetCustomMetricRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.GetCustomMetricRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.GetCustomMetricRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_custom_metric
 
         Override in a subclass to manipulate the request or metadata
@@ -2606,9 +2745,10 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_get_data_redaction_settings(
         self,
         request: analytics_admin.GetDataRedactionSettingsRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        analytics_admin.GetDataRedactionSettingsRequest, Sequence[Tuple[str, str]]
+        analytics_admin.GetDataRedactionSettingsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for get_data_redaction_settings
 
@@ -2631,9 +2771,10 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_get_data_retention_settings(
         self,
         request: analytics_admin.GetDataRetentionSettingsRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        analytics_admin.GetDataRetentionSettingsRequest, Sequence[Tuple[str, str]]
+        analytics_admin.GetDataRetentionSettingsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for get_data_retention_settings
 
@@ -2656,9 +2797,10 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_get_data_sharing_settings(
         self,
         request: analytics_admin.GetDataSharingSettingsRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        analytics_admin.GetDataSharingSettingsRequest, Sequence[Tuple[str, str]]
+        analytics_admin.GetDataSharingSettingsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for get_data_sharing_settings
 
@@ -2681,8 +2823,10 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_get_data_stream(
         self,
         request: analytics_admin.GetDataStreamRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.GetDataStreamRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.GetDataStreamRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_data_stream
 
         Override in a subclass to manipulate the request or metadata
@@ -2704,10 +2848,10 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_get_display_video360_advertiser_link(
         self,
         request: analytics_admin.GetDisplayVideo360AdvertiserLinkRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         analytics_admin.GetDisplayVideo360AdvertiserLinkRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for get_display_video360_advertiser_link
 
@@ -2730,10 +2874,10 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_get_display_video360_advertiser_link_proposal(
         self,
         request: analytics_admin.GetDisplayVideo360AdvertiserLinkProposalRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         analytics_admin.GetDisplayVideo360AdvertiserLinkProposalRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for get_display_video360_advertiser_link_proposal
 
@@ -2756,9 +2900,10 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_get_enhanced_measurement_settings(
         self,
         request: analytics_admin.GetEnhancedMeasurementSettingsRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        analytics_admin.GetEnhancedMeasurementSettingsRequest, Sequence[Tuple[str, str]]
+        analytics_admin.GetEnhancedMeasurementSettingsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for get_enhanced_measurement_settings
 
@@ -2781,8 +2926,11 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_get_event_create_rule(
         self,
         request: analytics_admin.GetEventCreateRuleRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.GetEventCreateRuleRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.GetEventCreateRuleRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for get_event_create_rule
 
         Override in a subclass to manipulate the request or metadata
@@ -2804,8 +2952,10 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_get_event_edit_rule(
         self,
         request: analytics_admin.GetEventEditRuleRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.GetEventEditRuleRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.GetEventEditRuleRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_event_edit_rule
 
         Override in a subclass to manipulate the request or metadata
@@ -2827,8 +2977,11 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_get_expanded_data_set(
         self,
         request: analytics_admin.GetExpandedDataSetRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.GetExpandedDataSetRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.GetExpandedDataSetRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for get_expanded_data_set
 
         Override in a subclass to manipulate the request or metadata
@@ -2850,8 +3003,10 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_get_global_site_tag(
         self,
         request: analytics_admin.GetGlobalSiteTagRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.GetGlobalSiteTagRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.GetGlobalSiteTagRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_global_site_tag
 
         Override in a subclass to manipulate the request or metadata
@@ -2873,9 +3028,10 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_get_google_signals_settings(
         self,
         request: analytics_admin.GetGoogleSignalsSettingsRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        analytics_admin.GetGoogleSignalsSettingsRequest, Sequence[Tuple[str, str]]
+        analytics_admin.GetGoogleSignalsSettingsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for get_google_signals_settings
 
@@ -2898,8 +3054,10 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_get_key_event(
         self,
         request: analytics_admin.GetKeyEventRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.GetKeyEventRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.GetKeyEventRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_key_event
 
         Override in a subclass to manipulate the request or metadata
@@ -2919,9 +3077,10 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_get_measurement_protocol_secret(
         self,
         request: analytics_admin.GetMeasurementProtocolSecretRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        analytics_admin.GetMeasurementProtocolSecretRequest, Sequence[Tuple[str, str]]
+        analytics_admin.GetMeasurementProtocolSecretRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for get_measurement_protocol_secret
 
@@ -2944,8 +3103,10 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_get_property(
         self,
         request: analytics_admin.GetPropertyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.GetPropertyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.GetPropertyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_property
 
         Override in a subclass to manipulate the request or metadata
@@ -2965,9 +3126,10 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_get_rollup_property_source_link(
         self,
         request: analytics_admin.GetRollupPropertySourceLinkRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        analytics_admin.GetRollupPropertySourceLinkRequest, Sequence[Tuple[str, str]]
+        analytics_admin.GetRollupPropertySourceLinkRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for get_rollup_property_source_link
 
@@ -2990,8 +3152,11 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_get_search_ads360_link(
         self,
         request: analytics_admin.GetSearchAds360LinkRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.GetSearchAds360LinkRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.GetSearchAds360LinkRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for get_search_ads360_link
 
         Override in a subclass to manipulate the request or metadata
@@ -3013,10 +3178,10 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_get_sk_ad_network_conversion_value_schema(
         self,
         request: analytics_admin.GetSKAdNetworkConversionValueSchemaRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         analytics_admin.GetSKAdNetworkConversionValueSchemaRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for get_sk_ad_network_conversion_value_schema
 
@@ -3039,9 +3204,10 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_get_subproperty_event_filter(
         self,
         request: analytics_admin.GetSubpropertyEventFilterRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        analytics_admin.GetSubpropertyEventFilterRequest, Sequence[Tuple[str, str]]
+        analytics_admin.GetSubpropertyEventFilterRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for get_subproperty_event_filter
 
@@ -3064,8 +3230,11 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_list_access_bindings(
         self,
         request: analytics_admin.ListAccessBindingsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.ListAccessBindingsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.ListAccessBindingsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for list_access_bindings
 
         Override in a subclass to manipulate the request or metadata
@@ -3087,8 +3256,10 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_list_accounts(
         self,
         request: analytics_admin.ListAccountsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.ListAccountsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.ListAccountsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_accounts
 
         Override in a subclass to manipulate the request or metadata
@@ -3110,8 +3281,11 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_list_account_summaries(
         self,
         request: analytics_admin.ListAccountSummariesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.ListAccountSummariesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.ListAccountSummariesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for list_account_summaries
 
         Override in a subclass to manipulate the request or metadata
@@ -3133,8 +3307,10 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_list_ad_sense_links(
         self,
         request: analytics_admin.ListAdSenseLinksRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.ListAdSenseLinksRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.ListAdSenseLinksRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_ad_sense_links
 
         Override in a subclass to manipulate the request or metadata
@@ -3156,8 +3332,10 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_list_audiences(
         self,
         request: analytics_admin.ListAudiencesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.ListAudiencesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.ListAudiencesRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_audiences
 
         Override in a subclass to manipulate the request or metadata
@@ -3179,8 +3357,11 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_list_big_query_links(
         self,
         request: analytics_admin.ListBigQueryLinksRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.ListBigQueryLinksRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.ListBigQueryLinksRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for list_big_query_links
 
         Override in a subclass to manipulate the request or metadata
@@ -3202,8 +3383,11 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_list_calculated_metrics(
         self,
         request: analytics_admin.ListCalculatedMetricsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.ListCalculatedMetricsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.ListCalculatedMetricsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for list_calculated_metrics
 
         Override in a subclass to manipulate the request or metadata
@@ -3225,8 +3409,11 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_list_channel_groups(
         self,
         request: analytics_admin.ListChannelGroupsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.ListChannelGroupsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.ListChannelGroupsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for list_channel_groups
 
         Override in a subclass to manipulate the request or metadata
@@ -3248,8 +3435,11 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_list_connected_site_tags(
         self,
         request: analytics_admin.ListConnectedSiteTagsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.ListConnectedSiteTagsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.ListConnectedSiteTagsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for list_connected_site_tags
 
         Override in a subclass to manipulate the request or metadata
@@ -3271,8 +3461,11 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_list_conversion_events(
         self,
         request: analytics_admin.ListConversionEventsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.ListConversionEventsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.ListConversionEventsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for list_conversion_events
 
         Override in a subclass to manipulate the request or metadata
@@ -3294,8 +3487,11 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_list_custom_dimensions(
         self,
         request: analytics_admin.ListCustomDimensionsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.ListCustomDimensionsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.ListCustomDimensionsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for list_custom_dimensions
 
         Override in a subclass to manipulate the request or metadata
@@ -3317,8 +3513,11 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_list_custom_metrics(
         self,
         request: analytics_admin.ListCustomMetricsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.ListCustomMetricsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.ListCustomMetricsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for list_custom_metrics
 
         Override in a subclass to manipulate the request or metadata
@@ -3340,8 +3539,10 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_list_data_streams(
         self,
         request: analytics_admin.ListDataStreamsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.ListDataStreamsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.ListDataStreamsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_data_streams
 
         Override in a subclass to manipulate the request or metadata
@@ -3363,10 +3564,10 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_list_display_video360_advertiser_link_proposals(
         self,
         request: analytics_admin.ListDisplayVideo360AdvertiserLinkProposalsRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         analytics_admin.ListDisplayVideo360AdvertiserLinkProposalsRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for list_display_video360_advertiser_link_proposals
 
@@ -3390,10 +3591,10 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_list_display_video360_advertiser_links(
         self,
         request: analytics_admin.ListDisplayVideo360AdvertiserLinksRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         analytics_admin.ListDisplayVideo360AdvertiserLinksRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for list_display_video360_advertiser_links
 
@@ -3416,8 +3617,11 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_list_event_create_rules(
         self,
         request: analytics_admin.ListEventCreateRulesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.ListEventCreateRulesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.ListEventCreateRulesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for list_event_create_rules
 
         Override in a subclass to manipulate the request or metadata
@@ -3439,8 +3643,11 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_list_event_edit_rules(
         self,
         request: analytics_admin.ListEventEditRulesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.ListEventEditRulesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.ListEventEditRulesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for list_event_edit_rules
 
         Override in a subclass to manipulate the request or metadata
@@ -3462,8 +3669,11 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_list_expanded_data_sets(
         self,
         request: analytics_admin.ListExpandedDataSetsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.ListExpandedDataSetsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.ListExpandedDataSetsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for list_expanded_data_sets
 
         Override in a subclass to manipulate the request or metadata
@@ -3485,8 +3695,11 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_list_firebase_links(
         self,
         request: analytics_admin.ListFirebaseLinksRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.ListFirebaseLinksRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.ListFirebaseLinksRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for list_firebase_links
 
         Override in a subclass to manipulate the request or metadata
@@ -3508,8 +3721,11 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_list_google_ads_links(
         self,
         request: analytics_admin.ListGoogleAdsLinksRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.ListGoogleAdsLinksRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.ListGoogleAdsLinksRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for list_google_ads_links
 
         Override in a subclass to manipulate the request or metadata
@@ -3531,8 +3747,10 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_list_key_events(
         self,
         request: analytics_admin.ListKeyEventsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.ListKeyEventsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.ListKeyEventsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_key_events
 
         Override in a subclass to manipulate the request or metadata
@@ -3554,9 +3772,10 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_list_measurement_protocol_secrets(
         self,
         request: analytics_admin.ListMeasurementProtocolSecretsRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        analytics_admin.ListMeasurementProtocolSecretsRequest, Sequence[Tuple[str, str]]
+        analytics_admin.ListMeasurementProtocolSecretsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for list_measurement_protocol_secrets
 
@@ -3579,8 +3798,10 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_list_properties(
         self,
         request: analytics_admin.ListPropertiesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.ListPropertiesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.ListPropertiesRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_properties
 
         Override in a subclass to manipulate the request or metadata
@@ -3602,9 +3823,10 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_list_rollup_property_source_links(
         self,
         request: analytics_admin.ListRollupPropertySourceLinksRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        analytics_admin.ListRollupPropertySourceLinksRequest, Sequence[Tuple[str, str]]
+        analytics_admin.ListRollupPropertySourceLinksRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for list_rollup_property_source_links
 
@@ -3627,8 +3849,11 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_list_search_ads360_links(
         self,
         request: analytics_admin.ListSearchAds360LinksRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.ListSearchAds360LinksRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.ListSearchAds360LinksRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for list_search_ads360_links
 
         Override in a subclass to manipulate the request or metadata
@@ -3650,10 +3875,10 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_list_sk_ad_network_conversion_value_schemas(
         self,
         request: analytics_admin.ListSKAdNetworkConversionValueSchemasRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         analytics_admin.ListSKAdNetworkConversionValueSchemasRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for list_sk_ad_network_conversion_value_schemas
 
@@ -3676,9 +3901,10 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_list_subproperty_event_filters(
         self,
         request: analytics_admin.ListSubpropertyEventFiltersRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        analytics_admin.ListSubpropertyEventFiltersRequest, Sequence[Tuple[str, str]]
+        analytics_admin.ListSubpropertyEventFiltersRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for list_subproperty_event_filters
 
@@ -3701,9 +3927,10 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_provision_account_ticket(
         self,
         request: analytics_admin.ProvisionAccountTicketRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        analytics_admin.ProvisionAccountTicketRequest, Sequence[Tuple[str, str]]
+        analytics_admin.ProvisionAccountTicketRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for provision_account_ticket
 
@@ -3726,8 +3953,11 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_provision_subproperty(
         self,
         request: analytics_admin.ProvisionSubpropertyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.ProvisionSubpropertyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.ProvisionSubpropertyRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for provision_subproperty
 
         Override in a subclass to manipulate the request or metadata
@@ -3749,8 +3979,11 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_reorder_event_edit_rules(
         self,
         request: analytics_admin.ReorderEventEditRulesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.ReorderEventEditRulesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.ReorderEventEditRulesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for reorder_event_edit_rules
 
         Override in a subclass to manipulate the request or metadata
@@ -3761,8 +3994,10 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_run_access_report(
         self,
         request: analytics_admin.RunAccessReportRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.RunAccessReportRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.RunAccessReportRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for run_access_report
 
         Override in a subclass to manipulate the request or metadata
@@ -3784,9 +4019,10 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_search_change_history_events(
         self,
         request: analytics_admin.SearchChangeHistoryEventsRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        analytics_admin.SearchChangeHistoryEventsRequest, Sequence[Tuple[str, str]]
+        analytics_admin.SearchChangeHistoryEventsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for search_change_history_events
 
@@ -3809,10 +4045,10 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_set_automated_ga4_configuration_opt_out(
         self,
         request: analytics_admin.SetAutomatedGa4ConfigurationOptOutRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         analytics_admin.SetAutomatedGa4ConfigurationOptOutRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for set_automated_ga4_configuration_opt_out
 
@@ -3835,8 +4071,11 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_update_access_binding(
         self,
         request: analytics_admin.UpdateAccessBindingRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.UpdateAccessBindingRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.UpdateAccessBindingRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for update_access_binding
 
         Override in a subclass to manipulate the request or metadata
@@ -3858,8 +4097,10 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_update_account(
         self,
         request: analytics_admin.UpdateAccountRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.UpdateAccountRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.UpdateAccountRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_account
 
         Override in a subclass to manipulate the request or metadata
@@ -3879,9 +4120,10 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_update_attribution_settings(
         self,
         request: analytics_admin.UpdateAttributionSettingsRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        analytics_admin.UpdateAttributionSettingsRequest, Sequence[Tuple[str, str]]
+        analytics_admin.UpdateAttributionSettingsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for update_attribution_settings
 
@@ -3904,8 +4146,10 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_update_audience(
         self,
         request: analytics_admin.UpdateAudienceRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.UpdateAudienceRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.UpdateAudienceRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_audience
 
         Override in a subclass to manipulate the request or metadata
@@ -3927,8 +4171,11 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_update_big_query_link(
         self,
         request: analytics_admin.UpdateBigQueryLinkRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.UpdateBigQueryLinkRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.UpdateBigQueryLinkRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for update_big_query_link
 
         Override in a subclass to manipulate the request or metadata
@@ -3950,9 +4197,10 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_update_calculated_metric(
         self,
         request: analytics_admin.UpdateCalculatedMetricRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        analytics_admin.UpdateCalculatedMetricRequest, Sequence[Tuple[str, str]]
+        analytics_admin.UpdateCalculatedMetricRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for update_calculated_metric
 
@@ -3975,8 +4223,11 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_update_channel_group(
         self,
         request: analytics_admin.UpdateChannelGroupRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.UpdateChannelGroupRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.UpdateChannelGroupRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for update_channel_group
 
         Override in a subclass to manipulate the request or metadata
@@ -3998,8 +4249,11 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_update_conversion_event(
         self,
         request: analytics_admin.UpdateConversionEventRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.UpdateConversionEventRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.UpdateConversionEventRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for update_conversion_event
 
         Override in a subclass to manipulate the request or metadata
@@ -4021,8 +4275,11 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_update_custom_dimension(
         self,
         request: analytics_admin.UpdateCustomDimensionRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.UpdateCustomDimensionRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.UpdateCustomDimensionRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for update_custom_dimension
 
         Override in a subclass to manipulate the request or metadata
@@ -4044,8 +4301,11 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_update_custom_metric(
         self,
         request: analytics_admin.UpdateCustomMetricRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.UpdateCustomMetricRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.UpdateCustomMetricRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for update_custom_metric
 
         Override in a subclass to manipulate the request or metadata
@@ -4067,9 +4327,10 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_update_data_redaction_settings(
         self,
         request: analytics_admin.UpdateDataRedactionSettingsRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        analytics_admin.UpdateDataRedactionSettingsRequest, Sequence[Tuple[str, str]]
+        analytics_admin.UpdateDataRedactionSettingsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for update_data_redaction_settings
 
@@ -4092,9 +4353,10 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_update_data_retention_settings(
         self,
         request: analytics_admin.UpdateDataRetentionSettingsRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        analytics_admin.UpdateDataRetentionSettingsRequest, Sequence[Tuple[str, str]]
+        analytics_admin.UpdateDataRetentionSettingsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for update_data_retention_settings
 
@@ -4117,8 +4379,10 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_update_data_stream(
         self,
         request: analytics_admin.UpdateDataStreamRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.UpdateDataStreamRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.UpdateDataStreamRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_data_stream
 
         Override in a subclass to manipulate the request or metadata
@@ -4140,10 +4404,10 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_update_display_video360_advertiser_link(
         self,
         request: analytics_admin.UpdateDisplayVideo360AdvertiserLinkRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         analytics_admin.UpdateDisplayVideo360AdvertiserLinkRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for update_display_video360_advertiser_link
 
@@ -4166,10 +4430,10 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_update_enhanced_measurement_settings(
         self,
         request: analytics_admin.UpdateEnhancedMeasurementSettingsRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         analytics_admin.UpdateEnhancedMeasurementSettingsRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for update_enhanced_measurement_settings
 
@@ -4192,8 +4456,11 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_update_event_create_rule(
         self,
         request: analytics_admin.UpdateEventCreateRuleRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.UpdateEventCreateRuleRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.UpdateEventCreateRuleRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for update_event_create_rule
 
         Override in a subclass to manipulate the request or metadata
@@ -4215,8 +4482,11 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_update_event_edit_rule(
         self,
         request: analytics_admin.UpdateEventEditRuleRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.UpdateEventEditRuleRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.UpdateEventEditRuleRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for update_event_edit_rule
 
         Override in a subclass to manipulate the request or metadata
@@ -4238,8 +4508,11 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_update_expanded_data_set(
         self,
         request: analytics_admin.UpdateExpandedDataSetRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.UpdateExpandedDataSetRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.UpdateExpandedDataSetRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for update_expanded_data_set
 
         Override in a subclass to manipulate the request or metadata
@@ -4261,8 +4534,11 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_update_google_ads_link(
         self,
         request: analytics_admin.UpdateGoogleAdsLinkRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.UpdateGoogleAdsLinkRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.UpdateGoogleAdsLinkRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for update_google_ads_link
 
         Override in a subclass to manipulate the request or metadata
@@ -4284,9 +4560,10 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_update_google_signals_settings(
         self,
         request: analytics_admin.UpdateGoogleSignalsSettingsRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        analytics_admin.UpdateGoogleSignalsSettingsRequest, Sequence[Tuple[str, str]]
+        analytics_admin.UpdateGoogleSignalsSettingsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for update_google_signals_settings
 
@@ -4309,8 +4586,10 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_update_key_event(
         self,
         request: analytics_admin.UpdateKeyEventRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.UpdateKeyEventRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.UpdateKeyEventRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_key_event
 
         Override in a subclass to manipulate the request or metadata
@@ -4330,10 +4609,10 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_update_measurement_protocol_secret(
         self,
         request: analytics_admin.UpdateMeasurementProtocolSecretRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         analytics_admin.UpdateMeasurementProtocolSecretRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for update_measurement_protocol_secret
 
@@ -4356,8 +4635,10 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_update_property(
         self,
         request: analytics_admin.UpdatePropertyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[analytics_admin.UpdatePropertyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        analytics_admin.UpdatePropertyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_property
 
         Override in a subclass to manipulate the request or metadata
@@ -4377,9 +4658,10 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_update_search_ads360_link(
         self,
         request: analytics_admin.UpdateSearchAds360LinkRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        analytics_admin.UpdateSearchAds360LinkRequest, Sequence[Tuple[str, str]]
+        analytics_admin.UpdateSearchAds360LinkRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for update_search_ads360_link
 
@@ -4402,10 +4684,10 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_update_sk_ad_network_conversion_value_schema(
         self,
         request: analytics_admin.UpdateSKAdNetworkConversionValueSchemaRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         analytics_admin.UpdateSKAdNetworkConversionValueSchemaRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for update_sk_ad_network_conversion_value_schema
 
@@ -4428,9 +4710,10 @@ class AnalyticsAdminServiceRestInterceptor:
     def pre_update_subproperty_event_filter(
         self,
         request: analytics_admin.UpdateSubpropertyEventFilterRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        analytics_admin.UpdateSubpropertyEventFilterRequest, Sequence[Tuple[str, str]]
+        analytics_admin.UpdateSubpropertyEventFilterRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for update_subproperty_event_filter
 
@@ -4575,7 +4858,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> analytics_admin.AcknowledgeUserDataCollectionResponse:
             r"""Call the acknowledge user data
             collection method over HTTP.
@@ -4587,8 +4870,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.analytics_admin.AcknowledgeUserDataCollectionResponse:
@@ -4600,6 +4885,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseAcknowledgeUserDataCollection._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_acknowledge_user_data_collection(
                 request, metadata
             )
@@ -4615,6 +4901,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseAcknowledgeUserDataCollection._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.AcknowledgeUserDataCollection",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "AcknowledgeUserDataCollection",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AnalyticsAdminServiceRestTransport._AcknowledgeUserDataCollection._get_response(
@@ -4637,7 +4950,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = analytics_admin.AcknowledgeUserDataCollectionResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_acknowledge_user_data_collection(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        analytics_admin.AcknowledgeUserDataCollectionResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.acknowledge_user_data_collection",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "AcknowledgeUserDataCollection",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ApproveDisplayVideo360AdvertiserLinkProposal(
@@ -4678,7 +5017,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> analytics_admin.ApproveDisplayVideo360AdvertiserLinkProposalResponse:
             r"""Call the approve display video360
             advertiser link proposal method over HTTP.
@@ -4691,8 +5030,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.analytics_admin.ApproveDisplayVideo360AdvertiserLinkProposalResponse:
@@ -4705,6 +5046,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseApproveDisplayVideo360AdvertiserLinkProposal._get_http_options()
             )
+
             (
                 request,
                 metadata,
@@ -4723,6 +5065,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseApproveDisplayVideo360AdvertiserLinkProposal._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.ApproveDisplayVideo360AdvertiserLinkProposal",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "ApproveDisplayVideo360AdvertiserLinkProposal",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AnalyticsAdminServiceRestTransport._ApproveDisplayVideo360AdvertiserLinkProposal._get_response(
@@ -4751,9 +5120,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             )
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_approve_display_video360_advertiser_link_proposal(
                 resp
             )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = analytics_admin.ApproveDisplayVideo360AdvertiserLinkProposalResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.approve_display_video360_advertiser_link_proposal",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "ApproveDisplayVideo360AdvertiserLinkProposal",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ArchiveAudience(
@@ -4792,7 +5185,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the archive audience method over HTTP.
 
@@ -4803,13 +5196,16 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseArchiveAudience._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_archive_audience(
                 request, metadata
             )
@@ -4825,6 +5221,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseArchiveAudience._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.ArchiveAudience",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "ArchiveAudience",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -4880,7 +5303,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the archive custom dimension method over HTTP.
 
@@ -4891,13 +5314,16 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseArchiveCustomDimension._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_archive_custom_dimension(
                 request, metadata
             )
@@ -4913,6 +5339,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseArchiveCustomDimension._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.ArchiveCustomDimension",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "ArchiveCustomDimension",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AnalyticsAdminServiceRestTransport._ArchiveCustomDimension._get_response(
@@ -4966,7 +5419,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the archive custom metric method over HTTP.
 
@@ -4977,13 +5430,16 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseArchiveCustomMetric._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_archive_custom_metric(
                 request, metadata
             )
@@ -4999,6 +5455,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseArchiveCustomMetric._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.ArchiveCustomMetric",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "ArchiveCustomMetric",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -5054,7 +5537,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> analytics_admin.BatchCreateAccessBindingsResponse:
             r"""Call the batch create access
             bindings method over HTTP.
@@ -5066,8 +5549,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.analytics_admin.BatchCreateAccessBindingsResponse:
@@ -5079,6 +5564,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseBatchCreateAccessBindings._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_batch_create_access_bindings(
                 request, metadata
             )
@@ -5094,6 +5580,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseBatchCreateAccessBindings._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.BatchCreateAccessBindings",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "BatchCreateAccessBindings",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AnalyticsAdminServiceRestTransport._BatchCreateAccessBindings._get_response(
@@ -5116,7 +5629,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = analytics_admin.BatchCreateAccessBindingsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_batch_create_access_bindings(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        analytics_admin.BatchCreateAccessBindingsResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.batch_create_access_bindings",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "BatchCreateAccessBindings",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _BatchDeleteAccessBindings(
@@ -5155,7 +5694,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the batch delete access
             bindings method over HTTP.
@@ -5167,13 +5706,16 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
             """
 
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseBatchDeleteAccessBindings._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_batch_delete_access_bindings(
                 request, metadata
             )
@@ -5189,6 +5731,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseBatchDeleteAccessBindings._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.BatchDeleteAccessBindings",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "BatchDeleteAccessBindings",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AnalyticsAdminServiceRestTransport._BatchDeleteAccessBindings._get_response(
@@ -5241,7 +5810,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> analytics_admin.BatchGetAccessBindingsResponse:
             r"""Call the batch get access bindings method over HTTP.
 
@@ -5252,8 +5821,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.analytics_admin.BatchGetAccessBindingsResponse:
@@ -5265,6 +5836,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseBatchGetAccessBindings._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_batch_get_access_bindings(
                 request, metadata
             )
@@ -5276,6 +5848,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseBatchGetAccessBindings._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.BatchGetAccessBindings",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "BatchGetAccessBindings",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AnalyticsAdminServiceRestTransport._BatchGetAccessBindings._get_response(
@@ -5297,7 +5896,31 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = analytics_admin.BatchGetAccessBindingsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_batch_get_access_bindings(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        analytics_admin.BatchGetAccessBindingsResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.batch_get_access_bindings",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "BatchGetAccessBindings",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _BatchUpdateAccessBindings(
@@ -5336,7 +5959,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> analytics_admin.BatchUpdateAccessBindingsResponse:
             r"""Call the batch update access
             bindings method over HTTP.
@@ -5348,8 +5971,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.analytics_admin.BatchUpdateAccessBindingsResponse:
@@ -5361,6 +5986,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseBatchUpdateAccessBindings._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_batch_update_access_bindings(
                 request, metadata
             )
@@ -5376,6 +6002,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseBatchUpdateAccessBindings._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.BatchUpdateAccessBindings",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "BatchUpdateAccessBindings",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AnalyticsAdminServiceRestTransport._BatchUpdateAccessBindings._get_response(
@@ -5398,7 +6051,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = analytics_admin.BatchUpdateAccessBindingsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_batch_update_access_bindings(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        analytics_admin.BatchUpdateAccessBindingsResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.batch_update_access_bindings",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "BatchUpdateAccessBindings",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CancelDisplayVideo360AdvertiserLinkProposal(
@@ -5439,7 +6118,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.DisplayVideo360AdvertiserLinkProposal:
             r"""Call the cancel display video360
             advertiser link proposal method over HTTP.
@@ -5452,8 +6131,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.resources.DisplayVideo360AdvertiserLinkProposal:
@@ -5473,6 +6154,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseCancelDisplayVideo360AdvertiserLinkProposal._get_http_options()
             )
+
             (
                 request,
                 metadata,
@@ -5491,6 +6173,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseCancelDisplayVideo360AdvertiserLinkProposal._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.CancelDisplayVideo360AdvertiserLinkProposal",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "CancelDisplayVideo360AdvertiserLinkProposal",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AnalyticsAdminServiceRestTransport._CancelDisplayVideo360AdvertiserLinkProposal._get_response(
@@ -5513,11 +6222,37 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = resources.DisplayVideo360AdvertiserLinkProposal.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = (
                 self._interceptor.post_cancel_display_video360_advertiser_link_proposal(
                     resp
                 )
             )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        resources.DisplayVideo360AdvertiserLinkProposal.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.cancel_display_video360_advertiser_link_proposal",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "CancelDisplayVideo360AdvertiserLinkProposal",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateAccessBinding(
@@ -5556,7 +6291,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.AccessBinding:
             r"""Call the create access binding method over HTTP.
 
@@ -5567,8 +6302,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.AccessBinding:
@@ -5580,6 +6317,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseCreateAccessBinding._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_access_binding(
                 request, metadata
             )
@@ -5595,6 +6333,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseCreateAccessBinding._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.CreateAccessBinding",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "CreateAccessBinding",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -5619,7 +6384,29 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = resources.AccessBinding.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_access_binding(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.AccessBinding.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.create_access_binding",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "CreateAccessBinding",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateAdSenseLink(
@@ -5658,7 +6445,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.AdSenseLink:
             r"""Call the create ad sense link method over HTTP.
 
@@ -5669,8 +6456,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.AdSenseLink:
@@ -5682,6 +6471,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseCreateAdSenseLink._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_ad_sense_link(
                 request, metadata
             )
@@ -5697,6 +6487,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseCreateAdSenseLink._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.CreateAdSenseLink",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "CreateAdSenseLink",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -5721,7 +6538,29 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = resources.AdSenseLink.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_ad_sense_link(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.AdSenseLink.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.create_ad_sense_link",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "CreateAdSenseLink",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateAudience(
@@ -5760,7 +6599,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gaa_audience.Audience:
             r"""Call the create audience method over HTTP.
 
@@ -5771,8 +6610,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.gaa_audience.Audience:
@@ -5784,6 +6625,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseCreateAudience._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_audience(request, metadata)
             transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseCreateAudience._get_transcoded_request(
                 http_options, request
@@ -5797,6 +6639,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseCreateAudience._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.CreateAudience",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "CreateAudience",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AnalyticsAdminServiceRestTransport._CreateAudience._get_response(
@@ -5819,7 +6688,29 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = gaa_audience.Audience.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_audience(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gaa_audience.Audience.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.create_audience",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "CreateAudience",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateBigQueryLink(
@@ -5858,7 +6749,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.BigQueryLink:
             r"""Call the create big query link method over HTTP.
 
@@ -5869,8 +6760,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.BigQueryLink:
@@ -5882,6 +6775,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseCreateBigQueryLink._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_big_query_link(
                 request, metadata
             )
@@ -5897,6 +6791,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseCreateBigQueryLink._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.CreateBigQueryLink",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "CreateBigQueryLink",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -5921,7 +6842,29 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = resources.BigQueryLink.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_big_query_link(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.BigQueryLink.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.create_big_query_link",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "CreateBigQueryLink",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateCalculatedMetric(
@@ -5960,7 +6903,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.CalculatedMetric:
             r"""Call the create calculated metric method over HTTP.
 
@@ -5971,8 +6914,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.CalculatedMetric:
@@ -5982,6 +6927,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseCreateCalculatedMetric._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_calculated_metric(
                 request, metadata
             )
@@ -5997,6 +6943,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseCreateCalculatedMetric._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.CreateCalculatedMetric",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "CreateCalculatedMetric",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AnalyticsAdminServiceRestTransport._CreateCalculatedMetric._get_response(
@@ -6019,7 +6992,29 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = resources.CalculatedMetric.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_calculated_metric(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.CalculatedMetric.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.create_calculated_metric",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "CreateCalculatedMetric",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateChannelGroup(
@@ -6058,7 +7053,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gaa_channel_group.ChannelGroup:
             r"""Call the create channel group method over HTTP.
 
@@ -6069,8 +7064,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.gaa_channel_group.ChannelGroup:
@@ -6082,6 +7079,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseCreateChannelGroup._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_channel_group(
                 request, metadata
             )
@@ -6097,6 +7095,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseCreateChannelGroup._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.CreateChannelGroup",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "CreateChannelGroup",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -6121,7 +7146,29 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = gaa_channel_group.ChannelGroup.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_channel_group(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gaa_channel_group.ChannelGroup.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.create_channel_group",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "CreateChannelGroup",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateConnectedSiteTag(
@@ -6160,7 +7207,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> analytics_admin.CreateConnectedSiteTagResponse:
             r"""Call the create connected site tag method over HTTP.
 
@@ -6171,8 +7218,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.analytics_admin.CreateConnectedSiteTagResponse:
@@ -6184,6 +7233,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseCreateConnectedSiteTag._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_connected_site_tag(
                 request, metadata
             )
@@ -6199,6 +7249,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseCreateConnectedSiteTag._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.CreateConnectedSiteTag",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "CreateConnectedSiteTag",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AnalyticsAdminServiceRestTransport._CreateConnectedSiteTag._get_response(
@@ -6221,7 +7298,31 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = analytics_admin.CreateConnectedSiteTagResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_connected_site_tag(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        analytics_admin.CreateConnectedSiteTagResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.create_connected_site_tag",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "CreateConnectedSiteTag",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateConversionEvent(
@@ -6260,7 +7361,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.ConversionEvent:
             r"""Call the create conversion event method over HTTP.
 
@@ -6271,8 +7372,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.ConversionEvent:
@@ -6284,6 +7387,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseCreateConversionEvent._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_conversion_event(
                 request, metadata
             )
@@ -6299,6 +7403,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseCreateConversionEvent._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.CreateConversionEvent",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "CreateConversionEvent",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -6323,7 +7454,29 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = resources.ConversionEvent.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_conversion_event(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.ConversionEvent.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.create_conversion_event",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "CreateConversionEvent",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateCustomDimension(
@@ -6362,7 +7515,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.CustomDimension:
             r"""Call the create custom dimension method over HTTP.
 
@@ -6373,8 +7526,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.CustomDimension:
@@ -6384,6 +7539,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseCreateCustomDimension._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_custom_dimension(
                 request, metadata
             )
@@ -6399,6 +7555,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseCreateCustomDimension._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.CreateCustomDimension",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "CreateCustomDimension",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -6423,7 +7606,29 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = resources.CustomDimension.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_custom_dimension(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.CustomDimension.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.create_custom_dimension",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "CreateCustomDimension",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateCustomMetric(
@@ -6462,7 +7667,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.CustomMetric:
             r"""Call the create custom metric method over HTTP.
 
@@ -6473,8 +7678,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.CustomMetric:
@@ -6484,6 +7691,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseCreateCustomMetric._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_custom_metric(
                 request, metadata
             )
@@ -6499,6 +7707,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseCreateCustomMetric._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.CreateCustomMetric",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "CreateCustomMetric",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -6523,7 +7758,29 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = resources.CustomMetric.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_custom_metric(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.CustomMetric.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.create_custom_metric",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "CreateCustomMetric",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateDataStream(
@@ -6562,7 +7819,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.DataStream:
             r"""Call the create data stream method over HTTP.
 
@@ -6573,8 +7830,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.DataStream:
@@ -6586,6 +7845,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseCreateDataStream._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_data_stream(
                 request, metadata
             )
@@ -6601,6 +7861,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseCreateDataStream._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.CreateDataStream",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "CreateDataStream",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -6625,7 +7912,29 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = resources.DataStream.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_data_stream(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.DataStream.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.create_data_stream",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "CreateDataStream",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateDisplayVideo360AdvertiserLink(
@@ -6666,7 +7975,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.DisplayVideo360AdvertiserLink:
             r"""Call the create display video360
             advertiser link method over HTTP.
@@ -6678,8 +7987,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.resources.DisplayVideo360AdvertiserLink:
@@ -6691,6 +8002,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseCreateDisplayVideo360AdvertiserLink._get_http_options()
             )
+
             (
                 request,
                 metadata,
@@ -6709,6 +8021,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseCreateDisplayVideo360AdvertiserLink._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.CreateDisplayVideo360AdvertiserLink",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "CreateDisplayVideo360AdvertiserLink",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AnalyticsAdminServiceRestTransport._CreateDisplayVideo360AdvertiserLink._get_response(
@@ -6731,7 +8070,31 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = resources.DisplayVideo360AdvertiserLink.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_display_video360_advertiser_link(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.DisplayVideo360AdvertiserLink.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.create_display_video360_advertiser_link",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "CreateDisplayVideo360AdvertiserLink",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateDisplayVideo360AdvertiserLinkProposal(
@@ -6772,7 +8135,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.DisplayVideo360AdvertiserLinkProposal:
             r"""Call the create display video360
             advertiser link proposal method over HTTP.
@@ -6785,8 +8148,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.resources.DisplayVideo360AdvertiserLinkProposal:
@@ -6806,6 +8171,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseCreateDisplayVideo360AdvertiserLinkProposal._get_http_options()
             )
+
             (
                 request,
                 metadata,
@@ -6824,6 +8190,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseCreateDisplayVideo360AdvertiserLinkProposal._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.CreateDisplayVideo360AdvertiserLinkProposal",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "CreateDisplayVideo360AdvertiserLinkProposal",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AnalyticsAdminServiceRestTransport._CreateDisplayVideo360AdvertiserLinkProposal._get_response(
@@ -6846,11 +8239,37 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = resources.DisplayVideo360AdvertiserLinkProposal.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = (
                 self._interceptor.post_create_display_video360_advertiser_link_proposal(
                     resp
                 )
             )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        resources.DisplayVideo360AdvertiserLinkProposal.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.create_display_video360_advertiser_link_proposal",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "CreateDisplayVideo360AdvertiserLinkProposal",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateEventCreateRule(
@@ -6889,7 +8308,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> event_create_and_edit.EventCreateRule:
             r"""Call the create event create rule method over HTTP.
 
@@ -6900,8 +8319,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.event_create_and_edit.EventCreateRule:
@@ -6925,6 +8346,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseCreateEventCreateRule._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_event_create_rule(
                 request, metadata
             )
@@ -6940,6 +8362,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseCreateEventCreateRule._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.CreateEventCreateRule",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "CreateEventCreateRule",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -6964,7 +8413,31 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = event_create_and_edit.EventCreateRule.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_event_create_rule(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = event_create_and_edit.EventCreateRule.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.create_event_create_rule",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "CreateEventCreateRule",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateEventEditRule(
@@ -7003,7 +8476,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> event_create_and_edit.EventEditRule:
             r"""Call the create event edit rule method over HTTP.
 
@@ -7014,8 +8487,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.event_create_and_edit.EventEditRule:
@@ -7039,6 +8514,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseCreateEventEditRule._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_event_edit_rule(
                 request, metadata
             )
@@ -7054,6 +8530,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseCreateEventEditRule._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.CreateEventEditRule",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "CreateEventEditRule",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -7078,7 +8581,31 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = event_create_and_edit.EventEditRule.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_event_edit_rule(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = event_create_and_edit.EventEditRule.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.create_event_edit_rule",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "CreateEventEditRule",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateExpandedDataSet(
@@ -7117,7 +8644,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gaa_expanded_data_set.ExpandedDataSet:
             r"""Call the create expanded data set method over HTTP.
 
@@ -7128,8 +8655,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.gaa_expanded_data_set.ExpandedDataSet:
@@ -7141,6 +8670,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseCreateExpandedDataSet._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_expanded_data_set(
                 request, metadata
             )
@@ -7156,6 +8686,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseCreateExpandedDataSet._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.CreateExpandedDataSet",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "CreateExpandedDataSet",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -7180,7 +8737,31 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = gaa_expanded_data_set.ExpandedDataSet.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_expanded_data_set(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gaa_expanded_data_set.ExpandedDataSet.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.create_expanded_data_set",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "CreateExpandedDataSet",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateFirebaseLink(
@@ -7219,7 +8800,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.FirebaseLink:
             r"""Call the create firebase link method over HTTP.
 
@@ -7230,8 +8811,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.FirebaseLink:
@@ -7243,6 +8826,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseCreateFirebaseLink._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_firebase_link(
                 request, metadata
             )
@@ -7258,6 +8842,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseCreateFirebaseLink._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.CreateFirebaseLink",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "CreateFirebaseLink",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -7282,7 +8893,29 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = resources.FirebaseLink.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_firebase_link(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.FirebaseLink.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.create_firebase_link",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "CreateFirebaseLink",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateGoogleAdsLink(
@@ -7321,7 +8954,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.GoogleAdsLink:
             r"""Call the create google ads link method over HTTP.
 
@@ -7332,8 +8965,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.GoogleAdsLink:
@@ -7345,6 +8980,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseCreateGoogleAdsLink._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_google_ads_link(
                 request, metadata
             )
@@ -7360,6 +8996,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseCreateGoogleAdsLink._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.CreateGoogleAdsLink",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "CreateGoogleAdsLink",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -7384,7 +9047,29 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = resources.GoogleAdsLink.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_google_ads_link(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.GoogleAdsLink.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.create_google_ads_link",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "CreateGoogleAdsLink",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateKeyEvent(
@@ -7423,7 +9108,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.KeyEvent:
             r"""Call the create key event method over HTTP.
 
@@ -7434,8 +9119,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.KeyEvent:
@@ -7447,6 +9134,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseCreateKeyEvent._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_key_event(
                 request, metadata
             )
@@ -7462,6 +9150,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseCreateKeyEvent._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.CreateKeyEvent",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "CreateKeyEvent",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AnalyticsAdminServiceRestTransport._CreateKeyEvent._get_response(
@@ -7484,7 +9199,29 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = resources.KeyEvent.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_key_event(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.KeyEvent.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.create_key_event",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "CreateKeyEvent",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateMeasurementProtocolSecret(
@@ -7525,7 +9262,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.MeasurementProtocolSecret:
             r"""Call the create measurement
             protocol secret method over HTTP.
@@ -7537,8 +9274,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.resources.MeasurementProtocolSecret:
@@ -7550,6 +9289,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseCreateMeasurementProtocolSecret._get_http_options()
             )
+
             (
                 request,
                 metadata,
@@ -7568,6 +9308,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseCreateMeasurementProtocolSecret._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.CreateMeasurementProtocolSecret",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "CreateMeasurementProtocolSecret",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AnalyticsAdminServiceRestTransport._CreateMeasurementProtocolSecret._get_response(
@@ -7590,7 +9357,31 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = resources.MeasurementProtocolSecret.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_measurement_protocol_secret(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.MeasurementProtocolSecret.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.create_measurement_protocol_secret",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "CreateMeasurementProtocolSecret",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateProperty(
@@ -7629,7 +9420,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.Property:
             r"""Call the create property method over HTTP.
 
@@ -7640,8 +9431,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.Property:
@@ -7653,6 +9446,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseCreateProperty._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_property(request, metadata)
             transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseCreateProperty._get_transcoded_request(
                 http_options, request
@@ -7666,6 +9460,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseCreateProperty._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.CreateProperty",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "CreateProperty",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AnalyticsAdminServiceRestTransport._CreateProperty._get_response(
@@ -7688,7 +9509,29 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = resources.Property.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_property(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.Property.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.create_property",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "CreateProperty",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateRollupProperty(
@@ -7727,7 +9570,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> analytics_admin.CreateRollupPropertyResponse:
             r"""Call the create rollup property method over HTTP.
 
@@ -7738,8 +9581,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.analytics_admin.CreateRollupPropertyResponse:
@@ -7751,6 +9596,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseCreateRollupProperty._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_rollup_property(
                 request, metadata
             )
@@ -7766,6 +9612,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseCreateRollupProperty._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.CreateRollupProperty",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "CreateRollupProperty",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -7790,7 +9663,31 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = analytics_admin.CreateRollupPropertyResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_rollup_property(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        analytics_admin.CreateRollupPropertyResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.create_rollup_property",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "CreateRollupProperty",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateRollupPropertySourceLink(
@@ -7831,7 +9728,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.RollupPropertySourceLink:
             r"""Call the create rollup property
             source link method over HTTP.
@@ -7843,8 +9740,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.resources.RollupPropertySourceLink:
@@ -7857,6 +9756,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseCreateRollupPropertySourceLink._get_http_options()
             )
+
             (
                 request,
                 metadata,
@@ -7875,6 +9775,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseCreateRollupPropertySourceLink._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.CreateRollupPropertySourceLink",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "CreateRollupPropertySourceLink",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AnalyticsAdminServiceRestTransport._CreateRollupPropertySourceLink._get_response(
@@ -7897,7 +9824,31 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = resources.RollupPropertySourceLink.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_rollup_property_source_link(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.RollupPropertySourceLink.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.create_rollup_property_source_link",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "CreateRollupPropertySourceLink",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateSearchAds360Link(
@@ -7936,7 +9887,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.SearchAds360Link:
             r"""Call the create search ads360 link method over HTTP.
 
@@ -7947,8 +9898,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.SearchAds360Link:
@@ -7960,6 +9913,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseCreateSearchAds360Link._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_search_ads360_link(
                 request, metadata
             )
@@ -7975,6 +9929,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseCreateSearchAds360Link._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.CreateSearchAds360Link",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "CreateSearchAds360Link",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AnalyticsAdminServiceRestTransport._CreateSearchAds360Link._get_response(
@@ -7997,7 +9978,29 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = resources.SearchAds360Link.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_search_ads360_link(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.SearchAds360Link.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.create_search_ads360_link",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "CreateSearchAds360Link",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateSKAdNetworkConversionValueSchema(
@@ -8038,7 +10041,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.SKAdNetworkConversionValueSchema:
             r"""Call the create sk ad network
             conversion value schema method over HTTP.
@@ -8051,8 +10054,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.resources.SKAdNetworkConversionValueSchema:
@@ -8064,6 +10069,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseCreateSKAdNetworkConversionValueSchema._get_http_options()
             )
+
             (
                 request,
                 metadata,
@@ -8082,6 +10088,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseCreateSKAdNetworkConversionValueSchema._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.CreateSKAdNetworkConversionValueSchema",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "CreateSKAdNetworkConversionValueSchema",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AnalyticsAdminServiceRestTransport._CreateSKAdNetworkConversionValueSchema._get_response(
@@ -8104,9 +10137,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = resources.SKAdNetworkConversionValueSchema.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_sk_ad_network_conversion_value_schema(
                 resp
             )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        resources.SKAdNetworkConversionValueSchema.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.create_sk_ad_network_conversion_value_schema",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "CreateSKAdNetworkConversionValueSchema",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateSubpropertyEventFilter(
@@ -8147,7 +10204,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gaa_subproperty_event_filter.SubpropertyEventFilter:
             r"""Call the create subproperty event
             filter method over HTTP.
@@ -8159,8 +10216,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.gaa_subproperty_event_filter.SubpropertyEventFilter:
@@ -8172,6 +10231,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseCreateSubpropertyEventFilter._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_subproperty_event_filter(
                 request, metadata
             )
@@ -8187,6 +10247,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseCreateSubpropertyEventFilter._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.CreateSubpropertyEventFilter",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "CreateSubpropertyEventFilter",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AnalyticsAdminServiceRestTransport._CreateSubpropertyEventFilter._get_response(
@@ -8209,7 +10296,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = gaa_subproperty_event_filter.SubpropertyEventFilter.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_subproperty_event_filter(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        gaa_subproperty_event_filter.SubpropertyEventFilter.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.create_subproperty_event_filter",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "CreateSubpropertyEventFilter",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteAccessBinding(
@@ -8247,7 +10360,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete access binding method over HTTP.
 
@@ -8258,13 +10371,16 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseDeleteAccessBinding._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_access_binding(
                 request, metadata
             )
@@ -8276,6 +10392,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseDeleteAccessBinding._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.DeleteAccessBinding",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "DeleteAccessBinding",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -8329,7 +10472,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete account method over HTTP.
 
@@ -8340,13 +10483,16 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseDeleteAccount._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_account(request, metadata)
             transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseDeleteAccount._get_transcoded_request(
                 http_options, request
@@ -8356,6 +10502,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseDeleteAccount._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.DeleteAccount",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "DeleteAccount",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AnalyticsAdminServiceRestTransport._DeleteAccount._get_response(
@@ -8407,7 +10580,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete ad sense link method over HTTP.
 
@@ -8418,13 +10591,16 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseDeleteAdSenseLink._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_ad_sense_link(
                 request, metadata
             )
@@ -8436,6 +10612,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseDeleteAdSenseLink._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.DeleteAdSenseLink",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "DeleteAdSenseLink",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -8489,7 +10692,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete big query link method over HTTP.
 
@@ -8500,13 +10703,16 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseDeleteBigQueryLink._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_big_query_link(
                 request, metadata
             )
@@ -8518,6 +10724,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseDeleteBigQueryLink._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.DeleteBigQueryLink",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "DeleteBigQueryLink",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -8571,7 +10804,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete calculated metric method over HTTP.
 
@@ -8582,13 +10815,16 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseDeleteCalculatedMetric._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_calculated_metric(
                 request, metadata
             )
@@ -8600,6 +10836,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseDeleteCalculatedMetric._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.DeleteCalculatedMetric",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "DeleteCalculatedMetric",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AnalyticsAdminServiceRestTransport._DeleteCalculatedMetric._get_response(
@@ -8651,7 +10914,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete channel group method over HTTP.
 
@@ -8662,13 +10925,16 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseDeleteChannelGroup._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_channel_group(
                 request, metadata
             )
@@ -8680,6 +10946,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseDeleteChannelGroup._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.DeleteChannelGroup",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "DeleteChannelGroup",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -8734,7 +11027,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete connected site tag method over HTTP.
 
@@ -8745,13 +11038,16 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseDeleteConnectedSiteTag._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_connected_site_tag(
                 request, metadata
             )
@@ -8767,6 +11063,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseDeleteConnectedSiteTag._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.DeleteConnectedSiteTag",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "DeleteConnectedSiteTag",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AnalyticsAdminServiceRestTransport._DeleteConnectedSiteTag._get_response(
@@ -8819,7 +11142,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete conversion event method over HTTP.
 
@@ -8830,13 +11153,16 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseDeleteConversionEvent._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_conversion_event(
                 request, metadata
             )
@@ -8848,6 +11174,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseDeleteConversionEvent._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.DeleteConversionEvent",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "DeleteConversionEvent",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -8901,7 +11254,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete data stream method over HTTP.
 
@@ -8912,13 +11265,16 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseDeleteDataStream._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_data_stream(
                 request, metadata
             )
@@ -8930,6 +11286,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseDeleteDataStream._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.DeleteDataStream",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "DeleteDataStream",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -8985,7 +11368,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete display video360
             advertiser link method over HTTP.
@@ -8997,13 +11380,16 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
             """
 
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseDeleteDisplayVideo360AdvertiserLink._get_http_options()
             )
+
             (
                 request,
                 metadata,
@@ -9018,6 +11404,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseDeleteDisplayVideo360AdvertiserLink._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.DeleteDisplayVideo360AdvertiserLink",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "DeleteDisplayVideo360AdvertiserLink",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AnalyticsAdminServiceRestTransport._DeleteDisplayVideo360AdvertiserLink._get_response(
@@ -9071,7 +11484,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete display video360
             advertiser link proposal method over HTTP.
@@ -9084,13 +11497,16 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
             """
 
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseDeleteDisplayVideo360AdvertiserLinkProposal._get_http_options()
             )
+
             (
                 request,
                 metadata,
@@ -9105,6 +11521,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseDeleteDisplayVideo360AdvertiserLinkProposal._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.DeleteDisplayVideo360AdvertiserLinkProposal",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "DeleteDisplayVideo360AdvertiserLinkProposal",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AnalyticsAdminServiceRestTransport._DeleteDisplayVideo360AdvertiserLinkProposal._get_response(
@@ -9156,7 +11599,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete event create rule method over HTTP.
 
@@ -9167,13 +11610,16 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseDeleteEventCreateRule._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_event_create_rule(
                 request, metadata
             )
@@ -9185,6 +11631,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseDeleteEventCreateRule._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.DeleteEventCreateRule",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "DeleteEventCreateRule",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -9238,7 +11711,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete event edit rule method over HTTP.
 
@@ -9249,13 +11722,16 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseDeleteEventEditRule._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_event_edit_rule(
                 request, metadata
             )
@@ -9267,6 +11743,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseDeleteEventEditRule._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.DeleteEventEditRule",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "DeleteEventEditRule",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -9320,7 +11823,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete expanded data set method over HTTP.
 
@@ -9331,13 +11834,16 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseDeleteExpandedDataSet._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_expanded_data_set(
                 request, metadata
             )
@@ -9349,6 +11855,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseDeleteExpandedDataSet._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.DeleteExpandedDataSet",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "DeleteExpandedDataSet",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -9402,7 +11935,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete firebase link method over HTTP.
 
@@ -9413,13 +11946,16 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseDeleteFirebaseLink._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_firebase_link(
                 request, metadata
             )
@@ -9431,6 +11967,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseDeleteFirebaseLink._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.DeleteFirebaseLink",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "DeleteFirebaseLink",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -9484,7 +12047,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete google ads link method over HTTP.
 
@@ -9495,13 +12058,16 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseDeleteGoogleAdsLink._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_google_ads_link(
                 request, metadata
             )
@@ -9513,6 +12079,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseDeleteGoogleAdsLink._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.DeleteGoogleAdsLink",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "DeleteGoogleAdsLink",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -9566,7 +12159,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete key event method over HTTP.
 
@@ -9577,13 +12170,16 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseDeleteKeyEvent._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_key_event(
                 request, metadata
             )
@@ -9595,6 +12191,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseDeleteKeyEvent._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.DeleteKeyEvent",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "DeleteKeyEvent",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AnalyticsAdminServiceRestTransport._DeleteKeyEvent._get_response(
@@ -9648,7 +12271,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete measurement
             protocol secret method over HTTP.
@@ -9660,13 +12283,16 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
             """
 
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseDeleteMeasurementProtocolSecret._get_http_options()
             )
+
             (
                 request,
                 metadata,
@@ -9681,6 +12307,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseDeleteMeasurementProtocolSecret._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.DeleteMeasurementProtocolSecret",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "DeleteMeasurementProtocolSecret",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AnalyticsAdminServiceRestTransport._DeleteMeasurementProtocolSecret._get_response(
@@ -9732,7 +12385,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.Property:
             r"""Call the delete property method over HTTP.
 
@@ -9743,8 +12396,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.Property:
@@ -9756,6 +12411,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseDeleteProperty._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_property(request, metadata)
             transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseDeleteProperty._get_transcoded_request(
                 http_options, request
@@ -9765,6 +12421,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseDeleteProperty._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.DeleteProperty",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "DeleteProperty",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AnalyticsAdminServiceRestTransport._DeleteProperty._get_response(
@@ -9786,7 +12469,29 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = resources.Property.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_property(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.Property.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.delete_property",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "DeleteProperty",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteRollupPropertySourceLink(
@@ -9826,7 +12531,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete rollup property
             source link method over HTTP.
@@ -9838,13 +12543,16 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
             """
 
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseDeleteRollupPropertySourceLink._get_http_options()
             )
+
             (
                 request,
                 metadata,
@@ -9859,6 +12567,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseDeleteRollupPropertySourceLink._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.DeleteRollupPropertySourceLink",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "DeleteRollupPropertySourceLink",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AnalyticsAdminServiceRestTransport._DeleteRollupPropertySourceLink._get_response(
@@ -9910,7 +12645,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete search ads360 link method over HTTP.
 
@@ -9921,13 +12656,16 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseDeleteSearchAds360Link._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_search_ads360_link(
                 request, metadata
             )
@@ -9939,6 +12677,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseDeleteSearchAds360Link._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.DeleteSearchAds360Link",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "DeleteSearchAds360Link",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AnalyticsAdminServiceRestTransport._DeleteSearchAds360Link._get_response(
@@ -9992,7 +12757,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete sk ad network
             conversion value schema method over HTTP.
@@ -10005,13 +12770,16 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
             """
 
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseDeleteSKAdNetworkConversionValueSchema._get_http_options()
             )
+
             (
                 request,
                 metadata,
@@ -10026,6 +12794,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseDeleteSKAdNetworkConversionValueSchema._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.DeleteSKAdNetworkConversionValueSchema",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "DeleteSKAdNetworkConversionValueSchema",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AnalyticsAdminServiceRestTransport._DeleteSKAdNetworkConversionValueSchema._get_response(
@@ -10079,7 +12874,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete subproperty event
             filter method over HTTP.
@@ -10091,13 +12886,16 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
             """
 
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseDeleteSubpropertyEventFilter._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_subproperty_event_filter(
                 request, metadata
             )
@@ -10109,6 +12907,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseDeleteSubpropertyEventFilter._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.DeleteSubpropertyEventFilter",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "DeleteSubpropertyEventFilter",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AnalyticsAdminServiceRestTransport._DeleteSubpropertyEventFilter._get_response(
@@ -10163,7 +12988,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> analytics_admin.FetchAutomatedGa4ConfigurationOptOutResponse:
             r"""Call the fetch automated ga4
             configuration opt out method over HTTP.
@@ -10176,8 +13001,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.analytics_admin.FetchAutomatedGa4ConfigurationOptOutResponse:
@@ -10190,6 +13017,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseFetchAutomatedGa4ConfigurationOptOut._get_http_options()
             )
+
             (
                 request,
                 metadata,
@@ -10208,6 +13036,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseFetchAutomatedGa4ConfigurationOptOut._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.FetchAutomatedGa4ConfigurationOptOut",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "FetchAutomatedGa4ConfigurationOptOut",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AnalyticsAdminServiceRestTransport._FetchAutomatedGa4ConfigurationOptOut._get_response(
@@ -10232,9 +13087,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             )
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_fetch_automated_ga4_configuration_opt_out(
                 resp
             )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = analytics_admin.FetchAutomatedGa4ConfigurationOptOutResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.fetch_automated_ga4_configuration_opt_out",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "FetchAutomatedGa4ConfigurationOptOut",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _FetchConnectedGa4Property(
@@ -10272,7 +13151,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> analytics_admin.FetchConnectedGa4PropertyResponse:
             r"""Call the fetch connected ga4
             property method over HTTP.
@@ -10284,8 +13163,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.analytics_admin.FetchConnectedGa4PropertyResponse:
@@ -10297,6 +13178,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseFetchConnectedGa4Property._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_fetch_connected_ga4_property(
                 request, metadata
             )
@@ -10308,6 +13190,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseFetchConnectedGa4Property._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.FetchConnectedGa4Property",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "FetchConnectedGa4Property",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AnalyticsAdminServiceRestTransport._FetchConnectedGa4Property._get_response(
@@ -10329,7 +13238,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = analytics_admin.FetchConnectedGa4PropertyResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_fetch_connected_ga4_property(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        analytics_admin.FetchConnectedGa4PropertyResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.fetch_connected_ga4_property",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "FetchConnectedGa4Property",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetAccessBinding(
@@ -10367,7 +13302,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.AccessBinding:
             r"""Call the get access binding method over HTTP.
 
@@ -10378,8 +13313,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.AccessBinding:
@@ -10391,6 +13328,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseGetAccessBinding._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_access_binding(
                 request, metadata
             )
@@ -10402,6 +13340,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseGetAccessBinding._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.GetAccessBinding",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "GetAccessBinding",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -10425,7 +13390,29 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = resources.AccessBinding.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_access_binding(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.AccessBinding.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.get_access_binding",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "GetAccessBinding",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetAccount(
@@ -10463,7 +13450,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.Account:
             r"""Call the get account method over HTTP.
 
@@ -10473,8 +13460,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.Account:
@@ -10486,6 +13475,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseGetAccount._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_account(request, metadata)
             transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseGetAccount._get_transcoded_request(
                 http_options, request
@@ -10495,6 +13485,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseGetAccount._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.GetAccount",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "GetAccount",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AnalyticsAdminServiceRestTransport._GetAccount._get_response(
@@ -10516,7 +13533,29 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = resources.Account.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_account(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.Account.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.get_account",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "GetAccount",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetAdSenseLink(
@@ -10554,7 +13593,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.AdSenseLink:
             r"""Call the get ad sense link method over HTTP.
 
@@ -10565,8 +13604,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.AdSenseLink:
@@ -10578,6 +13619,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseGetAdSenseLink._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_ad_sense_link(
                 request, metadata
             )
@@ -10589,6 +13631,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseGetAdSenseLink._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.GetAdSenseLink",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "GetAdSenseLink",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AnalyticsAdminServiceRestTransport._GetAdSenseLink._get_response(
@@ -10610,7 +13679,29 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = resources.AdSenseLink.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_ad_sense_link(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.AdSenseLink.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.get_ad_sense_link",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "GetAdSenseLink",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetAttributionSettings(
@@ -10648,7 +13739,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.AttributionSettings:
             r"""Call the get attribution settings method over HTTP.
 
@@ -10659,8 +13750,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.AttributionSettings:
@@ -10673,6 +13766,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseGetAttributionSettings._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_attribution_settings(
                 request, metadata
             )
@@ -10684,6 +13778,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseGetAttributionSettings._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.GetAttributionSettings",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "GetAttributionSettings",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AnalyticsAdminServiceRestTransport._GetAttributionSettings._get_response(
@@ -10705,7 +13826,29 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = resources.AttributionSettings.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_attribution_settings(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.AttributionSettings.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.get_attribution_settings",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "GetAttributionSettings",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetAudience(
@@ -10743,7 +13886,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> audience.Audience:
             r"""Call the get audience method over HTTP.
 
@@ -10753,8 +13896,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.audience.Audience:
@@ -10766,6 +13911,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseGetAudience._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_audience(request, metadata)
             transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseGetAudience._get_transcoded_request(
                 http_options, request
@@ -10775,6 +13921,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseGetAudience._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.GetAudience",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "GetAudience",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AnalyticsAdminServiceRestTransport._GetAudience._get_response(
@@ -10796,7 +13969,29 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = audience.Audience.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_audience(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = audience.Audience.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.get_audience",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "GetAudience",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetBigQueryLink(
@@ -10834,7 +14029,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.BigQueryLink:
             r"""Call the get big query link method over HTTP.
 
@@ -10845,8 +14040,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.BigQueryLink:
@@ -10858,6 +14055,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseGetBigQueryLink._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_big_query_link(
                 request, metadata
             )
@@ -10869,6 +14067,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseGetBigQueryLink._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.GetBigQueryLink",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "GetBigQueryLink",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -10892,7 +14117,29 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = resources.BigQueryLink.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_big_query_link(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.BigQueryLink.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.get_big_query_link",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "GetBigQueryLink",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetCalculatedMetric(
@@ -10930,7 +14177,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.CalculatedMetric:
             r"""Call the get calculated metric method over HTTP.
 
@@ -10941,8 +14188,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.CalculatedMetric:
@@ -10952,6 +14201,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseGetCalculatedMetric._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_calculated_metric(
                 request, metadata
             )
@@ -10963,6 +14213,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseGetCalculatedMetric._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.GetCalculatedMetric",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "GetCalculatedMetric",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -10986,7 +14263,29 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = resources.CalculatedMetric.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_calculated_metric(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.CalculatedMetric.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.get_calculated_metric",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "GetCalculatedMetric",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetChannelGroup(
@@ -11024,7 +14323,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> channel_group.ChannelGroup:
             r"""Call the get channel group method over HTTP.
 
@@ -11035,8 +14334,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.channel_group.ChannelGroup:
@@ -11048,6 +14349,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseGetChannelGroup._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_channel_group(
                 request, metadata
             )
@@ -11059,6 +14361,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseGetChannelGroup._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.GetChannelGroup",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "GetChannelGroup",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -11082,7 +14411,29 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = channel_group.ChannelGroup.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_channel_group(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = channel_group.ChannelGroup.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.get_channel_group",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "GetChannelGroup",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetConversionEvent(
@@ -11120,7 +14471,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.ConversionEvent:
             r"""Call the get conversion event method over HTTP.
 
@@ -11131,8 +14482,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.ConversionEvent:
@@ -11144,6 +14497,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseGetConversionEvent._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_conversion_event(
                 request, metadata
             )
@@ -11155,6 +14509,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseGetConversionEvent._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.GetConversionEvent",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "GetConversionEvent",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -11178,7 +14559,29 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = resources.ConversionEvent.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_conversion_event(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.ConversionEvent.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.get_conversion_event",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "GetConversionEvent",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetCustomDimension(
@@ -11216,7 +14619,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.CustomDimension:
             r"""Call the get custom dimension method over HTTP.
 
@@ -11227,8 +14630,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.CustomDimension:
@@ -11238,6 +14643,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseGetCustomDimension._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_custom_dimension(
                 request, metadata
             )
@@ -11249,6 +14655,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseGetCustomDimension._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.GetCustomDimension",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "GetCustomDimension",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -11272,7 +14705,29 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = resources.CustomDimension.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_custom_dimension(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.CustomDimension.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.get_custom_dimension",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "GetCustomDimension",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetCustomMetric(
@@ -11310,7 +14765,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.CustomMetric:
             r"""Call the get custom metric method over HTTP.
 
@@ -11321,8 +14776,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.CustomMetric:
@@ -11332,6 +14789,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseGetCustomMetric._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_custom_metric(
                 request, metadata
             )
@@ -11343,6 +14801,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseGetCustomMetric._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.GetCustomMetric",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "GetCustomMetric",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -11366,7 +14851,29 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = resources.CustomMetric.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_custom_metric(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.CustomMetric.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.get_custom_metric",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "GetCustomMetric",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetDataRedactionSettings(
@@ -11404,7 +14911,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.DataRedactionSettings:
             r"""Call the get data redaction
             settings method over HTTP.
@@ -11416,8 +14923,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.resources.DataRedactionSettings:
@@ -11430,6 +14939,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseGetDataRedactionSettings._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_data_redaction_settings(
                 request, metadata
             )
@@ -11441,6 +14951,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseGetDataRedactionSettings._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.GetDataRedactionSettings",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "GetDataRedactionSettings",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AnalyticsAdminServiceRestTransport._GetDataRedactionSettings._get_response(
@@ -11462,7 +14999,29 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = resources.DataRedactionSettings.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_data_redaction_settings(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.DataRedactionSettings.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.get_data_redaction_settings",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "GetDataRedactionSettings",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetDataRetentionSettings(
@@ -11500,7 +15059,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.DataRetentionSettings:
             r"""Call the get data retention
             settings method over HTTP.
@@ -11512,8 +15071,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.resources.DataRetentionSettings:
@@ -11525,6 +15086,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseGetDataRetentionSettings._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_data_retention_settings(
                 request, metadata
             )
@@ -11536,6 +15098,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseGetDataRetentionSettings._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.GetDataRetentionSettings",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "GetDataRetentionSettings",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AnalyticsAdminServiceRestTransport._GetDataRetentionSettings._get_response(
@@ -11557,7 +15146,29 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = resources.DataRetentionSettings.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_data_retention_settings(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.DataRetentionSettings.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.get_data_retention_settings",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "GetDataRetentionSettings",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetDataSharingSettings(
@@ -11595,7 +15206,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.DataSharingSettings:
             r"""Call the get data sharing settings method over HTTP.
 
@@ -11606,8 +15217,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.DataSharingSettings:
@@ -11620,6 +15233,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseGetDataSharingSettings._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_data_sharing_settings(
                 request, metadata
             )
@@ -11631,6 +15245,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseGetDataSharingSettings._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.GetDataSharingSettings",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "GetDataSharingSettings",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AnalyticsAdminServiceRestTransport._GetDataSharingSettings._get_response(
@@ -11652,7 +15293,29 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = resources.DataSharingSettings.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_data_sharing_settings(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.DataSharingSettings.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.get_data_sharing_settings",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "GetDataSharingSettings",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetDataStream(
@@ -11690,7 +15353,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.DataStream:
             r"""Call the get data stream method over HTTP.
 
@@ -11701,8 +15364,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.DataStream:
@@ -11714,6 +15379,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseGetDataStream._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_data_stream(request, metadata)
             transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseGetDataStream._get_transcoded_request(
                 http_options, request
@@ -11723,6 +15389,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseGetDataStream._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.GetDataStream",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "GetDataStream",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AnalyticsAdminServiceRestTransport._GetDataStream._get_response(
@@ -11744,7 +15437,29 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = resources.DataStream.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_data_stream(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.DataStream.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.get_data_stream",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "GetDataStream",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetDisplayVideo360AdvertiserLink(
@@ -11784,7 +15499,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.DisplayVideo360AdvertiserLink:
             r"""Call the get display video360
             advertiser link method over HTTP.
@@ -11796,8 +15511,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.resources.DisplayVideo360AdvertiserLink:
@@ -11809,6 +15526,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseGetDisplayVideo360AdvertiserLink._get_http_options()
             )
+
             (
                 request,
                 metadata,
@@ -11823,6 +15541,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseGetDisplayVideo360AdvertiserLink._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.GetDisplayVideo360AdvertiserLink",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "GetDisplayVideo360AdvertiserLink",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AnalyticsAdminServiceRestTransport._GetDisplayVideo360AdvertiserLink._get_response(
@@ -11844,7 +15589,31 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = resources.DisplayVideo360AdvertiserLink.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_display_video360_advertiser_link(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.DisplayVideo360AdvertiserLink.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.get_display_video360_advertiser_link",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "GetDisplayVideo360AdvertiserLink",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetDisplayVideo360AdvertiserLinkProposal(
@@ -11884,7 +15653,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.DisplayVideo360AdvertiserLinkProposal:
             r"""Call the get display video360
             advertiser link proposal method over HTTP.
@@ -11897,8 +15666,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.resources.DisplayVideo360AdvertiserLinkProposal:
@@ -11918,6 +15689,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseGetDisplayVideo360AdvertiserLinkProposal._get_http_options()
             )
+
             (
                 request,
                 metadata,
@@ -11932,6 +15704,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseGetDisplayVideo360AdvertiserLinkProposal._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.GetDisplayVideo360AdvertiserLinkProposal",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "GetDisplayVideo360AdvertiserLinkProposal",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AnalyticsAdminServiceRestTransport._GetDisplayVideo360AdvertiserLinkProposal._get_response(
@@ -11953,9 +15752,35 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = resources.DisplayVideo360AdvertiserLinkProposal.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_display_video360_advertiser_link_proposal(
                 resp
             )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        resources.DisplayVideo360AdvertiserLinkProposal.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.get_display_video360_advertiser_link_proposal",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "GetDisplayVideo360AdvertiserLinkProposal",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetEnhancedMeasurementSettings(
@@ -11995,7 +15820,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.EnhancedMeasurementSettings:
             r"""Call the get enhanced measurement
             settings method over HTTP.
@@ -12007,8 +15832,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.resources.EnhancedMeasurementSettings:
@@ -12022,6 +15849,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseGetEnhancedMeasurementSettings._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_enhanced_measurement_settings(
                 request, metadata
             )
@@ -12033,6 +15861,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseGetEnhancedMeasurementSettings._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.GetEnhancedMeasurementSettings",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "GetEnhancedMeasurementSettings",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AnalyticsAdminServiceRestTransport._GetEnhancedMeasurementSettings._get_response(
@@ -12054,7 +15909,31 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = resources.EnhancedMeasurementSettings.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_enhanced_measurement_settings(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.EnhancedMeasurementSettings.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.get_enhanced_measurement_settings",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "GetEnhancedMeasurementSettings",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetEventCreateRule(
@@ -12092,7 +15971,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> event_create_and_edit.EventCreateRule:
             r"""Call the get event create rule method over HTTP.
 
@@ -12103,8 +15982,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.event_create_and_edit.EventCreateRule:
@@ -12128,6 +16009,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseGetEventCreateRule._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_event_create_rule(
                 request, metadata
             )
@@ -12139,6 +16021,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseGetEventCreateRule._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.GetEventCreateRule",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "GetEventCreateRule",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -12162,7 +16071,31 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = event_create_and_edit.EventCreateRule.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_event_create_rule(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = event_create_and_edit.EventCreateRule.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.get_event_create_rule",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "GetEventCreateRule",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetEventEditRule(
@@ -12200,7 +16133,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> event_create_and_edit.EventEditRule:
             r"""Call the get event edit rule method over HTTP.
 
@@ -12211,8 +16144,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.event_create_and_edit.EventEditRule:
@@ -12236,6 +16171,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseGetEventEditRule._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_event_edit_rule(
                 request, metadata
             )
@@ -12247,6 +16183,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseGetEventEditRule._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.GetEventEditRule",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "GetEventEditRule",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -12270,7 +16233,31 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = event_create_and_edit.EventEditRule.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_event_edit_rule(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = event_create_and_edit.EventEditRule.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.get_event_edit_rule",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "GetEventEditRule",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetExpandedDataSet(
@@ -12308,7 +16295,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> expanded_data_set.ExpandedDataSet:
             r"""Call the get expanded data set method over HTTP.
 
@@ -12319,8 +16306,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.expanded_data_set.ExpandedDataSet:
@@ -12332,6 +16321,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseGetExpandedDataSet._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_expanded_data_set(
                 request, metadata
             )
@@ -12343,6 +16333,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseGetExpandedDataSet._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.GetExpandedDataSet",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "GetExpandedDataSet",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -12366,7 +16383,31 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = expanded_data_set.ExpandedDataSet.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_expanded_data_set(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = expanded_data_set.ExpandedDataSet.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.get_expanded_data_set",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "GetExpandedDataSet",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetGlobalSiteTag(
@@ -12404,7 +16445,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.GlobalSiteTag:
             r"""Call the get global site tag method over HTTP.
 
@@ -12415,8 +16456,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.GlobalSiteTag:
@@ -12430,6 +16473,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseGetGlobalSiteTag._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_global_site_tag(
                 request, metadata
             )
@@ -12441,6 +16485,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseGetGlobalSiteTag._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.GetGlobalSiteTag",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "GetGlobalSiteTag",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -12464,7 +16535,29 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = resources.GlobalSiteTag.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_global_site_tag(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.GlobalSiteTag.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.get_global_site_tag",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "GetGlobalSiteTag",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetGoogleSignalsSettings(
@@ -12502,7 +16595,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.GoogleSignalsSettings:
             r"""Call the get google signals
             settings method over HTTP.
@@ -12514,8 +16607,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.resources.GoogleSignalsSettings:
@@ -12527,6 +16622,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseGetGoogleSignalsSettings._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_google_signals_settings(
                 request, metadata
             )
@@ -12538,6 +16634,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseGetGoogleSignalsSettings._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.GetGoogleSignalsSettings",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "GetGoogleSignalsSettings",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AnalyticsAdminServiceRestTransport._GetGoogleSignalsSettings._get_response(
@@ -12559,7 +16682,29 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = resources.GoogleSignalsSettings.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_google_signals_settings(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.GoogleSignalsSettings.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.get_google_signals_settings",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "GetGoogleSignalsSettings",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetKeyEvent(
@@ -12597,7 +16742,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.KeyEvent:
             r"""Call the get key event method over HTTP.
 
@@ -12607,8 +16752,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.KeyEvent:
@@ -12620,6 +16767,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseGetKeyEvent._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_key_event(request, metadata)
             transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseGetKeyEvent._get_transcoded_request(
                 http_options, request
@@ -12629,6 +16777,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseGetKeyEvent._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.GetKeyEvent",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "GetKeyEvent",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AnalyticsAdminServiceRestTransport._GetKeyEvent._get_response(
@@ -12650,7 +16825,29 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = resources.KeyEvent.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_key_event(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.KeyEvent.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.get_key_event",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "GetKeyEvent",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetMeasurementProtocolSecret(
@@ -12690,7 +16887,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.MeasurementProtocolSecret:
             r"""Call the get measurement protocol
             secret method over HTTP.
@@ -12702,8 +16899,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.resources.MeasurementProtocolSecret:
@@ -12715,6 +16914,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseGetMeasurementProtocolSecret._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_measurement_protocol_secret(
                 request, metadata
             )
@@ -12726,6 +16926,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseGetMeasurementProtocolSecret._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.GetMeasurementProtocolSecret",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "GetMeasurementProtocolSecret",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AnalyticsAdminServiceRestTransport._GetMeasurementProtocolSecret._get_response(
@@ -12747,7 +16974,31 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = resources.MeasurementProtocolSecret.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_measurement_protocol_secret(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.MeasurementProtocolSecret.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.get_measurement_protocol_secret",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "GetMeasurementProtocolSecret",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetProperty(
@@ -12785,7 +17036,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.Property:
             r"""Call the get property method over HTTP.
 
@@ -12795,8 +17046,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.Property:
@@ -12808,6 +17061,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseGetProperty._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_property(request, metadata)
             transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseGetProperty._get_transcoded_request(
                 http_options, request
@@ -12817,6 +17071,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseGetProperty._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.GetProperty",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "GetProperty",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AnalyticsAdminServiceRestTransport._GetProperty._get_response(
@@ -12838,7 +17119,29 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = resources.Property.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_property(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.Property.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.get_property",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "GetProperty",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetRollupPropertySourceLink(
@@ -12878,7 +17181,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.RollupPropertySourceLink:
             r"""Call the get rollup property
             source link method over HTTP.
@@ -12890,8 +17193,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.resources.RollupPropertySourceLink:
@@ -12904,6 +17209,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseGetRollupPropertySourceLink._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_rollup_property_source_link(
                 request, metadata
             )
@@ -12915,6 +17221,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseGetRollupPropertySourceLink._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.GetRollupPropertySourceLink",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "GetRollupPropertySourceLink",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AnalyticsAdminServiceRestTransport._GetRollupPropertySourceLink._get_response(
@@ -12936,7 +17269,31 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = resources.RollupPropertySourceLink.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_rollup_property_source_link(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.RollupPropertySourceLink.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.get_rollup_property_source_link",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "GetRollupPropertySourceLink",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetSearchAds360Link(
@@ -12974,7 +17331,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.SearchAds360Link:
             r"""Call the get search ads360 link method over HTTP.
 
@@ -12985,8 +17342,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.SearchAds360Link:
@@ -12998,6 +17357,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseGetSearchAds360Link._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_search_ads360_link(
                 request, metadata
             )
@@ -13009,6 +17369,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseGetSearchAds360Link._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.GetSearchAds360Link",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "GetSearchAds360Link",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -13032,7 +17419,29 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = resources.SearchAds360Link.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_search_ads360_link(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.SearchAds360Link.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.get_search_ads360_link",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "GetSearchAds360Link",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetSKAdNetworkConversionValueSchema(
@@ -13072,7 +17481,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.SKAdNetworkConversionValueSchema:
             r"""Call the get sk ad network
             conversion value schema method over HTTP.
@@ -13084,8 +17493,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.resources.SKAdNetworkConversionValueSchema:
@@ -13097,6 +17508,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseGetSKAdNetworkConversionValueSchema._get_http_options()
             )
+
             (
                 request,
                 metadata,
@@ -13111,6 +17523,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseGetSKAdNetworkConversionValueSchema._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.GetSKAdNetworkConversionValueSchema",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "GetSKAdNetworkConversionValueSchema",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AnalyticsAdminServiceRestTransport._GetSKAdNetworkConversionValueSchema._get_response(
@@ -13132,9 +17571,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = resources.SKAdNetworkConversionValueSchema.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_sk_ad_network_conversion_value_schema(
                 resp
             )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        resources.SKAdNetworkConversionValueSchema.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.get_sk_ad_network_conversion_value_schema",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "GetSKAdNetworkConversionValueSchema",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetSubpropertyEventFilter(
@@ -13172,7 +17635,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> subproperty_event_filter.SubpropertyEventFilter:
             r"""Call the get subproperty event
             filter method over HTTP.
@@ -13184,8 +17647,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.subproperty_event_filter.SubpropertyEventFilter:
@@ -13197,6 +17662,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseGetSubpropertyEventFilter._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_subproperty_event_filter(
                 request, metadata
             )
@@ -13208,6 +17674,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseGetSubpropertyEventFilter._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.GetSubpropertyEventFilter",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "GetSubpropertyEventFilter",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AnalyticsAdminServiceRestTransport._GetSubpropertyEventFilter._get_response(
@@ -13229,7 +17722,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = subproperty_event_filter.SubpropertyEventFilter.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_subproperty_event_filter(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        subproperty_event_filter.SubpropertyEventFilter.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.get_subproperty_event_filter",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "GetSubpropertyEventFilter",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListAccessBindings(
@@ -13267,7 +17786,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> analytics_admin.ListAccessBindingsResponse:
             r"""Call the list access bindings method over HTTP.
 
@@ -13278,8 +17797,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.analytics_admin.ListAccessBindingsResponse:
@@ -13291,6 +17812,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseListAccessBindings._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_access_bindings(
                 request, metadata
             )
@@ -13302,6 +17824,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseListAccessBindings._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.ListAccessBindings",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "ListAccessBindings",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -13325,7 +17874,31 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = analytics_admin.ListAccessBindingsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_access_bindings(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        analytics_admin.ListAccessBindingsResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.list_access_bindings",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "ListAccessBindings",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListAccounts(
@@ -13363,7 +17936,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> analytics_admin.ListAccountsResponse:
             r"""Call the list accounts method over HTTP.
 
@@ -13373,8 +17946,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.analytics_admin.ListAccountsResponse:
@@ -13384,6 +17959,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseListAccounts._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_accounts(request, metadata)
             transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseListAccounts._get_transcoded_request(
                 http_options, request
@@ -13393,6 +17969,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseListAccounts._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.ListAccounts",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "ListAccounts",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AnalyticsAdminServiceRestTransport._ListAccounts._get_response(
@@ -13414,7 +18017,31 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = analytics_admin.ListAccountsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_accounts(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = analytics_admin.ListAccountsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.list_accounts",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "ListAccounts",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListAccountSummaries(
@@ -13452,7 +18079,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> analytics_admin.ListAccountSummariesResponse:
             r"""Call the list account summaries method over HTTP.
 
@@ -13463,8 +18090,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.analytics_admin.ListAccountSummariesResponse:
@@ -13476,6 +18105,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseListAccountSummaries._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_account_summaries(
                 request, metadata
             )
@@ -13487,6 +18117,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseListAccountSummaries._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.ListAccountSummaries",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "ListAccountSummaries",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -13510,7 +18167,31 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = analytics_admin.ListAccountSummariesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_account_summaries(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        analytics_admin.ListAccountSummariesResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.list_account_summaries",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "ListAccountSummaries",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListAdSenseLinks(
@@ -13548,7 +18229,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> analytics_admin.ListAdSenseLinksResponse:
             r"""Call the list ad sense links method over HTTP.
 
@@ -13559,8 +18240,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.analytics_admin.ListAdSenseLinksResponse:
@@ -13572,6 +18255,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseListAdSenseLinks._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_ad_sense_links(
                 request, metadata
             )
@@ -13583,6 +18267,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseListAdSenseLinks._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.ListAdSenseLinks",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "ListAdSenseLinks",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -13606,7 +18317,31 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = analytics_admin.ListAdSenseLinksResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_ad_sense_links(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = analytics_admin.ListAdSenseLinksResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.list_ad_sense_links",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "ListAdSenseLinks",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListAudiences(
@@ -13644,7 +18379,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> analytics_admin.ListAudiencesResponse:
             r"""Call the list audiences method over HTTP.
 
@@ -13655,8 +18390,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.analytics_admin.ListAudiencesResponse:
@@ -13668,6 +18405,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseListAudiences._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_audiences(request, metadata)
             transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseListAudiences._get_transcoded_request(
                 http_options, request
@@ -13677,6 +18415,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseListAudiences._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.ListAudiences",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "ListAudiences",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AnalyticsAdminServiceRestTransport._ListAudiences._get_response(
@@ -13698,7 +18463,31 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = analytics_admin.ListAudiencesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_audiences(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = analytics_admin.ListAudiencesResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.list_audiences",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "ListAudiences",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListBigQueryLinks(
@@ -13736,7 +18525,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> analytics_admin.ListBigQueryLinksResponse:
             r"""Call the list big query links method over HTTP.
 
@@ -13747,8 +18536,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.analytics_admin.ListBigQueryLinksResponse:
@@ -13760,6 +18551,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseListBigQueryLinks._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_big_query_links(
                 request, metadata
             )
@@ -13771,6 +18563,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseListBigQueryLinks._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.ListBigQueryLinks",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "ListBigQueryLinks",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -13794,7 +18613,31 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = analytics_admin.ListBigQueryLinksResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_big_query_links(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        analytics_admin.ListBigQueryLinksResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.list_big_query_links",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "ListBigQueryLinks",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListCalculatedMetrics(
@@ -13832,7 +18675,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> analytics_admin.ListCalculatedMetricsResponse:
             r"""Call the list calculated metrics method over HTTP.
 
@@ -13843,8 +18686,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.analytics_admin.ListCalculatedMetricsResponse:
@@ -13856,6 +18701,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseListCalculatedMetrics._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_calculated_metrics(
                 request, metadata
             )
@@ -13867,6 +18713,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseListCalculatedMetrics._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.ListCalculatedMetrics",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "ListCalculatedMetrics",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -13890,7 +18763,31 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = analytics_admin.ListCalculatedMetricsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_calculated_metrics(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        analytics_admin.ListCalculatedMetricsResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.list_calculated_metrics",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "ListCalculatedMetrics",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListChannelGroups(
@@ -13928,7 +18825,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> analytics_admin.ListChannelGroupsResponse:
             r"""Call the list channel groups method over HTTP.
 
@@ -13939,8 +18836,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.analytics_admin.ListChannelGroupsResponse:
@@ -13952,6 +18851,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseListChannelGroups._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_channel_groups(
                 request, metadata
             )
@@ -13963,6 +18863,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseListChannelGroups._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.ListChannelGroups",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "ListChannelGroups",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -13986,7 +18913,31 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = analytics_admin.ListChannelGroupsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_channel_groups(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        analytics_admin.ListChannelGroupsResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.list_channel_groups",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "ListChannelGroups",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListConnectedSiteTags(
@@ -14025,7 +18976,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> analytics_admin.ListConnectedSiteTagsResponse:
             r"""Call the list connected site tags method over HTTP.
 
@@ -14036,8 +18987,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.analytics_admin.ListConnectedSiteTagsResponse:
@@ -14049,6 +19002,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseListConnectedSiteTags._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_connected_site_tags(
                 request, metadata
             )
@@ -14064,6 +19018,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseListConnectedSiteTags._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.ListConnectedSiteTags",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "ListConnectedSiteTags",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -14088,7 +19069,31 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = analytics_admin.ListConnectedSiteTagsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_connected_site_tags(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        analytics_admin.ListConnectedSiteTagsResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.list_connected_site_tags",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "ListConnectedSiteTags",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListConversionEvents(
@@ -14126,7 +19131,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> analytics_admin.ListConversionEventsResponse:
             r"""Call the list conversion events method over HTTP.
 
@@ -14137,8 +19142,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.analytics_admin.ListConversionEventsResponse:
@@ -14150,6 +19157,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseListConversionEvents._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_conversion_events(
                 request, metadata
             )
@@ -14161,6 +19169,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseListConversionEvents._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.ListConversionEvents",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "ListConversionEvents",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -14184,7 +19219,31 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = analytics_admin.ListConversionEventsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_conversion_events(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        analytics_admin.ListConversionEventsResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.list_conversion_events",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "ListConversionEvents",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListCustomDimensions(
@@ -14222,7 +19281,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> analytics_admin.ListCustomDimensionsResponse:
             r"""Call the list custom dimensions method over HTTP.
 
@@ -14233,8 +19292,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.analytics_admin.ListCustomDimensionsResponse:
@@ -14246,6 +19307,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseListCustomDimensions._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_custom_dimensions(
                 request, metadata
             )
@@ -14257,6 +19319,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseListCustomDimensions._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.ListCustomDimensions",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "ListCustomDimensions",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -14280,7 +19369,31 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = analytics_admin.ListCustomDimensionsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_custom_dimensions(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        analytics_admin.ListCustomDimensionsResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.list_custom_dimensions",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "ListCustomDimensions",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListCustomMetrics(
@@ -14318,7 +19431,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> analytics_admin.ListCustomMetricsResponse:
             r"""Call the list custom metrics method over HTTP.
 
@@ -14329,8 +19442,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.analytics_admin.ListCustomMetricsResponse:
@@ -14342,6 +19457,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseListCustomMetrics._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_custom_metrics(
                 request, metadata
             )
@@ -14353,6 +19469,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseListCustomMetrics._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.ListCustomMetrics",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "ListCustomMetrics",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -14376,7 +19519,31 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = analytics_admin.ListCustomMetricsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_custom_metrics(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        analytics_admin.ListCustomMetricsResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.list_custom_metrics",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "ListCustomMetrics",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListDataStreams(
@@ -14414,7 +19581,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> analytics_admin.ListDataStreamsResponse:
             r"""Call the list data streams method over HTTP.
 
@@ -14425,8 +19592,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.analytics_admin.ListDataStreamsResponse:
@@ -14438,6 +19607,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseListDataStreams._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_data_streams(
                 request, metadata
             )
@@ -14449,6 +19619,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseListDataStreams._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.ListDataStreams",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "ListDataStreams",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -14472,7 +19669,31 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = analytics_admin.ListDataStreamsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_data_streams(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = analytics_admin.ListDataStreamsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.list_data_streams",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "ListDataStreams",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListDisplayVideo360AdvertiserLinkProposals(
@@ -14512,7 +19733,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> analytics_admin.ListDisplayVideo360AdvertiserLinkProposalsResponse:
             r"""Call the list display video360
             advertiser link proposals method over HTTP.
@@ -14525,8 +19746,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.analytics_admin.ListDisplayVideo360AdvertiserLinkProposalsResponse:
@@ -14539,6 +19762,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseListDisplayVideo360AdvertiserLinkProposals._get_http_options()
             )
+
             (
                 request,
                 metadata,
@@ -14553,6 +19777,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseListDisplayVideo360AdvertiserLinkProposals._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.ListDisplayVideo360AdvertiserLinkProposals",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "ListDisplayVideo360AdvertiserLinkProposals",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AnalyticsAdminServiceRestTransport._ListDisplayVideo360AdvertiserLinkProposals._get_response(
@@ -14578,11 +19829,35 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             )
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = (
                 self._interceptor.post_list_display_video360_advertiser_link_proposals(
                     resp
                 )
             )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = analytics_admin.ListDisplayVideo360AdvertiserLinkProposalsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.list_display_video360_advertiser_link_proposals",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "ListDisplayVideo360AdvertiserLinkProposals",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListDisplayVideo360AdvertiserLinks(
@@ -14622,7 +19897,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> analytics_admin.ListDisplayVideo360AdvertiserLinksResponse:
             r"""Call the list display video360
             advertiser links method over HTTP.
@@ -14634,8 +19909,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.analytics_admin.ListDisplayVideo360AdvertiserLinksResponse:
@@ -14647,6 +19924,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseListDisplayVideo360AdvertiserLinks._get_http_options()
             )
+
             (
                 request,
                 metadata,
@@ -14661,6 +19939,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseListDisplayVideo360AdvertiserLinks._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.ListDisplayVideo360AdvertiserLinks",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "ListDisplayVideo360AdvertiserLinks",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AnalyticsAdminServiceRestTransport._ListDisplayVideo360AdvertiserLinks._get_response(
@@ -14684,7 +19989,31 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             )
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_display_video360_advertiser_links(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = analytics_admin.ListDisplayVideo360AdvertiserLinksResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.list_display_video360_advertiser_links",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "ListDisplayVideo360AdvertiserLinks",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListEventCreateRules(
@@ -14722,7 +20051,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> analytics_admin.ListEventCreateRulesResponse:
             r"""Call the list event create rules method over HTTP.
 
@@ -14733,8 +20062,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.analytics_admin.ListEventCreateRulesResponse:
@@ -14746,6 +20077,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseListEventCreateRules._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_event_create_rules(
                 request, metadata
             )
@@ -14757,6 +20089,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseListEventCreateRules._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.ListEventCreateRules",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "ListEventCreateRules",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -14780,7 +20139,31 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = analytics_admin.ListEventCreateRulesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_event_create_rules(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        analytics_admin.ListEventCreateRulesResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.list_event_create_rules",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "ListEventCreateRules",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListEventEditRules(
@@ -14818,7 +20201,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> analytics_admin.ListEventEditRulesResponse:
             r"""Call the list event edit rules method over HTTP.
 
@@ -14829,8 +20212,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.analytics_admin.ListEventEditRulesResponse:
@@ -14842,6 +20227,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseListEventEditRules._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_event_edit_rules(
                 request, metadata
             )
@@ -14853,6 +20239,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseListEventEditRules._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.ListEventEditRules",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "ListEventEditRules",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -14876,7 +20289,31 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = analytics_admin.ListEventEditRulesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_event_edit_rules(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        analytics_admin.ListEventEditRulesResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.list_event_edit_rules",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "ListEventEditRules",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListExpandedDataSets(
@@ -14914,7 +20351,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> analytics_admin.ListExpandedDataSetsResponse:
             r"""Call the list expanded data sets method over HTTP.
 
@@ -14925,8 +20362,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.analytics_admin.ListExpandedDataSetsResponse:
@@ -14938,6 +20377,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseListExpandedDataSets._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_expanded_data_sets(
                 request, metadata
             )
@@ -14949,6 +20389,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseListExpandedDataSets._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.ListExpandedDataSets",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "ListExpandedDataSets",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -14972,7 +20439,31 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = analytics_admin.ListExpandedDataSetsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_expanded_data_sets(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        analytics_admin.ListExpandedDataSetsResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.list_expanded_data_sets",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "ListExpandedDataSets",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListFirebaseLinks(
@@ -15010,7 +20501,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> analytics_admin.ListFirebaseLinksResponse:
             r"""Call the list firebase links method over HTTP.
 
@@ -15021,8 +20512,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.analytics_admin.ListFirebaseLinksResponse:
@@ -15034,6 +20527,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseListFirebaseLinks._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_firebase_links(
                 request, metadata
             )
@@ -15045,6 +20539,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseListFirebaseLinks._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.ListFirebaseLinks",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "ListFirebaseLinks",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -15068,7 +20589,31 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = analytics_admin.ListFirebaseLinksResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_firebase_links(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        analytics_admin.ListFirebaseLinksResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.list_firebase_links",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "ListFirebaseLinks",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListGoogleAdsLinks(
@@ -15106,7 +20651,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> analytics_admin.ListGoogleAdsLinksResponse:
             r"""Call the list google ads links method over HTTP.
 
@@ -15117,8 +20662,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.analytics_admin.ListGoogleAdsLinksResponse:
@@ -15130,6 +20677,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseListGoogleAdsLinks._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_google_ads_links(
                 request, metadata
             )
@@ -15141,6 +20689,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseListGoogleAdsLinks._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.ListGoogleAdsLinks",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "ListGoogleAdsLinks",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -15164,7 +20739,31 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = analytics_admin.ListGoogleAdsLinksResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_google_ads_links(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        analytics_admin.ListGoogleAdsLinksResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.list_google_ads_links",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "ListGoogleAdsLinks",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListKeyEvents(
@@ -15202,7 +20801,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> analytics_admin.ListKeyEventsResponse:
             r"""Call the list key events method over HTTP.
 
@@ -15212,8 +20811,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.analytics_admin.ListKeyEventsResponse:
@@ -15225,6 +20826,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseListKeyEvents._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_key_events(request, metadata)
             transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseListKeyEvents._get_transcoded_request(
                 http_options, request
@@ -15234,6 +20836,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseListKeyEvents._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.ListKeyEvents",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "ListKeyEvents",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AnalyticsAdminServiceRestTransport._ListKeyEvents._get_response(
@@ -15255,7 +20884,31 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = analytics_admin.ListKeyEventsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_key_events(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = analytics_admin.ListKeyEventsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.list_key_events",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "ListKeyEvents",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListMeasurementProtocolSecrets(
@@ -15295,7 +20948,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> analytics_admin.ListMeasurementProtocolSecretsResponse:
             r"""Call the list measurement protocol
             secrets method over HTTP.
@@ -15307,8 +20960,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.analytics_admin.ListMeasurementProtocolSecretsResponse:
@@ -15320,6 +20975,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseListMeasurementProtocolSecrets._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_measurement_protocol_secrets(
                 request, metadata
             )
@@ -15331,6 +20987,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseListMeasurementProtocolSecrets._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.ListMeasurementProtocolSecrets",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "ListMeasurementProtocolSecrets",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AnalyticsAdminServiceRestTransport._ListMeasurementProtocolSecrets._get_response(
@@ -15352,7 +21035,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = analytics_admin.ListMeasurementProtocolSecretsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_measurement_protocol_secrets(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        analytics_admin.ListMeasurementProtocolSecretsResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.list_measurement_protocol_secrets",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "ListMeasurementProtocolSecrets",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListProperties(
@@ -15390,7 +21099,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> analytics_admin.ListPropertiesResponse:
             r"""Call the list properties method over HTTP.
 
@@ -15401,8 +21110,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.analytics_admin.ListPropertiesResponse:
@@ -15414,6 +21125,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseListProperties._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_properties(request, metadata)
             transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseListProperties._get_transcoded_request(
                 http_options, request
@@ -15423,6 +21135,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseListProperties._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.ListProperties",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "ListProperties",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AnalyticsAdminServiceRestTransport._ListProperties._get_response(
@@ -15444,7 +21183,31 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = analytics_admin.ListPropertiesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_properties(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = analytics_admin.ListPropertiesResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.list_properties",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "ListProperties",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListRollupPropertySourceLinks(
@@ -15484,7 +21247,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> analytics_admin.ListRollupPropertySourceLinksResponse:
             r"""Call the list rollup property
             source links method over HTTP.
@@ -15496,8 +21259,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.analytics_admin.ListRollupPropertySourceLinksResponse:
@@ -15509,6 +21274,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseListRollupPropertySourceLinks._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_rollup_property_source_links(
                 request, metadata
             )
@@ -15520,6 +21286,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseListRollupPropertySourceLinks._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.ListRollupPropertySourceLinks",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "ListRollupPropertySourceLinks",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AnalyticsAdminServiceRestTransport._ListRollupPropertySourceLinks._get_response(
@@ -15541,7 +21334,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = analytics_admin.ListRollupPropertySourceLinksResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_rollup_property_source_links(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        analytics_admin.ListRollupPropertySourceLinksResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.list_rollup_property_source_links",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "ListRollupPropertySourceLinks",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListSearchAds360Links(
@@ -15579,7 +21398,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> analytics_admin.ListSearchAds360LinksResponse:
             r"""Call the list search ads360 links method over HTTP.
 
@@ -15590,8 +21409,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.analytics_admin.ListSearchAds360LinksResponse:
@@ -15603,6 +21424,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseListSearchAds360Links._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_search_ads360_links(
                 request, metadata
             )
@@ -15614,6 +21436,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseListSearchAds360Links._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.ListSearchAds360Links",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "ListSearchAds360Links",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -15637,7 +21486,31 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = analytics_admin.ListSearchAds360LinksResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_search_ads360_links(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        analytics_admin.ListSearchAds360LinksResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.list_search_ads360_links",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "ListSearchAds360Links",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListSKAdNetworkConversionValueSchemas(
@@ -15677,7 +21550,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> analytics_admin.ListSKAdNetworkConversionValueSchemasResponse:
             r"""Call the list sk ad network
             conversion value schemas method over HTTP.
@@ -15690,8 +21563,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.analytics_admin.ListSKAdNetworkConversionValueSchemasResponse:
@@ -15704,6 +21579,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseListSKAdNetworkConversionValueSchemas._get_http_options()
             )
+
             (
                 request,
                 metadata,
@@ -15718,6 +21594,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseListSKAdNetworkConversionValueSchemas._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.ListSKAdNetworkConversionValueSchemas",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "ListSKAdNetworkConversionValueSchemas",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AnalyticsAdminServiceRestTransport._ListSKAdNetworkConversionValueSchemas._get_response(
@@ -15741,9 +21644,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             )
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_sk_ad_network_conversion_value_schemas(
                 resp
             )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = analytics_admin.ListSKAdNetworkConversionValueSchemasResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.list_sk_ad_network_conversion_value_schemas",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "ListSKAdNetworkConversionValueSchemas",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListSubpropertyEventFilters(
@@ -15783,7 +21710,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> analytics_admin.ListSubpropertyEventFiltersResponse:
             r"""Call the list subproperty event
             filters method over HTTP.
@@ -15795,8 +21722,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.analytics_admin.ListSubpropertyEventFiltersResponse:
@@ -15808,6 +21737,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseListSubpropertyEventFilters._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_subproperty_event_filters(
                 request, metadata
             )
@@ -15819,6 +21749,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseListSubpropertyEventFilters._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.ListSubpropertyEventFilters",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "ListSubpropertyEventFilters",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AnalyticsAdminServiceRestTransport._ListSubpropertyEventFilters._get_response(
@@ -15840,7 +21797,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = analytics_admin.ListSubpropertyEventFiltersResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_subproperty_event_filters(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        analytics_admin.ListSubpropertyEventFiltersResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.list_subproperty_event_filters",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "ListSubpropertyEventFilters",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ProvisionAccountTicket(
@@ -15879,7 +21862,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> analytics_admin.ProvisionAccountTicketResponse:
             r"""Call the provision account ticket method over HTTP.
 
@@ -15890,8 +21873,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.analytics_admin.ProvisionAccountTicketResponse:
@@ -15903,6 +21888,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseProvisionAccountTicket._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_provision_account_ticket(
                 request, metadata
             )
@@ -15918,6 +21904,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseProvisionAccountTicket._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.ProvisionAccountTicket",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "ProvisionAccountTicket",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AnalyticsAdminServiceRestTransport._ProvisionAccountTicket._get_response(
@@ -15940,7 +21953,31 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = analytics_admin.ProvisionAccountTicketResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_provision_account_ticket(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        analytics_admin.ProvisionAccountTicketResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.provision_account_ticket",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "ProvisionAccountTicket",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ProvisionSubproperty(
@@ -15979,7 +22016,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> analytics_admin.ProvisionSubpropertyResponse:
             r"""Call the provision subproperty method over HTTP.
 
@@ -15990,8 +22027,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.analytics_admin.ProvisionSubpropertyResponse:
@@ -16003,6 +22042,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseProvisionSubproperty._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_provision_subproperty(
                 request, metadata
             )
@@ -16018,6 +22058,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseProvisionSubproperty._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.ProvisionSubproperty",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "ProvisionSubproperty",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -16042,7 +22109,31 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = analytics_admin.ProvisionSubpropertyResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_provision_subproperty(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        analytics_admin.ProvisionSubpropertyResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.provision_subproperty",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "ProvisionSubproperty",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ReorderEventEditRules(
@@ -16081,7 +22172,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the reorder event edit rules method over HTTP.
 
@@ -16092,13 +22183,16 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseReorderEventEditRules._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_reorder_event_edit_rules(
                 request, metadata
             )
@@ -16114,6 +22208,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseReorderEventEditRules._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.ReorderEventEditRules",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "ReorderEventEditRules",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -16169,7 +22290,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> analytics_admin.RunAccessReportResponse:
             r"""Call the run access report method over HTTP.
 
@@ -16180,8 +22301,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.analytics_admin.RunAccessReportResponse:
@@ -16193,6 +22316,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseRunAccessReport._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_run_access_report(
                 request, metadata
             )
@@ -16208,6 +22332,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseRunAccessReport._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.RunAccessReport",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "RunAccessReport",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -16232,7 +22383,31 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = analytics_admin.RunAccessReportResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_run_access_report(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = analytics_admin.RunAccessReportResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.run_access_report",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "RunAccessReport",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _SearchChangeHistoryEvents(
@@ -16271,7 +22446,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> analytics_admin.SearchChangeHistoryEventsResponse:
             r"""Call the search change history
             events method over HTTP.
@@ -16283,8 +22458,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.analytics_admin.SearchChangeHistoryEventsResponse:
@@ -16296,6 +22473,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseSearchChangeHistoryEvents._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_search_change_history_events(
                 request, metadata
             )
@@ -16311,6 +22489,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseSearchChangeHistoryEvents._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.SearchChangeHistoryEvents",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "SearchChangeHistoryEvents",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AnalyticsAdminServiceRestTransport._SearchChangeHistoryEvents._get_response(
@@ -16333,7 +22538,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = analytics_admin.SearchChangeHistoryEventsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_search_change_history_events(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        analytics_admin.SearchChangeHistoryEventsResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.search_change_history_events",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "SearchChangeHistoryEvents",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _SetAutomatedGa4ConfigurationOptOut(
@@ -16374,7 +22605,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> analytics_admin.SetAutomatedGa4ConfigurationOptOutResponse:
             r"""Call the set automated ga4
             configuration opt out method over HTTP.
@@ -16387,8 +22618,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.analytics_admin.SetAutomatedGa4ConfigurationOptOutResponse:
@@ -16401,6 +22634,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseSetAutomatedGa4ConfigurationOptOut._get_http_options()
             )
+
             (
                 request,
                 metadata,
@@ -16419,6 +22653,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseSetAutomatedGa4ConfigurationOptOut._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.SetAutomatedGa4ConfigurationOptOut",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "SetAutomatedGa4ConfigurationOptOut",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AnalyticsAdminServiceRestTransport._SetAutomatedGa4ConfigurationOptOut._get_response(
@@ -16443,7 +22704,31 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             )
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_set_automated_ga4_configuration_opt_out(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = analytics_admin.SetAutomatedGa4ConfigurationOptOutResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.set_automated_ga4_configuration_opt_out",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "SetAutomatedGa4ConfigurationOptOut",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateAccessBinding(
@@ -16482,7 +22767,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.AccessBinding:
             r"""Call the update access binding method over HTTP.
 
@@ -16493,8 +22778,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.AccessBinding:
@@ -16506,6 +22793,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseUpdateAccessBinding._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_access_binding(
                 request, metadata
             )
@@ -16521,6 +22809,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateAccessBinding._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.UpdateAccessBinding",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "UpdateAccessBinding",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -16545,7 +22860,29 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = resources.AccessBinding.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_access_binding(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.AccessBinding.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.update_access_binding",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "UpdateAccessBinding",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateAccount(
@@ -16584,7 +22921,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.Account:
             r"""Call the update account method over HTTP.
 
@@ -16595,8 +22932,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.Account:
@@ -16608,6 +22947,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseUpdateAccount._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_account(request, metadata)
             transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateAccount._get_transcoded_request(
                 http_options, request
@@ -16621,6 +22961,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateAccount._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.UpdateAccount",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "UpdateAccount",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AnalyticsAdminServiceRestTransport._UpdateAccount._get_response(
@@ -16643,7 +23010,29 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = resources.Account.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_account(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.Account.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.update_account",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "UpdateAccount",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateAttributionSettings(
@@ -16682,7 +23071,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.AttributionSettings:
             r"""Call the update attribution
             settings method over HTTP.
@@ -16694,8 +23083,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.resources.AttributionSettings:
@@ -16708,6 +23099,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseUpdateAttributionSettings._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_attribution_settings(
                 request, metadata
             )
@@ -16723,6 +23115,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateAttributionSettings._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.UpdateAttributionSettings",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "UpdateAttributionSettings",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AnalyticsAdminServiceRestTransport._UpdateAttributionSettings._get_response(
@@ -16745,7 +23164,29 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = resources.AttributionSettings.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_attribution_settings(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.AttributionSettings.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.update_attribution_settings",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "UpdateAttributionSettings",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateAudience(
@@ -16784,7 +23225,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gaa_audience.Audience:
             r"""Call the update audience method over HTTP.
 
@@ -16795,8 +23236,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.gaa_audience.Audience:
@@ -16808,6 +23251,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseUpdateAudience._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_audience(request, metadata)
             transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateAudience._get_transcoded_request(
                 http_options, request
@@ -16821,6 +23265,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateAudience._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.UpdateAudience",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "UpdateAudience",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AnalyticsAdminServiceRestTransport._UpdateAudience._get_response(
@@ -16843,7 +23314,29 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = gaa_audience.Audience.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_audience(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gaa_audience.Audience.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.update_audience",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "UpdateAudience",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateBigQueryLink(
@@ -16882,7 +23375,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.BigQueryLink:
             r"""Call the update big query link method over HTTP.
 
@@ -16893,8 +23386,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.BigQueryLink:
@@ -16906,6 +23401,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseUpdateBigQueryLink._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_big_query_link(
                 request, metadata
             )
@@ -16921,6 +23417,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateBigQueryLink._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.UpdateBigQueryLink",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "UpdateBigQueryLink",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -16945,7 +23468,29 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = resources.BigQueryLink.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_big_query_link(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.BigQueryLink.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.update_big_query_link",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "UpdateBigQueryLink",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateCalculatedMetric(
@@ -16984,7 +23529,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.CalculatedMetric:
             r"""Call the update calculated metric method over HTTP.
 
@@ -16995,8 +23540,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.CalculatedMetric:
@@ -17006,6 +23553,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseUpdateCalculatedMetric._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_calculated_metric(
                 request, metadata
             )
@@ -17021,6 +23569,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateCalculatedMetric._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.UpdateCalculatedMetric",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "UpdateCalculatedMetric",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AnalyticsAdminServiceRestTransport._UpdateCalculatedMetric._get_response(
@@ -17043,7 +23618,29 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = resources.CalculatedMetric.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_calculated_metric(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.CalculatedMetric.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.update_calculated_metric",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "UpdateCalculatedMetric",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateChannelGroup(
@@ -17082,7 +23679,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gaa_channel_group.ChannelGroup:
             r"""Call the update channel group method over HTTP.
 
@@ -17093,8 +23690,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.gaa_channel_group.ChannelGroup:
@@ -17106,6 +23705,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseUpdateChannelGroup._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_channel_group(
                 request, metadata
             )
@@ -17121,6 +23721,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateChannelGroup._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.UpdateChannelGroup",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "UpdateChannelGroup",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -17145,7 +23772,29 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = gaa_channel_group.ChannelGroup.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_channel_group(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gaa_channel_group.ChannelGroup.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.update_channel_group",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "UpdateChannelGroup",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateConversionEvent(
@@ -17184,7 +23833,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.ConversionEvent:
             r"""Call the update conversion event method over HTTP.
 
@@ -17195,8 +23844,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.ConversionEvent:
@@ -17208,6 +23859,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseUpdateConversionEvent._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_conversion_event(
                 request, metadata
             )
@@ -17223,6 +23875,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateConversionEvent._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.UpdateConversionEvent",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "UpdateConversionEvent",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -17247,7 +23926,29 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = resources.ConversionEvent.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_conversion_event(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.ConversionEvent.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.update_conversion_event",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "UpdateConversionEvent",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateCustomDimension(
@@ -17286,7 +23987,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.CustomDimension:
             r"""Call the update custom dimension method over HTTP.
 
@@ -17297,8 +23998,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.CustomDimension:
@@ -17308,6 +24011,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseUpdateCustomDimension._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_custom_dimension(
                 request, metadata
             )
@@ -17323,6 +24027,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateCustomDimension._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.UpdateCustomDimension",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "UpdateCustomDimension",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -17347,7 +24078,29 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = resources.CustomDimension.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_custom_dimension(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.CustomDimension.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.update_custom_dimension",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "UpdateCustomDimension",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateCustomMetric(
@@ -17386,7 +24139,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.CustomMetric:
             r"""Call the update custom metric method over HTTP.
 
@@ -17397,8 +24150,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.CustomMetric:
@@ -17408,6 +24163,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseUpdateCustomMetric._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_custom_metric(
                 request, metadata
             )
@@ -17423,6 +24179,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateCustomMetric._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.UpdateCustomMetric",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "UpdateCustomMetric",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -17447,7 +24230,29 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = resources.CustomMetric.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_custom_metric(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.CustomMetric.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.update_custom_metric",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "UpdateCustomMetric",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateDataRedactionSettings(
@@ -17488,7 +24293,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.DataRedactionSettings:
             r"""Call the update data redaction
             settings method over HTTP.
@@ -17500,8 +24305,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.resources.DataRedactionSettings:
@@ -17514,6 +24321,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseUpdateDataRedactionSettings._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_data_redaction_settings(
                 request, metadata
             )
@@ -17529,6 +24337,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateDataRedactionSettings._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.UpdateDataRedactionSettings",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "UpdateDataRedactionSettings",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AnalyticsAdminServiceRestTransport._UpdateDataRedactionSettings._get_response(
@@ -17551,7 +24386,29 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = resources.DataRedactionSettings.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_data_redaction_settings(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.DataRedactionSettings.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.update_data_redaction_settings",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "UpdateDataRedactionSettings",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateDataRetentionSettings(
@@ -17592,7 +24449,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.DataRetentionSettings:
             r"""Call the update data retention
             settings method over HTTP.
@@ -17604,8 +24461,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.resources.DataRetentionSettings:
@@ -17617,6 +24476,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseUpdateDataRetentionSettings._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_data_retention_settings(
                 request, metadata
             )
@@ -17632,6 +24492,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateDataRetentionSettings._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.UpdateDataRetentionSettings",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "UpdateDataRetentionSettings",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AnalyticsAdminServiceRestTransport._UpdateDataRetentionSettings._get_response(
@@ -17654,7 +24541,29 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = resources.DataRetentionSettings.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_data_retention_settings(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.DataRetentionSettings.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.update_data_retention_settings",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "UpdateDataRetentionSettings",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateDataStream(
@@ -17693,7 +24602,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.DataStream:
             r"""Call the update data stream method over HTTP.
 
@@ -17704,8 +24613,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.DataStream:
@@ -17717,6 +24628,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseUpdateDataStream._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_data_stream(
                 request, metadata
             )
@@ -17732,6 +24644,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateDataStream._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.UpdateDataStream",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "UpdateDataStream",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -17756,7 +24695,29 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = resources.DataStream.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_data_stream(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.DataStream.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.update_data_stream",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "UpdateDataStream",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateDisplayVideo360AdvertiserLink(
@@ -17797,7 +24758,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.DisplayVideo360AdvertiserLink:
             r"""Call the update display video360
             advertiser link method over HTTP.
@@ -17809,8 +24770,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.resources.DisplayVideo360AdvertiserLink:
@@ -17822,6 +24785,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseUpdateDisplayVideo360AdvertiserLink._get_http_options()
             )
+
             (
                 request,
                 metadata,
@@ -17840,6 +24804,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateDisplayVideo360AdvertiserLink._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.UpdateDisplayVideo360AdvertiserLink",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "UpdateDisplayVideo360AdvertiserLink",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AnalyticsAdminServiceRestTransport._UpdateDisplayVideo360AdvertiserLink._get_response(
@@ -17862,7 +24853,31 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = resources.DisplayVideo360AdvertiserLink.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_display_video360_advertiser_link(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.DisplayVideo360AdvertiserLink.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.update_display_video360_advertiser_link",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "UpdateDisplayVideo360AdvertiserLink",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateEnhancedMeasurementSettings(
@@ -17903,7 +24918,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.EnhancedMeasurementSettings:
             r"""Call the update enhanced
             measurement settings method over HTTP.
@@ -17915,8 +24930,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.resources.EnhancedMeasurementSettings:
@@ -17930,6 +24947,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseUpdateEnhancedMeasurementSettings._get_http_options()
             )
+
             (
                 request,
                 metadata,
@@ -17948,6 +24966,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateEnhancedMeasurementSettings._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.UpdateEnhancedMeasurementSettings",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "UpdateEnhancedMeasurementSettings",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AnalyticsAdminServiceRestTransport._UpdateEnhancedMeasurementSettings._get_response(
@@ -17970,7 +25015,31 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = resources.EnhancedMeasurementSettings.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_enhanced_measurement_settings(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.EnhancedMeasurementSettings.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.update_enhanced_measurement_settings",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "UpdateEnhancedMeasurementSettings",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateEventCreateRule(
@@ -18009,7 +25078,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> event_create_and_edit.EventCreateRule:
             r"""Call the update event create rule method over HTTP.
 
@@ -18020,8 +25089,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.event_create_and_edit.EventCreateRule:
@@ -18045,6 +25116,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseUpdateEventCreateRule._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_event_create_rule(
                 request, metadata
             )
@@ -18060,6 +25132,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateEventCreateRule._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.UpdateEventCreateRule",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "UpdateEventCreateRule",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -18084,7 +25183,31 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = event_create_and_edit.EventCreateRule.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_event_create_rule(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = event_create_and_edit.EventCreateRule.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.update_event_create_rule",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "UpdateEventCreateRule",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateEventEditRule(
@@ -18123,7 +25246,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> event_create_and_edit.EventEditRule:
             r"""Call the update event edit rule method over HTTP.
 
@@ -18134,8 +25257,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.event_create_and_edit.EventEditRule:
@@ -18159,6 +25284,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseUpdateEventEditRule._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_event_edit_rule(
                 request, metadata
             )
@@ -18174,6 +25300,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateEventEditRule._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.UpdateEventEditRule",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "UpdateEventEditRule",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -18198,7 +25351,31 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = event_create_and_edit.EventEditRule.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_event_edit_rule(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = event_create_and_edit.EventEditRule.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.update_event_edit_rule",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "UpdateEventEditRule",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateExpandedDataSet(
@@ -18237,7 +25414,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gaa_expanded_data_set.ExpandedDataSet:
             r"""Call the update expanded data set method over HTTP.
 
@@ -18248,8 +25425,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.gaa_expanded_data_set.ExpandedDataSet:
@@ -18261,6 +25440,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseUpdateExpandedDataSet._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_expanded_data_set(
                 request, metadata
             )
@@ -18276,6 +25456,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateExpandedDataSet._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.UpdateExpandedDataSet",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "UpdateExpandedDataSet",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -18300,7 +25507,31 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = gaa_expanded_data_set.ExpandedDataSet.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_expanded_data_set(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gaa_expanded_data_set.ExpandedDataSet.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.update_expanded_data_set",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "UpdateExpandedDataSet",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateGoogleAdsLink(
@@ -18339,7 +25570,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.GoogleAdsLink:
             r"""Call the update google ads link method over HTTP.
 
@@ -18350,8 +25581,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.GoogleAdsLink:
@@ -18363,6 +25596,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseUpdateGoogleAdsLink._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_google_ads_link(
                 request, metadata
             )
@@ -18378,6 +25612,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateGoogleAdsLink._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.UpdateGoogleAdsLink",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "UpdateGoogleAdsLink",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -18402,7 +25663,29 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = resources.GoogleAdsLink.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_google_ads_link(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.GoogleAdsLink.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.update_google_ads_link",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "UpdateGoogleAdsLink",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateGoogleSignalsSettings(
@@ -18443,7 +25726,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.GoogleSignalsSettings:
             r"""Call the update google signals
             settings method over HTTP.
@@ -18455,8 +25738,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.resources.GoogleSignalsSettings:
@@ -18468,6 +25753,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseUpdateGoogleSignalsSettings._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_google_signals_settings(
                 request, metadata
             )
@@ -18483,6 +25769,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateGoogleSignalsSettings._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.UpdateGoogleSignalsSettings",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "UpdateGoogleSignalsSettings",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AnalyticsAdminServiceRestTransport._UpdateGoogleSignalsSettings._get_response(
@@ -18505,7 +25818,29 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = resources.GoogleSignalsSettings.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_google_signals_settings(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.GoogleSignalsSettings.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.update_google_signals_settings",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "UpdateGoogleSignalsSettings",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateKeyEvent(
@@ -18544,7 +25879,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.KeyEvent:
             r"""Call the update key event method over HTTP.
 
@@ -18555,8 +25890,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.KeyEvent:
@@ -18568,6 +25905,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseUpdateKeyEvent._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_key_event(
                 request, metadata
             )
@@ -18583,6 +25921,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateKeyEvent._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.UpdateKeyEvent",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "UpdateKeyEvent",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AnalyticsAdminServiceRestTransport._UpdateKeyEvent._get_response(
@@ -18605,7 +25970,29 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = resources.KeyEvent.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_key_event(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.KeyEvent.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.update_key_event",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "UpdateKeyEvent",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateMeasurementProtocolSecret(
@@ -18646,7 +26033,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.MeasurementProtocolSecret:
             r"""Call the update measurement
             protocol secret method over HTTP.
@@ -18658,8 +26045,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.resources.MeasurementProtocolSecret:
@@ -18671,6 +26060,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseUpdateMeasurementProtocolSecret._get_http_options()
             )
+
             (
                 request,
                 metadata,
@@ -18689,6 +26079,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateMeasurementProtocolSecret._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.UpdateMeasurementProtocolSecret",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "UpdateMeasurementProtocolSecret",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AnalyticsAdminServiceRestTransport._UpdateMeasurementProtocolSecret._get_response(
@@ -18711,7 +26128,31 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = resources.MeasurementProtocolSecret.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_measurement_protocol_secret(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.MeasurementProtocolSecret.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.update_measurement_protocol_secret",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "UpdateMeasurementProtocolSecret",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateProperty(
@@ -18750,7 +26191,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.Property:
             r"""Call the update property method over HTTP.
 
@@ -18761,8 +26202,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.Property:
@@ -18774,6 +26217,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseUpdateProperty._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_property(request, metadata)
             transcoded_request = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateProperty._get_transcoded_request(
                 http_options, request
@@ -18787,6 +26231,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateProperty._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.UpdateProperty",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "UpdateProperty",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AnalyticsAdminServiceRestTransport._UpdateProperty._get_response(
@@ -18809,7 +26280,29 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = resources.Property.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_property(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.Property.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.update_property",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "UpdateProperty",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateSearchAds360Link(
@@ -18848,7 +26341,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.SearchAds360Link:
             r"""Call the update search ads360 link method over HTTP.
 
@@ -18859,8 +26352,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.SearchAds360Link:
@@ -18872,6 +26367,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseUpdateSearchAds360Link._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_search_ads360_link(
                 request, metadata
             )
@@ -18887,6 +26383,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateSearchAds360Link._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.UpdateSearchAds360Link",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "UpdateSearchAds360Link",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AnalyticsAdminServiceRestTransport._UpdateSearchAds360Link._get_response(
@@ -18909,7 +26432,29 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = resources.SearchAds360Link.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_search_ads360_link(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.SearchAds360Link.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.update_search_ads360_link",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "UpdateSearchAds360Link",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateSKAdNetworkConversionValueSchema(
@@ -18950,7 +26495,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.SKAdNetworkConversionValueSchema:
             r"""Call the update sk ad network
             conversion value schema method over HTTP.
@@ -18963,8 +26508,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.resources.SKAdNetworkConversionValueSchema:
@@ -18976,6 +26523,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseUpdateSKAdNetworkConversionValueSchema._get_http_options()
             )
+
             (
                 request,
                 metadata,
@@ -18994,6 +26542,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateSKAdNetworkConversionValueSchema._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.UpdateSKAdNetworkConversionValueSchema",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "UpdateSKAdNetworkConversionValueSchema",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AnalyticsAdminServiceRestTransport._UpdateSKAdNetworkConversionValueSchema._get_response(
@@ -19016,9 +26591,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = resources.SKAdNetworkConversionValueSchema.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_sk_ad_network_conversion_value_schema(
                 resp
             )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        resources.SKAdNetworkConversionValueSchema.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.update_sk_ad_network_conversion_value_schema",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "UpdateSKAdNetworkConversionValueSchema",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateSubpropertyEventFilter(
@@ -19059,7 +26658,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gaa_subproperty_event_filter.SubpropertyEventFilter:
             r"""Call the update subproperty event
             filter method over HTTP.
@@ -19071,8 +26670,10 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.gaa_subproperty_event_filter.SubpropertyEventFilter:
@@ -19084,6 +26685,7 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             http_options = (
                 _BaseAnalyticsAdminServiceRestTransport._BaseUpdateSubpropertyEventFilter._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_subproperty_event_filter(
                 request, metadata
             )
@@ -19099,6 +26701,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             query_params = _BaseAnalyticsAdminServiceRestTransport._BaseUpdateSubpropertyEventFilter._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.UpdateSubpropertyEventFilter",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "UpdateSubpropertyEventFilter",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AnalyticsAdminServiceRestTransport._UpdateSubpropertyEventFilter._get_response(
@@ -19121,7 +26750,33 @@ class AnalyticsAdminServiceRestTransport(_BaseAnalyticsAdminServiceRestTransport
             pb_resp = gaa_subproperty_event_filter.SubpropertyEventFilter.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_subproperty_event_filter(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        gaa_subproperty_event_filter.SubpropertyEventFilter.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.analytics.admin_v1alpha.AnalyticsAdminServiceClient.update_subproperty_event_filter",
+                    extra={
+                        "serviceName": "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "rpcName": "UpdateSubpropertyEventFilter",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property

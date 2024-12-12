@@ -30931,6 +30931,7 @@ def test_list_private_clouds_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_private_clouds(request)
 
@@ -30986,6 +30987,7 @@ def test_list_private_clouds_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_private_clouds(**mock_args)
 
@@ -31182,6 +31184,7 @@ def test_get_private_cloud_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_private_cloud(request)
 
@@ -31229,6 +31232,7 @@ def test_get_private_cloud_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_private_cloud(**mock_args)
 
@@ -31381,6 +31385,7 @@ def test_create_private_cloud_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_private_cloud(request)
 
@@ -31447,6 +31452,7 @@ def test_create_private_cloud_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_private_cloud(**mock_args)
 
@@ -31588,6 +31594,7 @@ def test_update_private_cloud_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_private_cloud(request)
 
@@ -31649,6 +31656,7 @@ def test_update_private_cloud_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_private_cloud(**mock_args)
 
@@ -31794,6 +31802,7 @@ def test_delete_private_cloud_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_private_cloud(request)
 
@@ -31848,6 +31857,7 @@ def test_delete_private_cloud_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_private_cloud(**mock_args)
 
@@ -31986,6 +31996,7 @@ def test_undelete_private_cloud_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.undelete_private_cloud(request)
 
@@ -32031,6 +32042,7 @@ def test_undelete_private_cloud_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.undelete_private_cloud(**mock_args)
 
@@ -32171,6 +32183,7 @@ def test_list_clusters_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_clusters(request)
 
@@ -32228,6 +32241,7 @@ def test_list_clusters_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_clusters(**mock_args)
 
@@ -32420,6 +32434,7 @@ def test_get_cluster_rest_required_fields(request_type=vmwareengine.GetClusterRe
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_cluster(request)
 
@@ -32467,6 +32482,7 @@ def test_get_cluster_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_cluster(**mock_args)
 
@@ -32615,6 +32631,7 @@ def test_create_cluster_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_cluster(request)
 
@@ -32683,6 +32700,7 @@ def test_create_cluster_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_cluster(**mock_args)
 
@@ -32821,6 +32839,7 @@ def test_update_cluster_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_cluster(request)
 
@@ -32883,6 +32902,7 @@ def test_update_cluster_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_cluster(**mock_args)
 
@@ -33018,6 +33038,7 @@ def test_delete_cluster_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_cluster(request)
 
@@ -33063,6 +33084,7 @@ def test_delete_cluster_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_cluster(**mock_args)
 
@@ -33199,6 +33221,7 @@ def test_list_nodes_rest_required_fields(request_type=vmwareengine.ListNodesRequ
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_nodes(request)
 
@@ -33254,6 +33277,7 @@ def test_list_nodes_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_nodes(**mock_args)
 
@@ -33446,6 +33470,7 @@ def test_get_node_rest_required_fields(request_type=vmwareengine.GetNodeRequest)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_node(request)
 
@@ -33493,6 +33518,7 @@ def test_get_node_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_node(**mock_args)
 
@@ -33638,6 +33664,7 @@ def test_list_external_addresses_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_external_addresses(request)
 
@@ -33695,6 +33722,7 @@ def test_list_external_addresses_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_external_addresses(**mock_args)
 
@@ -33911,6 +33939,7 @@ def test_fetch_network_policy_external_addresses_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.fetch_network_policy_external_addresses(request)
 
@@ -33970,6 +33999,7 @@ def test_fetch_network_policy_external_addresses_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.fetch_network_policy_external_addresses(**mock_args)
 
@@ -34177,6 +34207,7 @@ def test_get_external_address_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_external_address(request)
 
@@ -34224,6 +34255,7 @@ def test_get_external_address_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_external_address(**mock_args)
 
@@ -34376,6 +34408,7 @@ def test_create_external_address_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_external_address(request)
 
@@ -34443,6 +34476,7 @@ def test_create_external_address_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_external_address(**mock_args)
 
@@ -34585,6 +34619,7 @@ def test_update_external_address_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_external_address(request)
 
@@ -34646,6 +34681,7 @@ def test_update_external_address_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_external_address(**mock_args)
 
@@ -34786,6 +34822,7 @@ def test_delete_external_address_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_external_address(request)
 
@@ -34831,6 +34868,7 @@ def test_delete_external_address_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_external_address(**mock_args)
 
@@ -34969,6 +35007,7 @@ def test_list_subnets_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_subnets(request)
 
@@ -35024,6 +35063,7 @@ def test_list_subnets_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_subnets(**mock_args)
 
@@ -35216,6 +35256,7 @@ def test_get_subnet_rest_required_fields(request_type=vmwareengine.GetSubnetRequ
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_subnet(request)
 
@@ -35263,6 +35304,7 @@ def test_get_subnet_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_subnet(**mock_args)
 
@@ -35393,6 +35435,7 @@ def test_update_subnet_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_subnet(request)
 
@@ -35449,6 +35492,7 @@ def test_update_subnet_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_subnet(**mock_args)
 
@@ -35595,6 +35639,7 @@ def test_list_external_access_rules_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_external_access_rules(request)
 
@@ -35652,6 +35697,7 @@ def test_list_external_access_rules_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_external_access_rules(**mock_args)
 
@@ -35855,6 +35901,7 @@ def test_get_external_access_rule_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_external_access_rule(request)
 
@@ -35902,6 +35949,7 @@ def test_get_external_access_rule_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_external_access_rule(**mock_args)
 
@@ -36057,6 +36105,7 @@ def test_create_external_access_rule_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_external_access_rule(request)
 
@@ -36126,6 +36175,7 @@ def test_create_external_access_rule_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_external_access_rule(**mock_args)
 
@@ -36270,6 +36320,7 @@ def test_update_external_access_rule_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_external_access_rule(request)
 
@@ -36333,6 +36384,7 @@ def test_update_external_access_rule_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_external_access_rule(**mock_args)
 
@@ -36475,6 +36527,7 @@ def test_delete_external_access_rule_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_external_access_rule(request)
 
@@ -36520,6 +36573,7 @@ def test_delete_external_access_rule_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_external_access_rule(**mock_args)
 
@@ -36664,6 +36718,7 @@ def test_list_logging_servers_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_logging_servers(request)
 
@@ -36721,6 +36776,7 @@ def test_list_logging_servers_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_logging_servers(**mock_args)
 
@@ -36921,6 +36977,7 @@ def test_get_logging_server_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_logging_server(request)
 
@@ -36968,6 +37025,7 @@ def test_get_logging_server_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_logging_server(**mock_args)
 
@@ -37120,6 +37178,7 @@ def test_create_logging_server_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_logging_server(request)
 
@@ -37187,6 +37246,7 @@ def test_create_logging_server_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_logging_server(**mock_args)
 
@@ -37329,6 +37389,7 @@ def test_update_logging_server_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_logging_server(request)
 
@@ -37390,6 +37451,7 @@ def test_update_logging_server_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_logging_server(**mock_args)
 
@@ -37530,6 +37592,7 @@ def test_delete_logging_server_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_logging_server(request)
 
@@ -37575,6 +37638,7 @@ def test_delete_logging_server_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_logging_server(**mock_args)
 
@@ -37714,6 +37778,7 @@ def test_list_node_types_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_node_types(request)
 
@@ -37768,6 +37833,7 @@ def test_list_node_types_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_node_types(**mock_args)
 
@@ -37961,6 +38027,7 @@ def test_get_node_type_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_node_type(request)
 
@@ -38008,6 +38075,7 @@ def test_get_node_type_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_node_type(**mock_args)
 
@@ -38142,6 +38210,7 @@ def test_show_nsx_credentials_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.show_nsx_credentials(request)
 
@@ -38189,6 +38258,7 @@ def test_show_nsx_credentials_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.show_nsx_credentials(**mock_args)
 
@@ -38327,6 +38397,7 @@ def test_show_vcenter_credentials_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.show_vcenter_credentials(request)
 
@@ -38374,6 +38445,7 @@ def test_show_vcenter_credentials_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.show_vcenter_credentials(**mock_args)
 
@@ -38512,6 +38584,7 @@ def test_reset_nsx_credentials_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.reset_nsx_credentials(request)
 
@@ -38557,6 +38630,7 @@ def test_reset_nsx_credentials_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.reset_nsx_credentials(**mock_args)
 
@@ -38695,6 +38769,7 @@ def test_reset_vcenter_credentials_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.reset_vcenter_credentials(request)
 
@@ -38740,6 +38815,7 @@ def test_reset_vcenter_credentials_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.reset_vcenter_credentials(**mock_args)
 
@@ -38875,6 +38951,7 @@ def test_get_dns_forwarding_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_dns_forwarding(request)
 
@@ -38922,6 +38999,7 @@ def test_get_dns_forwarding_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_dns_forwarding(**mock_args)
 
@@ -39062,6 +39140,7 @@ def test_update_dns_forwarding_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_dns_forwarding(request)
 
@@ -39123,6 +39202,7 @@ def test_update_dns_forwarding_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_dns_forwarding(**mock_args)
 
@@ -39259,6 +39339,7 @@ def test_get_network_peering_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_network_peering(request)
 
@@ -39306,6 +39387,7 @@ def test_get_network_peering_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_network_peering(**mock_args)
 
@@ -39451,6 +39533,7 @@ def test_list_network_peerings_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_network_peerings(request)
 
@@ -39506,6 +39589,7 @@ def test_list_network_peerings_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_network_peerings(**mock_args)
 
@@ -39723,6 +39807,7 @@ def test_create_network_peering_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_network_peering(request)
 
@@ -39788,6 +39873,7 @@ def test_create_network_peering_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_network_peering(**mock_args)
 
@@ -39929,6 +40015,7 @@ def test_delete_network_peering_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_network_peering(request)
 
@@ -39974,6 +40061,7 @@ def test_delete_network_peering_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_network_peering(**mock_args)
 
@@ -40114,6 +40202,7 @@ def test_update_network_peering_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_network_peering(request)
 
@@ -40175,6 +40264,7 @@ def test_update_network_peering_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_network_peering(**mock_args)
 
@@ -40319,6 +40409,7 @@ def test_list_peering_routes_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_peering_routes(request)
 
@@ -40375,6 +40466,7 @@ def test_list_peering_routes_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_peering_routes(**mock_args)
 
@@ -40594,6 +40686,7 @@ def test_create_hcx_activation_key_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_hcx_activation_key(request)
 
@@ -40663,6 +40756,7 @@ def test_create_hcx_activation_key_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_hcx_activation_key(**mock_args)
 
@@ -40810,6 +40904,7 @@ def test_list_hcx_activation_keys_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_hcx_activation_keys(request)
 
@@ -40865,6 +40960,7 @@ def test_list_hcx_activation_keys_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_hcx_activation_keys(**mock_args)
 
@@ -41068,6 +41164,7 @@ def test_get_hcx_activation_key_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_hcx_activation_key(request)
 
@@ -41115,6 +41212,7 @@ def test_get_hcx_activation_key_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_hcx_activation_key(**mock_args)
 
@@ -41250,6 +41348,7 @@ def test_get_network_policy_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_network_policy(request)
 
@@ -41297,6 +41396,7 @@ def test_get_network_policy_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_network_policy(**mock_args)
 
@@ -41442,6 +41542,7 @@ def test_list_network_policies_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_network_policies(request)
 
@@ -41497,6 +41598,7 @@ def test_list_network_policies_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_network_policies(**mock_args)
 
@@ -41712,6 +41814,7 @@ def test_create_network_policy_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_network_policy(request)
 
@@ -41777,6 +41880,7 @@ def test_create_network_policy_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_network_policy(**mock_args)
 
@@ -41919,6 +42023,7 @@ def test_update_network_policy_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_network_policy(request)
 
@@ -41980,6 +42085,7 @@ def test_update_network_policy_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_network_policy(**mock_args)
 
@@ -42120,6 +42226,7 @@ def test_delete_network_policy_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_network_policy(request)
 
@@ -42165,6 +42272,7 @@ def test_delete_network_policy_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_network_policy(**mock_args)
 
@@ -42312,6 +42420,7 @@ def test_list_management_dns_zone_bindings_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_management_dns_zone_bindings(request)
 
@@ -42373,6 +42482,7 @@ def test_list_management_dns_zone_bindings_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_management_dns_zone_bindings(**mock_args)
 
@@ -42584,6 +42694,7 @@ def test_get_management_dns_zone_binding_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_management_dns_zone_binding(request)
 
@@ -42633,6 +42744,7 @@ def test_get_management_dns_zone_binding_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_management_dns_zone_binding(**mock_args)
 
@@ -42793,6 +42905,7 @@ def test_create_management_dns_zone_binding_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_management_dns_zone_binding(request)
 
@@ -42864,6 +42977,7 @@ def test_create_management_dns_zone_binding_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_management_dns_zone_binding(**mock_args)
 
@@ -43010,6 +43124,7 @@ def test_update_management_dns_zone_binding_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_management_dns_zone_binding(request)
 
@@ -43075,6 +43190,7 @@ def test_update_management_dns_zone_binding_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_management_dns_zone_binding(**mock_args)
 
@@ -43219,6 +43335,7 @@ def test_delete_management_dns_zone_binding_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_management_dns_zone_binding(request)
 
@@ -43266,6 +43383,7 @@ def test_delete_management_dns_zone_binding_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_management_dns_zone_binding(**mock_args)
 
@@ -43406,6 +43524,7 @@ def test_repair_management_dns_zone_binding_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.repair_management_dns_zone_binding(request)
 
@@ -43453,6 +43572,7 @@ def test_repair_management_dns_zone_binding_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.repair_management_dns_zone_binding(**mock_args)
 
@@ -43612,6 +43732,7 @@ def test_create_vmware_engine_network_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_vmware_engine_network(request)
 
@@ -43679,6 +43800,7 @@ def test_create_vmware_engine_network_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_vmware_engine_network(**mock_args)
 
@@ -43823,6 +43945,7 @@ def test_update_vmware_engine_network_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_vmware_engine_network(request)
 
@@ -43886,6 +44009,7 @@ def test_update_vmware_engine_network_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_vmware_engine_network(**mock_args)
 
@@ -44033,6 +44157,7 @@ def test_delete_vmware_engine_network_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_vmware_engine_network(request)
 
@@ -44086,6 +44211,7 @@ def test_delete_vmware_engine_network_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_vmware_engine_network(**mock_args)
 
@@ -44222,6 +44348,7 @@ def test_get_vmware_engine_network_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_vmware_engine_network(request)
 
@@ -44269,6 +44396,7 @@ def test_get_vmware_engine_network_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_vmware_engine_network(**mock_args)
 
@@ -44416,6 +44544,7 @@ def test_list_vmware_engine_networks_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_vmware_engine_networks(request)
 
@@ -44471,6 +44600,7 @@ def test_list_vmware_engine_networks_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_vmware_engine_networks(**mock_args)
 
@@ -44691,6 +44821,7 @@ def test_create_private_connection_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_private_connection(request)
 
@@ -44758,6 +44889,7 @@ def test_create_private_connection_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_private_connection(**mock_args)
 
@@ -44898,6 +45030,7 @@ def test_get_private_connection_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_private_connection(request)
 
@@ -44945,6 +45078,7 @@ def test_get_private_connection_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_private_connection(**mock_args)
 
@@ -45090,6 +45224,7 @@ def test_list_private_connections_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_private_connections(request)
 
@@ -45145,6 +45280,7 @@ def test_list_private_connections_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_private_connections(**mock_args)
 
@@ -45350,6 +45486,7 @@ def test_update_private_connection_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_private_connection(request)
 
@@ -45413,6 +45550,7 @@ def test_update_private_connection_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_private_connection(**mock_args)
 
@@ -45555,6 +45693,7 @@ def test_delete_private_connection_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_private_connection(request)
 
@@ -45600,6 +45739,7 @@ def test_delete_private_connection_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_private_connection(**mock_args)
 
@@ -45749,6 +45889,7 @@ def test_list_private_connection_peering_routes_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_private_connection_peering_routes(request)
 
@@ -45808,6 +45949,7 @@ def test_list_private_connection_peering_routes_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_private_connection_peering_routes(**mock_args)
 
@@ -46016,6 +46158,7 @@ def test_grant_dns_bind_permission_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.grant_dns_bind_permission(request)
 
@@ -46070,6 +46213,7 @@ def test_grant_dns_bind_permission_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.grant_dns_bind_permission(**mock_args)
 
@@ -46207,6 +46351,7 @@ def test_get_dns_bind_permission_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_dns_bind_permission(request)
 
@@ -46254,6 +46399,7 @@ def test_get_dns_bind_permission_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_dns_bind_permission(**mock_args)
 
@@ -46392,6 +46538,7 @@ def test_revoke_dns_bind_permission_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.revoke_dns_bind_permission(request)
 
@@ -46446,6 +46593,7 @@ def test_revoke_dns_bind_permission_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.revoke_dns_bind_permission(**mock_args)
 
@@ -50448,6 +50596,7 @@ def test_list_private_clouds_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_private_clouds(request)
 
 
@@ -50484,6 +50633,7 @@ def test_list_private_clouds_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_private_clouds(request)
 
     # Establish that the response is the type that we expect.
@@ -50525,6 +50675,7 @@ def test_list_private_clouds_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = vmwareengine.ListPrivateCloudsResponse.to_json(
             vmwareengine.ListPrivateCloudsResponse()
         )
@@ -50571,6 +50722,7 @@ def test_get_private_cloud_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_private_cloud(request)
 
 
@@ -50610,6 +50762,7 @@ def test_get_private_cloud_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_private_cloud(request)
 
     # Establish that the response is the type that we expect.
@@ -50654,6 +50807,7 @@ def test_get_private_cloud_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = vmwareengine_resources.PrivateCloud.to_json(
             vmwareengine_resources.PrivateCloud()
         )
@@ -50700,6 +50854,7 @@ def test_create_private_cloud_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_private_cloud(request)
 
 
@@ -50841,6 +50996,7 @@ def test_create_private_cloud_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_private_cloud(request)
 
     # Establish that the response is the type that we expect.
@@ -50882,6 +51038,7 @@ def test_create_private_cloud_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -50930,6 +51087,7 @@ def test_update_private_cloud_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_private_cloud(request)
 
 
@@ -51075,6 +51233,7 @@ def test_update_private_cloud_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_private_cloud(request)
 
     # Establish that the response is the type that we expect.
@@ -51116,6 +51275,7 @@ def test_update_private_cloud_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -51160,6 +51320,7 @@ def test_delete_private_cloud_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_private_cloud(request)
 
 
@@ -51190,6 +51351,7 @@ def test_delete_private_cloud_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_private_cloud(request)
 
     # Establish that the response is the type that we expect.
@@ -51231,6 +51393,7 @@ def test_delete_private_cloud_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -51275,6 +51438,7 @@ def test_undelete_private_cloud_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.undelete_private_cloud(request)
 
 
@@ -51305,6 +51469,7 @@ def test_undelete_private_cloud_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.undelete_private_cloud(request)
 
     # Establish that the response is the type that we expect.
@@ -51346,6 +51511,7 @@ def test_undelete_private_cloud_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -51390,6 +51556,7 @@ def test_list_clusters_rest_bad_request(request_type=vmwareengine.ListClustersRe
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_clusters(request)
 
 
@@ -51428,6 +51595,7 @@ def test_list_clusters_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_clusters(request)
 
     # Establish that the response is the type that we expect.
@@ -51469,6 +51637,7 @@ def test_list_clusters_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = vmwareengine.ListClustersResponse.to_json(
             vmwareengine.ListClustersResponse()
         )
@@ -51515,6 +51684,7 @@ def test_get_cluster_rest_bad_request(request_type=vmwareengine.GetClusterReques
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_cluster(request)
 
 
@@ -51555,6 +51725,7 @@ def test_get_cluster_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_cluster(request)
 
     # Establish that the response is the type that we expect.
@@ -51596,6 +51767,7 @@ def test_get_cluster_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = vmwareengine_resources.Cluster.to_json(
             vmwareengine_resources.Cluster()
         )
@@ -51644,6 +51816,7 @@ def test_create_cluster_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_cluster(request)
 
 
@@ -51762,6 +51935,7 @@ def test_create_cluster_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_cluster(request)
 
     # Establish that the response is the type that we expect.
@@ -51803,6 +51977,7 @@ def test_create_cluster_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -51851,6 +52026,7 @@ def test_update_cluster_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_cluster(request)
 
 
@@ -51971,6 +52147,7 @@ def test_update_cluster_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_cluster(request)
 
     # Establish that the response is the type that we expect.
@@ -52012,6 +52189,7 @@ def test_update_cluster_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -52058,6 +52236,7 @@ def test_delete_cluster_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_cluster(request)
 
 
@@ -52090,6 +52269,7 @@ def test_delete_cluster_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_cluster(request)
 
     # Establish that the response is the type that we expect.
@@ -52131,6 +52311,7 @@ def test_delete_cluster_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -52175,6 +52356,7 @@ def test_list_nodes_rest_bad_request(request_type=vmwareengine.ListNodesRequest)
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_nodes(request)
 
 
@@ -52212,6 +52394,7 @@ def test_list_nodes_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_nodes(request)
 
     # Establish that the response is the type that we expect.
@@ -52250,6 +52433,7 @@ def test_list_nodes_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = vmwareengine.ListNodesResponse.to_json(
             vmwareengine.ListNodesResponse()
         )
@@ -52296,6 +52480,7 @@ def test_get_node_rest_bad_request(request_type=vmwareengine.GetNodeRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_node(request)
 
 
@@ -52339,6 +52524,7 @@ def test_get_node_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_node(request)
 
     # Establish that the response is the type that we expect.
@@ -52383,6 +52569,7 @@ def test_get_node_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = vmwareengine_resources.Node.to_json(
             vmwareengine_resources.Node()
         )
@@ -52431,6 +52618,7 @@ def test_list_external_addresses_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_external_addresses(request)
 
 
@@ -52469,6 +52657,7 @@ def test_list_external_addresses_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_external_addresses(request)
 
     # Establish that the response is the type that we expect.
@@ -52510,6 +52699,7 @@ def test_list_external_addresses_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = vmwareengine.ListExternalAddressesResponse.to_json(
             vmwareengine.ListExternalAddressesResponse()
         )
@@ -52558,6 +52748,7 @@ def test_fetch_network_policy_external_addresses_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.fetch_network_policy_external_addresses(request)
 
 
@@ -52597,6 +52788,7 @@ def test_fetch_network_policy_external_addresses_rest_call_success(request_type)
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.fetch_network_policy_external_addresses(request)
 
     # Establish that the response is the type that we expect.
@@ -52639,6 +52831,7 @@ def test_fetch_network_policy_external_addresses_rest_interceptors(null_intercep
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = vmwareengine.FetchNetworkPolicyExternalAddressesResponse.to_json(
             vmwareengine.FetchNetworkPolicyExternalAddressesResponse()
         )
@@ -52687,6 +52880,7 @@ def test_get_external_address_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_external_address(request)
 
 
@@ -52729,6 +52923,7 @@ def test_get_external_address_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_external_address(request)
 
     # Establish that the response is the type that we expect.
@@ -52774,6 +52969,7 @@ def test_get_external_address_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = vmwareengine_resources.ExternalAddress.to_json(
             vmwareengine_resources.ExternalAddress()
         )
@@ -52822,6 +53018,7 @@ def test_create_external_address_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_external_address(request)
 
 
@@ -52933,6 +53130,7 @@ def test_create_external_address_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_external_address(request)
 
     # Establish that the response is the type that we expect.
@@ -52974,6 +53172,7 @@ def test_create_external_address_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -53022,6 +53221,7 @@ def test_update_external_address_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_external_address(request)
 
 
@@ -53135,6 +53335,7 @@ def test_update_external_address_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_external_address(request)
 
     # Establish that the response is the type that we expect.
@@ -53176,6 +53377,7 @@ def test_update_external_address_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -53222,6 +53424,7 @@ def test_delete_external_address_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_external_address(request)
 
 
@@ -53254,6 +53457,7 @@ def test_delete_external_address_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_external_address(request)
 
     # Establish that the response is the type that we expect.
@@ -53295,6 +53499,7 @@ def test_delete_external_address_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -53339,6 +53544,7 @@ def test_list_subnets_rest_bad_request(request_type=vmwareengine.ListSubnetsRequ
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_subnets(request)
 
 
@@ -53377,6 +53583,7 @@ def test_list_subnets_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_subnets(request)
 
     # Establish that the response is the type that we expect.
@@ -53418,6 +53625,7 @@ def test_list_subnets_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = vmwareengine.ListSubnetsResponse.to_json(
             vmwareengine.ListSubnetsResponse()
         )
@@ -53464,6 +53672,7 @@ def test_get_subnet_rest_bad_request(request_type=vmwareengine.GetSubnetRequest)
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_subnet(request)
 
 
@@ -53506,6 +53715,7 @@ def test_get_subnet_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_subnet(request)
 
     # Establish that the response is the type that we expect.
@@ -53549,6 +53759,7 @@ def test_get_subnet_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = vmwareengine_resources.Subnet.to_json(
             vmwareengine_resources.Subnet()
         )
@@ -53597,6 +53808,7 @@ def test_update_subnet_rest_bad_request(request_type=vmwareengine.UpdateSubnetRe
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_subnet(request)
 
 
@@ -53706,6 +53918,7 @@ def test_update_subnet_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_subnet(request)
 
     # Establish that the response is the type that we expect.
@@ -53747,6 +53960,7 @@ def test_update_subnet_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -53793,6 +54007,7 @@ def test_list_external_access_rules_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_external_access_rules(request)
 
 
@@ -53831,6 +54046,7 @@ def test_list_external_access_rules_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_external_access_rules(request)
 
     # Establish that the response is the type that we expect.
@@ -53872,6 +54088,7 @@ def test_list_external_access_rules_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = vmwareengine.ListExternalAccessRulesResponse.to_json(
             vmwareengine.ListExternalAccessRulesResponse()
         )
@@ -53920,6 +54137,7 @@ def test_get_external_access_rule_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_external_access_rule(request)
 
 
@@ -53965,6 +54183,7 @@ def test_get_external_access_rule_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_external_access_rule(request)
 
     # Establish that the response is the type that we expect.
@@ -54013,6 +54232,7 @@ def test_get_external_access_rule_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = vmwareengine_resources.ExternalAccessRule.to_json(
             vmwareengine_resources.ExternalAccessRule()
         )
@@ -54061,6 +54281,7 @@ def test_create_external_access_rule_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_external_access_rule(request)
 
 
@@ -54185,6 +54406,7 @@ def test_create_external_access_rule_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_external_access_rule(request)
 
     # Establish that the response is the type that we expect.
@@ -54226,6 +54448,7 @@ def test_create_external_access_rule_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -54274,6 +54497,7 @@ def test_update_external_access_rule_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_external_access_rule(request)
 
 
@@ -54400,6 +54624,7 @@ def test_update_external_access_rule_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_external_access_rule(request)
 
     # Establish that the response is the type that we expect.
@@ -54441,6 +54666,7 @@ def test_update_external_access_rule_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -54487,6 +54713,7 @@ def test_delete_external_access_rule_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_external_access_rule(request)
 
 
@@ -54519,6 +54746,7 @@ def test_delete_external_access_rule_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_external_access_rule(request)
 
     # Establish that the response is the type that we expect.
@@ -54560,6 +54788,7 @@ def test_delete_external_access_rule_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -54606,6 +54835,7 @@ def test_list_logging_servers_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_logging_servers(request)
 
 
@@ -54644,6 +54874,7 @@ def test_list_logging_servers_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_logging_servers(request)
 
     # Establish that the response is the type that we expect.
@@ -54685,6 +54916,7 @@ def test_list_logging_servers_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = vmwareengine.ListLoggingServersResponse.to_json(
             vmwareengine.ListLoggingServersResponse()
         )
@@ -54733,6 +54965,7 @@ def test_get_logging_server_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_logging_server(request)
 
 
@@ -54775,6 +55008,7 @@ def test_get_logging_server_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_logging_server(request)
 
     # Establish that the response is the type that we expect.
@@ -54820,6 +55054,7 @@ def test_get_logging_server_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = vmwareengine_resources.LoggingServer.to_json(
             vmwareengine_resources.LoggingServer()
         )
@@ -54868,6 +55103,7 @@ def test_create_logging_server_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_logging_server(request)
 
 
@@ -54977,6 +55213,7 @@ def test_create_logging_server_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_logging_server(request)
 
     # Establish that the response is the type that we expect.
@@ -55018,6 +55255,7 @@ def test_create_logging_server_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -55066,6 +55304,7 @@ def test_update_logging_server_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_logging_server(request)
 
 
@@ -55177,6 +55416,7 @@ def test_update_logging_server_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_logging_server(request)
 
     # Establish that the response is the type that we expect.
@@ -55218,6 +55458,7 @@ def test_update_logging_server_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -55264,6 +55505,7 @@ def test_delete_logging_server_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_logging_server(request)
 
 
@@ -55296,6 +55538,7 @@ def test_delete_logging_server_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_logging_server(request)
 
     # Establish that the response is the type that we expect.
@@ -55337,6 +55580,7 @@ def test_delete_logging_server_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -55381,6 +55625,7 @@ def test_list_node_types_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_node_types(request)
 
 
@@ -55417,6 +55662,7 @@ def test_list_node_types_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_node_types(request)
 
     # Establish that the response is the type that we expect.
@@ -55458,6 +55704,7 @@ def test_list_node_types_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = vmwareengine.ListNodeTypesResponse.to_json(
             vmwareengine.ListNodeTypesResponse()
         )
@@ -55502,6 +55749,7 @@ def test_get_node_type_rest_bad_request(request_type=vmwareengine.GetNodeTypeReq
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_node_type(request)
 
 
@@ -55549,6 +55797,7 @@ def test_get_node_type_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_node_type(request)
 
     # Establish that the response is the type that we expect.
@@ -55601,6 +55850,7 @@ def test_get_node_type_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = vmwareengine_resources.NodeType.to_json(
             vmwareengine_resources.NodeType()
         )
@@ -55649,6 +55899,7 @@ def test_show_nsx_credentials_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.show_nsx_credentials(request)
 
 
@@ -55687,6 +55938,7 @@ def test_show_nsx_credentials_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.show_nsx_credentials(request)
 
     # Establish that the response is the type that we expect.
@@ -55728,6 +55980,7 @@ def test_show_nsx_credentials_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = vmwareengine_resources.Credentials.to_json(
             vmwareengine_resources.Credentials()
         )
@@ -55776,6 +56029,7 @@ def test_show_vcenter_credentials_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.show_vcenter_credentials(request)
 
 
@@ -55814,6 +56068,7 @@ def test_show_vcenter_credentials_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.show_vcenter_credentials(request)
 
     # Establish that the response is the type that we expect.
@@ -55855,6 +56110,7 @@ def test_show_vcenter_credentials_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = vmwareengine_resources.Credentials.to_json(
             vmwareengine_resources.Credentials()
         )
@@ -55903,6 +56159,7 @@ def test_reset_nsx_credentials_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.reset_nsx_credentials(request)
 
 
@@ -55935,6 +56192,7 @@ def test_reset_nsx_credentials_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.reset_nsx_credentials(request)
 
     # Establish that the response is the type that we expect.
@@ -55976,6 +56234,7 @@ def test_reset_nsx_credentials_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -56022,6 +56281,7 @@ def test_reset_vcenter_credentials_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.reset_vcenter_credentials(request)
 
 
@@ -56054,6 +56314,7 @@ def test_reset_vcenter_credentials_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.reset_vcenter_credentials(request)
 
     # Establish that the response is the type that we expect.
@@ -56095,6 +56356,7 @@ def test_reset_vcenter_credentials_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -56141,6 +56403,7 @@ def test_get_dns_forwarding_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_dns_forwarding(request)
 
 
@@ -56178,6 +56441,7 @@ def test_get_dns_forwarding_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_dns_forwarding(request)
 
     # Establish that the response is the type that we expect.
@@ -56218,6 +56482,7 @@ def test_get_dns_forwarding_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = vmwareengine_resources.DnsForwarding.to_json(
             vmwareengine_resources.DnsForwarding()
         )
@@ -56268,6 +56533,7 @@ def test_update_dns_forwarding_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_dns_forwarding(request)
 
 
@@ -56380,6 +56646,7 @@ def test_update_dns_forwarding_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_dns_forwarding(request)
 
     # Establish that the response is the type that we expect.
@@ -56421,6 +56688,7 @@ def test_update_dns_forwarding_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -56467,6 +56735,7 @@ def test_get_network_peering_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_network_peering(request)
 
 
@@ -56517,6 +56786,7 @@ def test_get_network_peering_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_network_peering(request)
 
     # Establish that the response is the type that we expect.
@@ -56573,6 +56843,7 @@ def test_get_network_peering_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = vmwareengine_resources.NetworkPeering.to_json(
             vmwareengine_resources.NetworkPeering()
         )
@@ -56619,6 +56890,7 @@ def test_list_network_peerings_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_network_peerings(request)
 
 
@@ -56655,6 +56927,7 @@ def test_list_network_peerings_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_network_peerings(request)
 
     # Establish that the response is the type that we expect.
@@ -56696,6 +56969,7 @@ def test_list_network_peerings_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = vmwareengine.ListNetworkPeeringsResponse.to_json(
             vmwareengine.ListNetworkPeeringsResponse()
         )
@@ -56742,6 +57016,7 @@ def test_create_network_peering_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_network_peering(request)
 
 
@@ -56857,6 +57132,7 @@ def test_create_network_peering_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_network_peering(request)
 
     # Establish that the response is the type that we expect.
@@ -56898,6 +57174,7 @@ def test_create_network_peering_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -56944,6 +57221,7 @@ def test_delete_network_peering_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_network_peering(request)
 
 
@@ -56976,6 +57254,7 @@ def test_delete_network_peering_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_network_peering(request)
 
     # Establish that the response is the type that we expect.
@@ -57017,6 +57296,7 @@ def test_delete_network_peering_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -57065,6 +57345,7 @@ def test_update_network_peering_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_network_peering(request)
 
 
@@ -57184,6 +57465,7 @@ def test_update_network_peering_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_network_peering(request)
 
     # Establish that the response is the type that we expect.
@@ -57225,6 +57507,7 @@ def test_update_network_peering_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -57271,6 +57554,7 @@ def test_list_peering_routes_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_peering_routes(request)
 
 
@@ -57308,6 +57592,7 @@ def test_list_peering_routes_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_peering_routes(request)
 
     # Establish that the response is the type that we expect.
@@ -57348,6 +57633,7 @@ def test_list_peering_routes_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = vmwareengine.ListPeeringRoutesResponse.to_json(
             vmwareengine.ListPeeringRoutesResponse()
         )
@@ -57396,6 +57682,7 @@ def test_create_hcx_activation_key_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_hcx_activation_key(request)
 
 
@@ -57504,6 +57791,7 @@ def test_create_hcx_activation_key_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_hcx_activation_key(request)
 
     # Establish that the response is the type that we expect.
@@ -57545,6 +57833,7 @@ def test_create_hcx_activation_key_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -57591,6 +57880,7 @@ def test_list_hcx_activation_keys_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_hcx_activation_keys(request)
 
 
@@ -57629,6 +57919,7 @@ def test_list_hcx_activation_keys_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_hcx_activation_keys(request)
 
     # Establish that the response is the type that we expect.
@@ -57670,6 +57961,7 @@ def test_list_hcx_activation_keys_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = vmwareengine.ListHcxActivationKeysResponse.to_json(
             vmwareengine.ListHcxActivationKeysResponse()
         )
@@ -57718,6 +58010,7 @@ def test_get_hcx_activation_key_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_hcx_activation_key(request)
 
 
@@ -57758,6 +58051,7 @@ def test_get_hcx_activation_key_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_hcx_activation_key(request)
 
     # Establish that the response is the type that we expect.
@@ -57801,6 +58095,7 @@ def test_get_hcx_activation_key_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = vmwareengine_resources.HcxActivationKey.to_json(
             vmwareengine_resources.HcxActivationKey()
         )
@@ -57849,6 +58144,7 @@ def test_get_network_policy_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_network_policy(request)
 
 
@@ -57891,6 +58187,7 @@ def test_get_network_policy_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_network_policy(request)
 
     # Establish that the response is the type that we expect.
@@ -57939,6 +58236,7 @@ def test_get_network_policy_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = vmwareengine_resources.NetworkPolicy.to_json(
             vmwareengine_resources.NetworkPolicy()
         )
@@ -57985,6 +58283,7 @@ def test_list_network_policies_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_network_policies(request)
 
 
@@ -58021,6 +58320,7 @@ def test_list_network_policies_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_network_policies(request)
 
     # Establish that the response is the type that we expect.
@@ -58062,6 +58362,7 @@ def test_list_network_policies_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = vmwareengine.ListNetworkPoliciesResponse.to_json(
             vmwareengine.ListNetworkPoliciesResponse()
         )
@@ -58108,6 +58409,7 @@ def test_create_network_policy_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_network_policy(request)
 
 
@@ -58217,6 +58519,7 @@ def test_create_network_policy_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_network_policy(request)
 
     # Establish that the response is the type that we expect.
@@ -58258,6 +58561,7 @@ def test_create_network_policy_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -58306,6 +58610,7 @@ def test_update_network_policy_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_network_policy(request)
 
 
@@ -58419,6 +58724,7 @@ def test_update_network_policy_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_network_policy(request)
 
     # Establish that the response is the type that we expect.
@@ -58460,6 +58766,7 @@ def test_update_network_policy_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -58506,6 +58813,7 @@ def test_delete_network_policy_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_network_policy(request)
 
 
@@ -58538,6 +58846,7 @@ def test_delete_network_policy_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_network_policy(request)
 
     # Establish that the response is the type that we expect.
@@ -58579,6 +58888,7 @@ def test_delete_network_policy_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -58625,6 +58935,7 @@ def test_list_management_dns_zone_bindings_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_management_dns_zone_bindings(request)
 
 
@@ -58665,6 +58976,7 @@ def test_list_management_dns_zone_bindings_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_management_dns_zone_bindings(request)
 
     # Establish that the response is the type that we expect.
@@ -58706,6 +59018,7 @@ def test_list_management_dns_zone_bindings_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = vmwareengine.ListManagementDnsZoneBindingsResponse.to_json(
             vmwareengine.ListManagementDnsZoneBindingsResponse()
         )
@@ -58754,6 +59067,7 @@ def test_get_management_dns_zone_binding_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_management_dns_zone_binding(request)
 
 
@@ -58795,6 +59109,7 @@ def test_get_management_dns_zone_binding_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_management_dns_zone_binding(request)
 
     # Establish that the response is the type that we expect.
@@ -58840,6 +59155,7 @@ def test_get_management_dns_zone_binding_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = vmwareengine_resources.ManagementDnsZoneBinding.to_json(
             vmwareengine_resources.ManagementDnsZoneBinding()
         )
@@ -58888,6 +59204,7 @@ def test_create_management_dns_zone_binding_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_management_dns_zone_binding(request)
 
 
@@ -59003,6 +59320,7 @@ def test_create_management_dns_zone_binding_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_management_dns_zone_binding(request)
 
     # Establish that the response is the type that we expect.
@@ -59045,6 +59363,7 @@ def test_create_management_dns_zone_binding_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -59093,6 +59412,7 @@ def test_update_management_dns_zone_binding_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_management_dns_zone_binding(request)
 
 
@@ -59210,6 +59530,7 @@ def test_update_management_dns_zone_binding_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_management_dns_zone_binding(request)
 
     # Establish that the response is the type that we expect.
@@ -59252,6 +59573,7 @@ def test_update_management_dns_zone_binding_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -59298,6 +59620,7 @@ def test_delete_management_dns_zone_binding_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_management_dns_zone_binding(request)
 
 
@@ -59330,6 +59653,7 @@ def test_delete_management_dns_zone_binding_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_management_dns_zone_binding(request)
 
     # Establish that the response is the type that we expect.
@@ -59372,6 +59696,7 @@ def test_delete_management_dns_zone_binding_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -59418,6 +59743,7 @@ def test_repair_management_dns_zone_binding_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.repair_management_dns_zone_binding(request)
 
 
@@ -59450,6 +59776,7 @@ def test_repair_management_dns_zone_binding_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.repair_management_dns_zone_binding(request)
 
     # Establish that the response is the type that we expect.
@@ -59492,6 +59819,7 @@ def test_repair_management_dns_zone_binding_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -59536,6 +59864,7 @@ def test_create_vmware_engine_network_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_vmware_engine_network(request)
 
 
@@ -59648,6 +59977,7 @@ def test_create_vmware_engine_network_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_vmware_engine_network(request)
 
     # Establish that the response is the type that we expect.
@@ -59689,6 +60019,7 @@ def test_create_vmware_engine_network_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -59737,6 +60068,7 @@ def test_update_vmware_engine_network_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_vmware_engine_network(request)
 
 
@@ -59853,6 +60185,7 @@ def test_update_vmware_engine_network_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_vmware_engine_network(request)
 
     # Establish that the response is the type that we expect.
@@ -59894,6 +60227,7 @@ def test_update_vmware_engine_network_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -59940,6 +60274,7 @@ def test_delete_vmware_engine_network_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_vmware_engine_network(request)
 
 
@@ -59972,6 +60307,7 @@ def test_delete_vmware_engine_network_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_vmware_engine_network(request)
 
     # Establish that the response is the type that we expect.
@@ -60013,6 +60349,7 @@ def test_delete_vmware_engine_network_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -60059,6 +60396,7 @@ def test_get_vmware_engine_network_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_vmware_engine_network(request)
 
 
@@ -60101,6 +60439,7 @@ def test_get_vmware_engine_network_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_vmware_engine_network(request)
 
     # Establish that the response is the type that we expect.
@@ -60146,6 +60485,7 @@ def test_get_vmware_engine_network_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = vmwareengine_resources.VmwareEngineNetwork.to_json(
             vmwareengine_resources.VmwareEngineNetwork()
         )
@@ -60192,6 +60532,7 @@ def test_list_vmware_engine_networks_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_vmware_engine_networks(request)
 
 
@@ -60228,6 +60569,7 @@ def test_list_vmware_engine_networks_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_vmware_engine_networks(request)
 
     # Establish that the response is the type that we expect.
@@ -60269,6 +60611,7 @@ def test_list_vmware_engine_networks_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = vmwareengine.ListVmwareEngineNetworksResponse.to_json(
             vmwareengine.ListVmwareEngineNetworksResponse()
         )
@@ -60315,6 +60658,7 @@ def test_create_private_connection_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_private_connection(request)
 
 
@@ -60429,6 +60773,7 @@ def test_create_private_connection_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_private_connection(request)
 
     # Establish that the response is the type that we expect.
@@ -60470,6 +60815,7 @@ def test_create_private_connection_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -60516,6 +60862,7 @@ def test_get_private_connection_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_private_connection(request)
 
 
@@ -60563,6 +60910,7 @@ def test_get_private_connection_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_private_connection(request)
 
     # Establish that the response is the type that we expect.
@@ -60625,6 +60973,7 @@ def test_get_private_connection_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = vmwareengine_resources.PrivateConnection.to_json(
             vmwareengine_resources.PrivateConnection()
         )
@@ -60671,6 +61020,7 @@ def test_list_private_connections_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_private_connections(request)
 
 
@@ -60707,6 +61057,7 @@ def test_list_private_connections_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_private_connections(request)
 
     # Establish that the response is the type that we expect.
@@ -60748,6 +61099,7 @@ def test_list_private_connections_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = vmwareengine.ListPrivateConnectionsResponse.to_json(
             vmwareengine.ListPrivateConnectionsResponse()
         )
@@ -60798,6 +61150,7 @@ def test_update_private_connection_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_private_connection(request)
 
 
@@ -60916,6 +61269,7 @@ def test_update_private_connection_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_private_connection(request)
 
     # Establish that the response is the type that we expect.
@@ -60957,6 +61311,7 @@ def test_update_private_connection_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -61003,6 +61358,7 @@ def test_delete_private_connection_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_private_connection(request)
 
 
@@ -61035,6 +61391,7 @@ def test_delete_private_connection_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_private_connection(request)
 
     # Establish that the response is the type that we expect.
@@ -61076,6 +61433,7 @@ def test_delete_private_connection_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -61122,6 +61480,7 @@ def test_list_private_connection_peering_routes_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_private_connection_peering_routes(request)
 
 
@@ -61161,6 +61520,7 @@ def test_list_private_connection_peering_routes_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_private_connection_peering_routes(request)
 
     # Establish that the response is the type that we expect.
@@ -61203,6 +61563,7 @@ def test_list_private_connection_peering_routes_rest_interceptors(null_intercept
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = vmwareengine.ListPrivateConnectionPeeringRoutesResponse.to_json(
             vmwareengine.ListPrivateConnectionPeeringRoutesResponse()
         )
@@ -61249,6 +61610,7 @@ def test_grant_dns_bind_permission_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.grant_dns_bind_permission(request)
 
 
@@ -61279,6 +61641,7 @@ def test_grant_dns_bind_permission_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.grant_dns_bind_permission(request)
 
     # Establish that the response is the type that we expect.
@@ -61320,6 +61683,7 @@ def test_grant_dns_bind_permission_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -61364,6 +61728,7 @@ def test_get_dns_bind_permission_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_dns_bind_permission(request)
 
 
@@ -61399,6 +61764,7 @@ def test_get_dns_bind_permission_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_dns_bind_permission(request)
 
     # Establish that the response is the type that we expect.
@@ -61439,6 +61805,7 @@ def test_get_dns_bind_permission_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = vmwareengine_resources.DnsBindPermission.to_json(
             vmwareengine_resources.DnsBindPermission()
         )
@@ -61485,6 +61852,7 @@ def test_revoke_dns_bind_permission_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.revoke_dns_bind_permission(request)
 
 
@@ -61515,6 +61883,7 @@ def test_revoke_dns_bind_permission_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.revoke_dns_bind_permission(request)
 
     # Establish that the response is the type that we expect.
@@ -61556,6 +61925,7 @@ def test_revoke_dns_bind_permission_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -61600,6 +61970,7 @@ def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationReq
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_location(request)
 
 
@@ -61630,6 +62001,7 @@ def test_get_location_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.get_location(request)
 
@@ -61658,6 +62030,7 @@ def test_list_locations_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_locations(request)
 
 
@@ -61688,6 +62061,7 @@ def test_list_locations_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.list_locations(request)
 
@@ -61719,6 +62093,7 @@ def test_get_iam_policy_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_iam_policy(request)
 
 
@@ -61751,6 +62126,7 @@ def test_get_iam_policy_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.get_iam_policy(request)
 
@@ -61782,6 +62158,7 @@ def test_set_iam_policy_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.set_iam_policy(request)
 
 
@@ -61814,6 +62191,7 @@ def test_set_iam_policy_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.set_iam_policy(request)
 
@@ -61845,6 +62223,7 @@ def test_test_iam_permissions_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.test_iam_permissions(request)
 
 
@@ -61877,6 +62256,7 @@ def test_test_iam_permissions_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.test_iam_permissions(request)
 
@@ -61907,6 +62287,7 @@ def test_delete_operation_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_operation(request)
 
 
@@ -61937,6 +62318,7 @@ def test_delete_operation_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.delete_operation(request)
 
@@ -61967,6 +62349,7 @@ def test_get_operation_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_operation(request)
 
 
@@ -61997,6 +62380,7 @@ def test_get_operation_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.get_operation(request)
 
@@ -62027,6 +62411,7 @@ def test_list_operations_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_operations(request)
 
 
@@ -62057,6 +62442,7 @@ def test_list_operations_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.list_operations(request)
 

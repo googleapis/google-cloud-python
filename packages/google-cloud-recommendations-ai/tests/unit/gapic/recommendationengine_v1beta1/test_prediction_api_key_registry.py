@@ -2557,6 +2557,7 @@ def test_create_prediction_api_key_registration_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_prediction_api_key_registration(request)
 
@@ -2621,6 +2622,7 @@ def test_create_prediction_api_key_registration_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_prediction_api_key_registration(**mock_args)
 
@@ -2777,6 +2779,7 @@ def test_list_prediction_api_key_registrations_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_prediction_api_key_registrations(request)
 
@@ -2838,6 +2841,7 @@ def test_list_prediction_api_key_registrations_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_prediction_api_key_registrations(**mock_args)
 
@@ -3052,6 +3056,7 @@ def test_delete_prediction_api_key_registration_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_prediction_api_key_registration(request)
 
@@ -3099,6 +3104,7 @@ def test_delete_prediction_api_key_registration_rest_flattened():
         json_return_value = ""
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_prediction_api_key_registration(**mock_args)
 
@@ -3448,6 +3454,7 @@ def test_create_prediction_api_key_registration_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_prediction_api_key_registration(request)
 
 
@@ -3489,6 +3496,7 @@ def test_create_prediction_api_key_registration_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_prediction_api_key_registration(request)
 
     # Establish that the response is the type that we expect.
@@ -3533,6 +3541,7 @@ def test_create_prediction_api_key_registration_rest_interceptors(null_intercept
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = (
             prediction_apikey_registry_service.PredictionApiKeyRegistration.to_json(
                 prediction_apikey_registry_service.PredictionApiKeyRegistration()
@@ -3587,6 +3596,7 @@ def test_list_prediction_api_key_registrations_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_prediction_api_key_registrations(request)
 
 
@@ -3626,6 +3636,7 @@ def test_list_prediction_api_key_registrations_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_prediction_api_key_registrations(request)
 
     # Establish that the response is the type that we expect.
@@ -3668,6 +3679,7 @@ def test_list_prediction_api_key_registrations_rest_interceptors(null_intercepto
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse.to_json(
             prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse()
         )
@@ -3720,6 +3732,7 @@ def test_delete_prediction_api_key_registration_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_prediction_api_key_registration(request)
 
 
@@ -3752,6 +3765,7 @@ def test_delete_prediction_api_key_registration_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_prediction_api_key_registration(request)
 
     # Establish that the response is the type that we expect.
@@ -3789,6 +3803,7 @@ def test_delete_prediction_api_key_registration_rest_interceptors(null_intercept
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = (
             prediction_apikey_registry_service.DeletePredictionApiKeyRegistrationRequest()
