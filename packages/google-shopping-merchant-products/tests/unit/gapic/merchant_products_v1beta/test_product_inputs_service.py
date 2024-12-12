@@ -1855,6 +1855,7 @@ def test_insert_product_input_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.insert_product_input(request)
 
@@ -1999,6 +2000,7 @@ def test_delete_product_input_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_product_input(request)
 
@@ -2056,6 +2058,7 @@ def test_delete_product_input_rest_flattened():
         json_return_value = ""
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_product_input(**mock_args)
 
@@ -2339,6 +2342,7 @@ def test_insert_product_input_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.insert_product_input(request)
 
 
@@ -2388,7 +2392,7 @@ def test_insert_product_input_rest_call_success(request_type):
             "condition": "condition_value",
             "gender": "gender_value",
             "google_product_category": "google_product_category_value",
-            "gtin": "gtin_value",
+            "gtin": ["gtin_value1", "gtin_value2"],
             "item_group_id": "item_group_id_value",
             "material": "material_value",
             "mpn": "mpn_value",
@@ -2413,11 +2417,13 @@ def test_insert_product_input_rest_call_success(request_type):
                     "price": {},
                     "cashback_for_future_use": {},
                     "loyalty_points": 1546,
+                    "member_price_effective_date": {"start_time": {}, "end_time": {}},
+                    "shipping_label": "shipping_label_value",
                 }
             ],
             "product_types": ["product_types_value1", "product_types_value2"],
             "sale_price": {},
-            "sale_price_effective_date": {"start_time": {}, "end_time": {}},
+            "sale_price_effective_date": {},
             "sell_on_google_quantity": 2470,
             "product_height": {"value": 0.541, "unit": "unit_value"},
             "product_length": {},
@@ -2646,6 +2652,7 @@ def test_insert_product_input_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.insert_product_input(request)
 
     # Establish that the response is the type that we expect.
@@ -2692,6 +2699,7 @@ def test_insert_product_input_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = productinputs.ProductInput.to_json(productinputs.ProductInput())
         req.return_value.content = return_value
 
@@ -2736,6 +2744,7 @@ def test_delete_product_input_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_product_input(request)
 
 
@@ -2766,6 +2775,7 @@ def test_delete_product_input_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_product_input(request)
 
     # Establish that the response is the type that we expect.
@@ -2802,6 +2812,7 @@ def test_delete_product_input_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = productinputs.DeleteProductInputRequest()
         metadata = [

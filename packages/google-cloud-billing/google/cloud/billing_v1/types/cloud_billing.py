@@ -78,6 +78,18 @@ class BillingAccount(proto.Message):
                ``organizations/12345678``
             -  ``billingAccounts/{billing_account_id}``, for example,
                ``billingAccounts/012345-567890-ABCDEF``
+        currency_code (str):
+            Optional. The currency in which the billing account is
+            billed and charged, represented as an ISO 4217 code such as
+            ``USD``.
+
+            Billing account currency is determined at the time of
+            billing account creation and cannot be updated subsequently,
+            so this field should not be set on update requests. In
+            addition, a subaccount always matches the currency of its
+            parent billing account, so this field should not be set on
+            subaccount creation requests. Clients can read this field to
+            determine the currency of an existing billing account.
     """
 
     name: str = proto.Field(
@@ -99,6 +111,10 @@ class BillingAccount(proto.Message):
     parent: str = proto.Field(
         proto.STRING,
         number=6,
+    )
+    currency_code: str = proto.Field(
+        proto.STRING,
+        number=7,
     )
 
 

@@ -1074,6 +1074,7 @@ def test_get_billing_account(request_type, transport: str = "grpc"):
             display_name="display_name_value",
             master_billing_account="master_billing_account_value",
             parent="parent_value",
+            currency_code="currency_code_value",
         )
         response = client.get_billing_account(request)
 
@@ -1090,6 +1091,7 @@ def test_get_billing_account(request_type, transport: str = "grpc"):
     assert response.display_name == "display_name_value"
     assert response.master_billing_account == "master_billing_account_value"
     assert response.parent == "parent_value"
+    assert response.currency_code == "currency_code_value"
 
 
 def test_get_billing_account_non_empty_request_with_auto_populated_field():
@@ -1228,6 +1230,7 @@ async def test_get_billing_account_async(
                 display_name="display_name_value",
                 master_billing_account="master_billing_account_value",
                 parent="parent_value",
+                currency_code="currency_code_value",
             )
         )
         response = await client.get_billing_account(request)
@@ -1245,6 +1248,7 @@ async def test_get_billing_account_async(
     assert response.display_name == "display_name_value"
     assert response.master_billing_account == "master_billing_account_value"
     assert response.parent == "parent_value"
+    assert response.currency_code == "currency_code_value"
 
 
 @pytest.mark.asyncio
@@ -1912,6 +1916,7 @@ def test_update_billing_account(request_type, transport: str = "grpc"):
             display_name="display_name_value",
             master_billing_account="master_billing_account_value",
             parent="parent_value",
+            currency_code="currency_code_value",
         )
         response = client.update_billing_account(request)
 
@@ -1928,6 +1933,7 @@ def test_update_billing_account(request_type, transport: str = "grpc"):
     assert response.display_name == "display_name_value"
     assert response.master_billing_account == "master_billing_account_value"
     assert response.parent == "parent_value"
+    assert response.currency_code == "currency_code_value"
 
 
 def test_update_billing_account_non_empty_request_with_auto_populated_field():
@@ -2068,6 +2074,7 @@ async def test_update_billing_account_async(
                 display_name="display_name_value",
                 master_billing_account="master_billing_account_value",
                 parent="parent_value",
+                currency_code="currency_code_value",
             )
         )
         response = await client.update_billing_account(request)
@@ -2085,6 +2092,7 @@ async def test_update_billing_account_async(
     assert response.display_name == "display_name_value"
     assert response.master_billing_account == "master_billing_account_value"
     assert response.parent == "parent_value"
+    assert response.currency_code == "currency_code_value"
 
 
 @pytest.mark.asyncio
@@ -2281,6 +2289,7 @@ def test_create_billing_account(request_type, transport: str = "grpc"):
             display_name="display_name_value",
             master_billing_account="master_billing_account_value",
             parent="parent_value",
+            currency_code="currency_code_value",
         )
         response = client.create_billing_account(request)
 
@@ -2297,6 +2306,7 @@ def test_create_billing_account(request_type, transport: str = "grpc"):
     assert response.display_name == "display_name_value"
     assert response.master_billing_account == "master_billing_account_value"
     assert response.parent == "parent_value"
+    assert response.currency_code == "currency_code_value"
 
 
 def test_create_billing_account_non_empty_request_with_auto_populated_field():
@@ -2437,6 +2447,7 @@ async def test_create_billing_account_async(
                 display_name="display_name_value",
                 master_billing_account="master_billing_account_value",
                 parent="parent_value",
+                currency_code="currency_code_value",
             )
         )
         response = await client.create_billing_account(request)
@@ -2454,6 +2465,7 @@ async def test_create_billing_account_async(
     assert response.display_name == "display_name_value"
     assert response.master_billing_account == "master_billing_account_value"
     assert response.parent == "parent_value"
+    assert response.currency_code == "currency_code_value"
 
 
 @pytest.mark.asyncio
@@ -4906,6 +4918,7 @@ def test_move_billing_account(request_type, transport: str = "grpc"):
             display_name="display_name_value",
             master_billing_account="master_billing_account_value",
             parent="parent_value",
+            currency_code="currency_code_value",
         )
         response = client.move_billing_account(request)
 
@@ -4922,6 +4935,7 @@ def test_move_billing_account(request_type, transport: str = "grpc"):
     assert response.display_name == "display_name_value"
     assert response.master_billing_account == "master_billing_account_value"
     assert response.parent == "parent_value"
+    assert response.currency_code == "currency_code_value"
 
 
 def test_move_billing_account_non_empty_request_with_auto_populated_field():
@@ -5063,6 +5077,7 @@ async def test_move_billing_account_async(
                 display_name="display_name_value",
                 master_billing_account="master_billing_account_value",
                 parent="parent_value",
+                currency_code="currency_code_value",
             )
         )
         response = await client.move_billing_account(request)
@@ -5080,6 +5095,7 @@ async def test_move_billing_account_async(
     assert response.display_name == "display_name_value"
     assert response.master_billing_account == "master_billing_account_value"
     assert response.parent == "parent_value"
+    assert response.currency_code == "currency_code_value"
 
 
 @pytest.mark.asyncio
@@ -7548,6 +7564,7 @@ async def test_get_billing_account_empty_call_grpc_asyncio():
                 display_name="display_name_value",
                 master_billing_account="master_billing_account_value",
                 parent="parent_value",
+                currency_code="currency_code_value",
             )
         )
         await client.get_billing_account(request=None)
@@ -7610,6 +7627,7 @@ async def test_update_billing_account_empty_call_grpc_asyncio():
                 display_name="display_name_value",
                 master_billing_account="master_billing_account_value",
                 parent="parent_value",
+                currency_code="currency_code_value",
             )
         )
         await client.update_billing_account(request=None)
@@ -7643,6 +7661,7 @@ async def test_create_billing_account_empty_call_grpc_asyncio():
                 display_name="display_name_value",
                 master_billing_account="master_billing_account_value",
                 parent="parent_value",
+                currency_code="currency_code_value",
             )
         )
         await client.create_billing_account(request=None)
@@ -7854,6 +7873,7 @@ async def test_move_billing_account_empty_call_grpc_asyncio():
                 display_name="display_name_value",
                 master_billing_account="master_billing_account_value",
                 parent="parent_value",
+                currency_code="currency_code_value",
             )
         )
         await client.move_billing_account(request=None)
@@ -7922,6 +7942,7 @@ def test_get_billing_account_rest_call_success(request_type):
             display_name="display_name_value",
             master_billing_account="master_billing_account_value",
             parent="parent_value",
+            currency_code="currency_code_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -7942,6 +7963,7 @@ def test_get_billing_account_rest_call_success(request_type):
     assert response.display_name == "display_name_value"
     assert response.master_billing_account == "master_billing_account_value"
     assert response.parent == "parent_value"
+    assert response.currency_code == "currency_code_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -8167,6 +8189,7 @@ def test_update_billing_account_rest_call_success(request_type):
         "display_name": "display_name_value",
         "master_billing_account": "master_billing_account_value",
         "parent": "parent_value",
+        "currency_code": "currency_code_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -8246,6 +8269,7 @@ def test_update_billing_account_rest_call_success(request_type):
             display_name="display_name_value",
             master_billing_account="master_billing_account_value",
             parent="parent_value",
+            currency_code="currency_code_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -8266,6 +8290,7 @@ def test_update_billing_account_rest_call_success(request_type):
     assert response.display_name == "display_name_value"
     assert response.master_billing_account == "master_billing_account_value"
     assert response.parent == "parent_value"
+    assert response.currency_code == "currency_code_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -8370,6 +8395,7 @@ def test_create_billing_account_rest_call_success(request_type):
         "display_name": "display_name_value",
         "master_billing_account": "master_billing_account_value",
         "parent": "parent_value",
+        "currency_code": "currency_code_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -8451,6 +8477,7 @@ def test_create_billing_account_rest_call_success(request_type):
             display_name="display_name_value",
             master_billing_account="master_billing_account_value",
             parent="parent_value",
+            currency_code="currency_code_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -8471,6 +8498,7 @@ def test_create_billing_account_rest_call_success(request_type):
     assert response.display_name == "display_name_value"
     assert response.master_billing_account == "master_billing_account_value"
     assert response.parent == "parent_value"
+    assert response.currency_code == "currency_code_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -9380,6 +9408,7 @@ def test_move_billing_account_rest_call_success(request_type):
             display_name="display_name_value",
             master_billing_account="master_billing_account_value",
             parent="parent_value",
+            currency_code="currency_code_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -9400,6 +9429,7 @@ def test_move_billing_account_rest_call_success(request_type):
     assert response.display_name == "display_name_value"
     assert response.master_billing_account == "master_billing_account_value"
     assert response.parent == "parent_value"
+    assert response.currency_code == "currency_code_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
