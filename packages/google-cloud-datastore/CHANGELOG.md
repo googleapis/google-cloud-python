@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-datastore/#history
 
+## [2.20.2](https://github.com/googleapis/python-datastore/compare/v2.20.1...v2.20.2) (2024-12-12)
+
+
+### Bug Fixes
+
+* Preserve list meanings ([#575](https://github.com/googleapis/python-datastore/issues/575)) ([266243b](https://github.com/googleapis/python-datastore/commit/266243ba360a9d41ab4b51c323eac44d2cfc35cb))
+
 ## [2.20.1](https://github.com/googleapis/python-datastore/compare/v2.20.0...v2.20.1) (2024-08-14)
 
 
