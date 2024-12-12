@@ -37,7 +37,8 @@ class DeletionMetadata(proto.Message):
     """
 
     class DeletionType(proto.Enum):
-        r"""Who deleted the message and how it was deleted.
+        r"""Who deleted the message and how it was deleted. More values
+        may be added in the future.
 
         Values:
             DELETION_TYPE_UNSPECIFIED (0):

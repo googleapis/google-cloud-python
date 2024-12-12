@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -37,6 +37,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -85,8 +93,10 @@ class InstanceSettingsServiceRestInterceptor:
     def pre_get(
         self,
         request: compute.GetInstanceSettingRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.GetInstanceSettingRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.GetInstanceSettingRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get
 
         Override in a subclass to manipulate the request or metadata
@@ -106,8 +116,10 @@ class InstanceSettingsServiceRestInterceptor:
     def pre_patch(
         self,
         request: compute.PatchInstanceSettingRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.PatchInstanceSettingRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.PatchInstanceSettingRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for patch
 
         Override in a subclass to manipulate the request or metadata
@@ -250,7 +262,7 @@ class InstanceSettingsServiceRestTransport(_BaseInstanceSettingsServiceRestTrans
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.InstanceSettings:
             r"""Call the get method over HTTP.
 
@@ -262,8 +274,10 @@ class InstanceSettingsServiceRestTransport(_BaseInstanceSettingsServiceRestTrans
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.InstanceSettings:
@@ -280,6 +294,7 @@ class InstanceSettingsServiceRestTransport(_BaseInstanceSettingsServiceRestTrans
             http_options = (
                 _BaseInstanceSettingsServiceRestTransport._BaseGet._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get(request, metadata)
             transcoded_request = _BaseInstanceSettingsServiceRestTransport._BaseGet._get_transcoded_request(
                 http_options, request
@@ -289,6 +304,33 @@ class InstanceSettingsServiceRestTransport(_BaseInstanceSettingsServiceRestTrans
             query_params = _BaseInstanceSettingsServiceRestTransport._BaseGet._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.InstanceSettingsServiceClient.Get",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.InstanceSettingsService",
+                        "rpcName": "Get",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = InstanceSettingsServiceRestTransport._Get._get_response(
@@ -310,7 +352,29 @@ class InstanceSettingsServiceRestTransport(_BaseInstanceSettingsServiceRestTrans
             pb_resp = compute.InstanceSettings.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.InstanceSettings.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.InstanceSettingsServiceClient.get",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.InstanceSettingsService",
+                        "rpcName": "Get",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _Patch(
@@ -349,7 +413,7 @@ class InstanceSettingsServiceRestTransport(_BaseInstanceSettingsServiceRestTrans
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the patch method over HTTP.
 
@@ -361,8 +425,10 @@ class InstanceSettingsServiceRestTransport(_BaseInstanceSettingsServiceRestTrans
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -389,6 +455,7 @@ class InstanceSettingsServiceRestTransport(_BaseInstanceSettingsServiceRestTrans
             http_options = (
                 _BaseInstanceSettingsServiceRestTransport._BasePatch._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_patch(request, metadata)
             transcoded_request = _BaseInstanceSettingsServiceRestTransport._BasePatch._get_transcoded_request(
                 http_options, request
@@ -402,6 +469,33 @@ class InstanceSettingsServiceRestTransport(_BaseInstanceSettingsServiceRestTrans
             query_params = _BaseInstanceSettingsServiceRestTransport._BasePatch._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.InstanceSettingsServiceClient.Patch",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.InstanceSettingsService",
+                        "rpcName": "Patch",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = InstanceSettingsServiceRestTransport._Patch._get_response(
@@ -424,7 +518,29 @@ class InstanceSettingsServiceRestTransport(_BaseInstanceSettingsServiceRestTrans
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_patch(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.InstanceSettingsServiceClient.patch",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.InstanceSettingsService",
+                        "rpcName": "Patch",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
