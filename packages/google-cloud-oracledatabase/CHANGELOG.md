@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.1.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-oracledatabase-v0.1.2...google-cloud-oracledatabase-v0.1.3) (2024-12-12)
+
+
+### Features
+
+* Add support for opt-in debug logging ([4fe968a](https://github.com/googleapis/google-cloud-python/commit/4fe968a7e807633afb274cca5a196494b7a85aa2))
+
+
+### Bug Fixes
+
+* Fix typing issue with gRPC metadata when key ends in -bin ([4fe968a](https://github.com/googleapis/google-cloud-python/commit/4fe968a7e807633afb274cca5a196494b7a85aa2))
+
+
+### Documentation
+
+* [google-cloud-oracledatabase] A comment for field `cpu_count` in message `.google.cloud.oracledatabase.v1.CloudExadataInfrastructureProperties` is changed ([4fe968a](https://github.com/googleapis/google-cloud-python/commit/4fe968a7e807633afb274cca5a196494b7a85aa2))
+* A comment for field `db_node_storage_size_gb` in message `.google.cloud.oracledatabase.v1.CloudExadataInfrastructureProperties` is changed ([4fe968a](https://github.com/googleapis/google-cloud-python/commit/4fe968a7e807633afb274cca5a196494b7a85aa2))
+* A comment for field `memory_size_gb` in message `.google.cloud.oracledatabase.v1.CloudExadataInfrastructureProperties` is changed ([4fe968a](https://github.com/googleapis/google-cloud-python/commit/4fe968a7e807633afb274cca5a196494b7a85aa2))
+
 ## [0.1.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-oracledatabase-v0.1.1...google-cloud-oracledatabase-v0.1.2) (2024-11-11)
 
 

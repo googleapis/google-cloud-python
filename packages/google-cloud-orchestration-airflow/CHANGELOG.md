@@ -1,5 +1,30 @@
 # Changelog
 
+## [1.16.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-orchestration-airflow-v1.15.1...google-cloud-orchestration-airflow-v1.16.0) (2024-12-12)
+
+
+### Features
+
+* Add support for opt-in debug logging ([f05eae5](https://github.com/googleapis/google-cloud-python/commit/f05eae5180b45ed8d4eab0a7655e8f330f2136af))
+
+
+### Bug Fixes
+
+* Fix typing issue with gRPC metadata when key ends in -bin ([f05eae5](https://github.com/googleapis/google-cloud-python/commit/f05eae5180b45ed8d4eab0a7655e8f330f2136af))
+
+
+### Documentation
+
+* A comment for field `config` in message `.google.cloud.orchestration.airflow.service.v1beta1.Environment` is changed ([f05eae5](https://github.com/googleapis/google-cloud-python/commit/f05eae5180b45ed8d4eab0a7655e8f330f2136af))
+* A comment for field `data` in message `.google.cloud.orchestration.airflow.service.v1beta1.UserWorkloadsConfigMap` is changed ([f05eae5](https://github.com/googleapis/google-cloud-python/commit/f05eae5180b45ed8d4eab0a7655e8f330f2136af))
+* A comment for field `data` in message `.google.cloud.orchestration.airflow.service.v1beta1.UserWorkloadsSecret` is changed ([f05eae5](https://github.com/googleapis/google-cloud-python/commit/f05eae5180b45ed8d4eab0a7655e8f330f2136af))
+* A comment for field `image_version` in message `.google.cloud.orchestration.airflow.service.v1beta1.SoftwareConfig` is changed ([f05eae5](https://github.com/googleapis/google-cloud-python/commit/f05eae5180b45ed8d4eab0a7655e8f330f2136af))
+* A comment for field `name` in message `.google.cloud.orchestration.airflow.service.v1beta1.Environment` is changed ([f05eae5](https://github.com/googleapis/google-cloud-python/commit/f05eae5180b45ed8d4eab0a7655e8f330f2136af))
+* A comment for field `node_config` in message `.google.cloud.orchestration.airflow.service.v1beta1.EnvironmentConfig` is changed ([f05eae5](https://github.com/googleapis/google-cloud-python/commit/f05eae5180b45ed8d4eab0a7655e8f330f2136af))
+* A comment for field `private_environment_config` in message `.google.cloud.orchestration.airflow.service.v1beta1.EnvironmentConfig` is changed ([f05eae5](https://github.com/googleapis/google-cloud-python/commit/f05eae5180b45ed8d4eab0a7655e8f330f2136af))
+* A comment for field `software_config` in message `.google.cloud.orchestration.airflow.service.v1beta1.EnvironmentConfig` is changed ([f05eae5](https://github.com/googleapis/google-cloud-python/commit/f05eae5180b45ed8d4eab0a7655e8f330f2136af))
+* add examples for kubernetes secret ([f05eae5](https://github.com/googleapis/google-cloud-python/commit/f05eae5180b45ed8d4eab0a7655e8f330f2136af))
+
 ## [1.15.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-orchestration-airflow-v1.15.0...google-cloud-orchestration-airflow-v1.15.1) (2024-11-11)
 
 

@@ -5,6 +5,18 @@
 [1]: https://pypi.org/project/google-cloud-phishing-protection/#history
 
 
+## [1.13.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-phishing-protection-v1.12.1...google-cloud-phishing-protection-v1.13.0) (2024-12-12)
+
+
+### Features
+
+* Add support for opt-in debug logging ([8e6b0cc](https://github.com/googleapis/google-cloud-python/commit/8e6b0cca8709ae8c7f0c722c5ebf0707358d3359))
+
+
+### Bug Fixes
+
+* Fix typing issue with gRPC metadata when key ends in -bin ([8e6b0cc](https://github.com/googleapis/google-cloud-python/commit/8e6b0cca8709ae8c7f0c722c5ebf0707358d3359))
+
 ## [1.12.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-phishing-protection-v1.12.0...google-cloud-phishing-protection-v1.12.1) (2024-11-11)
 
 
