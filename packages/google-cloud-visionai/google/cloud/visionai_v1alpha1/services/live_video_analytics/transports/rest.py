@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -41,6 +41,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -113,8 +121,10 @@ class LiveVideoAnalyticsRestInterceptor:
     def pre_create_analysis(
         self,
         request: lva_service.CreateAnalysisRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[lva_service.CreateAnalysisRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        lva_service.CreateAnalysisRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_analysis
 
         Override in a subclass to manipulate the request or metadata
@@ -136,8 +146,10 @@ class LiveVideoAnalyticsRestInterceptor:
     def pre_delete_analysis(
         self,
         request: lva_service.DeleteAnalysisRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[lva_service.DeleteAnalysisRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        lva_service.DeleteAnalysisRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_analysis
 
         Override in a subclass to manipulate the request or metadata
@@ -159,8 +171,8 @@ class LiveVideoAnalyticsRestInterceptor:
     def pre_get_analysis(
         self,
         request: lva_service.GetAnalysisRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[lva_service.GetAnalysisRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[lva_service.GetAnalysisRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_analysis
 
         Override in a subclass to manipulate the request or metadata
@@ -182,8 +194,10 @@ class LiveVideoAnalyticsRestInterceptor:
     def pre_list_analyses(
         self,
         request: lva_service.ListAnalysesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[lva_service.ListAnalysesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        lva_service.ListAnalysesRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_analyses
 
         Override in a subclass to manipulate the request or metadata
@@ -205,8 +219,10 @@ class LiveVideoAnalyticsRestInterceptor:
     def pre_update_analysis(
         self,
         request: lva_service.UpdateAnalysisRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[lva_service.UpdateAnalysisRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        lva_service.UpdateAnalysisRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_analysis
 
         Override in a subclass to manipulate the request or metadata
@@ -228,8 +244,10 @@ class LiveVideoAnalyticsRestInterceptor:
     def pre_get_location(
         self,
         request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -251,8 +269,10 @@ class LiveVideoAnalyticsRestInterceptor:
     def pre_list_locations(
         self,
         request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -274,8 +294,10 @@ class LiveVideoAnalyticsRestInterceptor:
     def pre_get_iam_policy(
         self,
         request: iam_policy_pb2.GetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -295,8 +317,10 @@ class LiveVideoAnalyticsRestInterceptor:
     def pre_set_iam_policy(
         self,
         request: iam_policy_pb2.SetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -316,8 +340,11 @@ class LiveVideoAnalyticsRestInterceptor:
     def pre_test_iam_permissions(
         self,
         request: iam_policy_pb2.TestIamPermissionsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.TestIamPermissionsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -339,8 +366,10 @@ class LiveVideoAnalyticsRestInterceptor:
     def pre_cancel_operation(
         self,
         request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -360,8 +389,10 @@ class LiveVideoAnalyticsRestInterceptor:
     def pre_delete_operation(
         self,
         request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -381,8 +412,10 @@ class LiveVideoAnalyticsRestInterceptor:
     def pre_get_operation(
         self,
         request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -404,8 +437,10 @@ class LiveVideoAnalyticsRestInterceptor:
     def pre_list_operations(
         self,
         request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -611,7 +646,7 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create analysis method over HTTP.
 
@@ -621,8 +656,10 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -635,6 +672,7 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
             http_options = (
                 _BaseLiveVideoAnalyticsRestTransport._BaseCreateAnalysis._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_analysis(request, metadata)
             transcoded_request = _BaseLiveVideoAnalyticsRestTransport._BaseCreateAnalysis._get_transcoded_request(
                 http_options, request
@@ -648,6 +686,33 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
             query_params = _BaseLiveVideoAnalyticsRestTransport._BaseCreateAnalysis._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1alpha1.LiveVideoAnalyticsClient.CreateAnalysis",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.LiveVideoAnalytics",
+                        "rpcName": "CreateAnalysis",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = LiveVideoAnalyticsRestTransport._CreateAnalysis._get_response(
@@ -668,7 +733,29 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_analysis(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1alpha1.LiveVideoAnalyticsClient.create_analysis",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.LiveVideoAnalytics",
+                        "rpcName": "CreateAnalysis",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteAnalysis(
@@ -706,7 +793,7 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete analysis method over HTTP.
 
@@ -716,8 +803,10 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -730,6 +819,7 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
             http_options = (
                 _BaseLiveVideoAnalyticsRestTransport._BaseDeleteAnalysis._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_analysis(request, metadata)
             transcoded_request = _BaseLiveVideoAnalyticsRestTransport._BaseDeleteAnalysis._get_transcoded_request(
                 http_options, request
@@ -739,6 +829,33 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
             query_params = _BaseLiveVideoAnalyticsRestTransport._BaseDeleteAnalysis._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1alpha1.LiveVideoAnalyticsClient.DeleteAnalysis",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.LiveVideoAnalytics",
+                        "rpcName": "DeleteAnalysis",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = LiveVideoAnalyticsRestTransport._DeleteAnalysis._get_response(
@@ -758,7 +875,29 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_analysis(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1alpha1.LiveVideoAnalyticsClient.delete_analysis",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.LiveVideoAnalytics",
+                        "rpcName": "DeleteAnalysis",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetAnalysis(
@@ -796,7 +935,7 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> lva_resources.Analysis:
             r"""Call the get analysis method over HTTP.
 
@@ -806,8 +945,10 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.lva_resources.Analysis:
@@ -819,6 +960,7 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
             http_options = (
                 _BaseLiveVideoAnalyticsRestTransport._BaseGetAnalysis._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_analysis(request, metadata)
             transcoded_request = _BaseLiveVideoAnalyticsRestTransport._BaseGetAnalysis._get_transcoded_request(
                 http_options, request
@@ -828,6 +970,33 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
             query_params = _BaseLiveVideoAnalyticsRestTransport._BaseGetAnalysis._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1alpha1.LiveVideoAnalyticsClient.GetAnalysis",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.LiveVideoAnalytics",
+                        "rpcName": "GetAnalysis",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = LiveVideoAnalyticsRestTransport._GetAnalysis._get_response(
@@ -849,7 +1018,29 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
             pb_resp = lva_resources.Analysis.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_analysis(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = lva_resources.Analysis.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1alpha1.LiveVideoAnalyticsClient.get_analysis",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.LiveVideoAnalytics",
+                        "rpcName": "GetAnalysis",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListAnalyses(
@@ -887,7 +1078,7 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> lva_service.ListAnalysesResponse:
             r"""Call the list analyses method over HTTP.
 
@@ -898,8 +1089,10 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.lva_service.ListAnalysesResponse:
@@ -911,6 +1104,7 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
             http_options = (
                 _BaseLiveVideoAnalyticsRestTransport._BaseListAnalyses._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_analyses(request, metadata)
             transcoded_request = _BaseLiveVideoAnalyticsRestTransport._BaseListAnalyses._get_transcoded_request(
                 http_options, request
@@ -920,6 +1114,33 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
             query_params = _BaseLiveVideoAnalyticsRestTransport._BaseListAnalyses._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1alpha1.LiveVideoAnalyticsClient.ListAnalyses",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.LiveVideoAnalytics",
+                        "rpcName": "ListAnalyses",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = LiveVideoAnalyticsRestTransport._ListAnalyses._get_response(
@@ -941,7 +1162,31 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
             pb_resp = lva_service.ListAnalysesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_analyses(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = lva_service.ListAnalysesResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1alpha1.LiveVideoAnalyticsClient.list_analyses",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.LiveVideoAnalytics",
+                        "rpcName": "ListAnalyses",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateAnalysis(
@@ -980,7 +1225,7 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update analysis method over HTTP.
 
@@ -990,8 +1235,10 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1004,6 +1251,7 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
             http_options = (
                 _BaseLiveVideoAnalyticsRestTransport._BaseUpdateAnalysis._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_analysis(request, metadata)
             transcoded_request = _BaseLiveVideoAnalyticsRestTransport._BaseUpdateAnalysis._get_transcoded_request(
                 http_options, request
@@ -1017,6 +1265,33 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
             query_params = _BaseLiveVideoAnalyticsRestTransport._BaseUpdateAnalysis._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1alpha1.LiveVideoAnalyticsClient.UpdateAnalysis",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.LiveVideoAnalytics",
+                        "rpcName": "UpdateAnalysis",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = LiveVideoAnalyticsRestTransport._UpdateAnalysis._get_response(
@@ -1037,7 +1312,29 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_analysis(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1alpha1.LiveVideoAnalyticsClient.update_analysis",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.LiveVideoAnalytics",
+                        "rpcName": "UpdateAnalysis",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -1119,7 +1416,7 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.Location:
             r"""Call the get location method over HTTP.
 
@@ -1129,8 +1426,10 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.Location: Response from GetLocation method.
@@ -1139,6 +1438,7 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
             http_options = (
                 _BaseLiveVideoAnalyticsRestTransport._BaseGetLocation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_location(request, metadata)
             transcoded_request = _BaseLiveVideoAnalyticsRestTransport._BaseGetLocation._get_transcoded_request(
                 http_options, request
@@ -1148,6 +1448,33 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
             query_params = _BaseLiveVideoAnalyticsRestTransport._BaseGetLocation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1alpha1.LiveVideoAnalyticsClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.LiveVideoAnalytics",
+                        "rpcName": "GetLocation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = LiveVideoAnalyticsRestTransport._GetLocation._get_response(
@@ -1168,6 +1495,27 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1alpha1.LiveVideoAnalyticsAsyncClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.LiveVideoAnalytics",
+                        "rpcName": "GetLocation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -1209,7 +1557,7 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.ListLocationsResponse:
             r"""Call the list locations method over HTTP.
 
@@ -1219,8 +1567,10 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
@@ -1229,6 +1579,7 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
             http_options = (
                 _BaseLiveVideoAnalyticsRestTransport._BaseListLocations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
             transcoded_request = _BaseLiveVideoAnalyticsRestTransport._BaseListLocations._get_transcoded_request(
                 http_options, request
@@ -1238,6 +1589,33 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
             query_params = _BaseLiveVideoAnalyticsRestTransport._BaseListLocations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1alpha1.LiveVideoAnalyticsClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.LiveVideoAnalytics",
+                        "rpcName": "ListLocations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = LiveVideoAnalyticsRestTransport._ListLocations._get_response(
@@ -1258,6 +1636,27 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1alpha1.LiveVideoAnalyticsAsyncClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.LiveVideoAnalytics",
+                        "rpcName": "ListLocations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -1299,7 +1698,7 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> policy_pb2.Policy:
             r"""Call the get iam policy method over HTTP.
 
@@ -1309,8 +1708,10 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 policy_pb2.Policy: Response from GetIamPolicy method.
@@ -1319,6 +1720,7 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
             http_options = (
                 _BaseLiveVideoAnalyticsRestTransport._BaseGetIamPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
             transcoded_request = _BaseLiveVideoAnalyticsRestTransport._BaseGetIamPolicy._get_transcoded_request(
                 http_options, request
@@ -1328,6 +1730,33 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
             query_params = _BaseLiveVideoAnalyticsRestTransport._BaseGetIamPolicy._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1alpha1.LiveVideoAnalyticsClient.GetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.LiveVideoAnalytics",
+                        "rpcName": "GetIamPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = LiveVideoAnalyticsRestTransport._GetIamPolicy._get_response(
@@ -1348,6 +1777,27 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_iam_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1alpha1.LiveVideoAnalyticsAsyncClient.GetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.LiveVideoAnalytics",
+                        "rpcName": "GetIamPolicy",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -1390,7 +1840,7 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> policy_pb2.Policy:
             r"""Call the set iam policy method over HTTP.
 
@@ -1400,8 +1850,10 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 policy_pb2.Policy: Response from SetIamPolicy method.
@@ -1410,6 +1862,7 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
             http_options = (
                 _BaseLiveVideoAnalyticsRestTransport._BaseSetIamPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
             transcoded_request = _BaseLiveVideoAnalyticsRestTransport._BaseSetIamPolicy._get_transcoded_request(
                 http_options, request
@@ -1423,6 +1876,33 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
             query_params = _BaseLiveVideoAnalyticsRestTransport._BaseSetIamPolicy._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1alpha1.LiveVideoAnalyticsClient.SetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.LiveVideoAnalytics",
+                        "rpcName": "SetIamPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = LiveVideoAnalyticsRestTransport._SetIamPolicy._get_response(
@@ -1444,6 +1924,27 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_set_iam_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1alpha1.LiveVideoAnalyticsAsyncClient.SetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.LiveVideoAnalytics",
+                        "rpcName": "SetIamPolicy",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -1486,7 +1987,7 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> iam_policy_pb2.TestIamPermissionsResponse:
             r"""Call the test iam permissions method over HTTP.
 
@@ -1496,8 +1997,10 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 iam_policy_pb2.TestIamPermissionsResponse: Response from TestIamPermissions method.
@@ -1506,6 +2009,7 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
             http_options = (
                 _BaseLiveVideoAnalyticsRestTransport._BaseTestIamPermissions._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata
             )
@@ -1521,6 +2025,33 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
             query_params = _BaseLiveVideoAnalyticsRestTransport._BaseTestIamPermissions._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1alpha1.LiveVideoAnalyticsClient.TestIamPermissions",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.LiveVideoAnalytics",
+                        "rpcName": "TestIamPermissions",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1544,6 +2075,27 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
             resp = iam_policy_pb2.TestIamPermissionsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_test_iam_permissions(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1alpha1.LiveVideoAnalyticsAsyncClient.TestIamPermissions",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.LiveVideoAnalytics",
+                        "rpcName": "TestIamPermissions",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -1586,7 +2138,7 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the cancel operation method over HTTP.
 
@@ -1596,13 +2148,16 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseLiveVideoAnalyticsRestTransport._BaseCancelOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
@@ -1618,6 +2173,33 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
             query_params = _BaseLiveVideoAnalyticsRestTransport._BaseCancelOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1alpha1.LiveVideoAnalyticsClient.CancelOperation",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.LiveVideoAnalytics",
+                        "rpcName": "CancelOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = LiveVideoAnalyticsRestTransport._CancelOperation._get_response(
@@ -1676,7 +2258,7 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the delete operation method over HTTP.
 
@@ -1686,13 +2268,16 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseLiveVideoAnalyticsRestTransport._BaseDeleteOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
             )
@@ -1704,6 +2289,33 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
             query_params = _BaseLiveVideoAnalyticsRestTransport._BaseDeleteOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1alpha1.LiveVideoAnalyticsClient.DeleteOperation",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.LiveVideoAnalytics",
+                        "rpcName": "DeleteOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = LiveVideoAnalyticsRestTransport._DeleteOperation._get_response(
@@ -1761,7 +2373,7 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the get operation method over HTTP.
 
@@ -1771,8 +2383,10 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.
@@ -1781,6 +2395,7 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
             http_options = (
                 _BaseLiveVideoAnalyticsRestTransport._BaseGetOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseLiveVideoAnalyticsRestTransport._BaseGetOperation._get_transcoded_request(
                 http_options, request
@@ -1790,6 +2405,33 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
             query_params = _BaseLiveVideoAnalyticsRestTransport._BaseGetOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1alpha1.LiveVideoAnalyticsClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.LiveVideoAnalytics",
+                        "rpcName": "GetOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = LiveVideoAnalyticsRestTransport._GetOperation._get_response(
@@ -1810,6 +2452,27 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1alpha1.LiveVideoAnalyticsAsyncClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.LiveVideoAnalytics",
+                        "rpcName": "GetOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -1851,7 +2514,7 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.ListOperationsResponse:
             r"""Call the list operations method over HTTP.
 
@@ -1861,8 +2524,10 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
@@ -1871,6 +2536,7 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
             http_options = (
                 _BaseLiveVideoAnalyticsRestTransport._BaseListOperations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseLiveVideoAnalyticsRestTransport._BaseListOperations._get_transcoded_request(
                 http_options, request
@@ -1880,6 +2546,33 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
             query_params = _BaseLiveVideoAnalyticsRestTransport._BaseListOperations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1alpha1.LiveVideoAnalyticsClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.LiveVideoAnalytics",
+                        "rpcName": "ListOperations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = LiveVideoAnalyticsRestTransport._ListOperations._get_response(
@@ -1900,6 +2593,27 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1alpha1.LiveVideoAnalyticsAsyncClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1alpha1.LiveVideoAnalytics",
+                        "rpcName": "ListOperations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property

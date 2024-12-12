@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -42,6 +42,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -154,8 +162,10 @@ class DeliveryServiceRestInterceptor:
     def pre_batch_create_tasks(
         self,
         request: delivery_api.BatchCreateTasksRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[delivery_api.BatchCreateTasksRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        delivery_api.BatchCreateTasksRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for batch_create_tasks
 
         Override in a subclass to manipulate the request or metadata
@@ -177,8 +187,11 @@ class DeliveryServiceRestInterceptor:
     def pre_create_delivery_vehicle(
         self,
         request: delivery_api.CreateDeliveryVehicleRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[delivery_api.CreateDeliveryVehicleRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        delivery_api.CreateDeliveryVehicleRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for create_delivery_vehicle
 
         Override in a subclass to manipulate the request or metadata
@@ -200,8 +213,8 @@ class DeliveryServiceRestInterceptor:
     def pre_create_task(
         self,
         request: delivery_api.CreateTaskRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[delivery_api.CreateTaskRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[delivery_api.CreateTaskRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_task
 
         Override in a subclass to manipulate the request or metadata
@@ -221,8 +234,10 @@ class DeliveryServiceRestInterceptor:
     def pre_get_delivery_vehicle(
         self,
         request: delivery_api.GetDeliveryVehicleRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[delivery_api.GetDeliveryVehicleRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        delivery_api.GetDeliveryVehicleRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_delivery_vehicle
 
         Override in a subclass to manipulate the request or metadata
@@ -242,8 +257,10 @@ class DeliveryServiceRestInterceptor:
         return response
 
     def pre_get_task(
-        self, request: delivery_api.GetTaskRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[delivery_api.GetTaskRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: delivery_api.GetTaskRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[delivery_api.GetTaskRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_task
 
         Override in a subclass to manipulate the request or metadata
@@ -263,8 +280,10 @@ class DeliveryServiceRestInterceptor:
     def pre_get_task_tracking_info(
         self,
         request: delivery_api.GetTaskTrackingInfoRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[delivery_api.GetTaskTrackingInfoRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        delivery_api.GetTaskTrackingInfoRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_task_tracking_info
 
         Override in a subclass to manipulate the request or metadata
@@ -286,8 +305,11 @@ class DeliveryServiceRestInterceptor:
     def pre_list_delivery_vehicles(
         self,
         request: delivery_api.ListDeliveryVehiclesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[delivery_api.ListDeliveryVehiclesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        delivery_api.ListDeliveryVehiclesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for list_delivery_vehicles
 
         Override in a subclass to manipulate the request or metadata
@@ -309,8 +331,8 @@ class DeliveryServiceRestInterceptor:
     def pre_list_tasks(
         self,
         request: delivery_api.ListTasksRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[delivery_api.ListTasksRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[delivery_api.ListTasksRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_tasks
 
         Override in a subclass to manipulate the request or metadata
@@ -332,8 +354,11 @@ class DeliveryServiceRestInterceptor:
     def pre_update_delivery_vehicle(
         self,
         request: delivery_api.UpdateDeliveryVehicleRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[delivery_api.UpdateDeliveryVehicleRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        delivery_api.UpdateDeliveryVehicleRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for update_delivery_vehicle
 
         Override in a subclass to manipulate the request or metadata
@@ -355,8 +380,8 @@ class DeliveryServiceRestInterceptor:
     def pre_update_task(
         self,
         request: delivery_api.UpdateTaskRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[delivery_api.UpdateTaskRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[delivery_api.UpdateTaskRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_task
 
         Override in a subclass to manipulate the request or metadata
@@ -495,7 +520,7 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> delivery_api.BatchCreateTasksResponse:
             r"""Call the batch create tasks method over HTTP.
 
@@ -505,8 +530,10 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.delivery_api.BatchCreateTasksResponse:
@@ -516,6 +543,7 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
             http_options = (
                 _BaseDeliveryServiceRestTransport._BaseBatchCreateTasks._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_batch_create_tasks(
                 request, metadata
             )
@@ -531,6 +559,33 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
             query_params = _BaseDeliveryServiceRestTransport._BaseBatchCreateTasks._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for maps.fleetengine.delivery_v1.DeliveryServiceClient.BatchCreateTasks",
+                    extra={
+                        "serviceName": "maps.fleetengine.delivery.v1.DeliveryService",
+                        "rpcName": "BatchCreateTasks",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DeliveryServiceRestTransport._BatchCreateTasks._get_response(
@@ -553,7 +608,31 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
             pb_resp = delivery_api.BatchCreateTasksResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_batch_create_tasks(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = delivery_api.BatchCreateTasksResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for maps.fleetengine.delivery_v1.DeliveryServiceClient.batch_create_tasks",
+                    extra={
+                        "serviceName": "maps.fleetengine.delivery.v1.DeliveryService",
+                        "rpcName": "BatchCreateTasks",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateDeliveryVehicle(
@@ -592,7 +671,7 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> delivery_vehicles.DeliveryVehicle:
             r"""Call the create delivery vehicle method over HTTP.
 
@@ -602,8 +681,10 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.delivery_vehicles.DeliveryVehicle:
@@ -625,6 +706,7 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
             http_options = (
                 _BaseDeliveryServiceRestTransport._BaseCreateDeliveryVehicle._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_delivery_vehicle(
                 request, metadata
             )
@@ -640,6 +722,33 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
             query_params = _BaseDeliveryServiceRestTransport._BaseCreateDeliveryVehicle._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for maps.fleetengine.delivery_v1.DeliveryServiceClient.CreateDeliveryVehicle",
+                    extra={
+                        "serviceName": "maps.fleetengine.delivery.v1.DeliveryService",
+                        "rpcName": "CreateDeliveryVehicle",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -664,7 +773,31 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
             pb_resp = delivery_vehicles.DeliveryVehicle.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_delivery_vehicle(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = delivery_vehicles.DeliveryVehicle.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for maps.fleetengine.delivery_v1.DeliveryServiceClient.create_delivery_vehicle",
+                    extra={
+                        "serviceName": "maps.fleetengine.delivery.v1.DeliveryService",
+                        "rpcName": "CreateDeliveryVehicle",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateTask(
@@ -702,7 +835,7 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> tasks.Task:
             r"""Call the create task method over HTTP.
 
@@ -712,8 +845,10 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.tasks.Task:
@@ -739,6 +874,7 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
             http_options = (
                 _BaseDeliveryServiceRestTransport._BaseCreateTask._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_task(request, metadata)
             transcoded_request = _BaseDeliveryServiceRestTransport._BaseCreateTask._get_transcoded_request(
                 http_options, request
@@ -752,6 +888,33 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
             query_params = _BaseDeliveryServiceRestTransport._BaseCreateTask._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for maps.fleetengine.delivery_v1.DeliveryServiceClient.CreateTask",
+                    extra={
+                        "serviceName": "maps.fleetengine.delivery.v1.DeliveryService",
+                        "rpcName": "CreateTask",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DeliveryServiceRestTransport._CreateTask._get_response(
@@ -774,7 +937,29 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
             pb_resp = tasks.Task.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_task(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = tasks.Task.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for maps.fleetengine.delivery_v1.DeliveryServiceClient.create_task",
+                    extra={
+                        "serviceName": "maps.fleetengine.delivery.v1.DeliveryService",
+                        "rpcName": "CreateTask",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetDeliveryVehicle(
@@ -812,7 +997,7 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> delivery_vehicles.DeliveryVehicle:
             r"""Call the get delivery vehicle method over HTTP.
 
@@ -822,8 +1007,10 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.delivery_vehicles.DeliveryVehicle:
@@ -845,6 +1032,7 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
             http_options = (
                 _BaseDeliveryServiceRestTransport._BaseGetDeliveryVehicle._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_delivery_vehicle(
                 request, metadata
             )
@@ -856,6 +1044,33 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
             query_params = _BaseDeliveryServiceRestTransport._BaseGetDeliveryVehicle._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for maps.fleetengine.delivery_v1.DeliveryServiceClient.GetDeliveryVehicle",
+                    extra={
+                        "serviceName": "maps.fleetengine.delivery.v1.DeliveryService",
+                        "rpcName": "GetDeliveryVehicle",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DeliveryServiceRestTransport._GetDeliveryVehicle._get_response(
@@ -877,7 +1092,31 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
             pb_resp = delivery_vehicles.DeliveryVehicle.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_delivery_vehicle(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = delivery_vehicles.DeliveryVehicle.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for maps.fleetengine.delivery_v1.DeliveryServiceClient.get_delivery_vehicle",
+                    extra={
+                        "serviceName": "maps.fleetengine.delivery.v1.DeliveryService",
+                        "rpcName": "GetDeliveryVehicle",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetTask(
@@ -914,7 +1153,7 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> tasks.Task:
             r"""Call the get task method over HTTP.
 
@@ -924,8 +1163,10 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.tasks.Task:
@@ -951,6 +1192,7 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
             http_options = (
                 _BaseDeliveryServiceRestTransport._BaseGetTask._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_task(request, metadata)
             transcoded_request = (
                 _BaseDeliveryServiceRestTransport._BaseGetTask._get_transcoded_request(
@@ -964,6 +1206,33 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for maps.fleetengine.delivery_v1.DeliveryServiceClient.GetTask",
+                    extra={
+                        "serviceName": "maps.fleetengine.delivery.v1.DeliveryService",
+                        "rpcName": "GetTask",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DeliveryServiceRestTransport._GetTask._get_response(
@@ -985,7 +1254,29 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
             pb_resp = tasks.Task.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_task(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = tasks.Task.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for maps.fleetengine.delivery_v1.DeliveryServiceClient.get_task",
+                    extra={
+                        "serviceName": "maps.fleetengine.delivery.v1.DeliveryService",
+                        "rpcName": "GetTask",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetTaskTrackingInfo(
@@ -1023,7 +1314,7 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> task_tracking_info.TaskTrackingInfo:
             r"""Call the get task tracking info method over HTTP.
 
@@ -1033,8 +1324,10 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.task_tracking_info.TaskTrackingInfo:
@@ -1049,6 +1342,7 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
             http_options = (
                 _BaseDeliveryServiceRestTransport._BaseGetTaskTrackingInfo._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_task_tracking_info(
                 request, metadata
             )
@@ -1060,6 +1354,33 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
             query_params = _BaseDeliveryServiceRestTransport._BaseGetTaskTrackingInfo._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for maps.fleetengine.delivery_v1.DeliveryServiceClient.GetTaskTrackingInfo",
+                    extra={
+                        "serviceName": "maps.fleetengine.delivery.v1.DeliveryService",
+                        "rpcName": "GetTaskTrackingInfo",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DeliveryServiceRestTransport._GetTaskTrackingInfo._get_response(
@@ -1081,7 +1402,31 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
             pb_resp = task_tracking_info.TaskTrackingInfo.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_task_tracking_info(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = task_tracking_info.TaskTrackingInfo.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for maps.fleetengine.delivery_v1.DeliveryServiceClient.get_task_tracking_info",
+                    extra={
+                        "serviceName": "maps.fleetengine.delivery.v1.DeliveryService",
+                        "rpcName": "GetTaskTrackingInfo",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListDeliveryVehicles(
@@ -1119,7 +1464,7 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> delivery_api.ListDeliveryVehiclesResponse:
             r"""Call the list delivery vehicles method over HTTP.
 
@@ -1129,8 +1474,10 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.delivery_api.ListDeliveryVehiclesResponse:
@@ -1140,6 +1487,7 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
             http_options = (
                 _BaseDeliveryServiceRestTransport._BaseListDeliveryVehicles._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_delivery_vehicles(
                 request, metadata
             )
@@ -1151,6 +1499,33 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
             query_params = _BaseDeliveryServiceRestTransport._BaseListDeliveryVehicles._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for maps.fleetengine.delivery_v1.DeliveryServiceClient.ListDeliveryVehicles",
+                    extra={
+                        "serviceName": "maps.fleetengine.delivery.v1.DeliveryService",
+                        "rpcName": "ListDeliveryVehicles",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DeliveryServiceRestTransport._ListDeliveryVehicles._get_response(
@@ -1172,7 +1547,31 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
             pb_resp = delivery_api.ListDeliveryVehiclesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_delivery_vehicles(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        delivery_api.ListDeliveryVehiclesResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for maps.fleetengine.delivery_v1.DeliveryServiceClient.list_delivery_vehicles",
+                    extra={
+                        "serviceName": "maps.fleetengine.delivery.v1.DeliveryService",
+                        "rpcName": "ListDeliveryVehicles",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListTasks(
@@ -1209,7 +1608,7 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> delivery_api.ListTasksResponse:
             r"""Call the list tasks method over HTTP.
 
@@ -1219,8 +1618,10 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.delivery_api.ListTasksResponse:
@@ -1233,6 +1634,7 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
             http_options = (
                 _BaseDeliveryServiceRestTransport._BaseListTasks._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_tasks(request, metadata)
             transcoded_request = _BaseDeliveryServiceRestTransport._BaseListTasks._get_transcoded_request(
                 http_options, request
@@ -1244,6 +1646,33 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for maps.fleetengine.delivery_v1.DeliveryServiceClient.ListTasks",
+                    extra={
+                        "serviceName": "maps.fleetengine.delivery.v1.DeliveryService",
+                        "rpcName": "ListTasks",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DeliveryServiceRestTransport._ListTasks._get_response(
@@ -1265,7 +1694,29 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
             pb_resp = delivery_api.ListTasksResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_tasks(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = delivery_api.ListTasksResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for maps.fleetengine.delivery_v1.DeliveryServiceClient.list_tasks",
+                    extra={
+                        "serviceName": "maps.fleetengine.delivery.v1.DeliveryService",
+                        "rpcName": "ListTasks",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateDeliveryVehicle(
@@ -1304,7 +1755,7 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> delivery_vehicles.DeliveryVehicle:
             r"""Call the update delivery vehicle method over HTTP.
 
@@ -1314,8 +1765,10 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.delivery_vehicles.DeliveryVehicle:
@@ -1337,6 +1790,7 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
             http_options = (
                 _BaseDeliveryServiceRestTransport._BaseUpdateDeliveryVehicle._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_delivery_vehicle(
                 request, metadata
             )
@@ -1352,6 +1806,33 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
             query_params = _BaseDeliveryServiceRestTransport._BaseUpdateDeliveryVehicle._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for maps.fleetengine.delivery_v1.DeliveryServiceClient.UpdateDeliveryVehicle",
+                    extra={
+                        "serviceName": "maps.fleetengine.delivery.v1.DeliveryService",
+                        "rpcName": "UpdateDeliveryVehicle",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1376,7 +1857,31 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
             pb_resp = delivery_vehicles.DeliveryVehicle.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_delivery_vehicle(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = delivery_vehicles.DeliveryVehicle.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for maps.fleetengine.delivery_v1.DeliveryServiceClient.update_delivery_vehicle",
+                    extra={
+                        "serviceName": "maps.fleetengine.delivery.v1.DeliveryService",
+                        "rpcName": "UpdateDeliveryVehicle",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateTask(
@@ -1414,7 +1919,7 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> tasks.Task:
             r"""Call the update task method over HTTP.
 
@@ -1424,8 +1929,10 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.tasks.Task:
@@ -1451,6 +1958,7 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
             http_options = (
                 _BaseDeliveryServiceRestTransport._BaseUpdateTask._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_task(request, metadata)
             transcoded_request = _BaseDeliveryServiceRestTransport._BaseUpdateTask._get_transcoded_request(
                 http_options, request
@@ -1464,6 +1972,33 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
             query_params = _BaseDeliveryServiceRestTransport._BaseUpdateTask._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for maps.fleetengine.delivery_v1.DeliveryServiceClient.UpdateTask",
+                    extra={
+                        "serviceName": "maps.fleetengine.delivery.v1.DeliveryService",
+                        "rpcName": "UpdateTask",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DeliveryServiceRestTransport._UpdateTask._get_response(
@@ -1486,7 +2021,29 @@ class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
             pb_resp = tasks.Task.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_task(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = tasks.Task.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for maps.fleetengine.delivery_v1.DeliveryServiceClient.update_task",
+                    extra={
+                        "serviceName": "maps.fleetengine.delivery.v1.DeliveryService",
+                        "rpcName": "UpdateTask",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property

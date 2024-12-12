@@ -3011,6 +3011,7 @@ def test_list_workflows_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_workflows(request)
 
@@ -3066,6 +3067,7 @@ def test_list_workflows_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_workflows(**mock_args)
 
@@ -3256,6 +3258,7 @@ def test_get_workflow_rest_required_fields(request_type=workflows.GetWorkflowReq
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_workflow(request)
 
@@ -3303,6 +3306,7 @@ def test_get_workflow_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_workflow(**mock_args)
 
@@ -3445,6 +3449,7 @@ def test_create_workflow_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_workflow(request)
 
@@ -3505,6 +3510,7 @@ def test_create_workflow_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_workflow(**mock_args)
 
@@ -3639,6 +3645,7 @@ def test_delete_workflow_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_workflow(request)
 
@@ -3684,6 +3691,7 @@ def test_delete_workflow_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_workflow(**mock_args)
 
@@ -3814,6 +3822,7 @@ def test_update_workflow_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_workflow(request)
 
@@ -3860,6 +3869,7 @@ def test_update_workflow_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_workflow(**mock_args)
 
@@ -4275,6 +4285,7 @@ def test_list_workflows_rest_bad_request(request_type=workflows.ListWorkflowsReq
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_workflows(request)
 
 
@@ -4311,6 +4322,7 @@ def test_list_workflows_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_workflows(request)
 
     # Establish that the response is the type that we expect.
@@ -4348,6 +4360,7 @@ def test_list_workflows_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = workflows.ListWorkflowsResponse.to_json(
             workflows.ListWorkflowsResponse()
         )
@@ -4392,6 +4405,7 @@ def test_get_workflow_rest_bad_request(request_type=workflows.GetWorkflowRequest
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_workflow(request)
 
 
@@ -4432,6 +4446,7 @@ def test_get_workflow_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_workflow(request)
 
     # Establish that the response is the type that we expect.
@@ -4472,6 +4487,7 @@ def test_get_workflow_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = workflows.Workflow.to_json(workflows.Workflow())
         req.return_value.content = return_value
 
@@ -4514,6 +4530,7 @@ def test_create_workflow_rest_bad_request(request_type=workflows.CreateWorkflowR
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_workflow(request)
 
 
@@ -4623,6 +4640,7 @@ def test_create_workflow_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_workflow(request)
 
     # Establish that the response is the type that we expect.
@@ -4662,6 +4680,7 @@ def test_create_workflow_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -4704,6 +4723,7 @@ def test_delete_workflow_rest_bad_request(request_type=workflows.DeleteWorkflowR
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_workflow(request)
 
 
@@ -4734,6 +4754,7 @@ def test_delete_workflow_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_workflow(request)
 
     # Establish that the response is the type that we expect.
@@ -4773,6 +4794,7 @@ def test_delete_workflow_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -4817,6 +4839,7 @@ def test_update_workflow_rest_bad_request(request_type=workflows.UpdateWorkflowR
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_workflow(request)
 
 
@@ -4928,6 +4951,7 @@ def test_update_workflow_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_workflow(request)
 
     # Establish that the response is the type that we expect.
@@ -4967,6 +4991,7 @@ def test_update_workflow_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 

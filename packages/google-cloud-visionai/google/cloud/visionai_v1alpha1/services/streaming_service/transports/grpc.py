@@ -13,6 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import json
+import logging as std_logging
+import pickle
 from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -24,11 +27,89 @@ from google.cloud.location import locations_pb2  # type: ignore
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf.json_format import MessageToJson
+import google.protobuf.message
 import grpc  # type: ignore
+import proto  # type: ignore
 
 from google.cloud.visionai_v1alpha1.types import streaming_service
 
 from .base import DEFAULT_CLIENT_INFO, StreamingServiceTransport
+
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = std_logging.getLogger(__name__)
+
+
+class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
+    def intercept_unary_unary(self, continuation, client_call_details, request):
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+            std_logging.DEBUG
+        )
+        if logging_enabled:  # pragma: NO COVER
+            request_metadata = client_call_details.metadata
+            if isinstance(request, proto.Message):
+                request_payload = type(request).to_json(request)
+            elif isinstance(request, google.protobuf.message.Message):
+                request_payload = MessageToJson(request)
+            else:
+                request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
+
+            request_metadata = {
+                key: value.decode("utf-8") if isinstance(value, bytes) else value
+                for key, value in request_metadata
+            }
+            grpc_request = {
+                "payload": request_payload,
+                "requestMethod": "grpc",
+                "metadata": dict(request_metadata),
+            }
+            _LOGGER.debug(
+                f"Sending request for {client_call_details.method}",
+                extra={
+                    "serviceName": "google.cloud.visionai.v1alpha1.StreamingService",
+                    "rpcName": client_call_details.method,
+                    "request": grpc_request,
+                    "metadata": grpc_request["metadata"],
+                },
+            )
+
+        response = continuation(client_call_details, request)
+        if logging_enabled:  # pragma: NO COVER
+            response_metadata = response.trailing_metadata()
+            # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
+            metadata = (
+                dict([(k, str(v)) for k, v in response_metadata])
+                if response_metadata
+                else None
+            )
+            result = response.result()
+            if isinstance(result, proto.Message):
+                response_payload = type(result).to_json(result)
+            elif isinstance(result, google.protobuf.message.Message):
+                response_payload = MessageToJson(result)
+            else:
+                response_payload = f"{type(result).__name__}: {pickle.dumps(result)}"
+            grpc_response = {
+                "payload": response_payload,
+                "metadata": metadata,
+                "status": "OK",
+            }
+            _LOGGER.debug(
+                f"Received response for {client_call_details.method}.",
+                extra={
+                    "serviceName": "google.cloud.visionai.v1alpha1.StreamingService",
+                    "rpcName": client_call_details.method,
+                    "response": grpc_response,
+                    "metadata": grpc_response["metadata"],
+                },
+            )
+        return response
 
 
 class StreamingServiceGrpcTransport(StreamingServiceTransport):
@@ -183,7 +264,12 @@ class StreamingServiceGrpcTransport(StreamingServiceTransport):
                 ],
             )
 
-        # Wrap messages. This must be done after self._grpc_channel exists
+        self._interceptor = _LoggingClientInterceptor()
+        self._logged_channel = grpc.intercept_channel(
+            self._grpc_channel, self._interceptor
+        )
+
+        # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
     @classmethod
@@ -259,7 +345,7 @@ class StreamingServiceGrpcTransport(StreamingServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "send_packets" not in self._stubs:
-            self._stubs["send_packets"] = self.grpc_channel.stream_stream(
+            self._stubs["send_packets"] = self._logged_channel.stream_stream(
                 "/google.cloud.visionai.v1alpha1.StreamingService/SendPackets",
                 request_serializer=streaming_service.SendPacketsRequest.serialize,
                 response_deserializer=streaming_service.SendPacketsResponse.deserialize,
@@ -288,7 +374,7 @@ class StreamingServiceGrpcTransport(StreamingServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "receive_packets" not in self._stubs:
-            self._stubs["receive_packets"] = self.grpc_channel.stream_stream(
+            self._stubs["receive_packets"] = self._logged_channel.stream_stream(
                 "/google.cloud.visionai.v1alpha1.StreamingService/ReceivePackets",
                 request_serializer=streaming_service.ReceivePacketsRequest.serialize,
                 response_deserializer=streaming_service.ReceivePacketsResponse.deserialize,
@@ -317,7 +403,7 @@ class StreamingServiceGrpcTransport(StreamingServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "receive_events" not in self._stubs:
-            self._stubs["receive_events"] = self.grpc_channel.stream_stream(
+            self._stubs["receive_events"] = self._logged_channel.stream_stream(
                 "/google.cloud.visionai.v1alpha1.StreamingService/ReceiveEvents",
                 request_serializer=streaming_service.ReceiveEventsRequest.serialize,
                 response_deserializer=streaming_service.ReceiveEventsResponse.deserialize,
@@ -343,7 +429,7 @@ class StreamingServiceGrpcTransport(StreamingServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "acquire_lease" not in self._stubs:
-            self._stubs["acquire_lease"] = self.grpc_channel.unary_unary(
+            self._stubs["acquire_lease"] = self._logged_channel.unary_unary(
                 "/google.cloud.visionai.v1alpha1.StreamingService/AcquireLease",
                 request_serializer=streaming_service.AcquireLeaseRequest.serialize,
                 response_deserializer=streaming_service.Lease.deserialize,
@@ -369,7 +455,7 @@ class StreamingServiceGrpcTransport(StreamingServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "renew_lease" not in self._stubs:
-            self._stubs["renew_lease"] = self.grpc_channel.unary_unary(
+            self._stubs["renew_lease"] = self._logged_channel.unary_unary(
                 "/google.cloud.visionai.v1alpha1.StreamingService/RenewLease",
                 request_serializer=streaming_service.RenewLeaseRequest.serialize,
                 response_deserializer=streaming_service.Lease.deserialize,
@@ -397,7 +483,7 @@ class StreamingServiceGrpcTransport(StreamingServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "release_lease" not in self._stubs:
-            self._stubs["release_lease"] = self.grpc_channel.unary_unary(
+            self._stubs["release_lease"] = self._logged_channel.unary_unary(
                 "/google.cloud.visionai.v1alpha1.StreamingService/ReleaseLease",
                 request_serializer=streaming_service.ReleaseLeaseRequest.serialize,
                 response_deserializer=streaming_service.ReleaseLeaseResponse.deserialize,
@@ -405,7 +491,7 @@ class StreamingServiceGrpcTransport(StreamingServiceTransport):
         return self._stubs["release_lease"]
 
     def close(self):
-        self.grpc_channel.close()
+        self._logged_channel.close()
 
     @property
     def delete_operation(
@@ -417,7 +503,7 @@ class StreamingServiceGrpcTransport(StreamingServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_operation" not in self._stubs:
-            self._stubs["delete_operation"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_operation"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/DeleteOperation",
                 request_serializer=operations_pb2.DeleteOperationRequest.SerializeToString,
                 response_deserializer=None,
@@ -434,7 +520,7 @@ class StreamingServiceGrpcTransport(StreamingServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "cancel_operation" not in self._stubs:
-            self._stubs["cancel_operation"] = self.grpc_channel.unary_unary(
+            self._stubs["cancel_operation"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/CancelOperation",
                 request_serializer=operations_pb2.CancelOperationRequest.SerializeToString,
                 response_deserializer=None,
@@ -451,7 +537,7 @@ class StreamingServiceGrpcTransport(StreamingServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_operation" not in self._stubs:
-            self._stubs["get_operation"] = self.grpc_channel.unary_unary(
+            self._stubs["get_operation"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/GetOperation",
                 request_serializer=operations_pb2.GetOperationRequest.SerializeToString,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -470,7 +556,7 @@ class StreamingServiceGrpcTransport(StreamingServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_operations" not in self._stubs:
-            self._stubs["list_operations"] = self.grpc_channel.unary_unary(
+            self._stubs["list_operations"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/ListOperations",
                 request_serializer=operations_pb2.ListOperationsRequest.SerializeToString,
                 response_deserializer=operations_pb2.ListOperationsResponse.FromString,
@@ -489,7 +575,7 @@ class StreamingServiceGrpcTransport(StreamingServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_locations" not in self._stubs:
-            self._stubs["list_locations"] = self.grpc_channel.unary_unary(
+            self._stubs["list_locations"] = self._logged_channel.unary_unary(
                 "/google.cloud.location.Locations/ListLocations",
                 request_serializer=locations_pb2.ListLocationsRequest.SerializeToString,
                 response_deserializer=locations_pb2.ListLocationsResponse.FromString,
@@ -506,7 +592,7 @@ class StreamingServiceGrpcTransport(StreamingServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_location" not in self._stubs:
-            self._stubs["get_location"] = self.grpc_channel.unary_unary(
+            self._stubs["get_location"] = self._logged_channel.unary_unary(
                 "/google.cloud.location.Locations/GetLocation",
                 request_serializer=locations_pb2.GetLocationRequest.SerializeToString,
                 response_deserializer=locations_pb2.Location.FromString,
@@ -531,7 +617,7 @@ class StreamingServiceGrpcTransport(StreamingServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "set_iam_policy" not in self._stubs:
-            self._stubs["set_iam_policy"] = self.grpc_channel.unary_unary(
+            self._stubs["set_iam_policy"] = self._logged_channel.unary_unary(
                 "/google.iam.v1.IAMPolicy/SetIamPolicy",
                 request_serializer=iam_policy_pb2.SetIamPolicyRequest.SerializeToString,
                 response_deserializer=policy_pb2.Policy.FromString,
@@ -557,7 +643,7 @@ class StreamingServiceGrpcTransport(StreamingServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_iam_policy" not in self._stubs:
-            self._stubs["get_iam_policy"] = self.grpc_channel.unary_unary(
+            self._stubs["get_iam_policy"] = self._logged_channel.unary_unary(
                 "/google.iam.v1.IAMPolicy/GetIamPolicy",
                 request_serializer=iam_policy_pb2.GetIamPolicyRequest.SerializeToString,
                 response_deserializer=policy_pb2.Policy.FromString,
@@ -586,7 +672,7 @@ class StreamingServiceGrpcTransport(StreamingServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "test_iam_permissions" not in self._stubs:
-            self._stubs["test_iam_permissions"] = self.grpc_channel.unary_unary(
+            self._stubs["test_iam_permissions"] = self._logged_channel.unary_unary(
                 "/google.iam.v1.IAMPolicy/TestIamPermissions",
                 request_serializer=iam_policy_pb2.TestIamPermissionsRequest.SerializeToString,
                 response_deserializer=iam_policy_pb2.TestIamPermissionsResponse.FromString,

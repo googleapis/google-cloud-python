@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -41,6 +41,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -281,8 +289,11 @@ class AppPlatformRestInterceptor:
     def pre_add_application_stream_input(
         self,
         request: platform.AddApplicationStreamInputRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[platform.AddApplicationStreamInputRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        platform.AddApplicationStreamInputRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for add_application_stream_input
 
         Override in a subclass to manipulate the request or metadata
@@ -304,8 +315,10 @@ class AppPlatformRestInterceptor:
     def pre_create_application(
         self,
         request: platform.CreateApplicationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[platform.CreateApplicationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        platform.CreateApplicationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_application
 
         Override in a subclass to manipulate the request or metadata
@@ -327,8 +340,11 @@ class AppPlatformRestInterceptor:
     def pre_create_application_instances(
         self,
         request: platform.CreateApplicationInstancesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[platform.CreateApplicationInstancesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        platform.CreateApplicationInstancesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for create_application_instances
 
         Override in a subclass to manipulate the request or metadata
@@ -348,8 +364,10 @@ class AppPlatformRestInterceptor:
         return response
 
     def pre_create_draft(
-        self, request: platform.CreateDraftRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[platform.CreateDraftRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: platform.CreateDraftRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[platform.CreateDraftRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_draft
 
         Override in a subclass to manipulate the request or metadata
@@ -371,8 +389,10 @@ class AppPlatformRestInterceptor:
     def pre_create_processor(
         self,
         request: platform.CreateProcessorRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[platform.CreateProcessorRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        platform.CreateProcessorRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_processor
 
         Override in a subclass to manipulate the request or metadata
@@ -394,8 +414,10 @@ class AppPlatformRestInterceptor:
     def pre_delete_application(
         self,
         request: platform.DeleteApplicationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[platform.DeleteApplicationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        platform.DeleteApplicationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_application
 
         Override in a subclass to manipulate the request or metadata
@@ -417,8 +439,11 @@ class AppPlatformRestInterceptor:
     def pre_delete_application_instances(
         self,
         request: platform.DeleteApplicationInstancesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[platform.DeleteApplicationInstancesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        platform.DeleteApplicationInstancesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for delete_application_instances
 
         Override in a subclass to manipulate the request or metadata
@@ -438,8 +463,10 @@ class AppPlatformRestInterceptor:
         return response
 
     def pre_delete_draft(
-        self, request: platform.DeleteDraftRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[platform.DeleteDraftRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: platform.DeleteDraftRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[platform.DeleteDraftRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_draft
 
         Override in a subclass to manipulate the request or metadata
@@ -461,8 +488,10 @@ class AppPlatformRestInterceptor:
     def pre_delete_processor(
         self,
         request: platform.DeleteProcessorRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[platform.DeleteProcessorRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        platform.DeleteProcessorRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_processor
 
         Override in a subclass to manipulate the request or metadata
@@ -484,8 +513,10 @@ class AppPlatformRestInterceptor:
     def pre_deploy_application(
         self,
         request: platform.DeployApplicationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[platform.DeployApplicationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        platform.DeployApplicationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for deploy_application
 
         Override in a subclass to manipulate the request or metadata
@@ -507,8 +538,8 @@ class AppPlatformRestInterceptor:
     def pre_get_application(
         self,
         request: platform.GetApplicationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[platform.GetApplicationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[platform.GetApplicationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_application
 
         Override in a subclass to manipulate the request or metadata
@@ -528,8 +559,10 @@ class AppPlatformRestInterceptor:
         return response
 
     def pre_get_draft(
-        self, request: platform.GetDraftRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[platform.GetDraftRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: platform.GetDraftRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[platform.GetDraftRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_draft
 
         Override in a subclass to manipulate the request or metadata
@@ -547,8 +580,10 @@ class AppPlatformRestInterceptor:
         return response
 
     def pre_get_instance(
-        self, request: platform.GetInstanceRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[platform.GetInstanceRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: platform.GetInstanceRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[platform.GetInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_instance
 
         Override in a subclass to manipulate the request or metadata
@@ -566,8 +601,10 @@ class AppPlatformRestInterceptor:
         return response
 
     def pre_get_processor(
-        self, request: platform.GetProcessorRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[platform.GetProcessorRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: platform.GetProcessorRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[platform.GetProcessorRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_processor
 
         Override in a subclass to manipulate the request or metadata
@@ -587,8 +624,10 @@ class AppPlatformRestInterceptor:
     def pre_list_applications(
         self,
         request: platform.ListApplicationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[platform.ListApplicationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        platform.ListApplicationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_applications
 
         Override in a subclass to manipulate the request or metadata
@@ -608,8 +647,10 @@ class AppPlatformRestInterceptor:
         return response
 
     def pre_list_drafts(
-        self, request: platform.ListDraftsRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[platform.ListDraftsRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: platform.ListDraftsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[platform.ListDraftsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_drafts
 
         Override in a subclass to manipulate the request or metadata
@@ -631,8 +672,8 @@ class AppPlatformRestInterceptor:
     def pre_list_instances(
         self,
         request: platform.ListInstancesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[platform.ListInstancesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[platform.ListInstancesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_instances
 
         Override in a subclass to manipulate the request or metadata
@@ -654,8 +695,10 @@ class AppPlatformRestInterceptor:
     def pre_list_prebuilt_processors(
         self,
         request: platform.ListPrebuiltProcessorsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[platform.ListPrebuiltProcessorsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        platform.ListPrebuiltProcessorsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_prebuilt_processors
 
         Override in a subclass to manipulate the request or metadata
@@ -677,8 +720,8 @@ class AppPlatformRestInterceptor:
     def pre_list_processors(
         self,
         request: platform.ListProcessorsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[platform.ListProcessorsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[platform.ListProcessorsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_processors
 
         Override in a subclass to manipulate the request or metadata
@@ -700,8 +743,11 @@ class AppPlatformRestInterceptor:
     def pre_remove_application_stream_input(
         self,
         request: platform.RemoveApplicationStreamInputRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[platform.RemoveApplicationStreamInputRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        platform.RemoveApplicationStreamInputRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for remove_application_stream_input
 
         Override in a subclass to manipulate the request or metadata
@@ -723,8 +769,10 @@ class AppPlatformRestInterceptor:
     def pre_undeploy_application(
         self,
         request: platform.UndeployApplicationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[platform.UndeployApplicationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        platform.UndeployApplicationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for undeploy_application
 
         Override in a subclass to manipulate the request or metadata
@@ -746,8 +794,10 @@ class AppPlatformRestInterceptor:
     def pre_update_application(
         self,
         request: platform.UpdateApplicationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[platform.UpdateApplicationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        platform.UpdateApplicationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_application
 
         Override in a subclass to manipulate the request or metadata
@@ -769,8 +819,11 @@ class AppPlatformRestInterceptor:
     def pre_update_application_instances(
         self,
         request: platform.UpdateApplicationInstancesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[platform.UpdateApplicationInstancesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        platform.UpdateApplicationInstancesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for update_application_instances
 
         Override in a subclass to manipulate the request or metadata
@@ -792,8 +845,11 @@ class AppPlatformRestInterceptor:
     def pre_update_application_stream_input(
         self,
         request: platform.UpdateApplicationStreamInputRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[platform.UpdateApplicationStreamInputRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        platform.UpdateApplicationStreamInputRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for update_application_stream_input
 
         Override in a subclass to manipulate the request or metadata
@@ -813,8 +869,10 @@ class AppPlatformRestInterceptor:
         return response
 
     def pre_update_draft(
-        self, request: platform.UpdateDraftRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[platform.UpdateDraftRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: platform.UpdateDraftRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[platform.UpdateDraftRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_draft
 
         Override in a subclass to manipulate the request or metadata
@@ -836,8 +894,10 @@ class AppPlatformRestInterceptor:
     def pre_update_processor(
         self,
         request: platform.UpdateProcessorRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[platform.UpdateProcessorRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        platform.UpdateProcessorRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_processor
 
         Override in a subclass to manipulate the request or metadata
@@ -859,8 +919,10 @@ class AppPlatformRestInterceptor:
     def pre_cancel_operation(
         self,
         request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -880,8 +942,10 @@ class AppPlatformRestInterceptor:
     def pre_delete_operation(
         self,
         request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -901,8 +965,10 @@ class AppPlatformRestInterceptor:
     def pre_get_operation(
         self,
         request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -924,8 +990,10 @@ class AppPlatformRestInterceptor:
     def pre_list_operations(
         self,
         request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -1149,7 +1217,7 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the add application stream
             input method over HTTP.
@@ -1161,8 +1229,10 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.operations_pb2.Operation:
@@ -1175,6 +1245,7 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             http_options = (
                 _BaseAppPlatformRestTransport._BaseAddApplicationStreamInput._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_add_application_stream_input(
                 request, metadata
             )
@@ -1190,6 +1261,33 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             query_params = _BaseAppPlatformRestTransport._BaseAddApplicationStreamInput._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1.AppPlatformClient.AddApplicationStreamInput",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1.AppPlatform",
+                        "rpcName": "AddApplicationStreamInput",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1212,7 +1310,29 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_add_application_stream_input(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1.AppPlatformClient.add_application_stream_input",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1.AppPlatform",
+                        "rpcName": "AddApplicationStreamInput",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateApplication(
@@ -1250,7 +1370,7 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create application method over HTTP.
 
@@ -1260,8 +1380,10 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1274,6 +1396,7 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             http_options = (
                 _BaseAppPlatformRestTransport._BaseCreateApplication._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_application(
                 request, metadata
             )
@@ -1289,6 +1412,33 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             query_params = _BaseAppPlatformRestTransport._BaseCreateApplication._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1.AppPlatformClient.CreateApplication",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1.AppPlatform",
+                        "rpcName": "CreateApplication",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AppPlatformRestTransport._CreateApplication._get_response(
@@ -1309,7 +1459,29 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_application(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1.AppPlatformClient.create_application",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1.AppPlatform",
+                        "rpcName": "CreateApplication",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateApplicationInstances(
@@ -1348,7 +1520,7 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create application
             instances method over HTTP.
@@ -1360,8 +1532,10 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.operations_pb2.Operation:
@@ -1374,6 +1548,7 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             http_options = (
                 _BaseAppPlatformRestTransport._BaseCreateApplicationInstances._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_application_instances(
                 request, metadata
             )
@@ -1389,6 +1564,33 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             query_params = _BaseAppPlatformRestTransport._BaseCreateApplicationInstances._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1.AppPlatformClient.CreateApplicationInstances",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1.AppPlatform",
+                        "rpcName": "CreateApplicationInstances",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1411,7 +1613,29 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_application_instances(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1.AppPlatformClient.create_application_instances",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1.AppPlatform",
+                        "rpcName": "CreateApplicationInstances",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateDraft(
@@ -1449,7 +1673,7 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create draft method over HTTP.
 
@@ -1459,8 +1683,10 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1473,6 +1699,7 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             http_options = (
                 _BaseAppPlatformRestTransport._BaseCreateDraft._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_draft(request, metadata)
             transcoded_request = (
                 _BaseAppPlatformRestTransport._BaseCreateDraft._get_transcoded_request(
@@ -1493,6 +1720,33 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
                 )
             )
 
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1.AppPlatformClient.CreateDraft",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1.AppPlatform",
+                        "rpcName": "CreateDraft",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
             # Send the request
             response = AppPlatformRestTransport._CreateDraft._get_response(
                 self._host,
@@ -1512,7 +1766,29 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_draft(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1.AppPlatformClient.create_draft",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1.AppPlatform",
+                        "rpcName": "CreateDraft",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateProcessor(
@@ -1550,7 +1826,7 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create processor method over HTTP.
 
@@ -1560,8 +1836,10 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1574,6 +1852,7 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             http_options = (
                 _BaseAppPlatformRestTransport._BaseCreateProcessor._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_processor(
                 request, metadata
             )
@@ -1589,6 +1868,33 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             query_params = _BaseAppPlatformRestTransport._BaseCreateProcessor._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1.AppPlatformClient.CreateProcessor",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1.AppPlatform",
+                        "rpcName": "CreateProcessor",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AppPlatformRestTransport._CreateProcessor._get_response(
@@ -1609,7 +1915,29 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_processor(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1.AppPlatformClient.create_processor",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1.AppPlatform",
+                        "rpcName": "CreateProcessor",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteApplication(
@@ -1646,7 +1974,7 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete application method over HTTP.
 
@@ -1656,8 +1984,10 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1670,6 +2000,7 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             http_options = (
                 _BaseAppPlatformRestTransport._BaseDeleteApplication._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_application(
                 request, metadata
             )
@@ -1681,6 +2012,33 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             query_params = _BaseAppPlatformRestTransport._BaseDeleteApplication._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1.AppPlatformClient.DeleteApplication",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1.AppPlatform",
+                        "rpcName": "DeleteApplication",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AppPlatformRestTransport._DeleteApplication._get_response(
@@ -1700,7 +2058,29 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_application(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1.AppPlatformClient.delete_application",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1.AppPlatform",
+                        "rpcName": "DeleteApplication",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteApplicationInstances(
@@ -1739,7 +2119,7 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete application
             instances method over HTTP.
@@ -1751,8 +2131,10 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.operations_pb2.Operation:
@@ -1765,6 +2147,7 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             http_options = (
                 _BaseAppPlatformRestTransport._BaseDeleteApplicationInstances._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_application_instances(
                 request, metadata
             )
@@ -1780,6 +2163,33 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             query_params = _BaseAppPlatformRestTransport._BaseDeleteApplicationInstances._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1.AppPlatformClient.DeleteApplicationInstances",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1.AppPlatform",
+                        "rpcName": "DeleteApplicationInstances",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1802,7 +2212,29 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_application_instances(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1.AppPlatformClient.delete_application_instances",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1.AppPlatform",
+                        "rpcName": "DeleteApplicationInstances",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteDraft(
@@ -1839,7 +2271,7 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete draft method over HTTP.
 
@@ -1849,8 +2281,10 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1863,6 +2297,7 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             http_options = (
                 _BaseAppPlatformRestTransport._BaseDeleteDraft._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_draft(request, metadata)
             transcoded_request = (
                 _BaseAppPlatformRestTransport._BaseDeleteDraft._get_transcoded_request(
@@ -1876,6 +2311,33 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1.AppPlatformClient.DeleteDraft",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1.AppPlatform",
+                        "rpcName": "DeleteDraft",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AppPlatformRestTransport._DeleteDraft._get_response(
@@ -1895,7 +2357,29 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_draft(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1.AppPlatformClient.delete_draft",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1.AppPlatform",
+                        "rpcName": "DeleteDraft",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteProcessor(
@@ -1932,7 +2416,7 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete processor method over HTTP.
 
@@ -1942,8 +2426,10 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1956,6 +2442,7 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             http_options = (
                 _BaseAppPlatformRestTransport._BaseDeleteProcessor._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_processor(
                 request, metadata
             )
@@ -1967,6 +2454,33 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             query_params = _BaseAppPlatformRestTransport._BaseDeleteProcessor._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1.AppPlatformClient.DeleteProcessor",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1.AppPlatform",
+                        "rpcName": "DeleteProcessor",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AppPlatformRestTransport._DeleteProcessor._get_response(
@@ -1986,7 +2500,29 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_processor(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1.AppPlatformClient.delete_processor",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1.AppPlatform",
+                        "rpcName": "DeleteProcessor",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeployApplication(
@@ -2024,7 +2560,7 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the deploy application method over HTTP.
 
@@ -2034,8 +2570,10 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2048,6 +2586,7 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             http_options = (
                 _BaseAppPlatformRestTransport._BaseDeployApplication._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_deploy_application(
                 request, metadata
             )
@@ -2063,6 +2602,33 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             query_params = _BaseAppPlatformRestTransport._BaseDeployApplication._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1.AppPlatformClient.DeployApplication",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1.AppPlatform",
+                        "rpcName": "DeployApplication",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AppPlatformRestTransport._DeployApplication._get_response(
@@ -2083,7 +2649,29 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_deploy_application(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1.AppPlatformClient.deploy_application",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1.AppPlatform",
+                        "rpcName": "DeployApplication",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetApplication(
@@ -2120,7 +2708,7 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> platform.Application:
             r"""Call the get application method over HTTP.
 
@@ -2130,8 +2718,10 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.platform.Application:
@@ -2141,6 +2731,7 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             http_options = (
                 _BaseAppPlatformRestTransport._BaseGetApplication._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_application(request, metadata)
             transcoded_request = _BaseAppPlatformRestTransport._BaseGetApplication._get_transcoded_request(
                 http_options, request
@@ -2150,6 +2741,33 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             query_params = _BaseAppPlatformRestTransport._BaseGetApplication._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1.AppPlatformClient.GetApplication",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1.AppPlatform",
+                        "rpcName": "GetApplication",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AppPlatformRestTransport._GetApplication._get_response(
@@ -2171,7 +2789,29 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             pb_resp = platform.Application.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_application(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = platform.Application.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1.AppPlatformClient.get_application",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1.AppPlatform",
+                        "rpcName": "GetApplication",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetDraft(_BaseAppPlatformRestTransport._BaseGetDraft, AppPlatformRestStub):
@@ -2206,7 +2846,7 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> platform.Draft:
             r"""Call the get draft method over HTTP.
 
@@ -2216,8 +2856,10 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.platform.Draft:
@@ -2227,6 +2869,7 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             http_options = (
                 _BaseAppPlatformRestTransport._BaseGetDraft._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_draft(request, metadata)
             transcoded_request = (
                 _BaseAppPlatformRestTransport._BaseGetDraft._get_transcoded_request(
@@ -2240,6 +2883,33 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1.AppPlatformClient.GetDraft",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1.AppPlatform",
+                        "rpcName": "GetDraft",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AppPlatformRestTransport._GetDraft._get_response(
@@ -2261,7 +2931,29 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             pb_resp = platform.Draft.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_draft(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = platform.Draft.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1.AppPlatformClient.get_draft",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1.AppPlatform",
+                        "rpcName": "GetDraft",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetInstance(
@@ -2298,7 +2990,7 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> platform.Instance:
             r"""Call the get instance method over HTTP.
 
@@ -2308,8 +3000,10 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.platform.Instance:
@@ -2321,6 +3015,7 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             http_options = (
                 _BaseAppPlatformRestTransport._BaseGetInstance._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_instance(request, metadata)
             transcoded_request = (
                 _BaseAppPlatformRestTransport._BaseGetInstance._get_transcoded_request(
@@ -2334,6 +3029,33 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1.AppPlatformClient.GetInstance",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1.AppPlatform",
+                        "rpcName": "GetInstance",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AppPlatformRestTransport._GetInstance._get_response(
@@ -2355,7 +3077,29 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             pb_resp = platform.Instance.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_instance(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = platform.Instance.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1.AppPlatformClient.get_instance",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1.AppPlatform",
+                        "rpcName": "GetInstance",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetProcessor(
@@ -2392,7 +3136,7 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> platform.Processor:
             r"""Call the get processor method over HTTP.
 
@@ -2402,8 +3146,10 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.platform.Processor:
@@ -2415,6 +3161,7 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             http_options = (
                 _BaseAppPlatformRestTransport._BaseGetProcessor._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_processor(request, metadata)
             transcoded_request = (
                 _BaseAppPlatformRestTransport._BaseGetProcessor._get_transcoded_request(
@@ -2428,6 +3175,33 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1.AppPlatformClient.GetProcessor",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1.AppPlatform",
+                        "rpcName": "GetProcessor",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AppPlatformRestTransport._GetProcessor._get_response(
@@ -2449,7 +3223,29 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             pb_resp = platform.Processor.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_processor(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = platform.Processor.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1.AppPlatformClient.get_processor",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1.AppPlatform",
+                        "rpcName": "GetProcessor",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListApplications(
@@ -2486,7 +3282,7 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> platform.ListApplicationsResponse:
             r"""Call the list applications method over HTTP.
 
@@ -2497,8 +3293,10 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.platform.ListApplicationsResponse:
@@ -2510,6 +3308,7 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             http_options = (
                 _BaseAppPlatformRestTransport._BaseListApplications._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_applications(
                 request, metadata
             )
@@ -2521,6 +3320,33 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             query_params = _BaseAppPlatformRestTransport._BaseListApplications._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1.AppPlatformClient.ListApplications",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1.AppPlatform",
+                        "rpcName": "ListApplications",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AppPlatformRestTransport._ListApplications._get_response(
@@ -2542,7 +3368,31 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             pb_resp = platform.ListApplicationsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_applications(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = platform.ListApplicationsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1.AppPlatformClient.list_applications",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1.AppPlatform",
+                        "rpcName": "ListApplications",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListDrafts(
@@ -2579,7 +3429,7 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> platform.ListDraftsResponse:
             r"""Call the list drafts method over HTTP.
 
@@ -2590,8 +3440,10 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.platform.ListDraftsResponse:
@@ -2603,6 +3455,7 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             http_options = (
                 _BaseAppPlatformRestTransport._BaseListDrafts._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_drafts(request, metadata)
             transcoded_request = (
                 _BaseAppPlatformRestTransport._BaseListDrafts._get_transcoded_request(
@@ -2616,6 +3469,33 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1.AppPlatformClient.ListDrafts",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1.AppPlatform",
+                        "rpcName": "ListDrafts",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AppPlatformRestTransport._ListDrafts._get_response(
@@ -2637,7 +3517,29 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             pb_resp = platform.ListDraftsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_drafts(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = platform.ListDraftsResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1.AppPlatformClient.list_drafts",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1.AppPlatform",
+                        "rpcName": "ListDrafts",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListInstances(
@@ -2674,7 +3576,7 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> platform.ListInstancesResponse:
             r"""Call the list instances method over HTTP.
 
@@ -2685,8 +3587,10 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.platform.ListInstancesResponse:
@@ -2698,6 +3602,7 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             http_options = (
                 _BaseAppPlatformRestTransport._BaseListInstances._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_instances(request, metadata)
             transcoded_request = _BaseAppPlatformRestTransport._BaseListInstances._get_transcoded_request(
                 http_options, request
@@ -2709,6 +3614,33 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1.AppPlatformClient.ListInstances",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1.AppPlatform",
+                        "rpcName": "ListInstances",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AppPlatformRestTransport._ListInstances._get_response(
@@ -2730,7 +3662,29 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             pb_resp = platform.ListInstancesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_instances(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = platform.ListInstancesResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1.AppPlatformClient.list_instances",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1.AppPlatform",
+                        "rpcName": "ListInstances",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListPrebuiltProcessors(
@@ -2768,7 +3722,7 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> platform.ListPrebuiltProcessorsResponse:
             r"""Call the list prebuilt processors method over HTTP.
 
@@ -2779,8 +3733,10 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.platform.ListPrebuiltProcessorsResponse:
@@ -2792,6 +3748,7 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             http_options = (
                 _BaseAppPlatformRestTransport._BaseListPrebuiltProcessors._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_prebuilt_processors(
                 request, metadata
             )
@@ -2807,6 +3764,33 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             query_params = _BaseAppPlatformRestTransport._BaseListPrebuiltProcessors._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1.AppPlatformClient.ListPrebuiltProcessors",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1.AppPlatform",
+                        "rpcName": "ListPrebuiltProcessors",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AppPlatformRestTransport._ListPrebuiltProcessors._get_response(
@@ -2829,7 +3813,31 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             pb_resp = platform.ListPrebuiltProcessorsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_prebuilt_processors(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = platform.ListPrebuiltProcessorsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1.AppPlatformClient.list_prebuilt_processors",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1.AppPlatform",
+                        "rpcName": "ListPrebuiltProcessors",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListProcessors(
@@ -2866,7 +3874,7 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> platform.ListProcessorsResponse:
             r"""Call the list processors method over HTTP.
 
@@ -2877,8 +3885,10 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.platform.ListProcessorsResponse:
@@ -2890,6 +3900,7 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             http_options = (
                 _BaseAppPlatformRestTransport._BaseListProcessors._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_processors(request, metadata)
             transcoded_request = _BaseAppPlatformRestTransport._BaseListProcessors._get_transcoded_request(
                 http_options, request
@@ -2899,6 +3910,33 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             query_params = _BaseAppPlatformRestTransport._BaseListProcessors._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1.AppPlatformClient.ListProcessors",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1.AppPlatform",
+                        "rpcName": "ListProcessors",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AppPlatformRestTransport._ListProcessors._get_response(
@@ -2920,7 +3958,29 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             pb_resp = platform.ListProcessorsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_processors(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = platform.ListProcessorsResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1.AppPlatformClient.list_processors",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1.AppPlatform",
+                        "rpcName": "ListProcessors",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _RemoveApplicationStreamInput(
@@ -2959,7 +4019,7 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the remove application stream
             input method over HTTP.
@@ -2971,8 +4031,10 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.operations_pb2.Operation:
@@ -2985,6 +4047,7 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             http_options = (
                 _BaseAppPlatformRestTransport._BaseRemoveApplicationStreamInput._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_remove_application_stream_input(
                 request, metadata
             )
@@ -3000,6 +4063,33 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             query_params = _BaseAppPlatformRestTransport._BaseRemoveApplicationStreamInput._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1.AppPlatformClient.RemoveApplicationStreamInput",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1.AppPlatform",
+                        "rpcName": "RemoveApplicationStreamInput",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -3022,7 +4112,29 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_remove_application_stream_input(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1.AppPlatformClient.remove_application_stream_input",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1.AppPlatform",
+                        "rpcName": "RemoveApplicationStreamInput",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UndeployApplication(
@@ -3060,7 +4172,7 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the undeploy application method over HTTP.
 
@@ -3071,8 +4183,10 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -3085,6 +4199,7 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             http_options = (
                 _BaseAppPlatformRestTransport._BaseUndeployApplication._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_undeploy_application(
                 request, metadata
             )
@@ -3100,6 +4215,33 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             query_params = _BaseAppPlatformRestTransport._BaseUndeployApplication._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1.AppPlatformClient.UndeployApplication",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1.AppPlatform",
+                        "rpcName": "UndeployApplication",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AppPlatformRestTransport._UndeployApplication._get_response(
@@ -3120,7 +4262,29 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_undeploy_application(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1.AppPlatformClient.undeploy_application",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1.AppPlatform",
+                        "rpcName": "UndeployApplication",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateApplication(
@@ -3158,7 +4322,7 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update application method over HTTP.
 
@@ -3168,8 +4332,10 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -3182,6 +4348,7 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             http_options = (
                 _BaseAppPlatformRestTransport._BaseUpdateApplication._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_application(
                 request, metadata
             )
@@ -3197,6 +4364,33 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             query_params = _BaseAppPlatformRestTransport._BaseUpdateApplication._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1.AppPlatformClient.UpdateApplication",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1.AppPlatform",
+                        "rpcName": "UpdateApplication",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AppPlatformRestTransport._UpdateApplication._get_response(
@@ -3217,7 +4411,29 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_application(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1.AppPlatformClient.update_application",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1.AppPlatform",
+                        "rpcName": "UpdateApplication",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateApplicationInstances(
@@ -3256,7 +4472,7 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update application
             instances method over HTTP.
@@ -3268,8 +4484,10 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.operations_pb2.Operation:
@@ -3282,6 +4500,7 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             http_options = (
                 _BaseAppPlatformRestTransport._BaseUpdateApplicationInstances._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_application_instances(
                 request, metadata
             )
@@ -3297,6 +4516,33 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             query_params = _BaseAppPlatformRestTransport._BaseUpdateApplicationInstances._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1.AppPlatformClient.UpdateApplicationInstances",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1.AppPlatform",
+                        "rpcName": "UpdateApplicationInstances",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -3319,7 +4565,29 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_application_instances(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1.AppPlatformClient.update_application_instances",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1.AppPlatform",
+                        "rpcName": "UpdateApplicationInstances",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateApplicationStreamInput(
@@ -3358,7 +4626,7 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update application stream
             input method over HTTP.
@@ -3370,8 +4638,10 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.operations_pb2.Operation:
@@ -3384,6 +4654,7 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             http_options = (
                 _BaseAppPlatformRestTransport._BaseUpdateApplicationStreamInput._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_application_stream_input(
                 request, metadata
             )
@@ -3399,6 +4670,33 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             query_params = _BaseAppPlatformRestTransport._BaseUpdateApplicationStreamInput._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1.AppPlatformClient.UpdateApplicationStreamInput",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1.AppPlatform",
+                        "rpcName": "UpdateApplicationStreamInput",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -3421,7 +4719,29 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_application_stream_input(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1.AppPlatformClient.update_application_stream_input",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1.AppPlatform",
+                        "rpcName": "UpdateApplicationStreamInput",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateDraft(
@@ -3459,7 +4779,7 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update draft method over HTTP.
 
@@ -3469,8 +4789,10 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -3483,6 +4805,7 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             http_options = (
                 _BaseAppPlatformRestTransport._BaseUpdateDraft._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_draft(request, metadata)
             transcoded_request = (
                 _BaseAppPlatformRestTransport._BaseUpdateDraft._get_transcoded_request(
@@ -3503,6 +4826,33 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
                 )
             )
 
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1.AppPlatformClient.UpdateDraft",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1.AppPlatform",
+                        "rpcName": "UpdateDraft",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
             # Send the request
             response = AppPlatformRestTransport._UpdateDraft._get_response(
                 self._host,
@@ -3522,7 +4872,29 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_draft(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1.AppPlatformClient.update_draft",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1.AppPlatform",
+                        "rpcName": "UpdateDraft",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateProcessor(
@@ -3560,7 +4932,7 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update processor method over HTTP.
 
@@ -3570,8 +4942,10 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -3584,6 +4958,7 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             http_options = (
                 _BaseAppPlatformRestTransport._BaseUpdateProcessor._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_processor(
                 request, metadata
             )
@@ -3599,6 +4974,33 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             query_params = _BaseAppPlatformRestTransport._BaseUpdateProcessor._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1.AppPlatformClient.UpdateProcessor",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1.AppPlatform",
+                        "rpcName": "UpdateProcessor",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AppPlatformRestTransport._UpdateProcessor._get_response(
@@ -3619,7 +5021,29 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_processor(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1.AppPlatformClient.update_processor",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1.AppPlatform",
+                        "rpcName": "UpdateProcessor",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -3884,7 +5308,7 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the cancel operation method over HTTP.
 
@@ -3894,13 +5318,16 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseAppPlatformRestTransport._BaseCancelOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
@@ -3916,6 +5343,33 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             query_params = _BaseAppPlatformRestTransport._BaseCancelOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1.AppPlatformClient.CancelOperation",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1.AppPlatform",
+                        "rpcName": "CancelOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AppPlatformRestTransport._CancelOperation._get_response(
@@ -3973,7 +5427,7 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the delete operation method over HTTP.
 
@@ -3983,13 +5437,16 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseAppPlatformRestTransport._BaseDeleteOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
             )
@@ -4001,6 +5458,33 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             query_params = _BaseAppPlatformRestTransport._BaseDeleteOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1.AppPlatformClient.DeleteOperation",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1.AppPlatform",
+                        "rpcName": "DeleteOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AppPlatformRestTransport._DeleteOperation._get_response(
@@ -4057,7 +5541,7 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the get operation method over HTTP.
 
@@ -4067,8 +5551,10 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.
@@ -4077,6 +5563,7 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             http_options = (
                 _BaseAppPlatformRestTransport._BaseGetOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = (
                 _BaseAppPlatformRestTransport._BaseGetOperation._get_transcoded_request(
@@ -4090,6 +5577,33 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1.AppPlatformClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1.AppPlatform",
+                        "rpcName": "GetOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AppPlatformRestTransport._GetOperation._get_response(
@@ -4110,6 +5624,27 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1.AppPlatformAsyncClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1.AppPlatform",
+                        "rpcName": "GetOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -4150,7 +5685,7 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.ListOperationsResponse:
             r"""Call the list operations method over HTTP.
 
@@ -4160,8 +5695,10 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
@@ -4170,6 +5707,7 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             http_options = (
                 _BaseAppPlatformRestTransport._BaseListOperations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseAppPlatformRestTransport._BaseListOperations._get_transcoded_request(
                 http_options, request
@@ -4179,6 +5717,33 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             query_params = _BaseAppPlatformRestTransport._BaseListOperations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.visionai_v1.AppPlatformClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1.AppPlatform",
+                        "rpcName": "ListOperations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AppPlatformRestTransport._ListOperations._get_response(
@@ -4199,6 +5764,27 @@ class AppPlatformRestTransport(_BaseAppPlatformRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.visionai_v1.AppPlatformAsyncClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.visionai.v1.AppPlatform",
+                        "rpcName": "ListOperations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
