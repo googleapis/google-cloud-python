@@ -13,6 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import json
+import logging as std_logging
+import pickle
 from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -24,12 +27,90 @@ from google.cloud.location import locations_pb2  # type: ignore
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf.json_format import MessageToJson
+import google.protobuf.message
 import grpc  # type: ignore
+import proto  # type: ignore
 
 from google.cloud.networkconnectivity_v1.types import hub
 from google.cloud.networkconnectivity_v1.types import hub as gcn_hub
 
 from .base import DEFAULT_CLIENT_INFO, HubServiceTransport
+
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = std_logging.getLogger(__name__)
+
+
+class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
+    def intercept_unary_unary(self, continuation, client_call_details, request):
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+            std_logging.DEBUG
+        )
+        if logging_enabled:  # pragma: NO COVER
+            request_metadata = client_call_details.metadata
+            if isinstance(request, proto.Message):
+                request_payload = type(request).to_json(request)
+            elif isinstance(request, google.protobuf.message.Message):
+                request_payload = MessageToJson(request)
+            else:
+                request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
+
+            request_metadata = {
+                key: value.decode("utf-8") if isinstance(value, bytes) else value
+                for key, value in request_metadata
+            }
+            grpc_request = {
+                "payload": request_payload,
+                "requestMethod": "grpc",
+                "metadata": dict(request_metadata),
+            }
+            _LOGGER.debug(
+                f"Sending request for {client_call_details.method}",
+                extra={
+                    "serviceName": "google.cloud.networkconnectivity.v1.HubService",
+                    "rpcName": client_call_details.method,
+                    "request": grpc_request,
+                    "metadata": grpc_request["metadata"],
+                },
+            )
+
+        response = continuation(client_call_details, request)
+        if logging_enabled:  # pragma: NO COVER
+            response_metadata = response.trailing_metadata()
+            # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
+            metadata = (
+                dict([(k, str(v)) for k, v in response_metadata])
+                if response_metadata
+                else None
+            )
+            result = response.result()
+            if isinstance(result, proto.Message):
+                response_payload = type(result).to_json(result)
+            elif isinstance(result, google.protobuf.message.Message):
+                response_payload = MessageToJson(result)
+            else:
+                response_payload = f"{type(result).__name__}: {pickle.dumps(result)}"
+            grpc_response = {
+                "payload": response_payload,
+                "metadata": metadata,
+                "status": "OK",
+            }
+            _LOGGER.debug(
+                f"Received response for {client_call_details.method}.",
+                extra={
+                    "serviceName": "google.cloud.networkconnectivity.v1.HubService",
+                    "rpcName": client_call_details.method,
+                    "response": grpc_response,
+                    "metadata": grpc_response["metadata"],
+                },
+            )
+        return response
 
 
 class HubServiceGrpcTransport(HubServiceTransport):
@@ -188,7 +269,12 @@ class HubServiceGrpcTransport(HubServiceTransport):
                 ],
             )
 
-        # Wrap messages. This must be done after self._grpc_channel exists
+        self._interceptor = _LoggingClientInterceptor()
+        self._logged_channel = grpc.intercept_channel(
+            self._grpc_channel, self._interceptor
+        )
+
+        # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
     @classmethod
@@ -252,7 +338,9 @@ class HubServiceGrpcTransport(HubServiceTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsClient(self.grpc_channel)
+            self._operations_client = operations_v1.OperationsClient(
+                self._logged_channel
+            )
 
         # Return the client from cache.
         return self._operations_client
@@ -275,7 +363,7 @@ class HubServiceGrpcTransport(HubServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_hubs" not in self._stubs:
-            self._stubs["list_hubs"] = self.grpc_channel.unary_unary(
+            self._stubs["list_hubs"] = self._logged_channel.unary_unary(
                 "/google.cloud.networkconnectivity.v1.HubService/ListHubs",
                 request_serializer=hub.ListHubsRequest.serialize,
                 response_deserializer=hub.ListHubsResponse.deserialize,
@@ -299,7 +387,7 @@ class HubServiceGrpcTransport(HubServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_hub" not in self._stubs:
-            self._stubs["get_hub"] = self.grpc_channel.unary_unary(
+            self._stubs["get_hub"] = self._logged_channel.unary_unary(
                 "/google.cloud.networkconnectivity.v1.HubService/GetHub",
                 request_serializer=hub.GetHubRequest.serialize,
                 response_deserializer=hub.Hub.deserialize,
@@ -326,7 +414,7 @@ class HubServiceGrpcTransport(HubServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_hub" not in self._stubs:
-            self._stubs["create_hub"] = self.grpc_channel.unary_unary(
+            self._stubs["create_hub"] = self._logged_channel.unary_unary(
                 "/google.cloud.networkconnectivity.v1.HubService/CreateHub",
                 request_serializer=gcn_hub.CreateHubRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -353,7 +441,7 @@ class HubServiceGrpcTransport(HubServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_hub" not in self._stubs:
-            self._stubs["update_hub"] = self.grpc_channel.unary_unary(
+            self._stubs["update_hub"] = self._logged_channel.unary_unary(
                 "/google.cloud.networkconnectivity.v1.HubService/UpdateHub",
                 request_serializer=gcn_hub.UpdateHubRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -377,7 +465,7 @@ class HubServiceGrpcTransport(HubServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_hub" not in self._stubs:
-            self._stubs["delete_hub"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_hub"] = self._logged_channel.unary_unary(
                 "/google.cloud.networkconnectivity.v1.HubService/DeleteHub",
                 request_serializer=hub.DeleteHubRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -406,12 +494,39 @@ class HubServiceGrpcTransport(HubServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_hub_spokes" not in self._stubs:
-            self._stubs["list_hub_spokes"] = self.grpc_channel.unary_unary(
+            self._stubs["list_hub_spokes"] = self._logged_channel.unary_unary(
                 "/google.cloud.networkconnectivity.v1.HubService/ListHubSpokes",
                 request_serializer=hub.ListHubSpokesRequest.serialize,
                 response_deserializer=hub.ListHubSpokesResponse.deserialize,
             )
         return self._stubs["list_hub_spokes"]
+
+    @property
+    def query_hub_status(
+        self,
+    ) -> Callable[[hub.QueryHubStatusRequest], hub.QueryHubStatusResponse]:
+        r"""Return a callable for the query hub status method over gRPC.
+
+        Query the Private Service Connect propagation status
+        of a Network Connectivity Center hub.
+
+        Returns:
+            Callable[[~.QueryHubStatusRequest],
+                    ~.QueryHubStatusResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "query_hub_status" not in self._stubs:
+            self._stubs["query_hub_status"] = self._logged_channel.unary_unary(
+                "/google.cloud.networkconnectivity.v1.HubService/QueryHubStatus",
+                request_serializer=hub.QueryHubStatusRequest.serialize,
+                response_deserializer=hub.QueryHubStatusResponse.deserialize,
+            )
+        return self._stubs["query_hub_status"]
 
     @property
     def list_spokes(self) -> Callable[[hub.ListSpokesRequest], hub.ListSpokesResponse]:
@@ -431,7 +546,7 @@ class HubServiceGrpcTransport(HubServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_spokes" not in self._stubs:
-            self._stubs["list_spokes"] = self.grpc_channel.unary_unary(
+            self._stubs["list_spokes"] = self._logged_channel.unary_unary(
                 "/google.cloud.networkconnectivity.v1.HubService/ListSpokes",
                 request_serializer=hub.ListSpokesRequest.serialize,
                 response_deserializer=hub.ListSpokesResponse.deserialize,
@@ -456,7 +571,7 @@ class HubServiceGrpcTransport(HubServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_spoke" not in self._stubs:
-            self._stubs["get_spoke"] = self.grpc_channel.unary_unary(
+            self._stubs["get_spoke"] = self._logged_channel.unary_unary(
                 "/google.cloud.networkconnectivity.v1.HubService/GetSpoke",
                 request_serializer=hub.GetSpokeRequest.serialize,
                 response_deserializer=hub.Spoke.deserialize,
@@ -482,7 +597,7 @@ class HubServiceGrpcTransport(HubServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_spoke" not in self._stubs:
-            self._stubs["create_spoke"] = self.grpc_channel.unary_unary(
+            self._stubs["create_spoke"] = self._logged_channel.unary_unary(
                 "/google.cloud.networkconnectivity.v1.HubService/CreateSpoke",
                 request_serializer=hub.CreateSpokeRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -509,7 +624,7 @@ class HubServiceGrpcTransport(HubServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_spoke" not in self._stubs:
-            self._stubs["update_spoke"] = self.grpc_channel.unary_unary(
+            self._stubs["update_spoke"] = self._logged_channel.unary_unary(
                 "/google.cloud.networkconnectivity.v1.HubService/UpdateSpoke",
                 request_serializer=hub.UpdateSpokeRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -538,7 +653,7 @@ class HubServiceGrpcTransport(HubServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "reject_hub_spoke" not in self._stubs:
-            self._stubs["reject_hub_spoke"] = self.grpc_channel.unary_unary(
+            self._stubs["reject_hub_spoke"] = self._logged_channel.unary_unary(
                 "/google.cloud.networkconnectivity.v1.HubService/RejectHubSpoke",
                 request_serializer=hub.RejectHubSpokeRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -565,7 +680,7 @@ class HubServiceGrpcTransport(HubServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "accept_hub_spoke" not in self._stubs:
-            self._stubs["accept_hub_spoke"] = self.grpc_channel.unary_unary(
+            self._stubs["accept_hub_spoke"] = self._logged_channel.unary_unary(
                 "/google.cloud.networkconnectivity.v1.HubService/AcceptHubSpoke",
                 request_serializer=hub.AcceptHubSpokeRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -591,7 +706,7 @@ class HubServiceGrpcTransport(HubServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_spoke" not in self._stubs:
-            self._stubs["delete_spoke"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_spoke"] = self._logged_channel.unary_unary(
                 "/google.cloud.networkconnectivity.v1.HubService/DeleteSpoke",
                 request_serializer=hub.DeleteSpokeRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -616,7 +731,7 @@ class HubServiceGrpcTransport(HubServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_route_table" not in self._stubs:
-            self._stubs["get_route_table"] = self.grpc_channel.unary_unary(
+            self._stubs["get_route_table"] = self._logged_channel.unary_unary(
                 "/google.cloud.networkconnectivity.v1.HubService/GetRouteTable",
                 request_serializer=hub.GetRouteTableRequest.serialize,
                 response_deserializer=hub.RouteTable.deserialize,
@@ -640,7 +755,7 @@ class HubServiceGrpcTransport(HubServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_route" not in self._stubs:
-            self._stubs["get_route"] = self.grpc_channel.unary_unary(
+            self._stubs["get_route"] = self._logged_channel.unary_unary(
                 "/google.cloud.networkconnectivity.v1.HubService/GetRoute",
                 request_serializer=hub.GetRouteRequest.serialize,
                 response_deserializer=hub.Route.deserialize,
@@ -651,7 +766,7 @@ class HubServiceGrpcTransport(HubServiceTransport):
     def list_routes(self) -> Callable[[hub.ListRoutesRequest], hub.ListRoutesResponse]:
         r"""Return a callable for the list routes method over gRPC.
 
-        Lists routes in a given project.
+        Lists routes in a given route table.
 
         Returns:
             Callable[[~.ListRoutesRequest],
@@ -664,7 +779,7 @@ class HubServiceGrpcTransport(HubServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_routes" not in self._stubs:
-            self._stubs["list_routes"] = self.grpc_channel.unary_unary(
+            self._stubs["list_routes"] = self._logged_channel.unary_unary(
                 "/google.cloud.networkconnectivity.v1.HubService/ListRoutes",
                 request_serializer=hub.ListRoutesRequest.serialize,
                 response_deserializer=hub.ListRoutesResponse.deserialize,
@@ -677,7 +792,7 @@ class HubServiceGrpcTransport(HubServiceTransport):
     ) -> Callable[[hub.ListRouteTablesRequest], hub.ListRouteTablesResponse]:
         r"""Return a callable for the list route tables method over gRPC.
 
-        Lists route tables in a given project.
+        Lists route tables in a given hub.
 
         Returns:
             Callable[[~.ListRouteTablesRequest],
@@ -690,7 +805,7 @@ class HubServiceGrpcTransport(HubServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_route_tables" not in self._stubs:
-            self._stubs["list_route_tables"] = self.grpc_channel.unary_unary(
+            self._stubs["list_route_tables"] = self._logged_channel.unary_unary(
                 "/google.cloud.networkconnectivity.v1.HubService/ListRouteTables",
                 request_serializer=hub.ListRouteTablesRequest.serialize,
                 response_deserializer=hub.ListRouteTablesResponse.deserialize,
@@ -715,7 +830,7 @@ class HubServiceGrpcTransport(HubServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_group" not in self._stubs:
-            self._stubs["get_group"] = self.grpc_channel.unary_unary(
+            self._stubs["get_group"] = self._logged_channel.unary_unary(
                 "/google.cloud.networkconnectivity.v1.HubService/GetGroup",
                 request_serializer=hub.GetGroupRequest.serialize,
                 response_deserializer=hub.Group.deserialize,
@@ -739,15 +854,42 @@ class HubServiceGrpcTransport(HubServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_groups" not in self._stubs:
-            self._stubs["list_groups"] = self.grpc_channel.unary_unary(
+            self._stubs["list_groups"] = self._logged_channel.unary_unary(
                 "/google.cloud.networkconnectivity.v1.HubService/ListGroups",
                 request_serializer=hub.ListGroupsRequest.serialize,
                 response_deserializer=hub.ListGroupsResponse.deserialize,
             )
         return self._stubs["list_groups"]
 
+    @property
+    def update_group(
+        self,
+    ) -> Callable[[hub.UpdateGroupRequest], operations_pb2.Operation]:
+        r"""Return a callable for the update group method over gRPC.
+
+        Updates the parameters of a Network Connectivity
+        Center group.
+
+        Returns:
+            Callable[[~.UpdateGroupRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_group" not in self._stubs:
+            self._stubs["update_group"] = self._logged_channel.unary_unary(
+                "/google.cloud.networkconnectivity.v1.HubService/UpdateGroup",
+                request_serializer=hub.UpdateGroupRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["update_group"]
+
     def close(self):
-        self.grpc_channel.close()
+        self._logged_channel.close()
 
     @property
     def delete_operation(
@@ -759,7 +901,7 @@ class HubServiceGrpcTransport(HubServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_operation" not in self._stubs:
-            self._stubs["delete_operation"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_operation"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/DeleteOperation",
                 request_serializer=operations_pb2.DeleteOperationRequest.SerializeToString,
                 response_deserializer=None,
@@ -776,7 +918,7 @@ class HubServiceGrpcTransport(HubServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "cancel_operation" not in self._stubs:
-            self._stubs["cancel_operation"] = self.grpc_channel.unary_unary(
+            self._stubs["cancel_operation"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/CancelOperation",
                 request_serializer=operations_pb2.CancelOperationRequest.SerializeToString,
                 response_deserializer=None,
@@ -793,7 +935,7 @@ class HubServiceGrpcTransport(HubServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_operation" not in self._stubs:
-            self._stubs["get_operation"] = self.grpc_channel.unary_unary(
+            self._stubs["get_operation"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/GetOperation",
                 request_serializer=operations_pb2.GetOperationRequest.SerializeToString,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -812,7 +954,7 @@ class HubServiceGrpcTransport(HubServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_operations" not in self._stubs:
-            self._stubs["list_operations"] = self.grpc_channel.unary_unary(
+            self._stubs["list_operations"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/ListOperations",
                 request_serializer=operations_pb2.ListOperationsRequest.SerializeToString,
                 response_deserializer=operations_pb2.ListOperationsResponse.FromString,
@@ -831,7 +973,7 @@ class HubServiceGrpcTransport(HubServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_locations" not in self._stubs:
-            self._stubs["list_locations"] = self.grpc_channel.unary_unary(
+            self._stubs["list_locations"] = self._logged_channel.unary_unary(
                 "/google.cloud.location.Locations/ListLocations",
                 request_serializer=locations_pb2.ListLocationsRequest.SerializeToString,
                 response_deserializer=locations_pb2.ListLocationsResponse.FromString,
@@ -848,7 +990,7 @@ class HubServiceGrpcTransport(HubServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_location" not in self._stubs:
-            self._stubs["get_location"] = self.grpc_channel.unary_unary(
+            self._stubs["get_location"] = self._logged_channel.unary_unary(
                 "/google.cloud.location.Locations/GetLocation",
                 request_serializer=locations_pb2.GetLocationRequest.SerializeToString,
                 response_deserializer=locations_pb2.Location.FromString,
@@ -873,7 +1015,7 @@ class HubServiceGrpcTransport(HubServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "set_iam_policy" not in self._stubs:
-            self._stubs["set_iam_policy"] = self.grpc_channel.unary_unary(
+            self._stubs["set_iam_policy"] = self._logged_channel.unary_unary(
                 "/google.iam.v1.IAMPolicy/SetIamPolicy",
                 request_serializer=iam_policy_pb2.SetIamPolicyRequest.SerializeToString,
                 response_deserializer=policy_pb2.Policy.FromString,
@@ -899,7 +1041,7 @@ class HubServiceGrpcTransport(HubServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_iam_policy" not in self._stubs:
-            self._stubs["get_iam_policy"] = self.grpc_channel.unary_unary(
+            self._stubs["get_iam_policy"] = self._logged_channel.unary_unary(
                 "/google.iam.v1.IAMPolicy/GetIamPolicy",
                 request_serializer=iam_policy_pb2.GetIamPolicyRequest.SerializeToString,
                 response_deserializer=policy_pb2.Policy.FromString,
@@ -928,7 +1070,7 @@ class HubServiceGrpcTransport(HubServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "test_iam_permissions" not in self._stubs:
-            self._stubs["test_iam_permissions"] = self.grpc_channel.unary_unary(
+            self._stubs["test_iam_permissions"] = self._logged_channel.unary_unary(
                 "/google.iam.v1.IAMPolicy/TestIamPermissions",
                 request_serializer=iam_policy_pb2.TestIamPermissionsRequest.SerializeToString,
                 response_deserializer=iam_policy_pb2.TestIamPermissionsResponse.FromString,
