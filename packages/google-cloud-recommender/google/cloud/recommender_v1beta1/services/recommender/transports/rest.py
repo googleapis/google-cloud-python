@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -47,6 +47,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -191,8 +199,10 @@ class RecommenderRestInterceptor:
     def pre_get_insight(
         self,
         request: recommender_service.GetInsightRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[recommender_service.GetInsightRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        recommender_service.GetInsightRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_insight
 
         Override in a subclass to manipulate the request or metadata
@@ -212,9 +222,10 @@ class RecommenderRestInterceptor:
     def pre_get_insight_type_config(
         self,
         request: recommender_service.GetInsightTypeConfigRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        recommender_service.GetInsightTypeConfigRequest, Sequence[Tuple[str, str]]
+        recommender_service.GetInsightTypeConfigRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for get_insight_type_config
 
@@ -237,8 +248,11 @@ class RecommenderRestInterceptor:
     def pre_get_recommendation(
         self,
         request: recommender_service.GetRecommendationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[recommender_service.GetRecommendationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        recommender_service.GetRecommendationRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for get_recommendation
 
         Override in a subclass to manipulate the request or metadata
@@ -260,9 +274,10 @@ class RecommenderRestInterceptor:
     def pre_get_recommender_config(
         self,
         request: recommender_service.GetRecommenderConfigRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        recommender_service.GetRecommenderConfigRequest, Sequence[Tuple[str, str]]
+        recommender_service.GetRecommenderConfigRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for get_recommender_config
 
@@ -285,8 +300,10 @@ class RecommenderRestInterceptor:
     def pre_list_insights(
         self,
         request: recommender_service.ListInsightsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[recommender_service.ListInsightsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        recommender_service.ListInsightsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_insights
 
         Override in a subclass to manipulate the request or metadata
@@ -308,8 +325,11 @@ class RecommenderRestInterceptor:
     def pre_list_insight_types(
         self,
         request: recommender_service.ListInsightTypesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[recommender_service.ListInsightTypesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        recommender_service.ListInsightTypesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for list_insight_types
 
         Override in a subclass to manipulate the request or metadata
@@ -331,9 +351,10 @@ class RecommenderRestInterceptor:
     def pre_list_recommendations(
         self,
         request: recommender_service.ListRecommendationsRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        recommender_service.ListRecommendationsRequest, Sequence[Tuple[str, str]]
+        recommender_service.ListRecommendationsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for list_recommendations
 
@@ -356,8 +377,11 @@ class RecommenderRestInterceptor:
     def pre_list_recommenders(
         self,
         request: recommender_service.ListRecommendersRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[recommender_service.ListRecommendersRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        recommender_service.ListRecommendersRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for list_recommenders
 
         Override in a subclass to manipulate the request or metadata
@@ -379,9 +403,10 @@ class RecommenderRestInterceptor:
     def pre_mark_insight_accepted(
         self,
         request: recommender_service.MarkInsightAcceptedRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        recommender_service.MarkInsightAcceptedRequest, Sequence[Tuple[str, str]]
+        recommender_service.MarkInsightAcceptedRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for mark_insight_accepted
 
@@ -402,9 +427,10 @@ class RecommenderRestInterceptor:
     def pre_mark_recommendation_claimed(
         self,
         request: recommender_service.MarkRecommendationClaimedRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        recommender_service.MarkRecommendationClaimedRequest, Sequence[Tuple[str, str]]
+        recommender_service.MarkRecommendationClaimedRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for mark_recommendation_claimed
 
@@ -427,9 +453,10 @@ class RecommenderRestInterceptor:
     def pre_mark_recommendation_failed(
         self,
         request: recommender_service.MarkRecommendationFailedRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        recommender_service.MarkRecommendationFailedRequest, Sequence[Tuple[str, str]]
+        recommender_service.MarkRecommendationFailedRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for mark_recommendation_failed
 
@@ -452,10 +479,10 @@ class RecommenderRestInterceptor:
     def pre_mark_recommendation_succeeded(
         self,
         request: recommender_service.MarkRecommendationSucceededRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         recommender_service.MarkRecommendationSucceededRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for mark_recommendation_succeeded
 
@@ -478,9 +505,10 @@ class RecommenderRestInterceptor:
     def pre_update_insight_type_config(
         self,
         request: recommender_service.UpdateInsightTypeConfigRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        recommender_service.UpdateInsightTypeConfigRequest, Sequence[Tuple[str, str]]
+        recommender_service.UpdateInsightTypeConfigRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for update_insight_type_config
 
@@ -503,9 +531,10 @@ class RecommenderRestInterceptor:
     def pre_update_recommender_config(
         self,
         request: recommender_service.UpdateRecommenderConfigRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        recommender_service.UpdateRecommenderConfigRequest, Sequence[Tuple[str, str]]
+        recommender_service.UpdateRecommenderConfigRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for update_recommender_config
 
@@ -650,7 +679,7 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> insight.Insight:
             r"""Call the get insight method over HTTP.
 
@@ -660,8 +689,10 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.insight.Insight:
@@ -675,6 +706,7 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
             http_options = (
                 _BaseRecommenderRestTransport._BaseGetInsight._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_insight(request, metadata)
             transcoded_request = (
                 _BaseRecommenderRestTransport._BaseGetInsight._get_transcoded_request(
@@ -688,6 +720,33 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.recommender_v1beta1.RecommenderClient.GetInsight",
+                    extra={
+                        "serviceName": "google.cloud.recommender.v1beta1.Recommender",
+                        "rpcName": "GetInsight",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RecommenderRestTransport._GetInsight._get_response(
@@ -709,7 +768,29 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
             pb_resp = insight.Insight.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_insight(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = insight.Insight.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.recommender_v1beta1.RecommenderClient.get_insight",
+                    extra={
+                        "serviceName": "google.cloud.recommender.v1beta1.Recommender",
+                        "rpcName": "GetInsight",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetInsightTypeConfig(
@@ -746,7 +827,7 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> insight_type_config.InsightTypeConfig:
             r"""Call the get insight type config method over HTTP.
 
@@ -756,8 +837,10 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.insight_type_config.InsightTypeConfig:
@@ -767,6 +850,7 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
             http_options = (
                 _BaseRecommenderRestTransport._BaseGetInsightTypeConfig._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_insight_type_config(
                 request, metadata
             )
@@ -778,6 +862,33 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
             query_params = _BaseRecommenderRestTransport._BaseGetInsightTypeConfig._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.recommender_v1beta1.RecommenderClient.GetInsightTypeConfig",
+                    extra={
+                        "serviceName": "google.cloud.recommender.v1beta1.Recommender",
+                        "rpcName": "GetInsightTypeConfig",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RecommenderRestTransport._GetInsightTypeConfig._get_response(
@@ -799,7 +910,31 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
             pb_resp = insight_type_config.InsightTypeConfig.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_insight_type_config(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = insight_type_config.InsightTypeConfig.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.recommender_v1beta1.RecommenderClient.get_insight_type_config",
+                    extra={
+                        "serviceName": "google.cloud.recommender.v1beta1.Recommender",
+                        "rpcName": "GetInsightTypeConfig",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetRecommendation(
@@ -836,7 +971,7 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> recommendation.Recommendation:
             r"""Call the get recommendation method over HTTP.
 
@@ -846,8 +981,10 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.recommendation.Recommendation:
@@ -861,6 +998,7 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
             http_options = (
                 _BaseRecommenderRestTransport._BaseGetRecommendation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_recommendation(
                 request, metadata
             )
@@ -872,6 +1010,33 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
             query_params = _BaseRecommenderRestTransport._BaseGetRecommendation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.recommender_v1beta1.RecommenderClient.GetRecommendation",
+                    extra={
+                        "serviceName": "google.cloud.recommender.v1beta1.Recommender",
+                        "rpcName": "GetRecommendation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RecommenderRestTransport._GetRecommendation._get_response(
@@ -893,7 +1058,29 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
             pb_resp = recommendation.Recommendation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_recommendation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = recommendation.Recommendation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.recommender_v1beta1.RecommenderClient.get_recommendation",
+                    extra={
+                        "serviceName": "google.cloud.recommender.v1beta1.Recommender",
+                        "rpcName": "GetRecommendation",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetRecommenderConfig(
@@ -930,7 +1117,7 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> recommender_config.RecommenderConfig:
             r"""Call the get recommender config method over HTTP.
 
@@ -940,8 +1127,10 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.recommender_config.RecommenderConfig:
@@ -951,6 +1140,7 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
             http_options = (
                 _BaseRecommenderRestTransport._BaseGetRecommenderConfig._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_recommender_config(
                 request, metadata
             )
@@ -962,6 +1152,33 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
             query_params = _BaseRecommenderRestTransport._BaseGetRecommenderConfig._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.recommender_v1beta1.RecommenderClient.GetRecommenderConfig",
+                    extra={
+                        "serviceName": "google.cloud.recommender.v1beta1.Recommender",
+                        "rpcName": "GetRecommenderConfig",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RecommenderRestTransport._GetRecommenderConfig._get_response(
@@ -983,7 +1200,31 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
             pb_resp = recommender_config.RecommenderConfig.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_recommender_config(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = recommender_config.RecommenderConfig.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.recommender_v1beta1.RecommenderClient.get_recommender_config",
+                    extra={
+                        "serviceName": "google.cloud.recommender.v1beta1.Recommender",
+                        "rpcName": "GetRecommenderConfig",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListInsights(
@@ -1020,7 +1261,7 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> recommender_service.ListInsightsResponse:
             r"""Call the list insights method over HTTP.
 
@@ -1030,8 +1271,10 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.recommender_service.ListInsightsResponse:
@@ -1041,6 +1284,7 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
             http_options = (
                 _BaseRecommenderRestTransport._BaseListInsights._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_insights(request, metadata)
             transcoded_request = (
                 _BaseRecommenderRestTransport._BaseListInsights._get_transcoded_request(
@@ -1054,6 +1298,33 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.recommender_v1beta1.RecommenderClient.ListInsights",
+                    extra={
+                        "serviceName": "google.cloud.recommender.v1beta1.Recommender",
+                        "rpcName": "ListInsights",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RecommenderRestTransport._ListInsights._get_response(
@@ -1075,7 +1346,31 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
             pb_resp = recommender_service.ListInsightsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_insights(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = recommender_service.ListInsightsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.recommender_v1beta1.RecommenderClient.list_insights",
+                    extra={
+                        "serviceName": "google.cloud.recommender.v1beta1.Recommender",
+                        "rpcName": "ListInsights",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListInsightTypes(
@@ -1112,7 +1407,7 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> recommender_service.ListInsightTypesResponse:
             r"""Call the list insight types method over HTTP.
 
@@ -1122,8 +1417,10 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.recommender_service.ListInsightTypesResponse:
@@ -1133,6 +1430,7 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
             http_options = (
                 _BaseRecommenderRestTransport._BaseListInsightTypes._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_insight_types(
                 request, metadata
             )
@@ -1144,6 +1442,33 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
             query_params = _BaseRecommenderRestTransport._BaseListInsightTypes._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.recommender_v1beta1.RecommenderClient.ListInsightTypes",
+                    extra={
+                        "serviceName": "google.cloud.recommender.v1beta1.Recommender",
+                        "rpcName": "ListInsightTypes",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RecommenderRestTransport._ListInsightTypes._get_response(
@@ -1165,7 +1490,31 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
             pb_resp = recommender_service.ListInsightTypesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_insight_types(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        recommender_service.ListInsightTypesResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.recommender_v1beta1.RecommenderClient.list_insight_types",
+                    extra={
+                        "serviceName": "google.cloud.recommender.v1beta1.Recommender",
+                        "rpcName": "ListInsightTypes",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListRecommendations(
@@ -1202,7 +1551,7 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> recommender_service.ListRecommendationsResponse:
             r"""Call the list recommendations method over HTTP.
 
@@ -1212,8 +1561,10 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.recommender_service.ListRecommendationsResponse:
@@ -1223,6 +1574,7 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
             http_options = (
                 _BaseRecommenderRestTransport._BaseListRecommendations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_recommendations(
                 request, metadata
             )
@@ -1234,6 +1586,33 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
             query_params = _BaseRecommenderRestTransport._BaseListRecommendations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.recommender_v1beta1.RecommenderClient.ListRecommendations",
+                    extra={
+                        "serviceName": "google.cloud.recommender.v1beta1.Recommender",
+                        "rpcName": "ListRecommendations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RecommenderRestTransport._ListRecommendations._get_response(
@@ -1255,7 +1634,33 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
             pb_resp = recommender_service.ListRecommendationsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_recommendations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        recommender_service.ListRecommendationsResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.recommender_v1beta1.RecommenderClient.list_recommendations",
+                    extra={
+                        "serviceName": "google.cloud.recommender.v1beta1.Recommender",
+                        "rpcName": "ListRecommendations",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListRecommenders(
@@ -1292,7 +1697,7 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> recommender_service.ListRecommendersResponse:
             r"""Call the list recommenders method over HTTP.
 
@@ -1302,8 +1707,10 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.recommender_service.ListRecommendersResponse:
@@ -1313,6 +1720,7 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
             http_options = (
                 _BaseRecommenderRestTransport._BaseListRecommenders._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_recommenders(
                 request, metadata
             )
@@ -1324,6 +1732,33 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
             query_params = _BaseRecommenderRestTransport._BaseListRecommenders._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.recommender_v1beta1.RecommenderClient.ListRecommenders",
+                    extra={
+                        "serviceName": "google.cloud.recommender.v1beta1.Recommender",
+                        "rpcName": "ListRecommenders",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RecommenderRestTransport._ListRecommenders._get_response(
@@ -1345,7 +1780,31 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
             pb_resp = recommender_service.ListRecommendersResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_recommenders(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        recommender_service.ListRecommendersResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.recommender_v1beta1.RecommenderClient.list_recommenders",
+                    extra={
+                        "serviceName": "google.cloud.recommender.v1beta1.Recommender",
+                        "rpcName": "ListRecommenders",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _MarkInsightAccepted(
@@ -1383,7 +1842,7 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> insight.Insight:
             r"""Call the mark insight accepted method over HTTP.
 
@@ -1393,8 +1852,10 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.insight.Insight:
@@ -1408,6 +1869,7 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
             http_options = (
                 _BaseRecommenderRestTransport._BaseMarkInsightAccepted._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_mark_insight_accepted(
                 request, metadata
             )
@@ -1423,6 +1885,33 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
             query_params = _BaseRecommenderRestTransport._BaseMarkInsightAccepted._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.recommender_v1beta1.RecommenderClient.MarkInsightAccepted",
+                    extra={
+                        "serviceName": "google.cloud.recommender.v1beta1.Recommender",
+                        "rpcName": "MarkInsightAccepted",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RecommenderRestTransport._MarkInsightAccepted._get_response(
@@ -1445,7 +1934,29 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
             pb_resp = insight.Insight.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_mark_insight_accepted(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = insight.Insight.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.recommender_v1beta1.RecommenderClient.mark_insight_accepted",
+                    extra={
+                        "serviceName": "google.cloud.recommender.v1beta1.Recommender",
+                        "rpcName": "MarkInsightAccepted",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _MarkRecommendationClaimed(
@@ -1484,7 +1995,7 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> recommendation.Recommendation:
             r"""Call the mark recommendation
             claimed method over HTTP.
@@ -1495,8 +2006,10 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.recommendation.Recommendation:
@@ -1510,6 +2023,7 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
             http_options = (
                 _BaseRecommenderRestTransport._BaseMarkRecommendationClaimed._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_mark_recommendation_claimed(
                 request, metadata
             )
@@ -1525,6 +2039,33 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
             query_params = _BaseRecommenderRestTransport._BaseMarkRecommendationClaimed._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.recommender_v1beta1.RecommenderClient.MarkRecommendationClaimed",
+                    extra={
+                        "serviceName": "google.cloud.recommender.v1beta1.Recommender",
+                        "rpcName": "MarkRecommendationClaimed",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1549,7 +2090,29 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
             pb_resp = recommendation.Recommendation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_mark_recommendation_claimed(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = recommendation.Recommendation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.recommender_v1beta1.RecommenderClient.mark_recommendation_claimed",
+                    extra={
+                        "serviceName": "google.cloud.recommender.v1beta1.Recommender",
+                        "rpcName": "MarkRecommendationClaimed",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _MarkRecommendationFailed(
@@ -1587,7 +2150,7 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> recommendation.Recommendation:
             r"""Call the mark recommendation
             failed method over HTTP.
@@ -1598,8 +2161,10 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.recommendation.Recommendation:
@@ -1613,6 +2178,7 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
             http_options = (
                 _BaseRecommenderRestTransport._BaseMarkRecommendationFailed._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_mark_recommendation_failed(
                 request, metadata
             )
@@ -1628,6 +2194,33 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
             query_params = _BaseRecommenderRestTransport._BaseMarkRecommendationFailed._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.recommender_v1beta1.RecommenderClient.MarkRecommendationFailed",
+                    extra={
+                        "serviceName": "google.cloud.recommender.v1beta1.Recommender",
+                        "rpcName": "MarkRecommendationFailed",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RecommenderRestTransport._MarkRecommendationFailed._get_response(
@@ -1650,7 +2243,29 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
             pb_resp = recommendation.Recommendation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_mark_recommendation_failed(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = recommendation.Recommendation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.recommender_v1beta1.RecommenderClient.mark_recommendation_failed",
+                    extra={
+                        "serviceName": "google.cloud.recommender.v1beta1.Recommender",
+                        "rpcName": "MarkRecommendationFailed",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _MarkRecommendationSucceeded(
@@ -1689,7 +2304,7 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> recommendation.Recommendation:
             r"""Call the mark recommendation
             succeeded method over HTTP.
@@ -1700,8 +2315,10 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.recommendation.Recommendation:
@@ -1715,6 +2332,7 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
             http_options = (
                 _BaseRecommenderRestTransport._BaseMarkRecommendationSucceeded._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_mark_recommendation_succeeded(
                 request, metadata
             )
@@ -1730,6 +2348,33 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
             query_params = _BaseRecommenderRestTransport._BaseMarkRecommendationSucceeded._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.recommender_v1beta1.RecommenderClient.MarkRecommendationSucceeded",
+                    extra={
+                        "serviceName": "google.cloud.recommender.v1beta1.Recommender",
+                        "rpcName": "MarkRecommendationSucceeded",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1754,7 +2399,29 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
             pb_resp = recommendation.Recommendation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_mark_recommendation_succeeded(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = recommendation.Recommendation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.recommender_v1beta1.RecommenderClient.mark_recommendation_succeeded",
+                    extra={
+                        "serviceName": "google.cloud.recommender.v1beta1.Recommender",
+                        "rpcName": "MarkRecommendationSucceeded",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateInsightTypeConfig(
@@ -1792,7 +2459,7 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gcr_insight_type_config.InsightTypeConfig:
             r"""Call the update insight type
             config method over HTTP.
@@ -1803,8 +2470,10 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.gcr_insight_type_config.InsightTypeConfig:
@@ -1814,6 +2483,7 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
             http_options = (
                 _BaseRecommenderRestTransport._BaseUpdateInsightTypeConfig._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_insight_type_config(
                 request, metadata
             )
@@ -1829,6 +2499,33 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
             query_params = _BaseRecommenderRestTransport._BaseUpdateInsightTypeConfig._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.recommender_v1beta1.RecommenderClient.UpdateInsightTypeConfig",
+                    extra={
+                        "serviceName": "google.cloud.recommender.v1beta1.Recommender",
+                        "rpcName": "UpdateInsightTypeConfig",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RecommenderRestTransport._UpdateInsightTypeConfig._get_response(
@@ -1851,7 +2548,31 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
             pb_resp = gcr_insight_type_config.InsightTypeConfig.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_insight_type_config(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        gcr_insight_type_config.InsightTypeConfig.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.recommender_v1beta1.RecommenderClient.update_insight_type_config",
+                    extra={
+                        "serviceName": "google.cloud.recommender.v1beta1.Recommender",
+                        "rpcName": "UpdateInsightTypeConfig",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateRecommenderConfig(
@@ -1889,7 +2610,7 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gcr_recommender_config.RecommenderConfig:
             r"""Call the update recommender config method over HTTP.
 
@@ -1899,8 +2620,10 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.gcr_recommender_config.RecommenderConfig:
@@ -1910,6 +2633,7 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
             http_options = (
                 _BaseRecommenderRestTransport._BaseUpdateRecommenderConfig._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_recommender_config(
                 request, metadata
             )
@@ -1925,6 +2649,33 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
             query_params = _BaseRecommenderRestTransport._BaseUpdateRecommenderConfig._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.recommender_v1beta1.RecommenderClient.UpdateRecommenderConfig",
+                    extra={
+                        "serviceName": "google.cloud.recommender.v1beta1.Recommender",
+                        "rpcName": "UpdateRecommenderConfig",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RecommenderRestTransport._UpdateRecommenderConfig._get_response(
@@ -1947,7 +2698,31 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
             pb_resp = gcr_recommender_config.RecommenderConfig.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_recommender_config(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gcr_recommender_config.RecommenderConfig.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.recommender_v1beta1.RecommenderClient.update_recommender_config",
+                    extra={
+                        "serviceName": "google.cloud.recommender.v1beta1.Recommender",
+                        "rpcName": "UpdateRecommenderConfig",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
