@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -38,6 +38,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -118,8 +126,10 @@ class ServiceUsageRestInterceptor:
     def pre_batch_enable_services(
         self,
         request: serviceusage.BatchEnableServicesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[serviceusage.BatchEnableServicesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        serviceusage.BatchEnableServicesRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for batch_enable_services
 
         Override in a subclass to manipulate the request or metadata
@@ -141,8 +151,10 @@ class ServiceUsageRestInterceptor:
     def pre_batch_get_services(
         self,
         request: serviceusage.BatchGetServicesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[serviceusage.BatchGetServicesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        serviceusage.BatchGetServicesRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for batch_get_services
 
         Override in a subclass to manipulate the request or metadata
@@ -164,8 +176,10 @@ class ServiceUsageRestInterceptor:
     def pre_disable_service(
         self,
         request: serviceusage.DisableServiceRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[serviceusage.DisableServiceRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        serviceusage.DisableServiceRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for disable_service
 
         Override in a subclass to manipulate the request or metadata
@@ -187,8 +201,10 @@ class ServiceUsageRestInterceptor:
     def pre_enable_service(
         self,
         request: serviceusage.EnableServiceRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[serviceusage.EnableServiceRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        serviceusage.EnableServiceRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for enable_service
 
         Override in a subclass to manipulate the request or metadata
@@ -210,8 +226,8 @@ class ServiceUsageRestInterceptor:
     def pre_get_service(
         self,
         request: serviceusage.GetServiceRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[serviceusage.GetServiceRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[serviceusage.GetServiceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_service
 
         Override in a subclass to manipulate the request or metadata
@@ -231,8 +247,10 @@ class ServiceUsageRestInterceptor:
     def pre_list_services(
         self,
         request: serviceusage.ListServicesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[serviceusage.ListServicesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        serviceusage.ListServicesRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_services
 
         Override in a subclass to manipulate the request or metadata
@@ -254,8 +272,10 @@ class ServiceUsageRestInterceptor:
     def pre_get_operation(
         self,
         request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -277,8 +297,10 @@ class ServiceUsageRestInterceptor:
     def pre_list_operations(
         self,
         request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -465,7 +487,7 @@ class ServiceUsageRestTransport(_BaseServiceUsageRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the batch enable services method over HTTP.
 
@@ -475,8 +497,10 @@ class ServiceUsageRestTransport(_BaseServiceUsageRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -489,6 +513,7 @@ class ServiceUsageRestTransport(_BaseServiceUsageRestTransport):
             http_options = (
                 _BaseServiceUsageRestTransport._BaseBatchEnableServices._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_batch_enable_services(
                 request, metadata
             )
@@ -504,6 +529,33 @@ class ServiceUsageRestTransport(_BaseServiceUsageRestTransport):
             query_params = _BaseServiceUsageRestTransport._BaseBatchEnableServices._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.api.serviceusage_v1.ServiceUsageClient.BatchEnableServices",
+                    extra={
+                        "serviceName": "google.api.serviceusage.v1.ServiceUsage",
+                        "rpcName": "BatchEnableServices",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ServiceUsageRestTransport._BatchEnableServices._get_response(
@@ -524,7 +576,29 @@ class ServiceUsageRestTransport(_BaseServiceUsageRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_batch_enable_services(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.api.serviceusage_v1.ServiceUsageClient.batch_enable_services",
+                    extra={
+                        "serviceName": "google.api.serviceusage.v1.ServiceUsage",
+                        "rpcName": "BatchEnableServices",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _BatchGetServices(
@@ -561,7 +635,7 @@ class ServiceUsageRestTransport(_BaseServiceUsageRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> serviceusage.BatchGetServicesResponse:
             r"""Call the batch get services method over HTTP.
 
@@ -571,8 +645,10 @@ class ServiceUsageRestTransport(_BaseServiceUsageRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.serviceusage.BatchGetServicesResponse:
@@ -582,6 +658,7 @@ class ServiceUsageRestTransport(_BaseServiceUsageRestTransport):
             http_options = (
                 _BaseServiceUsageRestTransport._BaseBatchGetServices._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_batch_get_services(
                 request, metadata
             )
@@ -593,6 +670,33 @@ class ServiceUsageRestTransport(_BaseServiceUsageRestTransport):
             query_params = _BaseServiceUsageRestTransport._BaseBatchGetServices._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.api.serviceusage_v1.ServiceUsageClient.BatchGetServices",
+                    extra={
+                        "serviceName": "google.api.serviceusage.v1.ServiceUsage",
+                        "rpcName": "BatchGetServices",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ServiceUsageRestTransport._BatchGetServices._get_response(
@@ -614,7 +718,31 @@ class ServiceUsageRestTransport(_BaseServiceUsageRestTransport):
             pb_resp = serviceusage.BatchGetServicesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_batch_get_services(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = serviceusage.BatchGetServicesResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.api.serviceusage_v1.ServiceUsageClient.batch_get_services",
+                    extra={
+                        "serviceName": "google.api.serviceusage.v1.ServiceUsage",
+                        "rpcName": "BatchGetServices",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DisableService(
@@ -652,7 +780,7 @@ class ServiceUsageRestTransport(_BaseServiceUsageRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the disable service method over HTTP.
 
@@ -662,8 +790,10 @@ class ServiceUsageRestTransport(_BaseServiceUsageRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -676,6 +806,7 @@ class ServiceUsageRestTransport(_BaseServiceUsageRestTransport):
             http_options = (
                 _BaseServiceUsageRestTransport._BaseDisableService._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_disable_service(request, metadata)
             transcoded_request = _BaseServiceUsageRestTransport._BaseDisableService._get_transcoded_request(
                 http_options, request
@@ -689,6 +820,33 @@ class ServiceUsageRestTransport(_BaseServiceUsageRestTransport):
             query_params = _BaseServiceUsageRestTransport._BaseDisableService._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.api.serviceusage_v1.ServiceUsageClient.DisableService",
+                    extra={
+                        "serviceName": "google.api.serviceusage.v1.ServiceUsage",
+                        "rpcName": "DisableService",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ServiceUsageRestTransport._DisableService._get_response(
@@ -709,7 +867,29 @@ class ServiceUsageRestTransport(_BaseServiceUsageRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_disable_service(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.api.serviceusage_v1.ServiceUsageClient.disable_service",
+                    extra={
+                        "serviceName": "google.api.serviceusage.v1.ServiceUsage",
+                        "rpcName": "DisableService",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _EnableService(
@@ -747,7 +927,7 @@ class ServiceUsageRestTransport(_BaseServiceUsageRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the enable service method over HTTP.
 
@@ -757,8 +937,10 @@ class ServiceUsageRestTransport(_BaseServiceUsageRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -771,6 +953,7 @@ class ServiceUsageRestTransport(_BaseServiceUsageRestTransport):
             http_options = (
                 _BaseServiceUsageRestTransport._BaseEnableService._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_enable_service(request, metadata)
             transcoded_request = _BaseServiceUsageRestTransport._BaseEnableService._get_transcoded_request(
                 http_options, request
@@ -784,6 +967,33 @@ class ServiceUsageRestTransport(_BaseServiceUsageRestTransport):
             query_params = _BaseServiceUsageRestTransport._BaseEnableService._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.api.serviceusage_v1.ServiceUsageClient.EnableService",
+                    extra={
+                        "serviceName": "google.api.serviceusage.v1.ServiceUsage",
+                        "rpcName": "EnableService",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ServiceUsageRestTransport._EnableService._get_response(
@@ -804,7 +1014,29 @@ class ServiceUsageRestTransport(_BaseServiceUsageRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_enable_service(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.api.serviceusage_v1.ServiceUsageClient.enable_service",
+                    extra={
+                        "serviceName": "google.api.serviceusage.v1.ServiceUsage",
+                        "rpcName": "EnableService",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetService(
@@ -841,7 +1073,7 @@ class ServiceUsageRestTransport(_BaseServiceUsageRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.Service:
             r"""Call the get service method over HTTP.
 
@@ -851,8 +1083,10 @@ class ServiceUsageRestTransport(_BaseServiceUsageRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.Service:
@@ -864,6 +1098,7 @@ class ServiceUsageRestTransport(_BaseServiceUsageRestTransport):
             http_options = (
                 _BaseServiceUsageRestTransport._BaseGetService._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_service(request, metadata)
             transcoded_request = (
                 _BaseServiceUsageRestTransport._BaseGetService._get_transcoded_request(
@@ -877,6 +1112,33 @@ class ServiceUsageRestTransport(_BaseServiceUsageRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.api.serviceusage_v1.ServiceUsageClient.GetService",
+                    extra={
+                        "serviceName": "google.api.serviceusage.v1.ServiceUsage",
+                        "rpcName": "GetService",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ServiceUsageRestTransport._GetService._get_response(
@@ -898,7 +1160,29 @@ class ServiceUsageRestTransport(_BaseServiceUsageRestTransport):
             pb_resp = resources.Service.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_service(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.Service.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.api.serviceusage_v1.ServiceUsageClient.get_service",
+                    extra={
+                        "serviceName": "google.api.serviceusage.v1.ServiceUsage",
+                        "rpcName": "GetService",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListServices(
@@ -935,7 +1219,7 @@ class ServiceUsageRestTransport(_BaseServiceUsageRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> serviceusage.ListServicesResponse:
             r"""Call the list services method over HTTP.
 
@@ -945,8 +1229,10 @@ class ServiceUsageRestTransport(_BaseServiceUsageRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.serviceusage.ListServicesResponse:
@@ -956,6 +1242,7 @@ class ServiceUsageRestTransport(_BaseServiceUsageRestTransport):
             http_options = (
                 _BaseServiceUsageRestTransport._BaseListServices._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_services(request, metadata)
             transcoded_request = _BaseServiceUsageRestTransport._BaseListServices._get_transcoded_request(
                 http_options, request
@@ -967,6 +1254,33 @@ class ServiceUsageRestTransport(_BaseServiceUsageRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.api.serviceusage_v1.ServiceUsageClient.ListServices",
+                    extra={
+                        "serviceName": "google.api.serviceusage.v1.ServiceUsage",
+                        "rpcName": "ListServices",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ServiceUsageRestTransport._ListServices._get_response(
@@ -988,7 +1302,31 @@ class ServiceUsageRestTransport(_BaseServiceUsageRestTransport):
             pb_resp = serviceusage.ListServicesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_services(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = serviceusage.ListServicesResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.api.serviceusage_v1.ServiceUsageClient.list_services",
+                    extra={
+                        "serviceName": "google.api.serviceusage.v1.ServiceUsage",
+                        "rpcName": "ListServices",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -1081,7 +1419,7 @@ class ServiceUsageRestTransport(_BaseServiceUsageRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the get operation method over HTTP.
 
@@ -1091,8 +1429,10 @@ class ServiceUsageRestTransport(_BaseServiceUsageRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.
@@ -1101,6 +1441,7 @@ class ServiceUsageRestTransport(_BaseServiceUsageRestTransport):
             http_options = (
                 _BaseServiceUsageRestTransport._BaseGetOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseServiceUsageRestTransport._BaseGetOperation._get_transcoded_request(
                 http_options, request
@@ -1112,6 +1453,33 @@ class ServiceUsageRestTransport(_BaseServiceUsageRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.api.serviceusage_v1.ServiceUsageClient.GetOperation",
+                    extra={
+                        "serviceName": "google.api.serviceusage.v1.ServiceUsage",
+                        "rpcName": "GetOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ServiceUsageRestTransport._GetOperation._get_response(
@@ -1132,6 +1500,27 @@ class ServiceUsageRestTransport(_BaseServiceUsageRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.api.serviceusage_v1.ServiceUsageAsyncClient.GetOperation",
+                    extra={
+                        "serviceName": "google.api.serviceusage.v1.ServiceUsage",
+                        "rpcName": "GetOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -1172,7 +1561,7 @@ class ServiceUsageRestTransport(_BaseServiceUsageRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.ListOperationsResponse:
             r"""Call the list operations method over HTTP.
 
@@ -1182,8 +1571,10 @@ class ServiceUsageRestTransport(_BaseServiceUsageRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
@@ -1192,6 +1583,7 @@ class ServiceUsageRestTransport(_BaseServiceUsageRestTransport):
             http_options = (
                 _BaseServiceUsageRestTransport._BaseListOperations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseServiceUsageRestTransport._BaseListOperations._get_transcoded_request(
                 http_options, request
@@ -1201,6 +1593,33 @@ class ServiceUsageRestTransport(_BaseServiceUsageRestTransport):
             query_params = _BaseServiceUsageRestTransport._BaseListOperations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.api.serviceusage_v1.ServiceUsageClient.ListOperations",
+                    extra={
+                        "serviceName": "google.api.serviceusage.v1.ServiceUsage",
+                        "rpcName": "ListOperations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ServiceUsageRestTransport._ListOperations._get_response(
@@ -1221,6 +1640,27 @@ class ServiceUsageRestTransport(_BaseServiceUsageRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.api.serviceusage_v1.ServiceUsageAsyncClient.ListOperations",
+                    extra={
+                        "serviceName": "google.api.serviceusage.v1.ServiceUsage",
+                        "rpcName": "ListOperations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property

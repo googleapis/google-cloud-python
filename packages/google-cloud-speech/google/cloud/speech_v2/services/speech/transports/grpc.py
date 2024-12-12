@@ -13,6 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import json
+import logging as std_logging
+import pickle
 from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -22,11 +25,89 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf.json_format import MessageToJson
+import google.protobuf.message
 import grpc  # type: ignore
+import proto  # type: ignore
 
 from google.cloud.speech_v2.types import cloud_speech
 
 from .base import DEFAULT_CLIENT_INFO, SpeechTransport
+
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = std_logging.getLogger(__name__)
+
+
+class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
+    def intercept_unary_unary(self, continuation, client_call_details, request):
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+            std_logging.DEBUG
+        )
+        if logging_enabled:  # pragma: NO COVER
+            request_metadata = client_call_details.metadata
+            if isinstance(request, proto.Message):
+                request_payload = type(request).to_json(request)
+            elif isinstance(request, google.protobuf.message.Message):
+                request_payload = MessageToJson(request)
+            else:
+                request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
+
+            request_metadata = {
+                key: value.decode("utf-8") if isinstance(value, bytes) else value
+                for key, value in request_metadata
+            }
+            grpc_request = {
+                "payload": request_payload,
+                "requestMethod": "grpc",
+                "metadata": dict(request_metadata),
+            }
+            _LOGGER.debug(
+                f"Sending request for {client_call_details.method}",
+                extra={
+                    "serviceName": "google.cloud.speech.v2.Speech",
+                    "rpcName": client_call_details.method,
+                    "request": grpc_request,
+                    "metadata": grpc_request["metadata"],
+                },
+            )
+
+        response = continuation(client_call_details, request)
+        if logging_enabled:  # pragma: NO COVER
+            response_metadata = response.trailing_metadata()
+            # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
+            metadata = (
+                dict([(k, str(v)) for k, v in response_metadata])
+                if response_metadata
+                else None
+            )
+            result = response.result()
+            if isinstance(result, proto.Message):
+                response_payload = type(result).to_json(result)
+            elif isinstance(result, google.protobuf.message.Message):
+                response_payload = MessageToJson(result)
+            else:
+                response_payload = f"{type(result).__name__}: {pickle.dumps(result)}"
+            grpc_response = {
+                "payload": response_payload,
+                "metadata": metadata,
+                "status": "OK",
+            }
+            _LOGGER.debug(
+                f"Received response for {client_call_details.method}.",
+                extra={
+                    "serviceName": "google.cloud.speech.v2.Speech",
+                    "rpcName": client_call_details.method,
+                    "response": grpc_response,
+                    "metadata": grpc_response["metadata"],
+                },
+            )
+        return response
 
 
 class SpeechGrpcTransport(SpeechTransport):
@@ -182,7 +263,12 @@ class SpeechGrpcTransport(SpeechTransport):
                 ],
             )
 
-        # Wrap messages. This must be done after self._grpc_channel exists
+        self._interceptor = _LoggingClientInterceptor()
+        self._logged_channel = grpc.intercept_channel(
+            self._grpc_channel, self._interceptor
+        )
+
+        # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
     @classmethod
@@ -246,7 +332,9 @@ class SpeechGrpcTransport(SpeechTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsClient(self.grpc_channel)
+            self._operations_client = operations_v1.OperationsClient(
+                self._logged_channel
+            )
 
         # Return the client from cache.
         return self._operations_client
@@ -270,7 +358,7 @@ class SpeechGrpcTransport(SpeechTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_recognizer" not in self._stubs:
-            self._stubs["create_recognizer"] = self.grpc_channel.unary_unary(
+            self._stubs["create_recognizer"] = self._logged_channel.unary_unary(
                 "/google.cloud.speech.v2.Speech/CreateRecognizer",
                 request_serializer=cloud_speech.CreateRecognizerRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -298,7 +386,7 @@ class SpeechGrpcTransport(SpeechTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_recognizers" not in self._stubs:
-            self._stubs["list_recognizers"] = self.grpc_channel.unary_unary(
+            self._stubs["list_recognizers"] = self._logged_channel.unary_unary(
                 "/google.cloud.speech.v2.Speech/ListRecognizers",
                 request_serializer=cloud_speech.ListRecognizersRequest.serialize,
                 response_deserializer=cloud_speech.ListRecognizersResponse.deserialize,
@@ -327,7 +415,7 @@ class SpeechGrpcTransport(SpeechTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_recognizer" not in self._stubs:
-            self._stubs["get_recognizer"] = self.grpc_channel.unary_unary(
+            self._stubs["get_recognizer"] = self._logged_channel.unary_unary(
                 "/google.cloud.speech.v2.Speech/GetRecognizer",
                 request_serializer=cloud_speech.GetRecognizerRequest.serialize,
                 response_deserializer=cloud_speech.Recognizer.deserialize,
@@ -353,7 +441,7 @@ class SpeechGrpcTransport(SpeechTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_recognizer" not in self._stubs:
-            self._stubs["update_recognizer"] = self.grpc_channel.unary_unary(
+            self._stubs["update_recognizer"] = self._logged_channel.unary_unary(
                 "/google.cloud.speech.v2.Speech/UpdateRecognizer",
                 request_serializer=cloud_speech.UpdateRecognizerRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -379,7 +467,7 @@ class SpeechGrpcTransport(SpeechTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_recognizer" not in self._stubs:
-            self._stubs["delete_recognizer"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_recognizer"] = self._logged_channel.unary_unary(
                 "/google.cloud.speech.v2.Speech/DeleteRecognizer",
                 request_serializer=cloud_speech.DeleteRecognizerRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -405,7 +493,7 @@ class SpeechGrpcTransport(SpeechTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "undelete_recognizer" not in self._stubs:
-            self._stubs["undelete_recognizer"] = self.grpc_channel.unary_unary(
+            self._stubs["undelete_recognizer"] = self._logged_channel.unary_unary(
                 "/google.cloud.speech.v2.Speech/UndeleteRecognizer",
                 request_serializer=cloud_speech.UndeleteRecognizerRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -432,7 +520,7 @@ class SpeechGrpcTransport(SpeechTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "recognize" not in self._stubs:
-            self._stubs["recognize"] = self.grpc_channel.unary_unary(
+            self._stubs["recognize"] = self._logged_channel.unary_unary(
                 "/google.cloud.speech.v2.Speech/Recognize",
                 request_serializer=cloud_speech.RecognizeRequest.serialize,
                 response_deserializer=cloud_speech.RecognizeResponse.deserialize,
@@ -463,7 +551,7 @@ class SpeechGrpcTransport(SpeechTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "streaming_recognize" not in self._stubs:
-            self._stubs["streaming_recognize"] = self.grpc_channel.stream_stream(
+            self._stubs["streaming_recognize"] = self._logged_channel.stream_stream(
                 "/google.cloud.speech.v2.Speech/StreamingRecognize",
                 request_serializer=cloud_speech.StreamingRecognizeRequest.serialize,
                 response_deserializer=cloud_speech.StreamingRecognizeResponse.deserialize,
@@ -492,7 +580,7 @@ class SpeechGrpcTransport(SpeechTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "batch_recognize" not in self._stubs:
-            self._stubs["batch_recognize"] = self.grpc_channel.unary_unary(
+            self._stubs["batch_recognize"] = self._logged_channel.unary_unary(
                 "/google.cloud.speech.v2.Speech/BatchRecognize",
                 request_serializer=cloud_speech.BatchRecognizeRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -518,7 +606,7 @@ class SpeechGrpcTransport(SpeechTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_config" not in self._stubs:
-            self._stubs["get_config"] = self.grpc_channel.unary_unary(
+            self._stubs["get_config"] = self._logged_channel.unary_unary(
                 "/google.cloud.speech.v2.Speech/GetConfig",
                 request_serializer=cloud_speech.GetConfigRequest.serialize,
                 response_deserializer=cloud_speech.Config.deserialize,
@@ -544,7 +632,7 @@ class SpeechGrpcTransport(SpeechTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_config" not in self._stubs:
-            self._stubs["update_config"] = self.grpc_channel.unary_unary(
+            self._stubs["update_config"] = self._logged_channel.unary_unary(
                 "/google.cloud.speech.v2.Speech/UpdateConfig",
                 request_serializer=cloud_speech.UpdateConfigRequest.serialize,
                 response_deserializer=cloud_speech.Config.deserialize,
@@ -570,7 +658,7 @@ class SpeechGrpcTransport(SpeechTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_custom_class" not in self._stubs:
-            self._stubs["create_custom_class"] = self.grpc_channel.unary_unary(
+            self._stubs["create_custom_class"] = self._logged_channel.unary_unary(
                 "/google.cloud.speech.v2.Speech/CreateCustomClass",
                 request_serializer=cloud_speech.CreateCustomClassRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -598,7 +686,7 @@ class SpeechGrpcTransport(SpeechTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_custom_classes" not in self._stubs:
-            self._stubs["list_custom_classes"] = self.grpc_channel.unary_unary(
+            self._stubs["list_custom_classes"] = self._logged_channel.unary_unary(
                 "/google.cloud.speech.v2.Speech/ListCustomClasses",
                 request_serializer=cloud_speech.ListCustomClassesRequest.serialize,
                 response_deserializer=cloud_speech.ListCustomClassesResponse.deserialize,
@@ -625,7 +713,7 @@ class SpeechGrpcTransport(SpeechTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_custom_class" not in self._stubs:
-            self._stubs["get_custom_class"] = self.grpc_channel.unary_unary(
+            self._stubs["get_custom_class"] = self._logged_channel.unary_unary(
                 "/google.cloud.speech.v2.Speech/GetCustomClass",
                 request_serializer=cloud_speech.GetCustomClassRequest.serialize,
                 response_deserializer=cloud_speech.CustomClass.deserialize,
@@ -651,7 +739,7 @@ class SpeechGrpcTransport(SpeechTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_custom_class" not in self._stubs:
-            self._stubs["update_custom_class"] = self.grpc_channel.unary_unary(
+            self._stubs["update_custom_class"] = self._logged_channel.unary_unary(
                 "/google.cloud.speech.v2.Speech/UpdateCustomClass",
                 request_serializer=cloud_speech.UpdateCustomClassRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -677,7 +765,7 @@ class SpeechGrpcTransport(SpeechTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_custom_class" not in self._stubs:
-            self._stubs["delete_custom_class"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_custom_class"] = self._logged_channel.unary_unary(
                 "/google.cloud.speech.v2.Speech/DeleteCustomClass",
                 request_serializer=cloud_speech.DeleteCustomClassRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -703,7 +791,7 @@ class SpeechGrpcTransport(SpeechTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "undelete_custom_class" not in self._stubs:
-            self._stubs["undelete_custom_class"] = self.grpc_channel.unary_unary(
+            self._stubs["undelete_custom_class"] = self._logged_channel.unary_unary(
                 "/google.cloud.speech.v2.Speech/UndeleteCustomClass",
                 request_serializer=cloud_speech.UndeleteCustomClassRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -729,7 +817,7 @@ class SpeechGrpcTransport(SpeechTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_phrase_set" not in self._stubs:
-            self._stubs["create_phrase_set"] = self.grpc_channel.unary_unary(
+            self._stubs["create_phrase_set"] = self._logged_channel.unary_unary(
                 "/google.cloud.speech.v2.Speech/CreatePhraseSet",
                 request_serializer=cloud_speech.CreatePhraseSetRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -757,7 +845,7 @@ class SpeechGrpcTransport(SpeechTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_phrase_sets" not in self._stubs:
-            self._stubs["list_phrase_sets"] = self.grpc_channel.unary_unary(
+            self._stubs["list_phrase_sets"] = self._logged_channel.unary_unary(
                 "/google.cloud.speech.v2.Speech/ListPhraseSets",
                 request_serializer=cloud_speech.ListPhraseSetsRequest.serialize,
                 response_deserializer=cloud_speech.ListPhraseSetsResponse.deserialize,
@@ -784,7 +872,7 @@ class SpeechGrpcTransport(SpeechTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_phrase_set" not in self._stubs:
-            self._stubs["get_phrase_set"] = self.grpc_channel.unary_unary(
+            self._stubs["get_phrase_set"] = self._logged_channel.unary_unary(
                 "/google.cloud.speech.v2.Speech/GetPhraseSet",
                 request_serializer=cloud_speech.GetPhraseSetRequest.serialize,
                 response_deserializer=cloud_speech.PhraseSet.deserialize,
@@ -810,7 +898,7 @@ class SpeechGrpcTransport(SpeechTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_phrase_set" not in self._stubs:
-            self._stubs["update_phrase_set"] = self.grpc_channel.unary_unary(
+            self._stubs["update_phrase_set"] = self._logged_channel.unary_unary(
                 "/google.cloud.speech.v2.Speech/UpdatePhraseSet",
                 request_serializer=cloud_speech.UpdatePhraseSetRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -836,7 +924,7 @@ class SpeechGrpcTransport(SpeechTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_phrase_set" not in self._stubs:
-            self._stubs["delete_phrase_set"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_phrase_set"] = self._logged_channel.unary_unary(
                 "/google.cloud.speech.v2.Speech/DeletePhraseSet",
                 request_serializer=cloud_speech.DeletePhraseSetRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -862,7 +950,7 @@ class SpeechGrpcTransport(SpeechTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "undelete_phrase_set" not in self._stubs:
-            self._stubs["undelete_phrase_set"] = self.grpc_channel.unary_unary(
+            self._stubs["undelete_phrase_set"] = self._logged_channel.unary_unary(
                 "/google.cloud.speech.v2.Speech/UndeletePhraseSet",
                 request_serializer=cloud_speech.UndeletePhraseSetRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -870,7 +958,7 @@ class SpeechGrpcTransport(SpeechTransport):
         return self._stubs["undelete_phrase_set"]
 
     def close(self):
-        self.grpc_channel.close()
+        self._logged_channel.close()
 
     @property
     def delete_operation(
@@ -882,7 +970,7 @@ class SpeechGrpcTransport(SpeechTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_operation" not in self._stubs:
-            self._stubs["delete_operation"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_operation"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/DeleteOperation",
                 request_serializer=operations_pb2.DeleteOperationRequest.SerializeToString,
                 response_deserializer=None,
@@ -899,7 +987,7 @@ class SpeechGrpcTransport(SpeechTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "cancel_operation" not in self._stubs:
-            self._stubs["cancel_operation"] = self.grpc_channel.unary_unary(
+            self._stubs["cancel_operation"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/CancelOperation",
                 request_serializer=operations_pb2.CancelOperationRequest.SerializeToString,
                 response_deserializer=None,
@@ -916,7 +1004,7 @@ class SpeechGrpcTransport(SpeechTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_operation" not in self._stubs:
-            self._stubs["get_operation"] = self.grpc_channel.unary_unary(
+            self._stubs["get_operation"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/GetOperation",
                 request_serializer=operations_pb2.GetOperationRequest.SerializeToString,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -935,7 +1023,7 @@ class SpeechGrpcTransport(SpeechTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_operations" not in self._stubs:
-            self._stubs["list_operations"] = self.grpc_channel.unary_unary(
+            self._stubs["list_operations"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/ListOperations",
                 request_serializer=operations_pb2.ListOperationsRequest.SerializeToString,
                 response_deserializer=operations_pb2.ListOperationsResponse.FromString,
@@ -954,7 +1042,7 @@ class SpeechGrpcTransport(SpeechTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_locations" not in self._stubs:
-            self._stubs["list_locations"] = self.grpc_channel.unary_unary(
+            self._stubs["list_locations"] = self._logged_channel.unary_unary(
                 "/google.cloud.location.Locations/ListLocations",
                 request_serializer=locations_pb2.ListLocationsRequest.SerializeToString,
                 response_deserializer=locations_pb2.ListLocationsResponse.FromString,
@@ -971,7 +1059,7 @@ class SpeechGrpcTransport(SpeechTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_location" not in self._stubs:
-            self._stubs["get_location"] = self.grpc_channel.unary_unary(
+            self._stubs["get_location"] = self._logged_channel.unary_unary(
                 "/google.cloud.location.Locations/GetLocation",
                 request_serializer=locations_pb2.GetLocationRequest.SerializeToString,
                 response_deserializer=locations_pb2.Location.FromString,
