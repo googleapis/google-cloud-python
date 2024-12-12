@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -40,6 +40,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -112,8 +120,11 @@ class LicenseManagementServiceRestInterceptor:
     def pre_assign(
         self,
         request: license_management_service.AssignRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[license_management_service.AssignRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        license_management_service.AssignRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for assign
 
         Override in a subclass to manipulate the request or metadata
@@ -135,10 +146,10 @@ class LicenseManagementServiceRestInterceptor:
     def pre_enumerate_licensed_users(
         self,
         request: license_management_service.EnumerateLicensedUsersRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         license_management_service.EnumerateLicensedUsersRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for enumerate_licensed_users
 
@@ -161,9 +172,10 @@ class LicenseManagementServiceRestInterceptor:
     def pre_get_license_pool(
         self,
         request: license_management_service.GetLicensePoolRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        license_management_service.GetLicensePoolRequest, Sequence[Tuple[str, str]]
+        license_management_service.GetLicensePoolRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for get_license_pool
 
@@ -186,8 +198,11 @@ class LicenseManagementServiceRestInterceptor:
     def pre_unassign(
         self,
         request: license_management_service.UnassignRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[license_management_service.UnassignRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        license_management_service.UnassignRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for unassign
 
         Override in a subclass to manipulate the request or metadata
@@ -209,9 +224,10 @@ class LicenseManagementServiceRestInterceptor:
     def pre_update_license_pool(
         self,
         request: license_management_service.UpdateLicensePoolRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        license_management_service.UpdateLicensePoolRequest, Sequence[Tuple[str, str]]
+        license_management_service.UpdateLicensePoolRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for update_license_pool
 
@@ -234,8 +250,10 @@ class LicenseManagementServiceRestInterceptor:
     def pre_get_operation(
         self,
         request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -377,7 +395,7 @@ class LicenseManagementServiceRestTransport(_BaseLicenseManagementServiceRestTra
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> license_management_service.AssignResponse:
             r"""Call the assign method over HTTP.
 
@@ -388,8 +406,10 @@ class LicenseManagementServiceRestTransport(_BaseLicenseManagementServiceRestTra
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.license_management_service.AssignResponse:
@@ -401,6 +421,7 @@ class LicenseManagementServiceRestTransport(_BaseLicenseManagementServiceRestTra
             http_options = (
                 _BaseLicenseManagementServiceRestTransport._BaseAssign._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_assign(request, metadata)
             transcoded_request = _BaseLicenseManagementServiceRestTransport._BaseAssign._get_transcoded_request(
                 http_options, request
@@ -414,6 +435,33 @@ class LicenseManagementServiceRestTransport(_BaseLicenseManagementServiceRestTra
             query_params = _BaseLicenseManagementServiceRestTransport._BaseAssign._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.commerce.consumer.procurement_v1.LicenseManagementServiceClient.Assign",
+                    extra={
+                        "serviceName": "google.cloud.commerce.consumer.procurement.v1.LicenseManagementService",
+                        "rpcName": "Assign",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = LicenseManagementServiceRestTransport._Assign._get_response(
@@ -436,7 +484,31 @@ class LicenseManagementServiceRestTransport(_BaseLicenseManagementServiceRestTra
             pb_resp = license_management_service.AssignResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_assign(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        license_management_service.AssignResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.commerce.consumer.procurement_v1.LicenseManagementServiceClient.assign",
+                    extra={
+                        "serviceName": "google.cloud.commerce.consumer.procurement.v1.LicenseManagementService",
+                        "rpcName": "Assign",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _EnumerateLicensedUsers(
@@ -474,7 +546,7 @@ class LicenseManagementServiceRestTransport(_BaseLicenseManagementServiceRestTra
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> license_management_service.EnumerateLicensedUsersResponse:
             r"""Call the enumerate licensed users method over HTTP.
 
@@ -485,8 +557,10 @@ class LicenseManagementServiceRestTransport(_BaseLicenseManagementServiceRestTra
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.license_management_service.EnumerateLicensedUsersResponse:
@@ -498,6 +572,7 @@ class LicenseManagementServiceRestTransport(_BaseLicenseManagementServiceRestTra
             http_options = (
                 _BaseLicenseManagementServiceRestTransport._BaseEnumerateLicensedUsers._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_enumerate_licensed_users(
                 request, metadata
             )
@@ -509,6 +584,33 @@ class LicenseManagementServiceRestTransport(_BaseLicenseManagementServiceRestTra
             query_params = _BaseLicenseManagementServiceRestTransport._BaseEnumerateLicensedUsers._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.commerce.consumer.procurement_v1.LicenseManagementServiceClient.EnumerateLicensedUsers",
+                    extra={
+                        "serviceName": "google.cloud.commerce.consumer.procurement.v1.LicenseManagementService",
+                        "rpcName": "EnumerateLicensedUsers",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = LicenseManagementServiceRestTransport._EnumerateLicensedUsers._get_response(
@@ -530,7 +632,31 @@ class LicenseManagementServiceRestTransport(_BaseLicenseManagementServiceRestTra
             pb_resp = license_management_service.EnumerateLicensedUsersResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_enumerate_licensed_users(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = license_management_service.EnumerateLicensedUsersResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.commerce.consumer.procurement_v1.LicenseManagementServiceClient.enumerate_licensed_users",
+                    extra={
+                        "serviceName": "google.cloud.commerce.consumer.procurement.v1.LicenseManagementService",
+                        "rpcName": "EnumerateLicensedUsers",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetLicensePool(
@@ -568,7 +694,7 @@ class LicenseManagementServiceRestTransport(_BaseLicenseManagementServiceRestTra
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> license_management_service.LicensePool:
             r"""Call the get license pool method over HTTP.
 
@@ -579,8 +705,10 @@ class LicenseManagementServiceRestTransport(_BaseLicenseManagementServiceRestTra
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.license_management_service.LicensePool:
@@ -592,6 +720,7 @@ class LicenseManagementServiceRestTransport(_BaseLicenseManagementServiceRestTra
             http_options = (
                 _BaseLicenseManagementServiceRestTransport._BaseGetLicensePool._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_license_pool(
                 request, metadata
             )
@@ -603,6 +732,33 @@ class LicenseManagementServiceRestTransport(_BaseLicenseManagementServiceRestTra
             query_params = _BaseLicenseManagementServiceRestTransport._BaseGetLicensePool._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.commerce.consumer.procurement_v1.LicenseManagementServiceClient.GetLicensePool",
+                    extra={
+                        "serviceName": "google.cloud.commerce.consumer.procurement.v1.LicenseManagementService",
+                        "rpcName": "GetLicensePool",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -626,7 +782,31 @@ class LicenseManagementServiceRestTransport(_BaseLicenseManagementServiceRestTra
             pb_resp = license_management_service.LicensePool.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_license_pool(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = license_management_service.LicensePool.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.commerce.consumer.procurement_v1.LicenseManagementServiceClient.get_license_pool",
+                    extra={
+                        "serviceName": "google.cloud.commerce.consumer.procurement.v1.LicenseManagementService",
+                        "rpcName": "GetLicensePool",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _Unassign(
@@ -665,7 +845,7 @@ class LicenseManagementServiceRestTransport(_BaseLicenseManagementServiceRestTra
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> license_management_service.UnassignResponse:
             r"""Call the unassign method over HTTP.
 
@@ -676,8 +856,10 @@ class LicenseManagementServiceRestTransport(_BaseLicenseManagementServiceRestTra
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.license_management_service.UnassignResponse:
@@ -689,6 +871,7 @@ class LicenseManagementServiceRestTransport(_BaseLicenseManagementServiceRestTra
             http_options = (
                 _BaseLicenseManagementServiceRestTransport._BaseUnassign._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_unassign(request, metadata)
             transcoded_request = _BaseLicenseManagementServiceRestTransport._BaseUnassign._get_transcoded_request(
                 http_options, request
@@ -702,6 +885,33 @@ class LicenseManagementServiceRestTransport(_BaseLicenseManagementServiceRestTra
             query_params = _BaseLicenseManagementServiceRestTransport._BaseUnassign._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.commerce.consumer.procurement_v1.LicenseManagementServiceClient.Unassign",
+                    extra={
+                        "serviceName": "google.cloud.commerce.consumer.procurement.v1.LicenseManagementService",
+                        "rpcName": "Unassign",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = LicenseManagementServiceRestTransport._Unassign._get_response(
@@ -724,7 +934,31 @@ class LicenseManagementServiceRestTransport(_BaseLicenseManagementServiceRestTra
             pb_resp = license_management_service.UnassignResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_unassign(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        license_management_service.UnassignResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.commerce.consumer.procurement_v1.LicenseManagementServiceClient.unassign",
+                    extra={
+                        "serviceName": "google.cloud.commerce.consumer.procurement.v1.LicenseManagementService",
+                        "rpcName": "Unassign",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateLicensePool(
@@ -763,7 +997,7 @@ class LicenseManagementServiceRestTransport(_BaseLicenseManagementServiceRestTra
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> license_management_service.LicensePool:
             r"""Call the update license pool method over HTTP.
 
@@ -774,8 +1008,10 @@ class LicenseManagementServiceRestTransport(_BaseLicenseManagementServiceRestTra
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.license_management_service.LicensePool:
@@ -787,6 +1023,7 @@ class LicenseManagementServiceRestTransport(_BaseLicenseManagementServiceRestTra
             http_options = (
                 _BaseLicenseManagementServiceRestTransport._BaseUpdateLicensePool._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_license_pool(
                 request, metadata
             )
@@ -802,6 +1039,33 @@ class LicenseManagementServiceRestTransport(_BaseLicenseManagementServiceRestTra
             query_params = _BaseLicenseManagementServiceRestTransport._BaseUpdateLicensePool._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.commerce.consumer.procurement_v1.LicenseManagementServiceClient.UpdateLicensePool",
+                    extra={
+                        "serviceName": "google.cloud.commerce.consumer.procurement.v1.LicenseManagementService",
+                        "rpcName": "UpdateLicensePool",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -826,7 +1090,31 @@ class LicenseManagementServiceRestTransport(_BaseLicenseManagementServiceRestTra
             pb_resp = license_management_service.LicensePool.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_license_pool(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = license_management_service.LicensePool.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.commerce.consumer.procurement_v1.LicenseManagementServiceClient.update_license_pool",
+                    extra={
+                        "serviceName": "google.cloud.commerce.consumer.procurement.v1.LicenseManagementService",
+                        "rpcName": "UpdateLicensePool",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -923,7 +1211,7 @@ class LicenseManagementServiceRestTransport(_BaseLicenseManagementServiceRestTra
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the get operation method over HTTP.
 
@@ -933,8 +1221,10 @@ class LicenseManagementServiceRestTransport(_BaseLicenseManagementServiceRestTra
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.
@@ -943,6 +1233,7 @@ class LicenseManagementServiceRestTransport(_BaseLicenseManagementServiceRestTra
             http_options = (
                 _BaseLicenseManagementServiceRestTransport._BaseGetOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseLicenseManagementServiceRestTransport._BaseGetOperation._get_transcoded_request(
                 http_options, request
@@ -952,6 +1243,33 @@ class LicenseManagementServiceRestTransport(_BaseLicenseManagementServiceRestTra
             query_params = _BaseLicenseManagementServiceRestTransport._BaseGetOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.commerce.consumer.procurement_v1.LicenseManagementServiceClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.commerce.consumer.procurement.v1.LicenseManagementService",
+                        "rpcName": "GetOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -974,6 +1292,27 @@ class LicenseManagementServiceRestTransport(_BaseLicenseManagementServiceRestTra
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.commerce.consumer.procurement_v1.LicenseManagementServiceAsyncClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.commerce.consumer.procurement.v1.LicenseManagementService",
+                        "rpcName": "GetOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property

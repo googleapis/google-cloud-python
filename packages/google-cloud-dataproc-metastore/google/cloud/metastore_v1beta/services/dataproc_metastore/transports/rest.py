@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -41,6 +41,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -225,9 +233,10 @@ class DataprocMetastoreRestInterceptor:
     def pre_alter_metadata_resource_location(
         self,
         request: metastore.AlterMetadataResourceLocationRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        metastore.AlterMetadataResourceLocationRequest, Sequence[Tuple[str, str]]
+        metastore.AlterMetadataResourceLocationRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for alter_metadata_resource_location
 
@@ -250,8 +259,8 @@ class DataprocMetastoreRestInterceptor:
     def pre_create_backup(
         self,
         request: metastore.CreateBackupRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[metastore.CreateBackupRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[metastore.CreateBackupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_backup
 
         Override in a subclass to manipulate the request or metadata
@@ -273,8 +282,10 @@ class DataprocMetastoreRestInterceptor:
     def pre_create_metadata_import(
         self,
         request: metastore.CreateMetadataImportRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[metastore.CreateMetadataImportRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        metastore.CreateMetadataImportRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_metadata_import
 
         Override in a subclass to manipulate the request or metadata
@@ -296,8 +307,8 @@ class DataprocMetastoreRestInterceptor:
     def pre_create_service(
         self,
         request: metastore.CreateServiceRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[metastore.CreateServiceRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[metastore.CreateServiceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_service
 
         Override in a subclass to manipulate the request or metadata
@@ -319,8 +330,8 @@ class DataprocMetastoreRestInterceptor:
     def pre_delete_backup(
         self,
         request: metastore.DeleteBackupRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[metastore.DeleteBackupRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[metastore.DeleteBackupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_backup
 
         Override in a subclass to manipulate the request or metadata
@@ -342,8 +353,8 @@ class DataprocMetastoreRestInterceptor:
     def pre_delete_service(
         self,
         request: metastore.DeleteServiceRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[metastore.DeleteServiceRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[metastore.DeleteServiceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_service
 
         Override in a subclass to manipulate the request or metadata
@@ -365,8 +376,10 @@ class DataprocMetastoreRestInterceptor:
     def pre_export_metadata(
         self,
         request: metastore.ExportMetadataRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[metastore.ExportMetadataRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        metastore.ExportMetadataRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for export_metadata
 
         Override in a subclass to manipulate the request or metadata
@@ -386,8 +399,10 @@ class DataprocMetastoreRestInterceptor:
         return response
 
     def pre_get_backup(
-        self, request: metastore.GetBackupRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[metastore.GetBackupRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: metastore.GetBackupRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[metastore.GetBackupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_backup
 
         Override in a subclass to manipulate the request or metadata
@@ -407,8 +422,10 @@ class DataprocMetastoreRestInterceptor:
     def pre_get_metadata_import(
         self,
         request: metastore.GetMetadataImportRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[metastore.GetMetadataImportRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        metastore.GetMetadataImportRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_metadata_import
 
         Override in a subclass to manipulate the request or metadata
@@ -428,8 +445,10 @@ class DataprocMetastoreRestInterceptor:
         return response
 
     def pre_get_service(
-        self, request: metastore.GetServiceRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[metastore.GetServiceRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: metastore.GetServiceRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[metastore.GetServiceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_service
 
         Override in a subclass to manipulate the request or metadata
@@ -447,8 +466,10 @@ class DataprocMetastoreRestInterceptor:
         return response
 
     def pre_list_backups(
-        self, request: metastore.ListBackupsRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[metastore.ListBackupsRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: metastore.ListBackupsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[metastore.ListBackupsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_backups
 
         Override in a subclass to manipulate the request or metadata
@@ -470,8 +491,10 @@ class DataprocMetastoreRestInterceptor:
     def pre_list_metadata_imports(
         self,
         request: metastore.ListMetadataImportsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[metastore.ListMetadataImportsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        metastore.ListMetadataImportsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_metadata_imports
 
         Override in a subclass to manipulate the request or metadata
@@ -493,8 +516,8 @@ class DataprocMetastoreRestInterceptor:
     def pre_list_services(
         self,
         request: metastore.ListServicesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[metastore.ListServicesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[metastore.ListServicesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_services
 
         Override in a subclass to manipulate the request or metadata
@@ -516,8 +539,10 @@ class DataprocMetastoreRestInterceptor:
     def pre_move_table_to_database(
         self,
         request: metastore.MoveTableToDatabaseRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[metastore.MoveTableToDatabaseRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        metastore.MoveTableToDatabaseRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for move_table_to_database
 
         Override in a subclass to manipulate the request or metadata
@@ -539,8 +564,8 @@ class DataprocMetastoreRestInterceptor:
     def pre_query_metadata(
         self,
         request: metastore.QueryMetadataRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[metastore.QueryMetadataRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[metastore.QueryMetadataRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for query_metadata
 
         Override in a subclass to manipulate the request or metadata
@@ -562,8 +587,10 @@ class DataprocMetastoreRestInterceptor:
     def pre_remove_iam_policy(
         self,
         request: metastore.RemoveIamPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[metastore.RemoveIamPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        metastore.RemoveIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for remove_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -585,8 +612,10 @@ class DataprocMetastoreRestInterceptor:
     def pre_restore_service(
         self,
         request: metastore.RestoreServiceRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[metastore.RestoreServiceRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        metastore.RestoreServiceRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for restore_service
 
         Override in a subclass to manipulate the request or metadata
@@ -608,8 +637,10 @@ class DataprocMetastoreRestInterceptor:
     def pre_update_metadata_import(
         self,
         request: metastore.UpdateMetadataImportRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[metastore.UpdateMetadataImportRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        metastore.UpdateMetadataImportRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_metadata_import
 
         Override in a subclass to manipulate the request or metadata
@@ -631,8 +662,8 @@ class DataprocMetastoreRestInterceptor:
     def pre_update_service(
         self,
         request: metastore.UpdateServiceRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[metastore.UpdateServiceRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[metastore.UpdateServiceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_service
 
         Override in a subclass to manipulate the request or metadata
@@ -654,8 +685,10 @@ class DataprocMetastoreRestInterceptor:
     def pre_get_location(
         self,
         request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -677,8 +710,10 @@ class DataprocMetastoreRestInterceptor:
     def pre_list_locations(
         self,
         request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -700,8 +735,10 @@ class DataprocMetastoreRestInterceptor:
     def pre_get_iam_policy(
         self,
         request: iam_policy_pb2.GetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -721,8 +758,10 @@ class DataprocMetastoreRestInterceptor:
     def pre_set_iam_policy(
         self,
         request: iam_policy_pb2.SetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -742,8 +781,11 @@ class DataprocMetastoreRestInterceptor:
     def pre_test_iam_permissions(
         self,
         request: iam_policy_pb2.TestIamPermissionsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.TestIamPermissionsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -765,8 +807,10 @@ class DataprocMetastoreRestInterceptor:
     def pre_cancel_operation(
         self,
         request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -786,8 +830,10 @@ class DataprocMetastoreRestInterceptor:
     def pre_delete_operation(
         self,
         request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -807,8 +853,10 @@ class DataprocMetastoreRestInterceptor:
     def pre_get_operation(
         self,
         request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -830,8 +878,10 @@ class DataprocMetastoreRestInterceptor:
     def pre_list_operations(
         self,
         request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -1048,7 +1098,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the alter metadata resource
             location method over HTTP.
@@ -1060,8 +1110,10 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.operations_pb2.Operation:
@@ -1074,6 +1126,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             http_options = (
                 _BaseDataprocMetastoreRestTransport._BaseAlterMetadataResourceLocation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_alter_metadata_resource_location(
                 request, metadata
             )
@@ -1089,6 +1142,33 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             query_params = _BaseDataprocMetastoreRestTransport._BaseAlterMetadataResourceLocation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.metastore_v1beta.DataprocMetastoreClient.AlterMetadataResourceLocation",
+                    extra={
+                        "serviceName": "google.cloud.metastore.v1beta.DataprocMetastore",
+                        "rpcName": "AlterMetadataResourceLocation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DataprocMetastoreRestTransport._AlterMetadataResourceLocation._get_response(
@@ -1109,7 +1189,29 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_alter_metadata_resource_location(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.metastore_v1beta.DataprocMetastoreClient.alter_metadata_resource_location",
+                    extra={
+                        "serviceName": "google.cloud.metastore.v1beta.DataprocMetastore",
+                        "rpcName": "AlterMetadataResourceLocation",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateBackup(
@@ -1147,7 +1249,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create backup method over HTTP.
 
@@ -1158,8 +1260,10 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1172,6 +1276,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             http_options = (
                 _BaseDataprocMetastoreRestTransport._BaseCreateBackup._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_backup(request, metadata)
             transcoded_request = _BaseDataprocMetastoreRestTransport._BaseCreateBackup._get_transcoded_request(
                 http_options, request
@@ -1185,6 +1290,33 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             query_params = _BaseDataprocMetastoreRestTransport._BaseCreateBackup._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.metastore_v1beta.DataprocMetastoreClient.CreateBackup",
+                    extra={
+                        "serviceName": "google.cloud.metastore.v1beta.DataprocMetastore",
+                        "rpcName": "CreateBackup",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DataprocMetastoreRestTransport._CreateBackup._get_response(
@@ -1205,7 +1337,29 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_backup(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.metastore_v1beta.DataprocMetastoreClient.create_backup",
+                    extra={
+                        "serviceName": "google.cloud.metastore.v1beta.DataprocMetastore",
+                        "rpcName": "CreateBackup",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateMetadataImport(
@@ -1244,7 +1398,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create metadata import method over HTTP.
 
@@ -1255,8 +1409,10 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1269,6 +1425,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             http_options = (
                 _BaseDataprocMetastoreRestTransport._BaseCreateMetadataImport._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_metadata_import(
                 request, metadata
             )
@@ -1284,6 +1441,33 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             query_params = _BaseDataprocMetastoreRestTransport._BaseCreateMetadataImport._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.metastore_v1beta.DataprocMetastoreClient.CreateMetadataImport",
+                    extra={
+                        "serviceName": "google.cloud.metastore.v1beta.DataprocMetastore",
+                        "rpcName": "CreateMetadataImport",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1306,7 +1490,29 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_metadata_import(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.metastore_v1beta.DataprocMetastoreClient.create_metadata_import",
+                    extra={
+                        "serviceName": "google.cloud.metastore.v1beta.DataprocMetastore",
+                        "rpcName": "CreateMetadataImport",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateService(
@@ -1345,7 +1551,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create service method over HTTP.
 
@@ -1356,8 +1562,10 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1370,6 +1578,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             http_options = (
                 _BaseDataprocMetastoreRestTransport._BaseCreateService._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_service(request, metadata)
             transcoded_request = _BaseDataprocMetastoreRestTransport._BaseCreateService._get_transcoded_request(
                 http_options, request
@@ -1383,6 +1592,33 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             query_params = _BaseDataprocMetastoreRestTransport._BaseCreateService._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.metastore_v1beta.DataprocMetastoreClient.CreateService",
+                    extra={
+                        "serviceName": "google.cloud.metastore.v1beta.DataprocMetastore",
+                        "rpcName": "CreateService",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DataprocMetastoreRestTransport._CreateService._get_response(
@@ -1403,7 +1639,29 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_service(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.metastore_v1beta.DataprocMetastoreClient.create_service",
+                    extra={
+                        "serviceName": "google.cloud.metastore.v1beta.DataprocMetastore",
+                        "rpcName": "CreateService",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteBackup(
@@ -1440,7 +1698,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete backup method over HTTP.
 
@@ -1451,8 +1709,10 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1465,6 +1725,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             http_options = (
                 _BaseDataprocMetastoreRestTransport._BaseDeleteBackup._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_backup(request, metadata)
             transcoded_request = _BaseDataprocMetastoreRestTransport._BaseDeleteBackup._get_transcoded_request(
                 http_options, request
@@ -1474,6 +1735,33 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             query_params = _BaseDataprocMetastoreRestTransport._BaseDeleteBackup._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.metastore_v1beta.DataprocMetastoreClient.DeleteBackup",
+                    extra={
+                        "serviceName": "google.cloud.metastore.v1beta.DataprocMetastore",
+                        "rpcName": "DeleteBackup",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DataprocMetastoreRestTransport._DeleteBackup._get_response(
@@ -1493,7 +1781,29 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_backup(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.metastore_v1beta.DataprocMetastoreClient.delete_backup",
+                    extra={
+                        "serviceName": "google.cloud.metastore.v1beta.DataprocMetastore",
+                        "rpcName": "DeleteBackup",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteService(
@@ -1531,7 +1841,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete service method over HTTP.
 
@@ -1542,8 +1852,10 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1556,6 +1868,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             http_options = (
                 _BaseDataprocMetastoreRestTransport._BaseDeleteService._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_service(request, metadata)
             transcoded_request = _BaseDataprocMetastoreRestTransport._BaseDeleteService._get_transcoded_request(
                 http_options, request
@@ -1565,6 +1878,33 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             query_params = _BaseDataprocMetastoreRestTransport._BaseDeleteService._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.metastore_v1beta.DataprocMetastoreClient.DeleteService",
+                    extra={
+                        "serviceName": "google.cloud.metastore.v1beta.DataprocMetastore",
+                        "rpcName": "DeleteService",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DataprocMetastoreRestTransport._DeleteService._get_response(
@@ -1584,7 +1924,29 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_service(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.metastore_v1beta.DataprocMetastoreClient.delete_service",
+                    extra={
+                        "serviceName": "google.cloud.metastore.v1beta.DataprocMetastore",
+                        "rpcName": "DeleteService",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ExportMetadata(
@@ -1623,7 +1985,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the export metadata method over HTTP.
 
@@ -1634,8 +1996,10 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1648,6 +2012,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             http_options = (
                 _BaseDataprocMetastoreRestTransport._BaseExportMetadata._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_export_metadata(request, metadata)
             transcoded_request = _BaseDataprocMetastoreRestTransport._BaseExportMetadata._get_transcoded_request(
                 http_options, request
@@ -1661,6 +2026,33 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             query_params = _BaseDataprocMetastoreRestTransport._BaseExportMetadata._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.metastore_v1beta.DataprocMetastoreClient.ExportMetadata",
+                    extra={
+                        "serviceName": "google.cloud.metastore.v1beta.DataprocMetastore",
+                        "rpcName": "ExportMetadata",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DataprocMetastoreRestTransport._ExportMetadata._get_response(
@@ -1681,7 +2073,29 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_export_metadata(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.metastore_v1beta.DataprocMetastoreClient.export_metadata",
+                    extra={
+                        "serviceName": "google.cloud.metastore.v1beta.DataprocMetastore",
+                        "rpcName": "ExportMetadata",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetBackup(
@@ -1718,7 +2132,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> metastore.Backup:
             r"""Call the get backup method over HTTP.
 
@@ -1729,8 +2143,10 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.metastore.Backup:
@@ -1740,6 +2156,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             http_options = (
                 _BaseDataprocMetastoreRestTransport._BaseGetBackup._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_backup(request, metadata)
             transcoded_request = _BaseDataprocMetastoreRestTransport._BaseGetBackup._get_transcoded_request(
                 http_options, request
@@ -1749,6 +2166,33 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             query_params = _BaseDataprocMetastoreRestTransport._BaseGetBackup._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.metastore_v1beta.DataprocMetastoreClient.GetBackup",
+                    extra={
+                        "serviceName": "google.cloud.metastore.v1beta.DataprocMetastore",
+                        "rpcName": "GetBackup",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DataprocMetastoreRestTransport._GetBackup._get_response(
@@ -1770,7 +2214,29 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             pb_resp = metastore.Backup.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_backup(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = metastore.Backup.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.metastore_v1beta.DataprocMetastoreClient.get_backup",
+                    extra={
+                        "serviceName": "google.cloud.metastore.v1beta.DataprocMetastore",
+                        "rpcName": "GetBackup",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetMetadataImport(
@@ -1808,7 +2274,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> metastore.MetadataImport:
             r"""Call the get metadata import method over HTTP.
 
@@ -1819,8 +2285,10 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.metastore.MetadataImport:
@@ -1832,6 +2300,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             http_options = (
                 _BaseDataprocMetastoreRestTransport._BaseGetMetadataImport._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_metadata_import(
                 request, metadata
             )
@@ -1843,6 +2312,33 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             query_params = _BaseDataprocMetastoreRestTransport._BaseGetMetadataImport._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.metastore_v1beta.DataprocMetastoreClient.GetMetadataImport",
+                    extra={
+                        "serviceName": "google.cloud.metastore.v1beta.DataprocMetastore",
+                        "rpcName": "GetMetadataImport",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DataprocMetastoreRestTransport._GetMetadataImport._get_response(
@@ -1864,7 +2360,29 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             pb_resp = metastore.MetadataImport.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_metadata_import(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = metastore.MetadataImport.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.metastore_v1beta.DataprocMetastoreClient.get_metadata_import",
+                    extra={
+                        "serviceName": "google.cloud.metastore.v1beta.DataprocMetastore",
+                        "rpcName": "GetMetadataImport",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetService(
@@ -1901,7 +2419,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> metastore.Service:
             r"""Call the get service method over HTTP.
 
@@ -1912,8 +2430,10 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.metastore.Service:
@@ -1925,6 +2445,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             http_options = (
                 _BaseDataprocMetastoreRestTransport._BaseGetService._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_service(request, metadata)
             transcoded_request = _BaseDataprocMetastoreRestTransport._BaseGetService._get_transcoded_request(
                 http_options, request
@@ -1934,6 +2455,33 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             query_params = _BaseDataprocMetastoreRestTransport._BaseGetService._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.metastore_v1beta.DataprocMetastoreClient.GetService",
+                    extra={
+                        "serviceName": "google.cloud.metastore.v1beta.DataprocMetastore",
+                        "rpcName": "GetService",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DataprocMetastoreRestTransport._GetService._get_response(
@@ -1955,7 +2503,29 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             pb_resp = metastore.Service.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_service(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = metastore.Service.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.metastore_v1beta.DataprocMetastoreClient.get_service",
+                    extra={
+                        "serviceName": "google.cloud.metastore.v1beta.DataprocMetastore",
+                        "rpcName": "GetService",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListBackups(
@@ -1992,7 +2562,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> metastore.ListBackupsResponse:
             r"""Call the list backups method over HTTP.
 
@@ -2003,8 +2573,10 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.metastore.ListBackupsResponse:
@@ -2016,6 +2588,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             http_options = (
                 _BaseDataprocMetastoreRestTransport._BaseListBackups._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_backups(request, metadata)
             transcoded_request = _BaseDataprocMetastoreRestTransport._BaseListBackups._get_transcoded_request(
                 http_options, request
@@ -2025,6 +2598,33 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             query_params = _BaseDataprocMetastoreRestTransport._BaseListBackups._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.metastore_v1beta.DataprocMetastoreClient.ListBackups",
+                    extra={
+                        "serviceName": "google.cloud.metastore.v1beta.DataprocMetastore",
+                        "rpcName": "ListBackups",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DataprocMetastoreRestTransport._ListBackups._get_response(
@@ -2046,7 +2646,29 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             pb_resp = metastore.ListBackupsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_backups(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = metastore.ListBackupsResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.metastore_v1beta.DataprocMetastoreClient.list_backups",
+                    extra={
+                        "serviceName": "google.cloud.metastore.v1beta.DataprocMetastore",
+                        "rpcName": "ListBackups",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListMetadataImports(
@@ -2084,7 +2706,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> metastore.ListMetadataImportsResponse:
             r"""Call the list metadata imports method over HTTP.
 
@@ -2095,8 +2717,10 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.metastore.ListMetadataImportsResponse:
@@ -2108,6 +2732,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             http_options = (
                 _BaseDataprocMetastoreRestTransport._BaseListMetadataImports._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_metadata_imports(
                 request, metadata
             )
@@ -2119,6 +2744,33 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             query_params = _BaseDataprocMetastoreRestTransport._BaseListMetadataImports._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.metastore_v1beta.DataprocMetastoreClient.ListMetadataImports",
+                    extra={
+                        "serviceName": "google.cloud.metastore.v1beta.DataprocMetastore",
+                        "rpcName": "ListMetadataImports",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -2142,7 +2794,31 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             pb_resp = metastore.ListMetadataImportsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_metadata_imports(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = metastore.ListMetadataImportsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.metastore_v1beta.DataprocMetastoreClient.list_metadata_imports",
+                    extra={
+                        "serviceName": "google.cloud.metastore.v1beta.DataprocMetastore",
+                        "rpcName": "ListMetadataImports",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListServices(
@@ -2179,7 +2855,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> metastore.ListServicesResponse:
             r"""Call the list services method over HTTP.
 
@@ -2190,8 +2866,10 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.metastore.ListServicesResponse:
@@ -2203,6 +2881,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             http_options = (
                 _BaseDataprocMetastoreRestTransport._BaseListServices._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_services(request, metadata)
             transcoded_request = _BaseDataprocMetastoreRestTransport._BaseListServices._get_transcoded_request(
                 http_options, request
@@ -2212,6 +2891,33 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             query_params = _BaseDataprocMetastoreRestTransport._BaseListServices._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.metastore_v1beta.DataprocMetastoreClient.ListServices",
+                    extra={
+                        "serviceName": "google.cloud.metastore.v1beta.DataprocMetastore",
+                        "rpcName": "ListServices",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DataprocMetastoreRestTransport._ListServices._get_response(
@@ -2233,7 +2939,29 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             pb_resp = metastore.ListServicesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_services(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = metastore.ListServicesResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.metastore_v1beta.DataprocMetastoreClient.list_services",
+                    extra={
+                        "serviceName": "google.cloud.metastore.v1beta.DataprocMetastore",
+                        "rpcName": "ListServices",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _MoveTableToDatabase(
@@ -2272,7 +3000,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the move table to database method over HTTP.
 
@@ -2283,8 +3011,10 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2297,6 +3027,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             http_options = (
                 _BaseDataprocMetastoreRestTransport._BaseMoveTableToDatabase._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_move_table_to_database(
                 request, metadata
             )
@@ -2312,6 +3043,33 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             query_params = _BaseDataprocMetastoreRestTransport._BaseMoveTableToDatabase._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.metastore_v1beta.DataprocMetastoreClient.MoveTableToDatabase",
+                    extra={
+                        "serviceName": "google.cloud.metastore.v1beta.DataprocMetastore",
+                        "rpcName": "MoveTableToDatabase",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -2334,7 +3092,29 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_move_table_to_database(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.metastore_v1beta.DataprocMetastoreClient.move_table_to_database",
+                    extra={
+                        "serviceName": "google.cloud.metastore.v1beta.DataprocMetastore",
+                        "rpcName": "MoveTableToDatabase",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _QueryMetadata(
@@ -2373,7 +3153,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the query metadata method over HTTP.
 
@@ -2384,8 +3164,10 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2398,6 +3180,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             http_options = (
                 _BaseDataprocMetastoreRestTransport._BaseQueryMetadata._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_query_metadata(request, metadata)
             transcoded_request = _BaseDataprocMetastoreRestTransport._BaseQueryMetadata._get_transcoded_request(
                 http_options, request
@@ -2411,6 +3194,33 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             query_params = _BaseDataprocMetastoreRestTransport._BaseQueryMetadata._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.metastore_v1beta.DataprocMetastoreClient.QueryMetadata",
+                    extra={
+                        "serviceName": "google.cloud.metastore.v1beta.DataprocMetastore",
+                        "rpcName": "QueryMetadata",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DataprocMetastoreRestTransport._QueryMetadata._get_response(
@@ -2431,7 +3241,29 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_query_metadata(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.metastore_v1beta.DataprocMetastoreClient.query_metadata",
+                    extra={
+                        "serviceName": "google.cloud.metastore.v1beta.DataprocMetastore",
+                        "rpcName": "QueryMetadata",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _RemoveIamPolicy(
@@ -2470,7 +3302,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> metastore.RemoveIamPolicyResponse:
             r"""Call the remove iam policy method over HTTP.
 
@@ -2481,8 +3313,10 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.metastore.RemoveIamPolicyResponse:
@@ -2494,6 +3328,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             http_options = (
                 _BaseDataprocMetastoreRestTransport._BaseRemoveIamPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_remove_iam_policy(
                 request, metadata
             )
@@ -2509,6 +3344,33 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             query_params = _BaseDataprocMetastoreRestTransport._BaseRemoveIamPolicy._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.metastore_v1beta.DataprocMetastoreClient.RemoveIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.metastore.v1beta.DataprocMetastore",
+                        "rpcName": "RemoveIamPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DataprocMetastoreRestTransport._RemoveIamPolicy._get_response(
@@ -2531,7 +3393,31 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             pb_resp = metastore.RemoveIamPolicyResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_remove_iam_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = metastore.RemoveIamPolicyResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.metastore_v1beta.DataprocMetastoreClient.remove_iam_policy",
+                    extra={
+                        "serviceName": "google.cloud.metastore.v1beta.DataprocMetastore",
+                        "rpcName": "RemoveIamPolicy",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _RestoreService(
@@ -2570,7 +3456,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the restore service method over HTTP.
 
@@ -2580,8 +3466,10 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2594,6 +3482,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             http_options = (
                 _BaseDataprocMetastoreRestTransport._BaseRestoreService._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_restore_service(request, metadata)
             transcoded_request = _BaseDataprocMetastoreRestTransport._BaseRestoreService._get_transcoded_request(
                 http_options, request
@@ -2607,6 +3496,33 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             query_params = _BaseDataprocMetastoreRestTransport._BaseRestoreService._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.metastore_v1beta.DataprocMetastoreClient.RestoreService",
+                    extra={
+                        "serviceName": "google.cloud.metastore.v1beta.DataprocMetastore",
+                        "rpcName": "RestoreService",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DataprocMetastoreRestTransport._RestoreService._get_response(
@@ -2627,7 +3543,29 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_restore_service(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.metastore_v1beta.DataprocMetastoreClient.restore_service",
+                    extra={
+                        "serviceName": "google.cloud.metastore.v1beta.DataprocMetastore",
+                        "rpcName": "RestoreService",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateMetadataImport(
@@ -2666,7 +3604,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update metadata import method over HTTP.
 
@@ -2677,8 +3615,10 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2691,6 +3631,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             http_options = (
                 _BaseDataprocMetastoreRestTransport._BaseUpdateMetadataImport._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_metadata_import(
                 request, metadata
             )
@@ -2706,6 +3647,33 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             query_params = _BaseDataprocMetastoreRestTransport._BaseUpdateMetadataImport._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.metastore_v1beta.DataprocMetastoreClient.UpdateMetadataImport",
+                    extra={
+                        "serviceName": "google.cloud.metastore.v1beta.DataprocMetastore",
+                        "rpcName": "UpdateMetadataImport",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -2728,7 +3696,29 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_metadata_import(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.metastore_v1beta.DataprocMetastoreClient.update_metadata_import",
+                    extra={
+                        "serviceName": "google.cloud.metastore.v1beta.DataprocMetastore",
+                        "rpcName": "UpdateMetadataImport",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateService(
@@ -2767,7 +3757,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update service method over HTTP.
 
@@ -2778,8 +3768,10 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2792,6 +3784,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             http_options = (
                 _BaseDataprocMetastoreRestTransport._BaseUpdateService._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_service(request, metadata)
             transcoded_request = _BaseDataprocMetastoreRestTransport._BaseUpdateService._get_transcoded_request(
                 http_options, request
@@ -2805,6 +3798,33 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             query_params = _BaseDataprocMetastoreRestTransport._BaseUpdateService._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.metastore_v1beta.DataprocMetastoreClient.UpdateService",
+                    extra={
+                        "serviceName": "google.cloud.metastore.v1beta.DataprocMetastore",
+                        "rpcName": "UpdateService",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DataprocMetastoreRestTransport._UpdateService._get_response(
@@ -2825,7 +3845,29 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_service(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.metastore_v1beta.DataprocMetastoreClient.update_service",
+                    extra={
+                        "serviceName": "google.cloud.metastore.v1beta.DataprocMetastore",
+                        "rpcName": "UpdateService",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -3020,7 +4062,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.Location:
             r"""Call the get location method over HTTP.
 
@@ -3030,8 +4072,10 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.Location: Response from GetLocation method.
@@ -3040,6 +4084,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             http_options = (
                 _BaseDataprocMetastoreRestTransport._BaseGetLocation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_location(request, metadata)
             transcoded_request = _BaseDataprocMetastoreRestTransport._BaseGetLocation._get_transcoded_request(
                 http_options, request
@@ -3049,6 +4094,33 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             query_params = _BaseDataprocMetastoreRestTransport._BaseGetLocation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.metastore_v1beta.DataprocMetastoreClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.metastore.v1beta.DataprocMetastore",
+                        "rpcName": "GetLocation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DataprocMetastoreRestTransport._GetLocation._get_response(
@@ -3069,6 +4141,27 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.metastore_v1beta.DataprocMetastoreAsyncClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.metastore.v1beta.DataprocMetastore",
+                        "rpcName": "GetLocation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -3110,7 +4203,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.ListLocationsResponse:
             r"""Call the list locations method over HTTP.
 
@@ -3120,8 +4213,10 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
@@ -3130,6 +4225,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             http_options = (
                 _BaseDataprocMetastoreRestTransport._BaseListLocations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
             transcoded_request = _BaseDataprocMetastoreRestTransport._BaseListLocations._get_transcoded_request(
                 http_options, request
@@ -3139,6 +4235,33 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             query_params = _BaseDataprocMetastoreRestTransport._BaseListLocations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.metastore_v1beta.DataprocMetastoreClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.metastore.v1beta.DataprocMetastore",
+                        "rpcName": "ListLocations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DataprocMetastoreRestTransport._ListLocations._get_response(
@@ -3159,6 +4282,27 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.metastore_v1beta.DataprocMetastoreAsyncClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.metastore.v1beta.DataprocMetastore",
+                        "rpcName": "ListLocations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -3199,7 +4343,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> policy_pb2.Policy:
             r"""Call the get iam policy method over HTTP.
 
@@ -3209,8 +4353,10 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 policy_pb2.Policy: Response from GetIamPolicy method.
@@ -3219,6 +4365,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             http_options = (
                 _BaseDataprocMetastoreRestTransport._BaseGetIamPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
             transcoded_request = _BaseDataprocMetastoreRestTransport._BaseGetIamPolicy._get_transcoded_request(
                 http_options, request
@@ -3228,6 +4375,33 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             query_params = _BaseDataprocMetastoreRestTransport._BaseGetIamPolicy._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.metastore_v1beta.DataprocMetastoreClient.GetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.metastore.v1beta.DataprocMetastore",
+                        "rpcName": "GetIamPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DataprocMetastoreRestTransport._GetIamPolicy._get_response(
@@ -3248,6 +4422,27 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_iam_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.metastore_v1beta.DataprocMetastoreAsyncClient.GetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.metastore.v1beta.DataprocMetastore",
+                        "rpcName": "GetIamPolicy",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -3289,7 +4484,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> policy_pb2.Policy:
             r"""Call the set iam policy method over HTTP.
 
@@ -3299,8 +4494,10 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 policy_pb2.Policy: Response from SetIamPolicy method.
@@ -3309,6 +4506,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             http_options = (
                 _BaseDataprocMetastoreRestTransport._BaseSetIamPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
             transcoded_request = _BaseDataprocMetastoreRestTransport._BaseSetIamPolicy._get_transcoded_request(
                 http_options, request
@@ -3322,6 +4520,33 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             query_params = _BaseDataprocMetastoreRestTransport._BaseSetIamPolicy._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.metastore_v1beta.DataprocMetastoreClient.SetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.metastore.v1beta.DataprocMetastore",
+                        "rpcName": "SetIamPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DataprocMetastoreRestTransport._SetIamPolicy._get_response(
@@ -3343,6 +4568,27 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_set_iam_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.metastore_v1beta.DataprocMetastoreAsyncClient.SetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.metastore.v1beta.DataprocMetastore",
+                        "rpcName": "SetIamPolicy",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -3385,7 +4631,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> iam_policy_pb2.TestIamPermissionsResponse:
             r"""Call the test iam permissions method over HTTP.
 
@@ -3395,8 +4641,10 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 iam_policy_pb2.TestIamPermissionsResponse: Response from TestIamPermissions method.
@@ -3405,6 +4653,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             http_options = (
                 _BaseDataprocMetastoreRestTransport._BaseTestIamPermissions._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata
             )
@@ -3420,6 +4669,33 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             query_params = _BaseDataprocMetastoreRestTransport._BaseTestIamPermissions._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.metastore_v1beta.DataprocMetastoreClient.TestIamPermissions",
+                    extra={
+                        "serviceName": "google.cloud.metastore.v1beta.DataprocMetastore",
+                        "rpcName": "TestIamPermissions",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DataprocMetastoreRestTransport._TestIamPermissions._get_response(
@@ -3441,6 +4717,27 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             resp = iam_policy_pb2.TestIamPermissionsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_test_iam_permissions(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.metastore_v1beta.DataprocMetastoreAsyncClient.TestIamPermissions",
+                    extra={
+                        "serviceName": "google.cloud.metastore.v1beta.DataprocMetastore",
+                        "rpcName": "TestIamPermissions",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -3483,7 +4780,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the cancel operation method over HTTP.
 
@@ -3493,13 +4790,16 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseDataprocMetastoreRestTransport._BaseCancelOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
@@ -3515,6 +4815,33 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             query_params = _BaseDataprocMetastoreRestTransport._BaseCancelOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.metastore_v1beta.DataprocMetastoreClient.CancelOperation",
+                    extra={
+                        "serviceName": "google.cloud.metastore.v1beta.DataprocMetastore",
+                        "rpcName": "CancelOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DataprocMetastoreRestTransport._CancelOperation._get_response(
@@ -3573,7 +4900,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the delete operation method over HTTP.
 
@@ -3583,13 +4910,16 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseDataprocMetastoreRestTransport._BaseDeleteOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
             )
@@ -3601,6 +4931,33 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             query_params = _BaseDataprocMetastoreRestTransport._BaseDeleteOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.metastore_v1beta.DataprocMetastoreClient.DeleteOperation",
+                    extra={
+                        "serviceName": "google.cloud.metastore.v1beta.DataprocMetastore",
+                        "rpcName": "DeleteOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DataprocMetastoreRestTransport._DeleteOperation._get_response(
@@ -3657,7 +5014,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the get operation method over HTTP.
 
@@ -3667,8 +5024,10 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.
@@ -3677,6 +5036,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             http_options = (
                 _BaseDataprocMetastoreRestTransport._BaseGetOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseDataprocMetastoreRestTransport._BaseGetOperation._get_transcoded_request(
                 http_options, request
@@ -3686,6 +5046,33 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             query_params = _BaseDataprocMetastoreRestTransport._BaseGetOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.metastore_v1beta.DataprocMetastoreClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.metastore.v1beta.DataprocMetastore",
+                        "rpcName": "GetOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DataprocMetastoreRestTransport._GetOperation._get_response(
@@ -3706,6 +5093,27 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.metastore_v1beta.DataprocMetastoreAsyncClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.metastore.v1beta.DataprocMetastore",
+                        "rpcName": "GetOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -3747,7 +5155,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.ListOperationsResponse:
             r"""Call the list operations method over HTTP.
 
@@ -3757,8 +5165,10 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
@@ -3767,6 +5177,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             http_options = (
                 _BaseDataprocMetastoreRestTransport._BaseListOperations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseDataprocMetastoreRestTransport._BaseListOperations._get_transcoded_request(
                 http_options, request
@@ -3776,6 +5187,33 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             query_params = _BaseDataprocMetastoreRestTransport._BaseListOperations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.metastore_v1beta.DataprocMetastoreClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.metastore.v1beta.DataprocMetastore",
+                        "rpcName": "ListOperations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DataprocMetastoreRestTransport._ListOperations._get_response(
@@ -3796,6 +5234,27 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.metastore_v1beta.DataprocMetastoreAsyncClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.metastore.v1beta.DataprocMetastore",
+                        "rpcName": "ListOperations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property

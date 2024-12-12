@@ -13,6 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import json
+import logging as std_logging
+import pickle
 from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -24,11 +27,89 @@ from google.cloud.location import locations_pb2  # type: ignore
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf.json_format import MessageToJson
+import google.protobuf.message
 import grpc  # type: ignore
+import proto  # type: ignore
 
 from google.cloud.deploy_v1.types import cloud_deploy
 
 from .base import DEFAULT_CLIENT_INFO, CloudDeployTransport
+
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = std_logging.getLogger(__name__)
+
+
+class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
+    def intercept_unary_unary(self, continuation, client_call_details, request):
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+            std_logging.DEBUG
+        )
+        if logging_enabled:  # pragma: NO COVER
+            request_metadata = client_call_details.metadata
+            if isinstance(request, proto.Message):
+                request_payload = type(request).to_json(request)
+            elif isinstance(request, google.protobuf.message.Message):
+                request_payload = MessageToJson(request)
+            else:
+                request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
+
+            request_metadata = {
+                key: value.decode("utf-8") if isinstance(value, bytes) else value
+                for key, value in request_metadata
+            }
+            grpc_request = {
+                "payload": request_payload,
+                "requestMethod": "grpc",
+                "metadata": dict(request_metadata),
+            }
+            _LOGGER.debug(
+                f"Sending request for {client_call_details.method}",
+                extra={
+                    "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                    "rpcName": client_call_details.method,
+                    "request": grpc_request,
+                    "metadata": grpc_request["metadata"],
+                },
+            )
+
+        response = continuation(client_call_details, request)
+        if logging_enabled:  # pragma: NO COVER
+            response_metadata = response.trailing_metadata()
+            # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
+            metadata = (
+                dict([(k, str(v)) for k, v in response_metadata])
+                if response_metadata
+                else None
+            )
+            result = response.result()
+            if isinstance(result, proto.Message):
+                response_payload = type(result).to_json(result)
+            elif isinstance(result, google.protobuf.message.Message):
+                response_payload = MessageToJson(result)
+            else:
+                response_payload = f"{type(result).__name__}: {pickle.dumps(result)}"
+            grpc_response = {
+                "payload": response_payload,
+                "metadata": metadata,
+                "status": "OK",
+            }
+            _LOGGER.debug(
+                f"Received response for {client_call_details.method}.",
+                extra={
+                    "serviceName": "google.cloud.deploy.v1.CloudDeploy",
+                    "rpcName": client_call_details.method,
+                    "response": grpc_response,
+                    "metadata": grpc_response["metadata"],
+                },
+            )
+        return response
 
 
 class CloudDeployGrpcTransport(CloudDeployTransport):
@@ -186,7 +267,12 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
                 ],
             )
 
-        # Wrap messages. This must be done after self._grpc_channel exists
+        self._interceptor = _LoggingClientInterceptor()
+        self._logged_channel = grpc.intercept_channel(
+            self._grpc_channel, self._interceptor
+        )
+
+        # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
     @classmethod
@@ -250,7 +336,9 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsClient(self.grpc_channel)
+            self._operations_client = operations_v1.OperationsClient(
+                self._logged_channel
+            )
 
         # Return the client from cache.
         return self._operations_client
@@ -278,7 +366,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_delivery_pipelines" not in self._stubs:
-            self._stubs["list_delivery_pipelines"] = self.grpc_channel.unary_unary(
+            self._stubs["list_delivery_pipelines"] = self._logged_channel.unary_unary(
                 "/google.cloud.deploy.v1.CloudDeploy/ListDeliveryPipelines",
                 request_serializer=cloud_deploy.ListDeliveryPipelinesRequest.serialize,
                 response_deserializer=cloud_deploy.ListDeliveryPipelinesResponse.deserialize,
@@ -306,7 +394,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_delivery_pipeline" not in self._stubs:
-            self._stubs["get_delivery_pipeline"] = self.grpc_channel.unary_unary(
+            self._stubs["get_delivery_pipeline"] = self._logged_channel.unary_unary(
                 "/google.cloud.deploy.v1.CloudDeploy/GetDeliveryPipeline",
                 request_serializer=cloud_deploy.GetDeliveryPipelineRequest.serialize,
                 response_deserializer=cloud_deploy.DeliveryPipeline.deserialize,
@@ -335,7 +423,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_delivery_pipeline" not in self._stubs:
-            self._stubs["create_delivery_pipeline"] = self.grpc_channel.unary_unary(
+            self._stubs["create_delivery_pipeline"] = self._logged_channel.unary_unary(
                 "/google.cloud.deploy.v1.CloudDeploy/CreateDeliveryPipeline",
                 request_serializer=cloud_deploy.CreateDeliveryPipelineRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -363,7 +451,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_delivery_pipeline" not in self._stubs:
-            self._stubs["update_delivery_pipeline"] = self.grpc_channel.unary_unary(
+            self._stubs["update_delivery_pipeline"] = self._logged_channel.unary_unary(
                 "/google.cloud.deploy.v1.CloudDeploy/UpdateDeliveryPipeline",
                 request_serializer=cloud_deploy.UpdateDeliveryPipelineRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -391,7 +479,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_delivery_pipeline" not in self._stubs:
-            self._stubs["delete_delivery_pipeline"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_delivery_pipeline"] = self._logged_channel.unary_unary(
                 "/google.cloud.deploy.v1.CloudDeploy/DeleteDeliveryPipeline",
                 request_serializer=cloud_deploy.DeleteDeliveryPipelineRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -417,7 +505,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_targets" not in self._stubs:
-            self._stubs["list_targets"] = self.grpc_channel.unary_unary(
+            self._stubs["list_targets"] = self._logged_channel.unary_unary(
                 "/google.cloud.deploy.v1.CloudDeploy/ListTargets",
                 request_serializer=cloud_deploy.ListTargetsRequest.serialize,
                 response_deserializer=cloud_deploy.ListTargetsResponse.deserialize,
@@ -445,7 +533,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "rollback_target" not in self._stubs:
-            self._stubs["rollback_target"] = self.grpc_channel.unary_unary(
+            self._stubs["rollback_target"] = self._logged_channel.unary_unary(
                 "/google.cloud.deploy.v1.CloudDeploy/RollbackTarget",
                 request_serializer=cloud_deploy.RollbackTargetRequest.serialize,
                 response_deserializer=cloud_deploy.RollbackTargetResponse.deserialize,
@@ -471,7 +559,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_target" not in self._stubs:
-            self._stubs["get_target"] = self.grpc_channel.unary_unary(
+            self._stubs["get_target"] = self._logged_channel.unary_unary(
                 "/google.cloud.deploy.v1.CloudDeploy/GetTarget",
                 request_serializer=cloud_deploy.GetTargetRequest.serialize,
                 response_deserializer=cloud_deploy.Target.deserialize,
@@ -497,7 +585,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_target" not in self._stubs:
-            self._stubs["create_target"] = self.grpc_channel.unary_unary(
+            self._stubs["create_target"] = self._logged_channel.unary_unary(
                 "/google.cloud.deploy.v1.CloudDeploy/CreateTarget",
                 request_serializer=cloud_deploy.CreateTargetRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -523,7 +611,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_target" not in self._stubs:
-            self._stubs["update_target"] = self.grpc_channel.unary_unary(
+            self._stubs["update_target"] = self._logged_channel.unary_unary(
                 "/google.cloud.deploy.v1.CloudDeploy/UpdateTarget",
                 request_serializer=cloud_deploy.UpdateTargetRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -549,7 +637,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_target" not in self._stubs:
-            self._stubs["delete_target"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_target"] = self._logged_channel.unary_unary(
                 "/google.cloud.deploy.v1.CloudDeploy/DeleteTarget",
                 request_serializer=cloud_deploy.DeleteTargetRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -579,7 +667,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_custom_target_types" not in self._stubs:
-            self._stubs["list_custom_target_types"] = self.grpc_channel.unary_unary(
+            self._stubs["list_custom_target_types"] = self._logged_channel.unary_unary(
                 "/google.cloud.deploy.v1.CloudDeploy/ListCustomTargetTypes",
                 request_serializer=cloud_deploy.ListCustomTargetTypesRequest.serialize,
                 response_deserializer=cloud_deploy.ListCustomTargetTypesResponse.deserialize,
@@ -607,7 +695,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_custom_target_type" not in self._stubs:
-            self._stubs["get_custom_target_type"] = self.grpc_channel.unary_unary(
+            self._stubs["get_custom_target_type"] = self._logged_channel.unary_unary(
                 "/google.cloud.deploy.v1.CloudDeploy/GetCustomTargetType",
                 request_serializer=cloud_deploy.GetCustomTargetTypeRequest.serialize,
                 response_deserializer=cloud_deploy.CustomTargetType.deserialize,
@@ -636,7 +724,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_custom_target_type" not in self._stubs:
-            self._stubs["create_custom_target_type"] = self.grpc_channel.unary_unary(
+            self._stubs["create_custom_target_type"] = self._logged_channel.unary_unary(
                 "/google.cloud.deploy.v1.CloudDeploy/CreateCustomTargetType",
                 request_serializer=cloud_deploy.CreateCustomTargetTypeRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -664,7 +752,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_custom_target_type" not in self._stubs:
-            self._stubs["update_custom_target_type"] = self.grpc_channel.unary_unary(
+            self._stubs["update_custom_target_type"] = self._logged_channel.unary_unary(
                 "/google.cloud.deploy.v1.CloudDeploy/UpdateCustomTargetType",
                 request_serializer=cloud_deploy.UpdateCustomTargetTypeRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -692,7 +780,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_custom_target_type" not in self._stubs:
-            self._stubs["delete_custom_target_type"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_custom_target_type"] = self._logged_channel.unary_unary(
                 "/google.cloud.deploy.v1.CloudDeploy/DeleteCustomTargetType",
                 request_serializer=cloud_deploy.DeleteCustomTargetTypeRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -720,7 +808,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_releases" not in self._stubs:
-            self._stubs["list_releases"] = self.grpc_channel.unary_unary(
+            self._stubs["list_releases"] = self._logged_channel.unary_unary(
                 "/google.cloud.deploy.v1.CloudDeploy/ListReleases",
                 request_serializer=cloud_deploy.ListReleasesRequest.serialize,
                 response_deserializer=cloud_deploy.ListReleasesResponse.deserialize,
@@ -746,7 +834,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_release" not in self._stubs:
-            self._stubs["get_release"] = self.grpc_channel.unary_unary(
+            self._stubs["get_release"] = self._logged_channel.unary_unary(
                 "/google.cloud.deploy.v1.CloudDeploy/GetRelease",
                 request_serializer=cloud_deploy.GetReleaseRequest.serialize,
                 response_deserializer=cloud_deploy.Release.deserialize,
@@ -773,7 +861,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_release" not in self._stubs:
-            self._stubs["create_release"] = self.grpc_channel.unary_unary(
+            self._stubs["create_release"] = self._logged_channel.unary_unary(
                 "/google.cloud.deploy.v1.CloudDeploy/CreateRelease",
                 request_serializer=cloud_deploy.CreateReleaseRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -801,7 +889,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "abandon_release" not in self._stubs:
-            self._stubs["abandon_release"] = self.grpc_channel.unary_unary(
+            self._stubs["abandon_release"] = self._logged_channel.unary_unary(
                 "/google.cloud.deploy.v1.CloudDeploy/AbandonRelease",
                 request_serializer=cloud_deploy.AbandonReleaseRequest.serialize,
                 response_deserializer=cloud_deploy.AbandonReleaseResponse.deserialize,
@@ -828,7 +916,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_deploy_policy" not in self._stubs:
-            self._stubs["create_deploy_policy"] = self.grpc_channel.unary_unary(
+            self._stubs["create_deploy_policy"] = self._logged_channel.unary_unary(
                 "/google.cloud.deploy.v1.CloudDeploy/CreateDeployPolicy",
                 request_serializer=cloud_deploy.CreateDeployPolicyRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -854,7 +942,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_deploy_policy" not in self._stubs:
-            self._stubs["update_deploy_policy"] = self.grpc_channel.unary_unary(
+            self._stubs["update_deploy_policy"] = self._logged_channel.unary_unary(
                 "/google.cloud.deploy.v1.CloudDeploy/UpdateDeployPolicy",
                 request_serializer=cloud_deploy.UpdateDeployPolicyRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -880,7 +968,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_deploy_policy" not in self._stubs:
-            self._stubs["delete_deploy_policy"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_deploy_policy"] = self._logged_channel.unary_unary(
                 "/google.cloud.deploy.v1.CloudDeploy/DeleteDeployPolicy",
                 request_serializer=cloud_deploy.DeleteDeployPolicyRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -909,7 +997,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_deploy_policies" not in self._stubs:
-            self._stubs["list_deploy_policies"] = self.grpc_channel.unary_unary(
+            self._stubs["list_deploy_policies"] = self._logged_channel.unary_unary(
                 "/google.cloud.deploy.v1.CloudDeploy/ListDeployPolicies",
                 request_serializer=cloud_deploy.ListDeployPoliciesRequest.serialize,
                 response_deserializer=cloud_deploy.ListDeployPoliciesResponse.deserialize,
@@ -935,7 +1023,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_deploy_policy" not in self._stubs:
-            self._stubs["get_deploy_policy"] = self.grpc_channel.unary_unary(
+            self._stubs["get_deploy_policy"] = self._logged_channel.unary_unary(
                 "/google.cloud.deploy.v1.CloudDeploy/GetDeployPolicy",
                 request_serializer=cloud_deploy.GetDeployPolicyRequest.serialize,
                 response_deserializer=cloud_deploy.DeployPolicy.deserialize,
@@ -963,7 +1051,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "approve_rollout" not in self._stubs:
-            self._stubs["approve_rollout"] = self.grpc_channel.unary_unary(
+            self._stubs["approve_rollout"] = self._logged_channel.unary_unary(
                 "/google.cloud.deploy.v1.CloudDeploy/ApproveRollout",
                 request_serializer=cloud_deploy.ApproveRolloutRequest.serialize,
                 response_deserializer=cloud_deploy.ApproveRolloutResponse.deserialize,
@@ -991,7 +1079,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "advance_rollout" not in self._stubs:
-            self._stubs["advance_rollout"] = self.grpc_channel.unary_unary(
+            self._stubs["advance_rollout"] = self._logged_channel.unary_unary(
                 "/google.cloud.deploy.v1.CloudDeploy/AdvanceRollout",
                 request_serializer=cloud_deploy.AdvanceRolloutRequest.serialize,
                 response_deserializer=cloud_deploy.AdvanceRolloutResponse.deserialize,
@@ -1019,7 +1107,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "cancel_rollout" not in self._stubs:
-            self._stubs["cancel_rollout"] = self.grpc_channel.unary_unary(
+            self._stubs["cancel_rollout"] = self._logged_channel.unary_unary(
                 "/google.cloud.deploy.v1.CloudDeploy/CancelRollout",
                 request_serializer=cloud_deploy.CancelRolloutRequest.serialize,
                 response_deserializer=cloud_deploy.CancelRolloutResponse.deserialize,
@@ -1047,7 +1135,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_rollouts" not in self._stubs:
-            self._stubs["list_rollouts"] = self.grpc_channel.unary_unary(
+            self._stubs["list_rollouts"] = self._logged_channel.unary_unary(
                 "/google.cloud.deploy.v1.CloudDeploy/ListRollouts",
                 request_serializer=cloud_deploy.ListRolloutsRequest.serialize,
                 response_deserializer=cloud_deploy.ListRolloutsResponse.deserialize,
@@ -1073,7 +1161,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_rollout" not in self._stubs:
-            self._stubs["get_rollout"] = self.grpc_channel.unary_unary(
+            self._stubs["get_rollout"] = self._logged_channel.unary_unary(
                 "/google.cloud.deploy.v1.CloudDeploy/GetRollout",
                 request_serializer=cloud_deploy.GetRolloutRequest.serialize,
                 response_deserializer=cloud_deploy.Rollout.deserialize,
@@ -1100,7 +1188,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_rollout" not in self._stubs:
-            self._stubs["create_rollout"] = self.grpc_channel.unary_unary(
+            self._stubs["create_rollout"] = self._logged_channel.unary_unary(
                 "/google.cloud.deploy.v1.CloudDeploy/CreateRollout",
                 request_serializer=cloud_deploy.CreateRolloutRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1126,7 +1214,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "ignore_job" not in self._stubs:
-            self._stubs["ignore_job"] = self.grpc_channel.unary_unary(
+            self._stubs["ignore_job"] = self._logged_channel.unary_unary(
                 "/google.cloud.deploy.v1.CloudDeploy/IgnoreJob",
                 request_serializer=cloud_deploy.IgnoreJobRequest.serialize,
                 response_deserializer=cloud_deploy.IgnoreJobResponse.deserialize,
@@ -1152,7 +1240,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "retry_job" not in self._stubs:
-            self._stubs["retry_job"] = self.grpc_channel.unary_unary(
+            self._stubs["retry_job"] = self._logged_channel.unary_unary(
                 "/google.cloud.deploy.v1.CloudDeploy/RetryJob",
                 request_serializer=cloud_deploy.RetryJobRequest.serialize,
                 response_deserializer=cloud_deploy.RetryJobResponse.deserialize,
@@ -1178,7 +1266,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_job_runs" not in self._stubs:
-            self._stubs["list_job_runs"] = self.grpc_channel.unary_unary(
+            self._stubs["list_job_runs"] = self._logged_channel.unary_unary(
                 "/google.cloud.deploy.v1.CloudDeploy/ListJobRuns",
                 request_serializer=cloud_deploy.ListJobRunsRequest.serialize,
                 response_deserializer=cloud_deploy.ListJobRunsResponse.deserialize,
@@ -1204,7 +1292,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_job_run" not in self._stubs:
-            self._stubs["get_job_run"] = self.grpc_channel.unary_unary(
+            self._stubs["get_job_run"] = self._logged_channel.unary_unary(
                 "/google.cloud.deploy.v1.CloudDeploy/GetJobRun",
                 request_serializer=cloud_deploy.GetJobRunRequest.serialize,
                 response_deserializer=cloud_deploy.JobRun.deserialize,
@@ -1232,7 +1320,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "terminate_job_run" not in self._stubs:
-            self._stubs["terminate_job_run"] = self.grpc_channel.unary_unary(
+            self._stubs["terminate_job_run"] = self._logged_channel.unary_unary(
                 "/google.cloud.deploy.v1.CloudDeploy/TerminateJobRun",
                 request_serializer=cloud_deploy.TerminateJobRunRequest.serialize,
                 response_deserializer=cloud_deploy.TerminateJobRunResponse.deserialize,
@@ -1258,7 +1346,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_config" not in self._stubs:
-            self._stubs["get_config"] = self.grpc_channel.unary_unary(
+            self._stubs["get_config"] = self._logged_channel.unary_unary(
                 "/google.cloud.deploy.v1.CloudDeploy/GetConfig",
                 request_serializer=cloud_deploy.GetConfigRequest.serialize,
                 response_deserializer=cloud_deploy.Config.deserialize,
@@ -1285,7 +1373,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_automation" not in self._stubs:
-            self._stubs["create_automation"] = self.grpc_channel.unary_unary(
+            self._stubs["create_automation"] = self._logged_channel.unary_unary(
                 "/google.cloud.deploy.v1.CloudDeploy/CreateAutomation",
                 request_serializer=cloud_deploy.CreateAutomationRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1312,7 +1400,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_automation" not in self._stubs:
-            self._stubs["update_automation"] = self.grpc_channel.unary_unary(
+            self._stubs["update_automation"] = self._logged_channel.unary_unary(
                 "/google.cloud.deploy.v1.CloudDeploy/UpdateAutomation",
                 request_serializer=cloud_deploy.UpdateAutomationRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1338,7 +1426,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_automation" not in self._stubs:
-            self._stubs["delete_automation"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_automation"] = self._logged_channel.unary_unary(
                 "/google.cloud.deploy.v1.CloudDeploy/DeleteAutomation",
                 request_serializer=cloud_deploy.DeleteAutomationRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1364,7 +1452,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_automation" not in self._stubs:
-            self._stubs["get_automation"] = self.grpc_channel.unary_unary(
+            self._stubs["get_automation"] = self._logged_channel.unary_unary(
                 "/google.cloud.deploy.v1.CloudDeploy/GetAutomation",
                 request_serializer=cloud_deploy.GetAutomationRequest.serialize,
                 response_deserializer=cloud_deploy.Automation.deserialize,
@@ -1392,7 +1480,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_automations" not in self._stubs:
-            self._stubs["list_automations"] = self.grpc_channel.unary_unary(
+            self._stubs["list_automations"] = self._logged_channel.unary_unary(
                 "/google.cloud.deploy.v1.CloudDeploy/ListAutomations",
                 request_serializer=cloud_deploy.ListAutomationsRequest.serialize,
                 response_deserializer=cloud_deploy.ListAutomationsResponse.deserialize,
@@ -1418,7 +1506,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_automation_run" not in self._stubs:
-            self._stubs["get_automation_run"] = self.grpc_channel.unary_unary(
+            self._stubs["get_automation_run"] = self._logged_channel.unary_unary(
                 "/google.cloud.deploy.v1.CloudDeploy/GetAutomationRun",
                 request_serializer=cloud_deploy.GetAutomationRunRequest.serialize,
                 response_deserializer=cloud_deploy.AutomationRun.deserialize,
@@ -1447,7 +1535,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_automation_runs" not in self._stubs:
-            self._stubs["list_automation_runs"] = self.grpc_channel.unary_unary(
+            self._stubs["list_automation_runs"] = self._logged_channel.unary_unary(
                 "/google.cloud.deploy.v1.CloudDeploy/ListAutomationRuns",
                 request_serializer=cloud_deploy.ListAutomationRunsRequest.serialize,
                 response_deserializer=cloud_deploy.ListAutomationRunsResponse.deserialize,
@@ -1480,7 +1568,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "cancel_automation_run" not in self._stubs:
-            self._stubs["cancel_automation_run"] = self.grpc_channel.unary_unary(
+            self._stubs["cancel_automation_run"] = self._logged_channel.unary_unary(
                 "/google.cloud.deploy.v1.CloudDeploy/CancelAutomationRun",
                 request_serializer=cloud_deploy.CancelAutomationRunRequest.serialize,
                 response_deserializer=cloud_deploy.CancelAutomationRunResponse.deserialize,
@@ -1488,7 +1576,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         return self._stubs["cancel_automation_run"]
 
     def close(self):
-        self.grpc_channel.close()
+        self._logged_channel.close()
 
     @property
     def delete_operation(
@@ -1500,7 +1588,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_operation" not in self._stubs:
-            self._stubs["delete_operation"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_operation"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/DeleteOperation",
                 request_serializer=operations_pb2.DeleteOperationRequest.SerializeToString,
                 response_deserializer=None,
@@ -1517,7 +1605,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "cancel_operation" not in self._stubs:
-            self._stubs["cancel_operation"] = self.grpc_channel.unary_unary(
+            self._stubs["cancel_operation"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/CancelOperation",
                 request_serializer=operations_pb2.CancelOperationRequest.SerializeToString,
                 response_deserializer=None,
@@ -1534,7 +1622,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_operation" not in self._stubs:
-            self._stubs["get_operation"] = self.grpc_channel.unary_unary(
+            self._stubs["get_operation"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/GetOperation",
                 request_serializer=operations_pb2.GetOperationRequest.SerializeToString,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1553,7 +1641,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_operations" not in self._stubs:
-            self._stubs["list_operations"] = self.grpc_channel.unary_unary(
+            self._stubs["list_operations"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/ListOperations",
                 request_serializer=operations_pb2.ListOperationsRequest.SerializeToString,
                 response_deserializer=operations_pb2.ListOperationsResponse.FromString,
@@ -1572,7 +1660,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_locations" not in self._stubs:
-            self._stubs["list_locations"] = self.grpc_channel.unary_unary(
+            self._stubs["list_locations"] = self._logged_channel.unary_unary(
                 "/google.cloud.location.Locations/ListLocations",
                 request_serializer=locations_pb2.ListLocationsRequest.SerializeToString,
                 response_deserializer=locations_pb2.ListLocationsResponse.FromString,
@@ -1589,7 +1677,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_location" not in self._stubs:
-            self._stubs["get_location"] = self.grpc_channel.unary_unary(
+            self._stubs["get_location"] = self._logged_channel.unary_unary(
                 "/google.cloud.location.Locations/GetLocation",
                 request_serializer=locations_pb2.GetLocationRequest.SerializeToString,
                 response_deserializer=locations_pb2.Location.FromString,
@@ -1614,7 +1702,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "set_iam_policy" not in self._stubs:
-            self._stubs["set_iam_policy"] = self.grpc_channel.unary_unary(
+            self._stubs["set_iam_policy"] = self._logged_channel.unary_unary(
                 "/google.iam.v1.IAMPolicy/SetIamPolicy",
                 request_serializer=iam_policy_pb2.SetIamPolicyRequest.SerializeToString,
                 response_deserializer=policy_pb2.Policy.FromString,
@@ -1640,7 +1728,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_iam_policy" not in self._stubs:
-            self._stubs["get_iam_policy"] = self.grpc_channel.unary_unary(
+            self._stubs["get_iam_policy"] = self._logged_channel.unary_unary(
                 "/google.iam.v1.IAMPolicy/GetIamPolicy",
                 request_serializer=iam_policy_pb2.GetIamPolicyRequest.SerializeToString,
                 response_deserializer=policy_pb2.Policy.FromString,
@@ -1669,7 +1757,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "test_iam_permissions" not in self._stubs:
-            self._stubs["test_iam_permissions"] = self.grpc_channel.unary_unary(
+            self._stubs["test_iam_permissions"] = self._logged_channel.unary_unary(
                 "/google.iam.v1.IAMPolicy/TestIamPermissions",
                 request_serializer=iam_policy_pb2.TestIamPermissionsRequest.SerializeToString,
                 response_deserializer=iam_policy_pb2.TestIamPermissionsResponse.FromString,

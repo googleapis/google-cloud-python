@@ -2810,6 +2810,7 @@ def test_get_job_metrics_rest_bad_request(request_type=metrics.GetJobMetricsRequ
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_job_metrics(request)
 
 
@@ -2843,6 +2844,7 @@ def test_get_job_metrics_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_job_metrics(request)
 
     # Establish that the response is the type that we expect.
@@ -2880,6 +2882,7 @@ def test_get_job_metrics_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = metrics.JobMetrics.to_json(metrics.JobMetrics())
         req.return_value.content = return_value
 
@@ -2924,6 +2927,7 @@ def test_get_job_execution_details_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_job_execution_details(request)
 
 
@@ -2959,6 +2963,7 @@ def test_get_job_execution_details_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_job_execution_details(request)
 
     # Establish that the response is the type that we expect.
@@ -2999,6 +3004,7 @@ def test_get_job_execution_details_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = metrics.JobExecutionDetails.to_json(
             metrics.JobExecutionDetails()
         )
@@ -3050,6 +3056,7 @@ def test_get_stage_execution_details_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_stage_execution_details(request)
 
 
@@ -3090,6 +3097,7 @@ def test_get_stage_execution_details_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_stage_execution_details(request)
 
     # Establish that the response is the type that we expect.
@@ -3130,6 +3138,7 @@ def test_get_stage_execution_details_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = metrics.StageExecutionDetails.to_json(
             metrics.StageExecutionDetails()
         )

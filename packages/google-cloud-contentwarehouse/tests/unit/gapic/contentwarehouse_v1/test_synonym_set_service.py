@@ -3123,6 +3123,7 @@ def test_create_synonym_set_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_synonym_set(request)
 
@@ -3177,6 +3178,7 @@ def test_create_synonym_set_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_synonym_set(**mock_args)
 
@@ -3309,6 +3311,7 @@ def test_get_synonym_set_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_synonym_set(request)
 
@@ -3356,6 +3359,7 @@ def test_get_synonym_set_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_synonym_set(**mock_args)
 
@@ -3492,6 +3496,7 @@ def test_update_synonym_set_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_synonym_set(request)
 
@@ -3548,6 +3553,7 @@ def test_update_synonym_set_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_synonym_set(**mock_args)
 
@@ -3681,6 +3687,7 @@ def test_delete_synonym_set_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_synonym_set(request)
 
@@ -3726,6 +3733,7 @@ def test_delete_synonym_set_rest_flattened():
         json_return_value = ""
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_synonym_set(**mock_args)
 
@@ -3868,6 +3876,7 @@ def test_list_synonym_sets_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_synonym_sets(request)
 
@@ -3923,6 +3932,7 @@ def test_list_synonym_sets_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_synonym_sets(**mock_args)
 
@@ -4419,6 +4429,7 @@ def test_create_synonym_set_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_synonym_set(request)
 
 
@@ -4529,6 +4540,7 @@ def test_create_synonym_set_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_synonym_set(request)
 
     # Establish that the response is the type that we expect.
@@ -4570,6 +4582,7 @@ def test_create_synonym_set_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = synonymset.SynonymSet.to_json(synonymset.SynonymSet())
         req.return_value.content = return_value
 
@@ -4614,6 +4627,7 @@ def test_get_synonym_set_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_synonym_set(request)
 
 
@@ -4650,6 +4664,7 @@ def test_get_synonym_set_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_synonym_set(request)
 
     # Establish that the response is the type that we expect.
@@ -4691,6 +4706,7 @@ def test_get_synonym_set_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = synonymset.SynonymSet.to_json(synonymset.SynonymSet())
         req.return_value.content = return_value
 
@@ -4735,6 +4751,7 @@ def test_update_synonym_set_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_synonym_set(request)
 
 
@@ -4845,6 +4862,7 @@ def test_update_synonym_set_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_synonym_set(request)
 
     # Establish that the response is the type that we expect.
@@ -4886,6 +4904,7 @@ def test_update_synonym_set_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = synonymset.SynonymSet.to_json(synonymset.SynonymSet())
         req.return_value.content = return_value
 
@@ -4930,6 +4949,7 @@ def test_delete_synonym_set_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_synonym_set(request)
 
 
@@ -4960,6 +4980,7 @@ def test_delete_synonym_set_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_synonym_set(request)
 
     # Establish that the response is the type that we expect.
@@ -4996,6 +5017,7 @@ def test_delete_synonym_set_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = synonymset_service_request.DeleteSynonymSetRequest()
         metadata = [
@@ -5036,6 +5058,7 @@ def test_list_synonym_sets_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_synonym_sets(request)
 
 
@@ -5073,6 +5096,7 @@ def test_list_synonym_sets_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_synonym_sets(request)
 
     # Establish that the response is the type that we expect.
@@ -5113,6 +5137,7 @@ def test_list_synonym_sets_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = synonymset_service_request.ListSynonymSetsResponse.to_json(
             synonymset_service_request.ListSynonymSetsResponse()
         )
@@ -5161,6 +5186,7 @@ def test_get_operation_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_operation(request)
 
 
@@ -5191,6 +5217,7 @@ def test_get_operation_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.get_operation(request)
 

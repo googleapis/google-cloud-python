@@ -9224,6 +9224,7 @@ def test_list_connection_profiles_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_connection_profiles(request)
 
@@ -9279,6 +9280,7 @@ def test_list_connection_profiles_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_connection_profiles(**mock_args)
 
@@ -9480,6 +9482,7 @@ def test_get_connection_profile_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_connection_profile(request)
 
@@ -9527,6 +9530,7 @@ def test_get_connection_profile_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_connection_profile(**mock_args)
 
@@ -9682,6 +9686,7 @@ def test_create_connection_profile_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_connection_profile(request)
 
@@ -9749,6 +9754,7 @@ def test_create_connection_profile_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_connection_profile(**mock_args)
 
@@ -9893,6 +9899,7 @@ def test_update_connection_profile_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_connection_profile(request)
 
@@ -9951,6 +9958,7 @@ def test_update_connection_profile_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_connection_profile(**mock_args)
 
@@ -10093,6 +10101,7 @@ def test_delete_connection_profile_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_connection_profile(request)
 
@@ -10138,6 +10147,7 @@ def test_delete_connection_profile_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_connection_profile(**mock_args)
 
@@ -10275,6 +10285,7 @@ def test_discover_connection_profile_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.discover_connection_profile(request)
 
@@ -10401,6 +10412,7 @@ def test_list_streams_rest_required_fields(request_type=datastream.ListStreamsRe
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_streams(request)
 
@@ -10456,6 +10468,7 @@ def test_list_streams_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_streams(**mock_args)
 
@@ -10646,6 +10659,7 @@ def test_get_stream_rest_required_fields(request_type=datastream.GetStreamReques
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_stream(request)
 
@@ -10691,6 +10705,7 @@ def test_get_stream_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_stream(**mock_args)
 
@@ -10840,6 +10855,7 @@ def test_create_stream_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_stream(request)
 
@@ -10907,6 +10923,7 @@ def test_create_stream_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_stream(**mock_args)
 
@@ -11046,6 +11063,7 @@ def test_update_stream_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_stream(request)
 
@@ -11102,6 +11120,7 @@ def test_update_stream_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_stream(**mock_args)
 
@@ -11237,6 +11256,7 @@ def test_delete_stream_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_stream(request)
 
@@ -11280,6 +11300,7 @@ def test_delete_stream_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_stream(**mock_args)
 
@@ -11460,6 +11481,7 @@ def test_fetch_static_ips_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.fetch_static_ips(request)
 
@@ -11513,6 +11535,7 @@ def test_fetch_static_ips_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.fetch_static_ips(**mock_args)
 
@@ -11729,6 +11752,7 @@ def test_create_private_connection_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_private_connection(request)
 
@@ -11796,6 +11820,7 @@ def test_create_private_connection_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_private_connection(**mock_args)
 
@@ -11936,6 +11961,7 @@ def test_get_private_connection_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_private_connection(request)
 
@@ -11983,6 +12009,7 @@ def test_get_private_connection_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_private_connection(**mock_args)
 
@@ -12128,6 +12155,7 @@ def test_list_private_connections_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_private_connections(request)
 
@@ -12183,6 +12211,7 @@ def test_list_private_connections_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_private_connections(**mock_args)
 
@@ -12392,6 +12421,7 @@ def test_delete_private_connection_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_private_connection(request)
 
@@ -12445,6 +12475,7 @@ def test_delete_private_connection_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_private_connection(**mock_args)
 
@@ -12590,6 +12621,7 @@ def test_create_route_rest_required_fields(request_type=datastream.CreateRouteRe
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_route(request)
 
@@ -12657,6 +12689,7 @@ def test_create_route_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_route(**mock_args)
 
@@ -12788,6 +12821,7 @@ def test_get_route_rest_required_fields(request_type=datastream.GetRouteRequest)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_route(request)
 
@@ -12835,6 +12869,7 @@ def test_get_route_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_route(**mock_args)
 
@@ -12973,6 +13008,7 @@ def test_list_routes_rest_required_fields(request_type=datastream.ListRoutesRequ
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_routes(request)
 
@@ -13030,6 +13066,7 @@ def test_list_routes_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_routes(**mock_args)
 
@@ -13225,6 +13262,7 @@ def test_delete_route_rest_required_fields(request_type=datastream.DeleteRouteRe
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_route(request)
 
@@ -13270,6 +13308,7 @@ def test_delete_route_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_route(**mock_args)
 
@@ -14484,6 +14523,7 @@ def test_list_connection_profiles_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_connection_profiles(request)
 
 
@@ -14520,6 +14560,7 @@ def test_list_connection_profiles_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_connection_profiles(request)
 
     # Establish that the response is the type that we expect.
@@ -14561,6 +14602,7 @@ def test_list_connection_profiles_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = datastream.ListConnectionProfilesResponse.to_json(
             datastream.ListConnectionProfilesResponse()
         )
@@ -14609,6 +14651,7 @@ def test_get_connection_profile_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_connection_profile(request)
 
 
@@ -14647,6 +14690,7 @@ def test_get_connection_profile_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_connection_profile(request)
 
     # Establish that the response is the type that we expect.
@@ -14688,6 +14732,7 @@ def test_get_connection_profile_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = datastream_resources.ConnectionProfile.to_json(
             datastream_resources.ConnectionProfile()
         )
@@ -14734,6 +14779,7 @@ def test_create_connection_profile_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_connection_profile(request)
 
 
@@ -14878,6 +14924,7 @@ def test_create_connection_profile_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_connection_profile(request)
 
     # Establish that the response is the type that we expect.
@@ -14919,6 +14966,7 @@ def test_create_connection_profile_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -14967,6 +15015,7 @@ def test_update_connection_profile_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_connection_profile(request)
 
 
@@ -15115,6 +15164,7 @@ def test_update_connection_profile_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_connection_profile(request)
 
     # Establish that the response is the type that we expect.
@@ -15156,6 +15206,7 @@ def test_update_connection_profile_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -15202,6 +15253,7 @@ def test_delete_connection_profile_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_connection_profile(request)
 
 
@@ -15234,6 +15286,7 @@ def test_delete_connection_profile_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_connection_profile(request)
 
     # Establish that the response is the type that we expect.
@@ -15275,6 +15328,7 @@ def test_delete_connection_profile_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -15319,6 +15373,7 @@ def test_discover_connection_profile_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.discover_connection_profile(request)
 
 
@@ -15352,6 +15407,7 @@ def test_discover_connection_profile_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.discover_connection_profile(request)
 
     # Establish that the response is the type that we expect.
@@ -15391,6 +15447,7 @@ def test_discover_connection_profile_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = datastream.DiscoverConnectionProfileResponse.to_json(
             datastream.DiscoverConnectionProfileResponse()
         )
@@ -15435,6 +15492,7 @@ def test_list_streams_rest_bad_request(request_type=datastream.ListStreamsReques
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_streams(request)
 
 
@@ -15471,6 +15529,7 @@ def test_list_streams_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_streams(request)
 
     # Establish that the response is the type that we expect.
@@ -15510,6 +15569,7 @@ def test_list_streams_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = datastream.ListStreamsResponse.to_json(
             datastream.ListStreamsResponse()
         )
@@ -15554,6 +15614,7 @@ def test_get_stream_rest_bad_request(request_type=datastream.GetStreamRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_stream(request)
 
 
@@ -15591,6 +15652,7 @@ def test_get_stream_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_stream(request)
 
     # Establish that the response is the type that we expect.
@@ -15631,6 +15693,7 @@ def test_get_stream_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = datastream_resources.Stream.to_json(
             datastream_resources.Stream()
         )
@@ -15675,6 +15738,7 @@ def test_create_stream_rest_bad_request(request_type=datastream.CreateStreamRequ
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_stream(request)
 
 
@@ -15859,6 +15923,7 @@ def test_create_stream_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_stream(request)
 
     # Establish that the response is the type that we expect.
@@ -15898,6 +15963,7 @@ def test_create_stream_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -15942,6 +16008,7 @@ def test_update_stream_rest_bad_request(request_type=datastream.UpdateStreamRequ
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_stream(request)
 
 
@@ -16128,6 +16195,7 @@ def test_update_stream_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_stream(request)
 
     # Establish that the response is the type that we expect.
@@ -16167,6 +16235,7 @@ def test_update_stream_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -16209,6 +16278,7 @@ def test_delete_stream_rest_bad_request(request_type=datastream.DeleteStreamRequ
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_stream(request)
 
 
@@ -16239,6 +16309,7 @@ def test_delete_stream_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_stream(request)
 
     # Establish that the response is the type that we expect.
@@ -16278,6 +16349,7 @@ def test_delete_stream_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -16320,6 +16392,7 @@ def test_fetch_errors_rest_bad_request(request_type=datastream.FetchErrorsReques
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.fetch_errors(request)
 
 
@@ -16350,6 +16423,7 @@ def test_fetch_errors_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.fetch_errors(request)
 
     # Establish that the response is the type that we expect.
@@ -16389,6 +16463,7 @@ def test_fetch_errors_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -16433,6 +16508,7 @@ def test_fetch_static_ips_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.fetch_static_ips(request)
 
 
@@ -16469,6 +16545,7 @@ def test_fetch_static_ips_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.fetch_static_ips(request)
 
     # Establish that the response is the type that we expect.
@@ -16510,6 +16587,7 @@ def test_fetch_static_ips_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = datastream.FetchStaticIpsResponse.to_json(
             datastream.FetchStaticIpsResponse()
         )
@@ -16556,6 +16634,7 @@ def test_create_private_connection_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_private_connection(request)
 
 
@@ -16671,6 +16750,7 @@ def test_create_private_connection_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_private_connection(request)
 
     # Establish that the response is the type that we expect.
@@ -16712,6 +16792,7 @@ def test_create_private_connection_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -16758,6 +16839,7 @@ def test_get_private_connection_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_private_connection(request)
 
 
@@ -16797,6 +16879,7 @@ def test_get_private_connection_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_private_connection(request)
 
     # Establish that the response is the type that we expect.
@@ -16839,6 +16922,7 @@ def test_get_private_connection_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = datastream_resources.PrivateConnection.to_json(
             datastream_resources.PrivateConnection()
         )
@@ -16885,6 +16969,7 @@ def test_list_private_connections_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_private_connections(request)
 
 
@@ -16921,6 +17006,7 @@ def test_list_private_connections_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_private_connections(request)
 
     # Establish that the response is the type that we expect.
@@ -16962,6 +17048,7 @@ def test_list_private_connections_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = datastream.ListPrivateConnectionsResponse.to_json(
             datastream.ListPrivateConnectionsResponse()
         )
@@ -17010,6 +17097,7 @@ def test_delete_private_connection_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_private_connection(request)
 
 
@@ -17042,6 +17130,7 @@ def test_delete_private_connection_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_private_connection(request)
 
     # Establish that the response is the type that we expect.
@@ -17083,6 +17172,7 @@ def test_delete_private_connection_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -17127,6 +17217,7 @@ def test_create_route_rest_bad_request(request_type=datastream.CreateRouteReques
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_route(request)
 
 
@@ -17235,6 +17326,7 @@ def test_create_route_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_route(request)
 
     # Establish that the response is the type that we expect.
@@ -17274,6 +17366,7 @@ def test_create_route_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -17318,6 +17411,7 @@ def test_get_route_rest_bad_request(request_type=datastream.GetRouteRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_route(request)
 
 
@@ -17358,6 +17452,7 @@ def test_get_route_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_route(request)
 
     # Establish that the response is the type that we expect.
@@ -17399,6 +17494,7 @@ def test_get_route_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = datastream_resources.Route.to_json(datastream_resources.Route())
         req.return_value.content = return_value
 
@@ -17443,6 +17539,7 @@ def test_list_routes_rest_bad_request(request_type=datastream.ListRoutesRequest)
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_routes(request)
 
 
@@ -17481,6 +17578,7 @@ def test_list_routes_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_routes(request)
 
     # Establish that the response is the type that we expect.
@@ -17520,6 +17618,7 @@ def test_list_routes_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = datastream.ListRoutesResponse.to_json(
             datastream.ListRoutesResponse()
         )
@@ -17566,6 +17665,7 @@ def test_delete_route_rest_bad_request(request_type=datastream.DeleteRouteReques
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_route(request)
 
 
@@ -17598,6 +17698,7 @@ def test_delete_route_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_route(request)
 
     # Establish that the response is the type that we expect.
@@ -17637,6 +17738,7 @@ def test_delete_route_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
