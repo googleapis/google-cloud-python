@@ -6568,6 +6568,7 @@ def test_create_scan_config_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_scan_config(request)
 
@@ -6622,6 +6623,7 @@ def test_create_scan_config_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_scan_config(**mock_args)
 
@@ -6754,6 +6756,7 @@ def test_delete_scan_config_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_scan_config(request)
 
@@ -6797,6 +6800,7 @@ def test_delete_scan_config_rest_flattened():
         json_return_value = ""
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_scan_config(**mock_args)
 
@@ -6927,6 +6931,7 @@ def test_get_scan_config_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_scan_config(request)
 
@@ -6972,6 +6977,7 @@ def test_get_scan_config_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_scan_config(**mock_args)
 
@@ -7111,6 +7117,7 @@ def test_list_scan_configs_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_scan_configs(request)
 
@@ -7164,6 +7171,7 @@ def test_list_scan_configs_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_scan_configs(**mock_args)
 
@@ -7359,6 +7367,7 @@ def test_update_scan_config_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_scan_config(request)
 
@@ -7415,6 +7424,7 @@ def test_update_scan_config_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_scan_config(**mock_args)
 
@@ -7548,6 +7558,7 @@ def test_start_scan_run_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.start_scan_run(request)
 
@@ -7593,6 +7604,7 @@ def test_start_scan_run_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.start_scan_run(**mock_args)
 
@@ -7723,6 +7735,7 @@ def test_get_scan_run_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_scan_run(request)
 
@@ -7770,6 +7783,7 @@ def test_get_scan_run_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_scan_run(**mock_args)
 
@@ -7908,6 +7922,7 @@ def test_list_scan_runs_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_scan_runs(request)
 
@@ -7961,6 +7976,7 @@ def test_list_scan_runs_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_scan_runs(**mock_args)
 
@@ -8156,6 +8172,7 @@ def test_stop_scan_run_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.stop_scan_run(request)
 
@@ -8203,6 +8220,7 @@ def test_stop_scan_run_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.stop_scan_run(**mock_args)
 
@@ -8343,6 +8361,7 @@ def test_list_crawled_urls_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_crawled_urls(request)
 
@@ -8398,6 +8417,7 @@ def test_list_crawled_urls_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_crawled_urls(**mock_args)
 
@@ -8594,6 +8614,7 @@ def test_get_finding_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_finding(request)
 
@@ -8641,6 +8662,7 @@ def test_get_finding_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_finding(**mock_args)
 
@@ -8787,6 +8809,7 @@ def test_list_findings_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_findings(request)
 
@@ -8855,6 +8878,7 @@ def test_list_findings_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_findings(**mock_args)
 
@@ -9059,6 +9083,7 @@ def test_list_finding_type_stats_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_finding_type_stats(request)
 
@@ -9108,6 +9133,7 @@ def test_list_finding_type_stats_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_finding_type_stats(**mock_args)
 
@@ -9978,6 +10004,7 @@ def test_create_scan_config_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_scan_config(request)
 
 
@@ -10134,6 +10161,7 @@ def test_create_scan_config_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_scan_config(request)
 
     # Establish that the response is the type that we expect.
@@ -10187,6 +10215,7 @@ def test_create_scan_config_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = gcw_scan_config.ScanConfig.to_json(gcw_scan_config.ScanConfig())
         req.return_value.content = return_value
 
@@ -10231,6 +10260,7 @@ def test_delete_scan_config_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_scan_config(request)
 
 
@@ -10261,6 +10291,7 @@ def test_delete_scan_config_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_scan_config(request)
 
     # Establish that the response is the type that we expect.
@@ -10297,6 +10328,7 @@ def test_delete_scan_config_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = web_security_scanner.DeleteScanConfigRequest()
         metadata = [
@@ -10337,6 +10369,7 @@ def test_get_scan_config_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_scan_config(request)
 
 
@@ -10380,6 +10413,7 @@ def test_get_scan_config_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_scan_config(request)
 
     # Establish that the response is the type that we expect.
@@ -10433,6 +10467,7 @@ def test_get_scan_config_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = scan_config.ScanConfig.to_json(scan_config.ScanConfig())
         req.return_value.content = return_value
 
@@ -10477,6 +10512,7 @@ def test_list_scan_configs_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_scan_configs(request)
 
 
@@ -10512,6 +10548,7 @@ def test_list_scan_configs_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_scan_configs(request)
 
     # Establish that the response is the type that we expect.
@@ -10552,6 +10589,7 @@ def test_list_scan_configs_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = web_security_scanner.ListScanConfigsResponse.to_json(
             web_security_scanner.ListScanConfigsResponse()
         )
@@ -10598,6 +10636,7 @@ def test_update_scan_config_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_scan_config(request)
 
 
@@ -10754,6 +10793,7 @@ def test_update_scan_config_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_scan_config(request)
 
     # Establish that the response is the type that we expect.
@@ -10807,6 +10847,7 @@ def test_update_scan_config_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = gcw_scan_config.ScanConfig.to_json(gcw_scan_config.ScanConfig())
         req.return_value.content = return_value
 
@@ -10851,6 +10892,7 @@ def test_start_scan_run_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.start_scan_run(request)
 
 
@@ -10892,6 +10934,7 @@ def test_start_scan_run_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.start_scan_run(request)
 
     # Establish that the response is the type that we expect.
@@ -10938,6 +10981,7 @@ def test_start_scan_run_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = scan_run.ScanRun.to_json(scan_run.ScanRun())
         req.return_value.content = return_value
 
@@ -10982,6 +11026,7 @@ def test_get_scan_run_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_scan_run(request)
 
 
@@ -11023,6 +11068,7 @@ def test_get_scan_run_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_scan_run(request)
 
     # Establish that the response is the type that we expect.
@@ -11069,6 +11115,7 @@ def test_get_scan_run_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = scan_run.ScanRun.to_json(scan_run.ScanRun())
         req.return_value.content = return_value
 
@@ -11113,6 +11160,7 @@ def test_list_scan_runs_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_scan_runs(request)
 
 
@@ -11148,6 +11196,7 @@ def test_list_scan_runs_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_scan_runs(request)
 
     # Establish that the response is the type that we expect.
@@ -11188,6 +11237,7 @@ def test_list_scan_runs_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = web_security_scanner.ListScanRunsResponse.to_json(
             web_security_scanner.ListScanRunsResponse()
         )
@@ -11234,6 +11284,7 @@ def test_stop_scan_run_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.stop_scan_run(request)
 
 
@@ -11275,6 +11326,7 @@ def test_stop_scan_run_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.stop_scan_run(request)
 
     # Establish that the response is the type that we expect.
@@ -11321,6 +11373,7 @@ def test_stop_scan_run_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = scan_run.ScanRun.to_json(scan_run.ScanRun())
         req.return_value.content = return_value
 
@@ -11365,6 +11418,7 @@ def test_list_crawled_urls_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_crawled_urls(request)
 
 
@@ -11400,6 +11454,7 @@ def test_list_crawled_urls_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_crawled_urls(request)
 
     # Establish that the response is the type that we expect.
@@ -11440,6 +11495,7 @@ def test_list_crawled_urls_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = web_security_scanner.ListCrawledUrlsResponse.to_json(
             web_security_scanner.ListCrawledUrlsResponse()
         )
@@ -11488,6 +11544,7 @@ def test_get_finding_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_finding(request)
 
 
@@ -11534,6 +11591,7 @@ def test_get_finding_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_finding(request)
 
     # Establish that the response is the type that we expect.
@@ -11583,6 +11641,7 @@ def test_get_finding_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = finding.Finding.to_json(finding.Finding())
         req.return_value.content = return_value
 
@@ -11627,6 +11686,7 @@ def test_list_findings_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_findings(request)
 
 
@@ -11662,6 +11722,7 @@ def test_list_findings_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_findings(request)
 
     # Establish that the response is the type that we expect.
@@ -11702,6 +11763,7 @@ def test_list_findings_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = web_security_scanner.ListFindingsResponse.to_json(
             web_security_scanner.ListFindingsResponse()
         )
@@ -11748,6 +11810,7 @@ def test_list_finding_type_stats_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_finding_type_stats(request)
 
 
@@ -11783,6 +11846,7 @@ def test_list_finding_type_stats_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_finding_type_stats(request)
 
     # Establish that the response is the type that we expect.
@@ -11822,6 +11886,7 @@ def test_list_finding_type_stats_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = web_security_scanner.ListFindingTypeStatsResponse.to_json(
             web_security_scanner.ListFindingTypeStatsResponse()
         )

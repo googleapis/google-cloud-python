@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -37,6 +37,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -85,8 +93,10 @@ class BusinessInfoServiceRestInterceptor:
     def pre_get_business_info(
         self,
         request: businessinfo.GetBusinessInfoRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[businessinfo.GetBusinessInfoRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        businessinfo.GetBusinessInfoRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_business_info
 
         Override in a subclass to manipulate the request or metadata
@@ -108,8 +118,10 @@ class BusinessInfoServiceRestInterceptor:
     def pre_update_business_info(
         self,
         request: businessinfo.UpdateBusinessInfoRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[businessinfo.UpdateBusinessInfoRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        businessinfo.UpdateBusinessInfoRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_business_info
 
         Override in a subclass to manipulate the request or metadata
@@ -250,7 +262,7 @@ class BusinessInfoServiceRestTransport(_BaseBusinessInfoServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> businessinfo.BusinessInfo:
             r"""Call the get business info method over HTTP.
 
@@ -260,8 +272,10 @@ class BusinessInfoServiceRestTransport(_BaseBusinessInfoServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.businessinfo.BusinessInfo:
@@ -273,6 +287,7 @@ class BusinessInfoServiceRestTransport(_BaseBusinessInfoServiceRestTransport):
             http_options = (
                 _BaseBusinessInfoServiceRestTransport._BaseGetBusinessInfo._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_business_info(
                 request, metadata
             )
@@ -284,6 +299,33 @@ class BusinessInfoServiceRestTransport(_BaseBusinessInfoServiceRestTransport):
             query_params = _BaseBusinessInfoServiceRestTransport._BaseGetBusinessInfo._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.shopping.merchant.accounts_v1beta.BusinessInfoServiceClient.GetBusinessInfo",
+                    extra={
+                        "serviceName": "google.shopping.merchant.accounts.v1beta.BusinessInfoService",
+                        "rpcName": "GetBusinessInfo",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BusinessInfoServiceRestTransport._GetBusinessInfo._get_response(
@@ -305,7 +347,29 @@ class BusinessInfoServiceRestTransport(_BaseBusinessInfoServiceRestTransport):
             pb_resp = businessinfo.BusinessInfo.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_business_info(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = businessinfo.BusinessInfo.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.shopping.merchant.accounts_v1beta.BusinessInfoServiceClient.get_business_info",
+                    extra={
+                        "serviceName": "google.shopping.merchant.accounts.v1beta.BusinessInfoService",
+                        "rpcName": "GetBusinessInfo",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateBusinessInfo(
@@ -344,7 +408,7 @@ class BusinessInfoServiceRestTransport(_BaseBusinessInfoServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> businessinfo.BusinessInfo:
             r"""Call the update business info method over HTTP.
 
@@ -354,8 +418,10 @@ class BusinessInfoServiceRestTransport(_BaseBusinessInfoServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.businessinfo.BusinessInfo:
@@ -367,6 +433,7 @@ class BusinessInfoServiceRestTransport(_BaseBusinessInfoServiceRestTransport):
             http_options = (
                 _BaseBusinessInfoServiceRestTransport._BaseUpdateBusinessInfo._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_business_info(
                 request, metadata
             )
@@ -382,6 +449,33 @@ class BusinessInfoServiceRestTransport(_BaseBusinessInfoServiceRestTransport):
             query_params = _BaseBusinessInfoServiceRestTransport._BaseUpdateBusinessInfo._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.shopping.merchant.accounts_v1beta.BusinessInfoServiceClient.UpdateBusinessInfo",
+                    extra={
+                        "serviceName": "google.shopping.merchant.accounts.v1beta.BusinessInfoService",
+                        "rpcName": "UpdateBusinessInfo",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -406,7 +500,29 @@ class BusinessInfoServiceRestTransport(_BaseBusinessInfoServiceRestTransport):
             pb_resp = businessinfo.BusinessInfo.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_business_info(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = businessinfo.BusinessInfo.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.shopping.merchant.accounts_v1beta.BusinessInfoServiceClient.update_business_info",
+                    extra={
+                        "serviceName": "google.shopping.merchant.accounts.v1beta.BusinessInfoService",
+                        "rpcName": "UpdateBusinessInfo",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property

@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -43,6 +43,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -119,8 +127,11 @@ class CatalogServiceRestInterceptor:
     def pre_create_catalog_item(
         self,
         request: catalog_service.CreateCatalogItemRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[catalog_service.CreateCatalogItemRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        catalog_service.CreateCatalogItemRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for create_catalog_item
 
         Override in a subclass to manipulate the request or metadata
@@ -142,8 +153,11 @@ class CatalogServiceRestInterceptor:
     def pre_delete_catalog_item(
         self,
         request: catalog_service.DeleteCatalogItemRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[catalog_service.DeleteCatalogItemRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        catalog_service.DeleteCatalogItemRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for delete_catalog_item
 
         Override in a subclass to manipulate the request or metadata
@@ -154,8 +168,10 @@ class CatalogServiceRestInterceptor:
     def pre_get_catalog_item(
         self,
         request: catalog_service.GetCatalogItemRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[catalog_service.GetCatalogItemRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        catalog_service.GetCatalogItemRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_catalog_item
 
         Override in a subclass to manipulate the request or metadata
@@ -177,8 +193,10 @@ class CatalogServiceRestInterceptor:
     def pre_import_catalog_items(
         self,
         request: import_.ImportCatalogItemsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[import_.ImportCatalogItemsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        import_.ImportCatalogItemsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for import_catalog_items
 
         Override in a subclass to manipulate the request or metadata
@@ -200,8 +218,10 @@ class CatalogServiceRestInterceptor:
     def pre_list_catalog_items(
         self,
         request: catalog_service.ListCatalogItemsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[catalog_service.ListCatalogItemsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        catalog_service.ListCatalogItemsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_catalog_items
 
         Override in a subclass to manipulate the request or metadata
@@ -223,8 +243,11 @@ class CatalogServiceRestInterceptor:
     def pre_update_catalog_item(
         self,
         request: catalog_service.UpdateCatalogItemRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[catalog_service.UpdateCatalogItemRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        catalog_service.UpdateCatalogItemRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for update_catalog_item
 
         Override in a subclass to manipulate the request or metadata
@@ -415,7 +438,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> catalog.CatalogItem:
             r"""Call the create catalog item method over HTTP.
 
@@ -426,8 +449,10 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.catalog.CatalogItem:
@@ -439,6 +464,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             http_options = (
                 _BaseCatalogServiceRestTransport._BaseCreateCatalogItem._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_catalog_item(
                 request, metadata
             )
@@ -454,6 +480,33 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             query_params = _BaseCatalogServiceRestTransport._BaseCreateCatalogItem._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.recommendationengine_v1beta1.CatalogServiceClient.CreateCatalogItem",
+                    extra={
+                        "serviceName": "google.cloud.recommendationengine.v1beta1.CatalogService",
+                        "rpcName": "CreateCatalogItem",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CatalogServiceRestTransport._CreateCatalogItem._get_response(
@@ -476,7 +529,29 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             pb_resp = catalog.CatalogItem.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_catalog_item(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = catalog.CatalogItem.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.recommendationengine_v1beta1.CatalogServiceClient.create_catalog_item",
+                    extra={
+                        "serviceName": "google.cloud.recommendationengine.v1beta1.CatalogService",
+                        "rpcName": "CreateCatalogItem",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteCatalogItem(
@@ -513,7 +588,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete catalog item method over HTTP.
 
@@ -524,13 +599,16 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseCatalogServiceRestTransport._BaseDeleteCatalogItem._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_catalog_item(
                 request, metadata
             )
@@ -542,6 +620,33 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             query_params = _BaseCatalogServiceRestTransport._BaseDeleteCatalogItem._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.recommendationengine_v1beta1.CatalogServiceClient.DeleteCatalogItem",
+                    extra={
+                        "serviceName": "google.cloud.recommendationengine.v1beta1.CatalogService",
+                        "rpcName": "DeleteCatalogItem",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CatalogServiceRestTransport._DeleteCatalogItem._get_response(
@@ -592,7 +697,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> catalog.CatalogItem:
             r"""Call the get catalog item method over HTTP.
 
@@ -603,8 +708,10 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.catalog.CatalogItem:
@@ -616,6 +723,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             http_options = (
                 _BaseCatalogServiceRestTransport._BaseGetCatalogItem._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_catalog_item(
                 request, metadata
             )
@@ -627,6 +735,33 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             query_params = _BaseCatalogServiceRestTransport._BaseGetCatalogItem._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.recommendationengine_v1beta1.CatalogServiceClient.GetCatalogItem",
+                    extra={
+                        "serviceName": "google.cloud.recommendationengine.v1beta1.CatalogService",
+                        "rpcName": "GetCatalogItem",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CatalogServiceRestTransport._GetCatalogItem._get_response(
@@ -648,7 +783,29 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             pb_resp = catalog.CatalogItem.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_catalog_item(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = catalog.CatalogItem.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.recommendationengine_v1beta1.CatalogServiceClient.get_catalog_item",
+                    extra={
+                        "serviceName": "google.cloud.recommendationengine.v1beta1.CatalogService",
+                        "rpcName": "GetCatalogItem",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ImportCatalogItems(
@@ -686,7 +843,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the import catalog items method over HTTP.
 
@@ -696,8 +853,10 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -710,6 +869,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             http_options = (
                 _BaseCatalogServiceRestTransport._BaseImportCatalogItems._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_import_catalog_items(
                 request, metadata
             )
@@ -725,6 +885,33 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             query_params = _BaseCatalogServiceRestTransport._BaseImportCatalogItems._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.recommendationengine_v1beta1.CatalogServiceClient.ImportCatalogItems",
+                    extra={
+                        "serviceName": "google.cloud.recommendationengine.v1beta1.CatalogService",
+                        "rpcName": "ImportCatalogItems",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CatalogServiceRestTransport._ImportCatalogItems._get_response(
@@ -745,7 +932,29 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_import_catalog_items(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.recommendationengine_v1beta1.CatalogServiceClient.import_catalog_items",
+                    extra={
+                        "serviceName": "google.cloud.recommendationengine.v1beta1.CatalogService",
+                        "rpcName": "ImportCatalogItems",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListCatalogItems(
@@ -782,7 +991,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> catalog_service.ListCatalogItemsResponse:
             r"""Call the list catalog items method over HTTP.
 
@@ -793,8 +1002,10 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.catalog_service.ListCatalogItemsResponse:
@@ -806,6 +1017,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             http_options = (
                 _BaseCatalogServiceRestTransport._BaseListCatalogItems._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_catalog_items(
                 request, metadata
             )
@@ -817,6 +1029,33 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             query_params = _BaseCatalogServiceRestTransport._BaseListCatalogItems._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.recommendationengine_v1beta1.CatalogServiceClient.ListCatalogItems",
+                    extra={
+                        "serviceName": "google.cloud.recommendationengine.v1beta1.CatalogService",
+                        "rpcName": "ListCatalogItems",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CatalogServiceRestTransport._ListCatalogItems._get_response(
@@ -838,7 +1077,31 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             pb_resp = catalog_service.ListCatalogItemsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_catalog_items(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = catalog_service.ListCatalogItemsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.recommendationengine_v1beta1.CatalogServiceClient.list_catalog_items",
+                    extra={
+                        "serviceName": "google.cloud.recommendationengine.v1beta1.CatalogService",
+                        "rpcName": "ListCatalogItems",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateCatalogItem(
@@ -876,7 +1139,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> catalog.CatalogItem:
             r"""Call the update catalog item method over HTTP.
 
@@ -887,8 +1150,10 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.catalog.CatalogItem:
@@ -900,6 +1165,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             http_options = (
                 _BaseCatalogServiceRestTransport._BaseUpdateCatalogItem._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_catalog_item(
                 request, metadata
             )
@@ -915,6 +1181,33 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             query_params = _BaseCatalogServiceRestTransport._BaseUpdateCatalogItem._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.recommendationengine_v1beta1.CatalogServiceClient.UpdateCatalogItem",
+                    extra={
+                        "serviceName": "google.cloud.recommendationengine.v1beta1.CatalogService",
+                        "rpcName": "UpdateCatalogItem",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CatalogServiceRestTransport._UpdateCatalogItem._get_response(
@@ -937,7 +1230,29 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             pb_resp = catalog.CatalogItem.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_catalog_item(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = catalog.CatalogItem.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.recommendationengine_v1beta1.CatalogServiceClient.update_catalog_item",
+                    extra={
+                        "serviceName": "google.cloud.recommendationengine.v1beta1.CatalogService",
+                        "rpcName": "UpdateCatalogItem",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property

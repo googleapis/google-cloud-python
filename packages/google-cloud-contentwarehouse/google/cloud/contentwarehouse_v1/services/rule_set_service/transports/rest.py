@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -39,6 +39,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -107,8 +115,11 @@ class RuleSetServiceRestInterceptor:
     def pre_create_rule_set(
         self,
         request: ruleset_service_request.CreateRuleSetRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[ruleset_service_request.CreateRuleSetRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        ruleset_service_request.CreateRuleSetRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for create_rule_set
 
         Override in a subclass to manipulate the request or metadata
@@ -130,8 +141,11 @@ class RuleSetServiceRestInterceptor:
     def pre_delete_rule_set(
         self,
         request: ruleset_service_request.DeleteRuleSetRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[ruleset_service_request.DeleteRuleSetRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        ruleset_service_request.DeleteRuleSetRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for delete_rule_set
 
         Override in a subclass to manipulate the request or metadata
@@ -142,8 +156,11 @@ class RuleSetServiceRestInterceptor:
     def pre_get_rule_set(
         self,
         request: ruleset_service_request.GetRuleSetRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[ruleset_service_request.GetRuleSetRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        ruleset_service_request.GetRuleSetRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for get_rule_set
 
         Override in a subclass to manipulate the request or metadata
@@ -163,8 +180,11 @@ class RuleSetServiceRestInterceptor:
     def pre_list_rule_sets(
         self,
         request: ruleset_service_request.ListRuleSetsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[ruleset_service_request.ListRuleSetsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        ruleset_service_request.ListRuleSetsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for list_rule_sets
 
         Override in a subclass to manipulate the request or metadata
@@ -186,8 +206,11 @@ class RuleSetServiceRestInterceptor:
     def pre_update_rule_set(
         self,
         request: ruleset_service_request.UpdateRuleSetRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[ruleset_service_request.UpdateRuleSetRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        ruleset_service_request.UpdateRuleSetRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for update_rule_set
 
         Override in a subclass to manipulate the request or metadata
@@ -209,8 +232,10 @@ class RuleSetServiceRestInterceptor:
     def pre_get_operation(
         self,
         request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -351,7 +376,7 @@ class RuleSetServiceRestTransport(_BaseRuleSetServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> rule_engine.RuleSet:
             r"""Call the create rule set method over HTTP.
 
@@ -362,8 +387,10 @@ class RuleSetServiceRestTransport(_BaseRuleSetServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.rule_engine.RuleSet:
@@ -375,6 +402,7 @@ class RuleSetServiceRestTransport(_BaseRuleSetServiceRestTransport):
             http_options = (
                 _BaseRuleSetServiceRestTransport._BaseCreateRuleSet._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_rule_set(request, metadata)
             transcoded_request = _BaseRuleSetServiceRestTransport._BaseCreateRuleSet._get_transcoded_request(
                 http_options, request
@@ -388,6 +416,33 @@ class RuleSetServiceRestTransport(_BaseRuleSetServiceRestTransport):
             query_params = _BaseRuleSetServiceRestTransport._BaseCreateRuleSet._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.contentwarehouse_v1.RuleSetServiceClient.CreateRuleSet",
+                    extra={
+                        "serviceName": "google.cloud.contentwarehouse.v1.RuleSetService",
+                        "rpcName": "CreateRuleSet",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RuleSetServiceRestTransport._CreateRuleSet._get_response(
@@ -410,7 +465,29 @@ class RuleSetServiceRestTransport(_BaseRuleSetServiceRestTransport):
             pb_resp = rule_engine.RuleSet.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_rule_set(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = rule_engine.RuleSet.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.contentwarehouse_v1.RuleSetServiceClient.create_rule_set",
+                    extra={
+                        "serviceName": "google.cloud.contentwarehouse.v1.RuleSetService",
+                        "rpcName": "CreateRuleSet",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteRuleSet(
@@ -447,7 +524,7 @@ class RuleSetServiceRestTransport(_BaseRuleSetServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete rule set method over HTTP.
 
@@ -458,13 +535,16 @@ class RuleSetServiceRestTransport(_BaseRuleSetServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseRuleSetServiceRestTransport._BaseDeleteRuleSet._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_rule_set(request, metadata)
             transcoded_request = _BaseRuleSetServiceRestTransport._BaseDeleteRuleSet._get_transcoded_request(
                 http_options, request
@@ -474,6 +554,33 @@ class RuleSetServiceRestTransport(_BaseRuleSetServiceRestTransport):
             query_params = _BaseRuleSetServiceRestTransport._BaseDeleteRuleSet._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.contentwarehouse_v1.RuleSetServiceClient.DeleteRuleSet",
+                    extra={
+                        "serviceName": "google.cloud.contentwarehouse.v1.RuleSetService",
+                        "rpcName": "DeleteRuleSet",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RuleSetServiceRestTransport._DeleteRuleSet._get_response(
@@ -524,7 +631,7 @@ class RuleSetServiceRestTransport(_BaseRuleSetServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> rule_engine.RuleSet:
             r"""Call the get rule set method over HTTP.
 
@@ -535,8 +642,10 @@ class RuleSetServiceRestTransport(_BaseRuleSetServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.rule_engine.RuleSet:
@@ -548,6 +657,7 @@ class RuleSetServiceRestTransport(_BaseRuleSetServiceRestTransport):
             http_options = (
                 _BaseRuleSetServiceRestTransport._BaseGetRuleSet._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_rule_set(request, metadata)
             transcoded_request = _BaseRuleSetServiceRestTransport._BaseGetRuleSet._get_transcoded_request(
                 http_options, request
@@ -559,6 +669,33 @@ class RuleSetServiceRestTransport(_BaseRuleSetServiceRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.contentwarehouse_v1.RuleSetServiceClient.GetRuleSet",
+                    extra={
+                        "serviceName": "google.cloud.contentwarehouse.v1.RuleSetService",
+                        "rpcName": "GetRuleSet",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RuleSetServiceRestTransport._GetRuleSet._get_response(
@@ -580,7 +717,29 @@ class RuleSetServiceRestTransport(_BaseRuleSetServiceRestTransport):
             pb_resp = rule_engine.RuleSet.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_rule_set(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = rule_engine.RuleSet.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.contentwarehouse_v1.RuleSetServiceClient.get_rule_set",
+                    extra={
+                        "serviceName": "google.cloud.contentwarehouse.v1.RuleSetService",
+                        "rpcName": "GetRuleSet",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListRuleSets(
@@ -617,7 +776,7 @@ class RuleSetServiceRestTransport(_BaseRuleSetServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> ruleset_service_request.ListRuleSetsResponse:
             r"""Call the list rule sets method over HTTP.
 
@@ -628,8 +787,10 @@ class RuleSetServiceRestTransport(_BaseRuleSetServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.ruleset_service_request.ListRuleSetsResponse:
@@ -641,6 +802,7 @@ class RuleSetServiceRestTransport(_BaseRuleSetServiceRestTransport):
             http_options = (
                 _BaseRuleSetServiceRestTransport._BaseListRuleSets._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_rule_sets(request, metadata)
             transcoded_request = _BaseRuleSetServiceRestTransport._BaseListRuleSets._get_transcoded_request(
                 http_options, request
@@ -650,6 +812,33 @@ class RuleSetServiceRestTransport(_BaseRuleSetServiceRestTransport):
             query_params = _BaseRuleSetServiceRestTransport._BaseListRuleSets._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.contentwarehouse_v1.RuleSetServiceClient.ListRuleSets",
+                    extra={
+                        "serviceName": "google.cloud.contentwarehouse.v1.RuleSetService",
+                        "rpcName": "ListRuleSets",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RuleSetServiceRestTransport._ListRuleSets._get_response(
@@ -671,7 +860,31 @@ class RuleSetServiceRestTransport(_BaseRuleSetServiceRestTransport):
             pb_resp = ruleset_service_request.ListRuleSetsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_rule_sets(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        ruleset_service_request.ListRuleSetsResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.contentwarehouse_v1.RuleSetServiceClient.list_rule_sets",
+                    extra={
+                        "serviceName": "google.cloud.contentwarehouse.v1.RuleSetService",
+                        "rpcName": "ListRuleSets",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateRuleSet(
@@ -709,7 +922,7 @@ class RuleSetServiceRestTransport(_BaseRuleSetServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> rule_engine.RuleSet:
             r"""Call the update rule set method over HTTP.
 
@@ -720,8 +933,10 @@ class RuleSetServiceRestTransport(_BaseRuleSetServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.rule_engine.RuleSet:
@@ -733,6 +948,7 @@ class RuleSetServiceRestTransport(_BaseRuleSetServiceRestTransport):
             http_options = (
                 _BaseRuleSetServiceRestTransport._BaseUpdateRuleSet._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_rule_set(request, metadata)
             transcoded_request = _BaseRuleSetServiceRestTransport._BaseUpdateRuleSet._get_transcoded_request(
                 http_options, request
@@ -746,6 +962,33 @@ class RuleSetServiceRestTransport(_BaseRuleSetServiceRestTransport):
             query_params = _BaseRuleSetServiceRestTransport._BaseUpdateRuleSet._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.contentwarehouse_v1.RuleSetServiceClient.UpdateRuleSet",
+                    extra={
+                        "serviceName": "google.cloud.contentwarehouse.v1.RuleSetService",
+                        "rpcName": "UpdateRuleSet",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RuleSetServiceRestTransport._UpdateRuleSet._get_response(
@@ -768,7 +1011,29 @@ class RuleSetServiceRestTransport(_BaseRuleSetServiceRestTransport):
             pb_resp = rule_engine.RuleSet.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_rule_set(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = rule_engine.RuleSet.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.contentwarehouse_v1.RuleSetServiceClient.update_rule_set",
+                    extra={
+                        "serviceName": "google.cloud.contentwarehouse.v1.RuleSetService",
+                        "rpcName": "UpdateRuleSet",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -852,7 +1117,7 @@ class RuleSetServiceRestTransport(_BaseRuleSetServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the get operation method over HTTP.
 
@@ -862,8 +1127,10 @@ class RuleSetServiceRestTransport(_BaseRuleSetServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.
@@ -872,6 +1139,7 @@ class RuleSetServiceRestTransport(_BaseRuleSetServiceRestTransport):
             http_options = (
                 _BaseRuleSetServiceRestTransport._BaseGetOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseRuleSetServiceRestTransport._BaseGetOperation._get_transcoded_request(
                 http_options, request
@@ -881,6 +1149,33 @@ class RuleSetServiceRestTransport(_BaseRuleSetServiceRestTransport):
             query_params = _BaseRuleSetServiceRestTransport._BaseGetOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.contentwarehouse_v1.RuleSetServiceClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.contentwarehouse.v1.RuleSetService",
+                        "rpcName": "GetOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RuleSetServiceRestTransport._GetOperation._get_response(
@@ -901,6 +1196,27 @@ class RuleSetServiceRestTransport(_BaseRuleSetServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.contentwarehouse_v1.RuleSetServiceAsyncClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.contentwarehouse.v1.RuleSetService",
+                        "rpcName": "GetOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property

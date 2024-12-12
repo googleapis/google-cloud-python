@@ -14,6 +14,9 @@
 # limitations under the License.
 #
 import inspect
+import json
+import logging as std_logging
+import pickle
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -27,13 +30,92 @@ from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
+from google.protobuf.json_format import MessageToJson
+import google.protobuf.message
 import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
+import proto  # type: ignore
 
 from google.cloud.alloydb_v1alpha.types import resources, service
 
 from .base import DEFAULT_CLIENT_INFO, AlloyDBAdminTransport
 from .grpc import AlloyDBAdminGrpcTransport
+
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = std_logging.getLogger(__name__)
+
+
+class _LoggingClientAIOInterceptor(
+    grpc.aio.UnaryUnaryClientInterceptor
+):  # pragma: NO COVER
+    async def intercept_unary_unary(self, continuation, client_call_details, request):
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+            std_logging.DEBUG
+        )
+        if logging_enabled:  # pragma: NO COVER
+            request_metadata = client_call_details.metadata
+            if isinstance(request, proto.Message):
+                request_payload = type(request).to_json(request)
+            elif isinstance(request, google.protobuf.message.Message):
+                request_payload = MessageToJson(request)
+            else:
+                request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
+
+            request_metadata = {
+                key: value.decode("utf-8") if isinstance(value, bytes) else value
+                for key, value in request_metadata
+            }
+            grpc_request = {
+                "payload": request_payload,
+                "requestMethod": "grpc",
+                "metadata": dict(request_metadata),
+            }
+            _LOGGER.debug(
+                f"Sending request for {client_call_details.method}",
+                extra={
+                    "serviceName": "google.cloud.alloydb.v1alpha.AlloyDBAdmin",
+                    "rpcName": str(client_call_details.method),
+                    "request": grpc_request,
+                    "metadata": grpc_request["metadata"],
+                },
+            )
+        response = await continuation(client_call_details, request)
+        if logging_enabled:  # pragma: NO COVER
+            response_metadata = await response.trailing_metadata()
+            # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
+            metadata = (
+                dict([(k, str(v)) for k, v in response_metadata])
+                if response_metadata
+                else None
+            )
+            result = await response
+            if isinstance(result, proto.Message):
+                response_payload = type(result).to_json(result)
+            elif isinstance(result, google.protobuf.message.Message):
+                response_payload = MessageToJson(result)
+            else:
+                response_payload = f"{type(result).__name__}: {pickle.dumps(result)}"
+            grpc_response = {
+                "payload": response_payload,
+                "metadata": metadata,
+                "status": "OK",
+            }
+            _LOGGER.debug(
+                f"Received response to rpc {client_call_details.method}.",
+                extra={
+                    "serviceName": "google.cloud.alloydb.v1alpha.AlloyDBAdmin",
+                    "rpcName": str(client_call_details.method),
+                    "response": grpc_response,
+                    "metadata": grpc_response["metadata"],
+                },
+            )
+        return response
 
 
 class AlloyDBAdminGrpcAsyncIOTransport(AlloyDBAdminTransport):
@@ -232,10 +314,13 @@ class AlloyDBAdminGrpcAsyncIOTransport(AlloyDBAdminTransport):
                 ],
             )
 
-        # Wrap messages. This must be done after self._grpc_channel exists
+        self._interceptor = _LoggingClientAIOInterceptor()
+        self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
+        self._logged_channel = self._grpc_channel
         self._wrap_with_kind = (
             "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         )
+        # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -258,7 +343,7 @@ class AlloyDBAdminGrpcAsyncIOTransport(AlloyDBAdminTransport):
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
             self._operations_client = operations_v1.OperationsAsyncClient(
-                self.grpc_channel
+                self._logged_channel
             )
 
         # Return the client from cache.
@@ -285,7 +370,7 @@ class AlloyDBAdminGrpcAsyncIOTransport(AlloyDBAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_clusters" not in self._stubs:
-            self._stubs["list_clusters"] = self.grpc_channel.unary_unary(
+            self._stubs["list_clusters"] = self._logged_channel.unary_unary(
                 "/google.cloud.alloydb.v1alpha.AlloyDBAdmin/ListClusters",
                 request_serializer=service.ListClustersRequest.serialize,
                 response_deserializer=service.ListClustersResponse.deserialize,
@@ -311,7 +396,7 @@ class AlloyDBAdminGrpcAsyncIOTransport(AlloyDBAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_cluster" not in self._stubs:
-            self._stubs["get_cluster"] = self.grpc_channel.unary_unary(
+            self._stubs["get_cluster"] = self._logged_channel.unary_unary(
                 "/google.cloud.alloydb.v1alpha.AlloyDBAdmin/GetCluster",
                 request_serializer=service.GetClusterRequest.serialize,
                 response_deserializer=resources.Cluster.deserialize,
@@ -338,7 +423,7 @@ class AlloyDBAdminGrpcAsyncIOTransport(AlloyDBAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_cluster" not in self._stubs:
-            self._stubs["create_cluster"] = self.grpc_channel.unary_unary(
+            self._stubs["create_cluster"] = self._logged_channel.unary_unary(
                 "/google.cloud.alloydb.v1alpha.AlloyDBAdmin/CreateCluster",
                 request_serializer=service.CreateClusterRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -364,7 +449,7 @@ class AlloyDBAdminGrpcAsyncIOTransport(AlloyDBAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_cluster" not in self._stubs:
-            self._stubs["update_cluster"] = self.grpc_channel.unary_unary(
+            self._stubs["update_cluster"] = self._logged_channel.unary_unary(
                 "/google.cloud.alloydb.v1alpha.AlloyDBAdmin/UpdateCluster",
                 request_serializer=service.UpdateClusterRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -391,7 +476,7 @@ class AlloyDBAdminGrpcAsyncIOTransport(AlloyDBAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "upgrade_cluster" not in self._stubs:
-            self._stubs["upgrade_cluster"] = self.grpc_channel.unary_unary(
+            self._stubs["upgrade_cluster"] = self._logged_channel.unary_unary(
                 "/google.cloud.alloydb.v1alpha.AlloyDBAdmin/UpgradeCluster",
                 request_serializer=service.UpgradeClusterRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -417,7 +502,7 @@ class AlloyDBAdminGrpcAsyncIOTransport(AlloyDBAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_cluster" not in self._stubs:
-            self._stubs["delete_cluster"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_cluster"] = self._logged_channel.unary_unary(
                 "/google.cloud.alloydb.v1alpha.AlloyDBAdmin/DeleteCluster",
                 request_serializer=service.DeleteClusterRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -446,7 +531,7 @@ class AlloyDBAdminGrpcAsyncIOTransport(AlloyDBAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "promote_cluster" not in self._stubs:
-            self._stubs["promote_cluster"] = self.grpc_channel.unary_unary(
+            self._stubs["promote_cluster"] = self._logged_channel.unary_unary(
                 "/google.cloud.alloydb.v1alpha.AlloyDBAdmin/PromoteCluster",
                 request_serializer=service.PromoteClusterRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -477,7 +562,7 @@ class AlloyDBAdminGrpcAsyncIOTransport(AlloyDBAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "switchover_cluster" not in self._stubs:
-            self._stubs["switchover_cluster"] = self.grpc_channel.unary_unary(
+            self._stubs["switchover_cluster"] = self._logged_channel.unary_unary(
                 "/google.cloud.alloydb.v1alpha.AlloyDBAdmin/SwitchoverCluster",
                 request_serializer=service.SwitchoverClusterRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -506,7 +591,7 @@ class AlloyDBAdminGrpcAsyncIOTransport(AlloyDBAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "restore_cluster" not in self._stubs:
-            self._stubs["restore_cluster"] = self.grpc_channel.unary_unary(
+            self._stubs["restore_cluster"] = self._logged_channel.unary_unary(
                 "/google.cloud.alloydb.v1alpha.AlloyDBAdmin/RestoreCluster",
                 request_serializer=service.RestoreClusterRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -535,7 +620,7 @@ class AlloyDBAdminGrpcAsyncIOTransport(AlloyDBAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_secondary_cluster" not in self._stubs:
-            self._stubs["create_secondary_cluster"] = self.grpc_channel.unary_unary(
+            self._stubs["create_secondary_cluster"] = self._logged_channel.unary_unary(
                 "/google.cloud.alloydb.v1alpha.AlloyDBAdmin/CreateSecondaryCluster",
                 request_serializer=service.CreateSecondaryClusterRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -563,7 +648,7 @@ class AlloyDBAdminGrpcAsyncIOTransport(AlloyDBAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_instances" not in self._stubs:
-            self._stubs["list_instances"] = self.grpc_channel.unary_unary(
+            self._stubs["list_instances"] = self._logged_channel.unary_unary(
                 "/google.cloud.alloydb.v1alpha.AlloyDBAdmin/ListInstances",
                 request_serializer=service.ListInstancesRequest.serialize,
                 response_deserializer=service.ListInstancesResponse.deserialize,
@@ -589,7 +674,7 @@ class AlloyDBAdminGrpcAsyncIOTransport(AlloyDBAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_instance" not in self._stubs:
-            self._stubs["get_instance"] = self.grpc_channel.unary_unary(
+            self._stubs["get_instance"] = self._logged_channel.unary_unary(
                 "/google.cloud.alloydb.v1alpha.AlloyDBAdmin/GetInstance",
                 request_serializer=service.GetInstanceRequest.serialize,
                 response_deserializer=resources.Instance.deserialize,
@@ -616,7 +701,7 @@ class AlloyDBAdminGrpcAsyncIOTransport(AlloyDBAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_instance" not in self._stubs:
-            self._stubs["create_instance"] = self.grpc_channel.unary_unary(
+            self._stubs["create_instance"] = self._logged_channel.unary_unary(
                 "/google.cloud.alloydb.v1alpha.AlloyDBAdmin/CreateInstance",
                 request_serializer=service.CreateInstanceRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -645,7 +730,7 @@ class AlloyDBAdminGrpcAsyncIOTransport(AlloyDBAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_secondary_instance" not in self._stubs:
-            self._stubs["create_secondary_instance"] = self.grpc_channel.unary_unary(
+            self._stubs["create_secondary_instance"] = self._logged_channel.unary_unary(
                 "/google.cloud.alloydb.v1alpha.AlloyDBAdmin/CreateSecondaryInstance",
                 request_serializer=service.CreateSecondaryInstanceRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -685,7 +770,7 @@ class AlloyDBAdminGrpcAsyncIOTransport(AlloyDBAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "batch_create_instances" not in self._stubs:
-            self._stubs["batch_create_instances"] = self.grpc_channel.unary_unary(
+            self._stubs["batch_create_instances"] = self._logged_channel.unary_unary(
                 "/google.cloud.alloydb.v1alpha.AlloyDBAdmin/BatchCreateInstances",
                 request_serializer=service.BatchCreateInstancesRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -711,7 +796,7 @@ class AlloyDBAdminGrpcAsyncIOTransport(AlloyDBAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_instance" not in self._stubs:
-            self._stubs["update_instance"] = self.grpc_channel.unary_unary(
+            self._stubs["update_instance"] = self._logged_channel.unary_unary(
                 "/google.cloud.alloydb.v1alpha.AlloyDBAdmin/UpdateInstance",
                 request_serializer=service.UpdateInstanceRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -737,7 +822,7 @@ class AlloyDBAdminGrpcAsyncIOTransport(AlloyDBAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_instance" not in self._stubs:
-            self._stubs["delete_instance"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_instance"] = self._logged_channel.unary_unary(
                 "/google.cloud.alloydb.v1alpha.AlloyDBAdmin/DeleteInstance",
                 request_serializer=service.DeleteInstanceRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -767,7 +852,7 @@ class AlloyDBAdminGrpcAsyncIOTransport(AlloyDBAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "failover_instance" not in self._stubs:
-            self._stubs["failover_instance"] = self.grpc_channel.unary_unary(
+            self._stubs["failover_instance"] = self._logged_channel.unary_unary(
                 "/google.cloud.alloydb.v1alpha.AlloyDBAdmin/FailoverInstance",
                 request_serializer=service.FailoverInstanceRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -794,7 +879,7 @@ class AlloyDBAdminGrpcAsyncIOTransport(AlloyDBAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "inject_fault" not in self._stubs:
-            self._stubs["inject_fault"] = self.grpc_channel.unary_unary(
+            self._stubs["inject_fault"] = self._logged_channel.unary_unary(
                 "/google.cloud.alloydb.v1alpha.AlloyDBAdmin/InjectFault",
                 request_serializer=service.InjectFaultRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -823,7 +908,7 @@ class AlloyDBAdminGrpcAsyncIOTransport(AlloyDBAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "restart_instance" not in self._stubs:
-            self._stubs["restart_instance"] = self.grpc_channel.unary_unary(
+            self._stubs["restart_instance"] = self._logged_channel.unary_unary(
                 "/google.cloud.alloydb.v1alpha.AlloyDBAdmin/RestartInstance",
                 request_serializer=service.RestartInstanceRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -850,7 +935,7 @@ class AlloyDBAdminGrpcAsyncIOTransport(AlloyDBAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "execute_sql" not in self._stubs:
-            self._stubs["execute_sql"] = self.grpc_channel.unary_unary(
+            self._stubs["execute_sql"] = self._logged_channel.unary_unary(
                 "/google.cloud.alloydb.v1alpha.AlloyDBAdmin/ExecuteSql",
                 request_serializer=service.ExecuteSqlRequest.serialize,
                 response_deserializer=service.ExecuteSqlResponse.deserialize,
@@ -876,7 +961,7 @@ class AlloyDBAdminGrpcAsyncIOTransport(AlloyDBAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_backups" not in self._stubs:
-            self._stubs["list_backups"] = self.grpc_channel.unary_unary(
+            self._stubs["list_backups"] = self._logged_channel.unary_unary(
                 "/google.cloud.alloydb.v1alpha.AlloyDBAdmin/ListBackups",
                 request_serializer=service.ListBackupsRequest.serialize,
                 response_deserializer=service.ListBackupsResponse.deserialize,
@@ -902,7 +987,7 @@ class AlloyDBAdminGrpcAsyncIOTransport(AlloyDBAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_backup" not in self._stubs:
-            self._stubs["get_backup"] = self.grpc_channel.unary_unary(
+            self._stubs["get_backup"] = self._logged_channel.unary_unary(
                 "/google.cloud.alloydb.v1alpha.AlloyDBAdmin/GetBackup",
                 request_serializer=service.GetBackupRequest.serialize,
                 response_deserializer=resources.Backup.deserialize,
@@ -928,7 +1013,7 @@ class AlloyDBAdminGrpcAsyncIOTransport(AlloyDBAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_backup" not in self._stubs:
-            self._stubs["create_backup"] = self.grpc_channel.unary_unary(
+            self._stubs["create_backup"] = self._logged_channel.unary_unary(
                 "/google.cloud.alloydb.v1alpha.AlloyDBAdmin/CreateBackup",
                 request_serializer=service.CreateBackupRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -954,7 +1039,7 @@ class AlloyDBAdminGrpcAsyncIOTransport(AlloyDBAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_backup" not in self._stubs:
-            self._stubs["update_backup"] = self.grpc_channel.unary_unary(
+            self._stubs["update_backup"] = self._logged_channel.unary_unary(
                 "/google.cloud.alloydb.v1alpha.AlloyDBAdmin/UpdateBackup",
                 request_serializer=service.UpdateBackupRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -980,7 +1065,7 @@ class AlloyDBAdminGrpcAsyncIOTransport(AlloyDBAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_backup" not in self._stubs:
-            self._stubs["delete_backup"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_backup"] = self._logged_channel.unary_unary(
                 "/google.cloud.alloydb.v1alpha.AlloyDBAdmin/DeleteBackup",
                 request_serializer=service.DeleteBackupRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1012,7 +1097,7 @@ class AlloyDBAdminGrpcAsyncIOTransport(AlloyDBAdminTransport):
         if "list_supported_database_flags" not in self._stubs:
             self._stubs[
                 "list_supported_database_flags"
-            ] = self.grpc_channel.unary_unary(
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.alloydb.v1alpha.AlloyDBAdmin/ListSupportedDatabaseFlags",
                 request_serializer=service.ListSupportedDatabaseFlagsRequest.serialize,
                 response_deserializer=service.ListSupportedDatabaseFlagsResponse.deserialize,
@@ -1047,7 +1132,9 @@ class AlloyDBAdminGrpcAsyncIOTransport(AlloyDBAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "generate_client_certificate" not in self._stubs:
-            self._stubs["generate_client_certificate"] = self.grpc_channel.unary_unary(
+            self._stubs[
+                "generate_client_certificate"
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.alloydb.v1alpha.AlloyDBAdmin/GenerateClientCertificate",
                 request_serializer=service.GenerateClientCertificateRequest.serialize,
                 response_deserializer=service.GenerateClientCertificateResponse.deserialize,
@@ -1075,7 +1162,7 @@ class AlloyDBAdminGrpcAsyncIOTransport(AlloyDBAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_connection_info" not in self._stubs:
-            self._stubs["get_connection_info"] = self.grpc_channel.unary_unary(
+            self._stubs["get_connection_info"] = self._logged_channel.unary_unary(
                 "/google.cloud.alloydb.v1alpha.AlloyDBAdmin/GetConnectionInfo",
                 request_serializer=service.GetConnectionInfoRequest.serialize,
                 response_deserializer=resources.ConnectionInfo.deserialize,
@@ -1101,7 +1188,7 @@ class AlloyDBAdminGrpcAsyncIOTransport(AlloyDBAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_users" not in self._stubs:
-            self._stubs["list_users"] = self.grpc_channel.unary_unary(
+            self._stubs["list_users"] = self._logged_channel.unary_unary(
                 "/google.cloud.alloydb.v1alpha.AlloyDBAdmin/ListUsers",
                 request_serializer=service.ListUsersRequest.serialize,
                 response_deserializer=service.ListUsersResponse.deserialize,
@@ -1125,7 +1212,7 @@ class AlloyDBAdminGrpcAsyncIOTransport(AlloyDBAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_user" not in self._stubs:
-            self._stubs["get_user"] = self.grpc_channel.unary_unary(
+            self._stubs["get_user"] = self._logged_channel.unary_unary(
                 "/google.cloud.alloydb.v1alpha.AlloyDBAdmin/GetUser",
                 request_serializer=service.GetUserRequest.serialize,
                 response_deserializer=resources.User.deserialize,
@@ -1152,7 +1239,7 @@ class AlloyDBAdminGrpcAsyncIOTransport(AlloyDBAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_user" not in self._stubs:
-            self._stubs["create_user"] = self.grpc_channel.unary_unary(
+            self._stubs["create_user"] = self._logged_channel.unary_unary(
                 "/google.cloud.alloydb.v1alpha.AlloyDBAdmin/CreateUser",
                 request_serializer=service.CreateUserRequest.serialize,
                 response_deserializer=resources.User.deserialize,
@@ -1178,7 +1265,7 @@ class AlloyDBAdminGrpcAsyncIOTransport(AlloyDBAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_user" not in self._stubs:
-            self._stubs["update_user"] = self.grpc_channel.unary_unary(
+            self._stubs["update_user"] = self._logged_channel.unary_unary(
                 "/google.cloud.alloydb.v1alpha.AlloyDBAdmin/UpdateUser",
                 request_serializer=service.UpdateUserRequest.serialize,
                 response_deserializer=resources.User.deserialize,
@@ -1204,7 +1291,7 @@ class AlloyDBAdminGrpcAsyncIOTransport(AlloyDBAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_user" not in self._stubs:
-            self._stubs["delete_user"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_user"] = self._logged_channel.unary_unary(
                 "/google.cloud.alloydb.v1alpha.AlloyDBAdmin/DeleteUser",
                 request_serializer=service.DeleteUserRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -1232,7 +1319,7 @@ class AlloyDBAdminGrpcAsyncIOTransport(AlloyDBAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_databases" not in self._stubs:
-            self._stubs["list_databases"] = self.grpc_channel.unary_unary(
+            self._stubs["list_databases"] = self._logged_channel.unary_unary(
                 "/google.cloud.alloydb.v1alpha.AlloyDBAdmin/ListDatabases",
                 request_serializer=service.ListDatabasesRequest.serialize,
                 response_deserializer=service.ListDatabasesResponse.deserialize,
@@ -1554,7 +1641,7 @@ class AlloyDBAdminGrpcAsyncIOTransport(AlloyDBAdminTransport):
         return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
 
     def close(self):
-        return self.grpc_channel.close()
+        return self._logged_channel.close()
 
     @property
     def kind(self) -> str:
@@ -1570,7 +1657,7 @@ class AlloyDBAdminGrpcAsyncIOTransport(AlloyDBAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_operation" not in self._stubs:
-            self._stubs["delete_operation"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_operation"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/DeleteOperation",
                 request_serializer=operations_pb2.DeleteOperationRequest.SerializeToString,
                 response_deserializer=None,
@@ -1587,7 +1674,7 @@ class AlloyDBAdminGrpcAsyncIOTransport(AlloyDBAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "cancel_operation" not in self._stubs:
-            self._stubs["cancel_operation"] = self.grpc_channel.unary_unary(
+            self._stubs["cancel_operation"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/CancelOperation",
                 request_serializer=operations_pb2.CancelOperationRequest.SerializeToString,
                 response_deserializer=None,
@@ -1604,7 +1691,7 @@ class AlloyDBAdminGrpcAsyncIOTransport(AlloyDBAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_operation" not in self._stubs:
-            self._stubs["get_operation"] = self.grpc_channel.unary_unary(
+            self._stubs["get_operation"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/GetOperation",
                 request_serializer=operations_pb2.GetOperationRequest.SerializeToString,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1623,7 +1710,7 @@ class AlloyDBAdminGrpcAsyncIOTransport(AlloyDBAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_operations" not in self._stubs:
-            self._stubs["list_operations"] = self.grpc_channel.unary_unary(
+            self._stubs["list_operations"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/ListOperations",
                 request_serializer=operations_pb2.ListOperationsRequest.SerializeToString,
                 response_deserializer=operations_pb2.ListOperationsResponse.FromString,
@@ -1642,7 +1729,7 @@ class AlloyDBAdminGrpcAsyncIOTransport(AlloyDBAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_locations" not in self._stubs:
-            self._stubs["list_locations"] = self.grpc_channel.unary_unary(
+            self._stubs["list_locations"] = self._logged_channel.unary_unary(
                 "/google.cloud.location.Locations/ListLocations",
                 request_serializer=locations_pb2.ListLocationsRequest.SerializeToString,
                 response_deserializer=locations_pb2.ListLocationsResponse.FromString,
@@ -1659,7 +1746,7 @@ class AlloyDBAdminGrpcAsyncIOTransport(AlloyDBAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_location" not in self._stubs:
-            self._stubs["get_location"] = self.grpc_channel.unary_unary(
+            self._stubs["get_location"] = self._logged_channel.unary_unary(
                 "/google.cloud.location.Locations/GetLocation",
                 request_serializer=locations_pb2.GetLocationRequest.SerializeToString,
                 response_deserializer=locations_pb2.Location.FromString,

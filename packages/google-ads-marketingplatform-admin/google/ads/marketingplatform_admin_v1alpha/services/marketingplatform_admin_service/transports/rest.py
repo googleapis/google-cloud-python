@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -41,6 +41,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -109,10 +117,10 @@ class MarketingplatformAdminServiceRestInterceptor:
     def pre_create_analytics_account_link(
         self,
         request: marketingplatform_admin.CreateAnalyticsAccountLinkRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         marketingplatform_admin.CreateAnalyticsAccountLinkRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for create_analytics_account_link
 
@@ -135,10 +143,10 @@ class MarketingplatformAdminServiceRestInterceptor:
     def pre_delete_analytics_account_link(
         self,
         request: marketingplatform_admin.DeleteAnalyticsAccountLinkRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         marketingplatform_admin.DeleteAnalyticsAccountLinkRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for delete_analytics_account_link
 
@@ -150,9 +158,10 @@ class MarketingplatformAdminServiceRestInterceptor:
     def pre_get_organization(
         self,
         request: marketingplatform_admin.GetOrganizationRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        marketingplatform_admin.GetOrganizationRequest, Sequence[Tuple[str, str]]
+        marketingplatform_admin.GetOrganizationRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for get_organization
 
@@ -175,10 +184,10 @@ class MarketingplatformAdminServiceRestInterceptor:
     def pre_list_analytics_account_links(
         self,
         request: marketingplatform_admin.ListAnalyticsAccountLinksRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         marketingplatform_admin.ListAnalyticsAccountLinksRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for list_analytics_account_links
 
@@ -201,10 +210,10 @@ class MarketingplatformAdminServiceRestInterceptor:
     def pre_set_property_service_level(
         self,
         request: marketingplatform_admin.SetPropertyServiceLevelRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         marketingplatform_admin.SetPropertyServiceLevelRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for set_property_service_level
 
@@ -354,7 +363,7 @@ class MarketingplatformAdminServiceRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.AnalyticsAccountLink:
             r"""Call the create analytics account
             link method over HTTP.
@@ -366,8 +375,10 @@ class MarketingplatformAdminServiceRestTransport(
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.resources.AnalyticsAccountLink:
@@ -381,6 +392,7 @@ class MarketingplatformAdminServiceRestTransport(
             http_options = (
                 _BaseMarketingplatformAdminServiceRestTransport._BaseCreateAnalyticsAccountLink._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_analytics_account_link(
                 request, metadata
             )
@@ -396,6 +408,33 @@ class MarketingplatformAdminServiceRestTransport(
             query_params = _BaseMarketingplatformAdminServiceRestTransport._BaseCreateAnalyticsAccountLink._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.marketingplatform.admin_v1alpha.MarketingplatformAdminServiceClient.CreateAnalyticsAccountLink",
+                    extra={
+                        "serviceName": "google.marketingplatform.admin.v1alpha.MarketingplatformAdminService",
+                        "rpcName": "CreateAnalyticsAccountLink",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = MarketingplatformAdminServiceRestTransport._CreateAnalyticsAccountLink._get_response(
@@ -418,7 +457,29 @@ class MarketingplatformAdminServiceRestTransport(
             pb_resp = resources.AnalyticsAccountLink.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_analytics_account_link(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.AnalyticsAccountLink.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.marketingplatform.admin_v1alpha.MarketingplatformAdminServiceClient.create_analytics_account_link",
+                    extra={
+                        "serviceName": "google.marketingplatform.admin.v1alpha.MarketingplatformAdminService",
+                        "rpcName": "CreateAnalyticsAccountLink",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteAnalyticsAccountLink(
@@ -458,7 +519,7 @@ class MarketingplatformAdminServiceRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete analytics account
             link method over HTTP.
@@ -470,13 +531,16 @@ class MarketingplatformAdminServiceRestTransport(
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
             """
 
             http_options = (
                 _BaseMarketingplatformAdminServiceRestTransport._BaseDeleteAnalyticsAccountLink._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_analytics_account_link(
                 request, metadata
             )
@@ -488,6 +552,33 @@ class MarketingplatformAdminServiceRestTransport(
             query_params = _BaseMarketingplatformAdminServiceRestTransport._BaseDeleteAnalyticsAccountLink._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.marketingplatform.admin_v1alpha.MarketingplatformAdminServiceClient.DeleteAnalyticsAccountLink",
+                    extra={
+                        "serviceName": "google.marketingplatform.admin.v1alpha.MarketingplatformAdminService",
+                        "rpcName": "DeleteAnalyticsAccountLink",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = MarketingplatformAdminServiceRestTransport._DeleteAnalyticsAccountLink._get_response(
@@ -539,7 +630,7 @@ class MarketingplatformAdminServiceRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.Organization:
             r"""Call the get organization method over HTTP.
 
@@ -550,8 +641,10 @@ class MarketingplatformAdminServiceRestTransport(
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.Organization:
@@ -563,6 +656,7 @@ class MarketingplatformAdminServiceRestTransport(
             http_options = (
                 _BaseMarketingplatformAdminServiceRestTransport._BaseGetOrganization._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_organization(
                 request, metadata
             )
@@ -574,6 +668,33 @@ class MarketingplatformAdminServiceRestTransport(
             query_params = _BaseMarketingplatformAdminServiceRestTransport._BaseGetOrganization._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.marketingplatform.admin_v1alpha.MarketingplatformAdminServiceClient.GetOrganization",
+                    extra={
+                        "serviceName": "google.marketingplatform.admin.v1alpha.MarketingplatformAdminService",
+                        "rpcName": "GetOrganization",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = MarketingplatformAdminServiceRestTransport._GetOrganization._get_response(
@@ -595,7 +716,29 @@ class MarketingplatformAdminServiceRestTransport(
             pb_resp = resources.Organization.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_organization(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.Organization.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.marketingplatform.admin_v1alpha.MarketingplatformAdminServiceClient.get_organization",
+                    extra={
+                        "serviceName": "google.marketingplatform.admin.v1alpha.MarketingplatformAdminService",
+                        "rpcName": "GetOrganization",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListAnalyticsAccountLinks(
@@ -635,7 +778,7 @@ class MarketingplatformAdminServiceRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> marketingplatform_admin.ListAnalyticsAccountLinksResponse:
             r"""Call the list analytics account
             links method over HTTP.
@@ -647,8 +790,10 @@ class MarketingplatformAdminServiceRestTransport(
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.marketingplatform_admin.ListAnalyticsAccountLinksResponse:
@@ -660,6 +805,7 @@ class MarketingplatformAdminServiceRestTransport(
             http_options = (
                 _BaseMarketingplatformAdminServiceRestTransport._BaseListAnalyticsAccountLinks._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_analytics_account_links(
                 request, metadata
             )
@@ -671,6 +817,33 @@ class MarketingplatformAdminServiceRestTransport(
             query_params = _BaseMarketingplatformAdminServiceRestTransport._BaseListAnalyticsAccountLinks._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.marketingplatform.admin_v1alpha.MarketingplatformAdminServiceClient.ListAnalyticsAccountLinks",
+                    extra={
+                        "serviceName": "google.marketingplatform.admin.v1alpha.MarketingplatformAdminService",
+                        "rpcName": "ListAnalyticsAccountLinks",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = MarketingplatformAdminServiceRestTransport._ListAnalyticsAccountLinks._get_response(
@@ -692,7 +865,31 @@ class MarketingplatformAdminServiceRestTransport(
             pb_resp = marketingplatform_admin.ListAnalyticsAccountLinksResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_analytics_account_links(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = marketingplatform_admin.ListAnalyticsAccountLinksResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.marketingplatform.admin_v1alpha.MarketingplatformAdminServiceClient.list_analytics_account_links",
+                    extra={
+                        "serviceName": "google.marketingplatform.admin.v1alpha.MarketingplatformAdminService",
+                        "rpcName": "ListAnalyticsAccountLinks",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _SetPropertyServiceLevel(
@@ -733,7 +930,7 @@ class MarketingplatformAdminServiceRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> marketingplatform_admin.SetPropertyServiceLevelResponse:
             r"""Call the set property service
             level method over HTTP.
@@ -745,8 +942,10 @@ class MarketingplatformAdminServiceRestTransport(
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.marketingplatform_admin.SetPropertyServiceLevelResponse:
@@ -758,6 +957,7 @@ class MarketingplatformAdminServiceRestTransport(
             http_options = (
                 _BaseMarketingplatformAdminServiceRestTransport._BaseSetPropertyServiceLevel._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_set_property_service_level(
                 request, metadata
             )
@@ -773,6 +973,33 @@ class MarketingplatformAdminServiceRestTransport(
             query_params = _BaseMarketingplatformAdminServiceRestTransport._BaseSetPropertyServiceLevel._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.marketingplatform.admin_v1alpha.MarketingplatformAdminServiceClient.SetPropertyServiceLevel",
+                    extra={
+                        "serviceName": "google.marketingplatform.admin.v1alpha.MarketingplatformAdminService",
+                        "rpcName": "SetPropertyServiceLevel",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = MarketingplatformAdminServiceRestTransport._SetPropertyServiceLevel._get_response(
@@ -795,7 +1022,33 @@ class MarketingplatformAdminServiceRestTransport(
             pb_resp = marketingplatform_admin.SetPropertyServiceLevelResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_set_property_service_level(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        marketingplatform_admin.SetPropertyServiceLevelResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.marketingplatform.admin_v1alpha.MarketingplatformAdminServiceClient.set_property_service_level",
+                    extra={
+                        "serviceName": "google.marketingplatform.admin.v1alpha.MarketingplatformAdminService",
+                        "rpcName": "SetPropertyServiceLevel",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property

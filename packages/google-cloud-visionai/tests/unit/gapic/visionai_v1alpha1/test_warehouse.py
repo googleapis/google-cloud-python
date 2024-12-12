@@ -11562,6 +11562,7 @@ def test_create_asset_rest_required_fields(request_type=warehouse.CreateAssetReq
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_asset(request)
 
@@ -11619,6 +11620,7 @@ def test_create_asset_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_asset(**mock_args)
 
@@ -11748,6 +11750,7 @@ def test_update_asset_rest_required_fields(request_type=warehouse.UpdateAssetReq
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_asset(request)
 
@@ -11798,6 +11801,7 @@ def test_update_asset_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_asset(**mock_args)
 
@@ -11928,6 +11932,7 @@ def test_get_asset_rest_required_fields(request_type=warehouse.GetAssetRequest):
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_asset(request)
 
@@ -11975,6 +11980,7 @@ def test_get_asset_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_asset(**mock_args)
 
@@ -12111,6 +12117,7 @@ def test_list_assets_rest_required_fields(request_type=warehouse.ListAssetsReque
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_assets(request)
 
@@ -12166,6 +12173,7 @@ def test_list_assets_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_assets(**mock_args)
 
@@ -12359,6 +12367,7 @@ def test_delete_asset_rest_required_fields(request_type=warehouse.DeleteAssetReq
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_asset(request)
 
@@ -12404,6 +12413,7 @@ def test_delete_asset_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_asset(**mock_args)
 
@@ -12535,6 +12545,7 @@ def test_create_corpus_rest_required_fields(request_type=warehouse.CreateCorpusR
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_corpus(request)
 
@@ -12587,6 +12598,7 @@ def test_create_corpus_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_corpus(**mock_args)
 
@@ -12717,6 +12729,7 @@ def test_get_corpus_rest_required_fields(request_type=warehouse.GetCorpusRequest
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_corpus(request)
 
@@ -12762,6 +12775,7 @@ def test_get_corpus_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_corpus(**mock_args)
 
@@ -12889,6 +12903,7 @@ def test_update_corpus_rest_required_fields(request_type=warehouse.UpdateCorpusR
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_corpus(request)
 
@@ -12937,6 +12952,7 @@ def test_update_corpus_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_corpus(**mock_args)
 
@@ -13074,6 +13090,7 @@ def test_list_corpora_rest_required_fields(request_type=warehouse.ListCorporaReq
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_corpora(request)
 
@@ -13127,6 +13144,7 @@ def test_list_corpora_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_corpora(**mock_args)
 
@@ -13314,6 +13332,7 @@ def test_delete_corpus_rest_required_fields(request_type=warehouse.DeleteCorpusR
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_corpus(request)
 
@@ -13357,6 +13376,7 @@ def test_delete_corpus_rest_flattened():
         json_return_value = ""
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_corpus(**mock_args)
 
@@ -13493,6 +13513,7 @@ def test_create_data_schema_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_data_schema(request)
 
@@ -13549,6 +13570,7 @@ def test_create_data_schema_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_data_schema(**mock_args)
 
@@ -13683,6 +13705,7 @@ def test_update_data_schema_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_data_schema(request)
 
@@ -13733,6 +13756,7 @@ def test_update_data_schema_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_data_schema(**mock_args)
 
@@ -13865,6 +13889,7 @@ def test_get_data_schema_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_data_schema(request)
 
@@ -13912,6 +13937,7 @@ def test_get_data_schema_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_data_schema(**mock_args)
 
@@ -14044,6 +14070,7 @@ def test_delete_data_schema_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_data_schema(request)
 
@@ -14089,6 +14116,7 @@ def test_delete_data_schema_rest_flattened():
         json_return_value = ""
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_data_schema(**mock_args)
 
@@ -14229,6 +14257,7 @@ def test_list_data_schemas_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_data_schemas(request)
 
@@ -14284,6 +14313,7 @@ def test_list_data_schemas_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_data_schemas(**mock_args)
 
@@ -14483,6 +14513,7 @@ def test_create_annotation_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_annotation(request)
 
@@ -14540,6 +14571,7 @@ def test_create_annotation_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_annotation(**mock_args)
 
@@ -14673,6 +14705,7 @@ def test_get_annotation_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_annotation(request)
 
@@ -14720,6 +14753,7 @@ def test_get_annotation_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_annotation(**mock_args)
 
@@ -14817,6 +14851,7 @@ def test_list_annotations_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_annotations(**mock_args)
 
@@ -15011,6 +15046,7 @@ def test_update_annotation_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_annotation(request)
 
@@ -15061,6 +15097,7 @@ def test_update_annotation_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_annotation(**mock_args)
 
@@ -15192,6 +15229,7 @@ def test_delete_annotation_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_annotation(request)
 
@@ -15237,6 +15275,7 @@ def test_delete_annotation_rest_flattened():
         json_return_value = ""
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_annotation(**mock_args)
 
@@ -15378,6 +15417,7 @@ def test_clip_asset_rest_required_fields(request_type=warehouse.ClipAssetRequest
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.clip_asset(request)
 
@@ -15508,6 +15548,7 @@ def test_generate_hls_uri_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.generate_hls_uri(request)
 
@@ -15649,6 +15690,7 @@ def test_create_search_config_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_search_config(request)
 
@@ -15713,6 +15755,7 @@ def test_create_search_config_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_search_config(**mock_args)
 
@@ -15848,6 +15891,7 @@ def test_update_search_config_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_search_config(request)
 
@@ -15898,6 +15942,7 @@ def test_update_search_config_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_search_config(**mock_args)
 
@@ -16032,6 +16077,7 @@ def test_get_search_config_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_search_config(request)
 
@@ -16079,6 +16125,7 @@ def test_get_search_config_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_search_config(**mock_args)
 
@@ -16211,6 +16258,7 @@ def test_delete_search_config_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_search_config(request)
 
@@ -16256,6 +16304,7 @@ def test_delete_search_config_rest_flattened():
         json_return_value = ""
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_search_config(**mock_args)
 
@@ -16398,6 +16447,7 @@ def test_list_search_configs_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_search_configs(request)
 
@@ -16453,6 +16503,7 @@ def test_list_search_configs_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_search_configs(**mock_args)
 
@@ -16648,6 +16699,7 @@ def test_search_assets_rest_required_fields(request_type=warehouse.SearchAssetsR
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.search_assets(request)
 
@@ -18264,6 +18316,7 @@ def test_create_asset_rest_bad_request(request_type=warehouse.CreateAssetRequest
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_asset(request)
 
 
@@ -18370,6 +18423,7 @@ def test_create_asset_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_asset(request)
 
     # Establish that the response is the type that we expect.
@@ -18406,6 +18460,7 @@ def test_create_asset_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = warehouse.Asset.to_json(warehouse.Asset())
         req.return_value.content = return_value
 
@@ -18452,6 +18507,7 @@ def test_update_asset_rest_bad_request(request_type=warehouse.UpdateAssetRequest
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_asset(request)
 
 
@@ -18562,6 +18618,7 @@ def test_update_asset_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_asset(request)
 
     # Establish that the response is the type that we expect.
@@ -18598,6 +18655,7 @@ def test_update_asset_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = warehouse.Asset.to_json(warehouse.Asset())
         req.return_value.content = return_value
 
@@ -18642,6 +18700,7 @@ def test_get_asset_rest_bad_request(request_type=warehouse.GetAssetRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_asset(request)
 
 
@@ -18679,6 +18738,7 @@ def test_get_asset_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_asset(request)
 
     # Establish that the response is the type that we expect.
@@ -18715,6 +18775,7 @@ def test_get_asset_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = warehouse.Asset.to_json(warehouse.Asset())
         req.return_value.content = return_value
 
@@ -18757,6 +18818,7 @@ def test_list_assets_rest_bad_request(request_type=warehouse.ListAssetsRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_assets(request)
 
 
@@ -18792,6 +18854,7 @@ def test_list_assets_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_assets(request)
 
     # Establish that the response is the type that we expect.
@@ -18828,6 +18891,7 @@ def test_list_assets_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = warehouse.ListAssetsResponse.to_json(
             warehouse.ListAssetsResponse()
         )
@@ -18874,6 +18938,7 @@ def test_delete_asset_rest_bad_request(request_type=warehouse.DeleteAssetRequest
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_asset(request)
 
 
@@ -18906,6 +18971,7 @@ def test_delete_asset_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_asset(request)
 
     # Establish that the response is the type that we expect.
@@ -18943,6 +19009,7 @@ def test_delete_asset_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -18985,6 +19052,7 @@ def test_create_corpus_rest_bad_request(request_type=warehouse.CreateCorpusReque
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_corpus(request)
 
 
@@ -19088,6 +19156,7 @@ def test_create_corpus_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_corpus(request)
 
     # Establish that the response is the type that we expect.
@@ -19125,6 +19194,7 @@ def test_create_corpus_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -19167,6 +19237,7 @@ def test_get_corpus_rest_bad_request(request_type=warehouse.GetCorpusRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_corpus(request)
 
 
@@ -19204,6 +19275,7 @@ def test_get_corpus_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_corpus(request)
 
     # Establish that the response is the type that we expect.
@@ -19242,6 +19314,7 @@ def test_get_corpus_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = warehouse.Corpus.to_json(warehouse.Corpus())
         req.return_value.content = return_value
 
@@ -19286,6 +19359,7 @@ def test_update_corpus_rest_bad_request(request_type=warehouse.UpdateCorpusReque
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_corpus(request)
 
 
@@ -19398,6 +19472,7 @@ def test_update_corpus_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_corpus(request)
 
     # Establish that the response is the type that we expect.
@@ -19436,6 +19511,7 @@ def test_update_corpus_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = warehouse.Corpus.to_json(warehouse.Corpus())
         req.return_value.content = return_value
 
@@ -19478,6 +19554,7 @@ def test_list_corpora_rest_bad_request(request_type=warehouse.ListCorporaRequest
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_corpora(request)
 
 
@@ -19513,6 +19590,7 @@ def test_list_corpora_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_corpora(request)
 
     # Establish that the response is the type that we expect.
@@ -19549,6 +19627,7 @@ def test_list_corpora_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = warehouse.ListCorporaResponse.to_json(
             warehouse.ListCorporaResponse()
         )
@@ -19593,6 +19672,7 @@ def test_delete_corpus_rest_bad_request(request_type=warehouse.DeleteCorpusReque
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_corpus(request)
 
 
@@ -19623,6 +19703,7 @@ def test_delete_corpus_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_corpus(request)
 
     # Establish that the response is the type that we expect.
@@ -19655,6 +19736,7 @@ def test_delete_corpus_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = warehouse.DeleteCorpusRequest()
         metadata = [
@@ -19695,6 +19777,7 @@ def test_create_data_schema_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_data_schema(request)
 
 
@@ -19808,6 +19891,7 @@ def test_create_data_schema_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_data_schema(request)
 
     # Establish that the response is the type that we expect.
@@ -19847,6 +19931,7 @@ def test_create_data_schema_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = warehouse.DataSchema.to_json(warehouse.DataSchema())
         req.return_value.content = return_value
 
@@ -19895,6 +19980,7 @@ def test_update_data_schema_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_data_schema(request)
 
 
@@ -20012,6 +20098,7 @@ def test_update_data_schema_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_data_schema(request)
 
     # Establish that the response is the type that we expect.
@@ -20051,6 +20138,7 @@ def test_update_data_schema_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = warehouse.DataSchema.to_json(warehouse.DataSchema())
         req.return_value.content = return_value
 
@@ -20095,6 +20183,7 @@ def test_get_data_schema_rest_bad_request(request_type=warehouse.GetDataSchemaRe
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_data_schema(request)
 
 
@@ -20133,6 +20222,7 @@ def test_get_data_schema_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_data_schema(request)
 
     # Establish that the response is the type that we expect.
@@ -20170,6 +20260,7 @@ def test_get_data_schema_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = warehouse.DataSchema.to_json(warehouse.DataSchema())
         req.return_value.content = return_value
 
@@ -20216,6 +20307,7 @@ def test_delete_data_schema_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_data_schema(request)
 
 
@@ -20248,6 +20340,7 @@ def test_delete_data_schema_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_data_schema(request)
 
     # Establish that the response is the type that we expect.
@@ -20282,6 +20375,7 @@ def test_delete_data_schema_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = warehouse.DeleteDataSchemaRequest()
         metadata = [
@@ -20322,6 +20416,7 @@ def test_list_data_schemas_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_data_schemas(request)
 
 
@@ -20357,6 +20452,7 @@ def test_list_data_schemas_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_data_schemas(request)
 
     # Establish that the response is the type that we expect.
@@ -20395,6 +20491,7 @@ def test_list_data_schemas_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = warehouse.ListDataSchemasResponse.to_json(
             warehouse.ListDataSchemasResponse()
         )
@@ -20443,6 +20540,7 @@ def test_create_annotation_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_annotation(request)
 
 
@@ -20578,6 +20676,7 @@ def test_create_annotation_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_annotation(request)
 
     # Establish that the response is the type that we expect.
@@ -20616,6 +20715,7 @@ def test_create_annotation_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = warehouse.Annotation.to_json(warehouse.Annotation())
         req.return_value.content = return_value
 
@@ -20660,6 +20760,7 @@ def test_get_annotation_rest_bad_request(request_type=warehouse.GetAnnotationReq
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_annotation(request)
 
 
@@ -20697,6 +20798,7 @@ def test_get_annotation_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_annotation(request)
 
     # Establish that the response is the type that we expect.
@@ -20733,6 +20835,7 @@ def test_get_annotation_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = warehouse.Annotation.to_json(warehouse.Annotation())
         req.return_value.content = return_value
 
@@ -20779,6 +20882,7 @@ def test_list_annotations_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_annotations(request)
 
 
@@ -20816,6 +20920,7 @@ def test_list_annotations_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_annotations(request)
 
     # Establish that the response is the type that we expect.
@@ -20854,6 +20959,7 @@ def test_list_annotations_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = warehouse.ListAnnotationsResponse.to_json(
             warehouse.ListAnnotationsResponse()
         )
@@ -20904,6 +21010,7 @@ def test_update_annotation_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_annotation(request)
 
 
@@ -21041,6 +21148,7 @@ def test_update_annotation_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_annotation(request)
 
     # Establish that the response is the type that we expect.
@@ -21079,6 +21187,7 @@ def test_update_annotation_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = warehouse.Annotation.to_json(warehouse.Annotation())
         req.return_value.content = return_value
 
@@ -21125,6 +21234,7 @@ def test_delete_annotation_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_annotation(request)
 
 
@@ -21157,6 +21267,7 @@ def test_delete_annotation_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_annotation(request)
 
     # Establish that the response is the type that we expect.
@@ -21191,6 +21302,7 @@ def test_delete_annotation_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = warehouse.DeleteAnnotationRequest()
         metadata = [
@@ -21243,6 +21355,7 @@ def test_clip_asset_rest_bad_request(request_type=warehouse.ClipAssetRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.clip_asset(request)
 
 
@@ -21278,6 +21391,7 @@ def test_clip_asset_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.clip_asset(request)
 
     # Establish that the response is the type that we expect.
@@ -21313,6 +21427,7 @@ def test_clip_asset_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = warehouse.ClipAssetResponse.to_json(
             warehouse.ClipAssetResponse()
         )
@@ -21361,6 +21476,7 @@ def test_generate_hls_uri_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.generate_hls_uri(request)
 
 
@@ -21398,6 +21514,7 @@ def test_generate_hls_uri_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.generate_hls_uri(request)
 
     # Establish that the response is the type that we expect.
@@ -21436,6 +21553,7 @@ def test_generate_hls_uri_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = warehouse.GenerateHlsUriResponse.to_json(
             warehouse.GenerateHlsUriResponse()
         )
@@ -21482,6 +21600,7 @@ def test_create_search_config_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_search_config(request)
 
 
@@ -21617,6 +21736,7 @@ def test_create_search_config_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_search_config(request)
 
     # Establish that the response is the type that we expect.
@@ -21655,6 +21775,7 @@ def test_create_search_config_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = warehouse.SearchConfig.to_json(warehouse.SearchConfig())
         req.return_value.content = return_value
 
@@ -21703,6 +21824,7 @@ def test_update_search_config_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_search_config(request)
 
 
@@ -21842,6 +21964,7 @@ def test_update_search_config_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_search_config(request)
 
     # Establish that the response is the type that we expect.
@@ -21880,6 +22003,7 @@ def test_update_search_config_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = warehouse.SearchConfig.to_json(warehouse.SearchConfig())
         req.return_value.content = return_value
 
@@ -21926,6 +22050,7 @@ def test_get_search_config_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_search_config(request)
 
 
@@ -21963,6 +22088,7 @@ def test_get_search_config_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_search_config(request)
 
     # Establish that the response is the type that we expect.
@@ -22001,6 +22127,7 @@ def test_get_search_config_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = warehouse.SearchConfig.to_json(warehouse.SearchConfig())
         req.return_value.content = return_value
 
@@ -22047,6 +22174,7 @@ def test_delete_search_config_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_search_config(request)
 
 
@@ -22079,6 +22207,7 @@ def test_delete_search_config_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_search_config(request)
 
     # Establish that the response is the type that we expect.
@@ -22113,6 +22242,7 @@ def test_delete_search_config_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = warehouse.DeleteSearchConfigRequest()
         metadata = [
@@ -22153,6 +22283,7 @@ def test_list_search_configs_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_search_configs(request)
 
 
@@ -22188,6 +22319,7 @@ def test_list_search_configs_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_search_configs(request)
 
     # Establish that the response is the type that we expect.
@@ -22226,6 +22358,7 @@ def test_list_search_configs_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = warehouse.ListSearchConfigsResponse.to_json(
             warehouse.ListSearchConfigsResponse()
         )
@@ -22270,6 +22403,7 @@ def test_search_assets_rest_bad_request(request_type=warehouse.SearchAssetsReque
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.search_assets(request)
 
 
@@ -22305,6 +22439,7 @@ def test_search_assets_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.search_assets(request)
 
     # Establish that the response is the type that we expect.
@@ -22341,6 +22476,7 @@ def test_search_assets_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = warehouse.SearchAssetsResponse.to_json(
             warehouse.SearchAssetsResponse()
         )
@@ -22387,6 +22523,7 @@ def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationReq
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_location(request)
 
 
@@ -22417,6 +22554,7 @@ def test_get_location_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.get_location(request)
 
@@ -22445,6 +22583,7 @@ def test_list_locations_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_locations(request)
 
 
@@ -22475,6 +22614,7 @@ def test_list_locations_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.list_locations(request)
 
@@ -22505,6 +22645,7 @@ def test_get_iam_policy_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_iam_policy(request)
 
 
@@ -22535,6 +22676,7 @@ def test_get_iam_policy_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.get_iam_policy(request)
 
@@ -22565,6 +22707,7 @@ def test_set_iam_policy_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.set_iam_policy(request)
 
 
@@ -22595,6 +22738,7 @@ def test_set_iam_policy_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.set_iam_policy(request)
 
@@ -22625,6 +22769,7 @@ def test_test_iam_permissions_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.test_iam_permissions(request)
 
 
@@ -22655,6 +22800,7 @@ def test_test_iam_permissions_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.test_iam_permissions(request)
 
@@ -22685,6 +22831,7 @@ def test_cancel_operation_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.cancel_operation(request)
 
 
@@ -22715,6 +22862,7 @@ def test_cancel_operation_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.cancel_operation(request)
 
@@ -22745,6 +22893,7 @@ def test_delete_operation_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_operation(request)
 
 
@@ -22775,6 +22924,7 @@ def test_delete_operation_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.delete_operation(request)
 
@@ -22805,6 +22955,7 @@ def test_get_operation_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_operation(request)
 
 
@@ -22835,6 +22986,7 @@ def test_get_operation_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.get_operation(request)
 
@@ -22865,6 +23017,7 @@ def test_list_operations_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_operations(request)
 
 
@@ -22895,6 +23048,7 @@ def test_list_operations_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.list_operations(request)
 

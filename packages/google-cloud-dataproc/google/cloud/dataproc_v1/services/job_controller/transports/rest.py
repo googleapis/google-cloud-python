@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -41,6 +41,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -123,8 +131,10 @@ class JobControllerRestInterceptor:
     """
 
     def pre_cancel_job(
-        self, request: jobs.CancelJobRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[jobs.CancelJobRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: jobs.CancelJobRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[jobs.CancelJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_job
 
         Override in a subclass to manipulate the request or metadata
@@ -142,8 +152,10 @@ class JobControllerRestInterceptor:
         return response
 
     def pre_delete_job(
-        self, request: jobs.DeleteJobRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[jobs.DeleteJobRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: jobs.DeleteJobRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[jobs.DeleteJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_job
 
         Override in a subclass to manipulate the request or metadata
@@ -152,8 +164,10 @@ class JobControllerRestInterceptor:
         return request, metadata
 
     def pre_get_job(
-        self, request: jobs.GetJobRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[jobs.GetJobRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: jobs.GetJobRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[jobs.GetJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_job
 
         Override in a subclass to manipulate the request or metadata
@@ -171,8 +185,10 @@ class JobControllerRestInterceptor:
         return response
 
     def pre_list_jobs(
-        self, request: jobs.ListJobsRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[jobs.ListJobsRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: jobs.ListJobsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[jobs.ListJobsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_jobs
 
         Override in a subclass to manipulate the request or metadata
@@ -190,8 +206,10 @@ class JobControllerRestInterceptor:
         return response
 
     def pre_submit_job(
-        self, request: jobs.SubmitJobRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[jobs.SubmitJobRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: jobs.SubmitJobRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[jobs.SubmitJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for submit_job
 
         Override in a subclass to manipulate the request or metadata
@@ -209,8 +227,10 @@ class JobControllerRestInterceptor:
         return response
 
     def pre_submit_job_as_operation(
-        self, request: jobs.SubmitJobRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[jobs.SubmitJobRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: jobs.SubmitJobRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[jobs.SubmitJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for submit_job_as_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -230,8 +250,10 @@ class JobControllerRestInterceptor:
         return response
 
     def pre_update_job(
-        self, request: jobs.UpdateJobRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[jobs.UpdateJobRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: jobs.UpdateJobRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[jobs.UpdateJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_job
 
         Override in a subclass to manipulate the request or metadata
@@ -251,8 +273,10 @@ class JobControllerRestInterceptor:
     def pre_get_iam_policy(
         self,
         request: iam_policy_pb2.GetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -272,8 +296,10 @@ class JobControllerRestInterceptor:
     def pre_set_iam_policy(
         self,
         request: iam_policy_pb2.SetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -293,8 +319,11 @@ class JobControllerRestInterceptor:
     def pre_test_iam_permissions(
         self,
         request: iam_policy_pb2.TestIamPermissionsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.TestIamPermissionsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -316,8 +345,10 @@ class JobControllerRestInterceptor:
     def pre_cancel_operation(
         self,
         request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -337,8 +368,10 @@ class JobControllerRestInterceptor:
     def pre_delete_operation(
         self,
         request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -358,8 +391,10 @@ class JobControllerRestInterceptor:
     def pre_get_operation(
         self,
         request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -381,8 +416,10 @@ class JobControllerRestInterceptor:
     def pre_list_operations(
         self,
         request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -592,7 +629,7 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> jobs.Job:
             r"""Call the cancel job method over HTTP.
 
@@ -602,8 +639,10 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.jobs.Job:
@@ -613,6 +652,7 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
             http_options = (
                 _BaseJobControllerRestTransport._BaseCancelJob._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_cancel_job(request, metadata)
             transcoded_request = (
                 _BaseJobControllerRestTransport._BaseCancelJob._get_transcoded_request(
@@ -632,6 +672,33 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataproc_v1.JobControllerClient.CancelJob",
+                    extra={
+                        "serviceName": "google.cloud.dataproc.v1.JobController",
+                        "rpcName": "CancelJob",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = JobControllerRestTransport._CancelJob._get_response(
@@ -654,7 +721,29 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
             pb_resp = jobs.Job.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_cancel_job(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = jobs.Job.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dataproc_v1.JobControllerClient.cancel_job",
+                    extra={
+                        "serviceName": "google.cloud.dataproc.v1.JobController",
+                        "rpcName": "CancelJob",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteJob(
@@ -691,7 +780,7 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete job method over HTTP.
 
@@ -701,13 +790,16 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseJobControllerRestTransport._BaseDeleteJob._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_job(request, metadata)
             transcoded_request = (
                 _BaseJobControllerRestTransport._BaseDeleteJob._get_transcoded_request(
@@ -721,6 +813,33 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataproc_v1.JobControllerClient.DeleteJob",
+                    extra={
+                        "serviceName": "google.cloud.dataproc.v1.JobController",
+                        "rpcName": "DeleteJob",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = JobControllerRestTransport._DeleteJob._get_response(
@@ -769,7 +888,7 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> jobs.Job:
             r"""Call the get job method over HTTP.
 
@@ -780,8 +899,10 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.jobs.Job:
@@ -791,6 +912,7 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
             http_options = (
                 _BaseJobControllerRestTransport._BaseGetJob._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_job(request, metadata)
             transcoded_request = (
                 _BaseJobControllerRestTransport._BaseGetJob._get_transcoded_request(
@@ -804,6 +926,33 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataproc_v1.JobControllerClient.GetJob",
+                    extra={
+                        "serviceName": "google.cloud.dataproc.v1.JobController",
+                        "rpcName": "GetJob",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = JobControllerRestTransport._GetJob._get_response(
@@ -825,7 +974,29 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
             pb_resp = jobs.Job.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_job(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = jobs.Job.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dataproc_v1.JobControllerClient.get_job",
+                    extra={
+                        "serviceName": "google.cloud.dataproc.v1.JobController",
+                        "rpcName": "GetJob",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListJobs(
@@ -862,7 +1033,7 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> jobs.ListJobsResponse:
             r"""Call the list jobs method over HTTP.
 
@@ -872,8 +1043,10 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.jobs.ListJobsResponse:
@@ -883,6 +1056,7 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
             http_options = (
                 _BaseJobControllerRestTransport._BaseListJobs._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_jobs(request, metadata)
             transcoded_request = (
                 _BaseJobControllerRestTransport._BaseListJobs._get_transcoded_request(
@@ -896,6 +1070,33 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataproc_v1.JobControllerClient.ListJobs",
+                    extra={
+                        "serviceName": "google.cloud.dataproc.v1.JobController",
+                        "rpcName": "ListJobs",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = JobControllerRestTransport._ListJobs._get_response(
@@ -917,7 +1118,29 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
             pb_resp = jobs.ListJobsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_jobs(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = jobs.ListJobsResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dataproc_v1.JobControllerClient.list_jobs",
+                    extra={
+                        "serviceName": "google.cloud.dataproc.v1.JobController",
+                        "rpcName": "ListJobs",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _SubmitJob(
@@ -955,7 +1178,7 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> jobs.Job:
             r"""Call the submit job method over HTTP.
 
@@ -965,8 +1188,10 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.jobs.Job:
@@ -976,6 +1201,7 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
             http_options = (
                 _BaseJobControllerRestTransport._BaseSubmitJob._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_submit_job(request, metadata)
             transcoded_request = (
                 _BaseJobControllerRestTransport._BaseSubmitJob._get_transcoded_request(
@@ -995,6 +1221,33 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataproc_v1.JobControllerClient.SubmitJob",
+                    extra={
+                        "serviceName": "google.cloud.dataproc.v1.JobController",
+                        "rpcName": "SubmitJob",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = JobControllerRestTransport._SubmitJob._get_response(
@@ -1017,7 +1270,29 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
             pb_resp = jobs.Job.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_submit_job(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = jobs.Job.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dataproc_v1.JobControllerClient.submit_job",
+                    extra={
+                        "serviceName": "google.cloud.dataproc.v1.JobController",
+                        "rpcName": "SubmitJob",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _SubmitJobAsOperation(
@@ -1055,7 +1330,7 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the submit job as operation method over HTTP.
 
@@ -1065,8 +1340,10 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1079,6 +1356,7 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
             http_options = (
                 _BaseJobControllerRestTransport._BaseSubmitJobAsOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_submit_job_as_operation(
                 request, metadata
             )
@@ -1094,6 +1372,33 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
             query_params = _BaseJobControllerRestTransport._BaseSubmitJobAsOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataproc_v1.JobControllerClient.SubmitJobAsOperation",
+                    extra={
+                        "serviceName": "google.cloud.dataproc.v1.JobController",
+                        "rpcName": "SubmitJobAsOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = JobControllerRestTransport._SubmitJobAsOperation._get_response(
@@ -1114,7 +1419,29 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_submit_job_as_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dataproc_v1.JobControllerClient.submit_job_as_operation",
+                    extra={
+                        "serviceName": "google.cloud.dataproc.v1.JobController",
+                        "rpcName": "SubmitJobAsOperation",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateJob(
@@ -1152,7 +1479,7 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> jobs.Job:
             r"""Call the update job method over HTTP.
 
@@ -1162,8 +1489,10 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.jobs.Job:
@@ -1173,6 +1502,7 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
             http_options = (
                 _BaseJobControllerRestTransport._BaseUpdateJob._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_job(request, metadata)
             transcoded_request = (
                 _BaseJobControllerRestTransport._BaseUpdateJob._get_transcoded_request(
@@ -1192,6 +1522,33 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataproc_v1.JobControllerClient.UpdateJob",
+                    extra={
+                        "serviceName": "google.cloud.dataproc.v1.JobController",
+                        "rpcName": "UpdateJob",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = JobControllerRestTransport._UpdateJob._get_response(
@@ -1214,7 +1571,29 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
             pb_resp = jobs.Job.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_job(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = jobs.Job.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dataproc_v1.JobControllerClient.update_job",
+                    extra={
+                        "serviceName": "google.cloud.dataproc.v1.JobController",
+                        "rpcName": "UpdateJob",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -1300,7 +1679,7 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> policy_pb2.Policy:
             r"""Call the get iam policy method over HTTP.
 
@@ -1310,8 +1689,10 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 policy_pb2.Policy: Response from GetIamPolicy method.
@@ -1320,6 +1701,7 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
             http_options = (
                 _BaseJobControllerRestTransport._BaseGetIamPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
             transcoded_request = _BaseJobControllerRestTransport._BaseGetIamPolicy._get_transcoded_request(
                 http_options, request
@@ -1333,6 +1715,33 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
             query_params = _BaseJobControllerRestTransport._BaseGetIamPolicy._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataproc_v1.JobControllerClient.GetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.dataproc.v1.JobController",
+                        "rpcName": "GetIamPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = JobControllerRestTransport._GetIamPolicy._get_response(
@@ -1354,6 +1763,27 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_iam_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dataproc_v1.JobControllerAsyncClient.GetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.dataproc.v1.JobController",
+                        "rpcName": "GetIamPolicy",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -1395,7 +1825,7 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> policy_pb2.Policy:
             r"""Call the set iam policy method over HTTP.
 
@@ -1405,8 +1835,10 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 policy_pb2.Policy: Response from SetIamPolicy method.
@@ -1415,6 +1847,7 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
             http_options = (
                 _BaseJobControllerRestTransport._BaseSetIamPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
             transcoded_request = _BaseJobControllerRestTransport._BaseSetIamPolicy._get_transcoded_request(
                 http_options, request
@@ -1428,6 +1861,33 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
             query_params = _BaseJobControllerRestTransport._BaseSetIamPolicy._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataproc_v1.JobControllerClient.SetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.dataproc.v1.JobController",
+                        "rpcName": "SetIamPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = JobControllerRestTransport._SetIamPolicy._get_response(
@@ -1449,6 +1909,27 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_set_iam_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dataproc_v1.JobControllerAsyncClient.SetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.dataproc.v1.JobController",
+                        "rpcName": "SetIamPolicy",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -1490,7 +1971,7 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> iam_policy_pb2.TestIamPermissionsResponse:
             r"""Call the test iam permissions method over HTTP.
 
@@ -1500,8 +1981,10 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 iam_policy_pb2.TestIamPermissionsResponse: Response from TestIamPermissions method.
@@ -1510,6 +1993,7 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
             http_options = (
                 _BaseJobControllerRestTransport._BaseTestIamPermissions._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata
             )
@@ -1525,6 +2009,33 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
             query_params = _BaseJobControllerRestTransport._BaseTestIamPermissions._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataproc_v1.JobControllerClient.TestIamPermissions",
+                    extra={
+                        "serviceName": "google.cloud.dataproc.v1.JobController",
+                        "rpcName": "TestIamPermissions",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = JobControllerRestTransport._TestIamPermissions._get_response(
@@ -1546,6 +2057,27 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
             resp = iam_policy_pb2.TestIamPermissionsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_test_iam_permissions(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dataproc_v1.JobControllerAsyncClient.TestIamPermissions",
+                    extra={
+                        "serviceName": "google.cloud.dataproc.v1.JobController",
+                        "rpcName": "TestIamPermissions",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -1586,7 +2118,7 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the cancel operation method over HTTP.
 
@@ -1596,13 +2128,16 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseJobControllerRestTransport._BaseCancelOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
@@ -1614,6 +2149,33 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
             query_params = _BaseJobControllerRestTransport._BaseCancelOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataproc_v1.JobControllerClient.CancelOperation",
+                    extra={
+                        "serviceName": "google.cloud.dataproc.v1.JobController",
+                        "rpcName": "CancelOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = JobControllerRestTransport._CancelOperation._get_response(
@@ -1670,7 +2232,7 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the delete operation method over HTTP.
 
@@ -1680,13 +2242,16 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseJobControllerRestTransport._BaseDeleteOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
             )
@@ -1698,6 +2263,33 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
             query_params = _BaseJobControllerRestTransport._BaseDeleteOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataproc_v1.JobControllerClient.DeleteOperation",
+                    extra={
+                        "serviceName": "google.cloud.dataproc.v1.JobController",
+                        "rpcName": "DeleteOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = JobControllerRestTransport._DeleteOperation._get_response(
@@ -1754,7 +2346,7 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the get operation method over HTTP.
 
@@ -1764,8 +2356,10 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.
@@ -1774,6 +2368,7 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
             http_options = (
                 _BaseJobControllerRestTransport._BaseGetOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseJobControllerRestTransport._BaseGetOperation._get_transcoded_request(
                 http_options, request
@@ -1783,6 +2378,33 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
             query_params = _BaseJobControllerRestTransport._BaseGetOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataproc_v1.JobControllerClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.dataproc.v1.JobController",
+                        "rpcName": "GetOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = JobControllerRestTransport._GetOperation._get_response(
@@ -1803,6 +2425,27 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dataproc_v1.JobControllerAsyncClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.dataproc.v1.JobController",
+                        "rpcName": "GetOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -1843,7 +2486,7 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.ListOperationsResponse:
             r"""Call the list operations method over HTTP.
 
@@ -1853,8 +2496,10 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
@@ -1863,6 +2508,7 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
             http_options = (
                 _BaseJobControllerRestTransport._BaseListOperations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseJobControllerRestTransport._BaseListOperations._get_transcoded_request(
                 http_options, request
@@ -1872,6 +2518,33 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
             query_params = _BaseJobControllerRestTransport._BaseListOperations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataproc_v1.JobControllerClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.dataproc.v1.JobController",
+                        "rpcName": "ListOperations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = JobControllerRestTransport._ListOperations._get_response(
@@ -1892,6 +2565,27 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dataproc_v1.JobControllerAsyncClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.dataproc.v1.JobController",
+                        "rpcName": "ListOperations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property

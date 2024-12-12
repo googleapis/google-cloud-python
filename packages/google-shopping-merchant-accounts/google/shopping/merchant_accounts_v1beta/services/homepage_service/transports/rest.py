@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -38,6 +38,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -102,8 +110,8 @@ class HomepageServiceRestInterceptor:
     def pre_claim_homepage(
         self,
         request: homepage.ClaimHomepageRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[homepage.ClaimHomepageRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[homepage.ClaimHomepageRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for claim_homepage
 
         Override in a subclass to manipulate the request or metadata
@@ -121,8 +129,10 @@ class HomepageServiceRestInterceptor:
         return response
 
     def pre_get_homepage(
-        self, request: homepage.GetHomepageRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[homepage.GetHomepageRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: homepage.GetHomepageRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[homepage.GetHomepageRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_homepage
 
         Override in a subclass to manipulate the request or metadata
@@ -142,8 +152,10 @@ class HomepageServiceRestInterceptor:
     def pre_unclaim_homepage(
         self,
         request: homepage.UnclaimHomepageRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[homepage.UnclaimHomepageRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        homepage.UnclaimHomepageRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for unclaim_homepage
 
         Override in a subclass to manipulate the request or metadata
@@ -163,8 +175,10 @@ class HomepageServiceRestInterceptor:
     def pre_update_homepage(
         self,
         request: gsma_homepage.UpdateHomepageRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[gsma_homepage.UpdateHomepageRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gsma_homepage.UpdateHomepageRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_homepage
 
         Override in a subclass to manipulate the request or metadata
@@ -305,7 +319,7 @@ class HomepageServiceRestTransport(_BaseHomepageServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> homepage.Homepage:
             r"""Call the claim homepage method over HTTP.
 
@@ -315,8 +329,10 @@ class HomepageServiceRestTransport(_BaseHomepageServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.homepage.Homepage:
@@ -326,6 +342,7 @@ class HomepageServiceRestTransport(_BaseHomepageServiceRestTransport):
             http_options = (
                 _BaseHomepageServiceRestTransport._BaseClaimHomepage._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_claim_homepage(request, metadata)
             transcoded_request = _BaseHomepageServiceRestTransport._BaseClaimHomepage._get_transcoded_request(
                 http_options, request
@@ -339,6 +356,33 @@ class HomepageServiceRestTransport(_BaseHomepageServiceRestTransport):
             query_params = _BaseHomepageServiceRestTransport._BaseClaimHomepage._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.shopping.merchant.accounts_v1beta.HomepageServiceClient.ClaimHomepage",
+                    extra={
+                        "serviceName": "google.shopping.merchant.accounts.v1beta.HomepageService",
+                        "rpcName": "ClaimHomepage",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = HomepageServiceRestTransport._ClaimHomepage._get_response(
@@ -361,7 +405,29 @@ class HomepageServiceRestTransport(_BaseHomepageServiceRestTransport):
             pb_resp = homepage.Homepage.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_claim_homepage(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = homepage.Homepage.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.shopping.merchant.accounts_v1beta.HomepageServiceClient.claim_homepage",
+                    extra={
+                        "serviceName": "google.shopping.merchant.accounts.v1beta.HomepageService",
+                        "rpcName": "ClaimHomepage",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetHomepage(
@@ -398,7 +464,7 @@ class HomepageServiceRestTransport(_BaseHomepageServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> homepage.Homepage:
             r"""Call the get homepage method over HTTP.
 
@@ -408,8 +474,10 @@ class HomepageServiceRestTransport(_BaseHomepageServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.homepage.Homepage:
@@ -419,6 +487,7 @@ class HomepageServiceRestTransport(_BaseHomepageServiceRestTransport):
             http_options = (
                 _BaseHomepageServiceRestTransport._BaseGetHomepage._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_homepage(request, metadata)
             transcoded_request = _BaseHomepageServiceRestTransport._BaseGetHomepage._get_transcoded_request(
                 http_options, request
@@ -428,6 +497,33 @@ class HomepageServiceRestTransport(_BaseHomepageServiceRestTransport):
             query_params = _BaseHomepageServiceRestTransport._BaseGetHomepage._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.shopping.merchant.accounts_v1beta.HomepageServiceClient.GetHomepage",
+                    extra={
+                        "serviceName": "google.shopping.merchant.accounts.v1beta.HomepageService",
+                        "rpcName": "GetHomepage",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = HomepageServiceRestTransport._GetHomepage._get_response(
@@ -449,7 +545,29 @@ class HomepageServiceRestTransport(_BaseHomepageServiceRestTransport):
             pb_resp = homepage.Homepage.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_homepage(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = homepage.Homepage.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.shopping.merchant.accounts_v1beta.HomepageServiceClient.get_homepage",
+                    extra={
+                        "serviceName": "google.shopping.merchant.accounts.v1beta.HomepageService",
+                        "rpcName": "GetHomepage",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UnclaimHomepage(
@@ -487,7 +605,7 @@ class HomepageServiceRestTransport(_BaseHomepageServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> homepage.Homepage:
             r"""Call the unclaim homepage method over HTTP.
 
@@ -497,8 +615,10 @@ class HomepageServiceRestTransport(_BaseHomepageServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.homepage.Homepage:
@@ -508,6 +628,7 @@ class HomepageServiceRestTransport(_BaseHomepageServiceRestTransport):
             http_options = (
                 _BaseHomepageServiceRestTransport._BaseUnclaimHomepage._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_unclaim_homepage(
                 request, metadata
             )
@@ -523,6 +644,33 @@ class HomepageServiceRestTransport(_BaseHomepageServiceRestTransport):
             query_params = _BaseHomepageServiceRestTransport._BaseUnclaimHomepage._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.shopping.merchant.accounts_v1beta.HomepageServiceClient.UnclaimHomepage",
+                    extra={
+                        "serviceName": "google.shopping.merchant.accounts.v1beta.HomepageService",
+                        "rpcName": "UnclaimHomepage",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = HomepageServiceRestTransport._UnclaimHomepage._get_response(
@@ -545,7 +693,29 @@ class HomepageServiceRestTransport(_BaseHomepageServiceRestTransport):
             pb_resp = homepage.Homepage.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_unclaim_homepage(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = homepage.Homepage.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.shopping.merchant.accounts_v1beta.HomepageServiceClient.unclaim_homepage",
+                    extra={
+                        "serviceName": "google.shopping.merchant.accounts.v1beta.HomepageService",
+                        "rpcName": "UnclaimHomepage",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateHomepage(
@@ -583,7 +753,7 @@ class HomepageServiceRestTransport(_BaseHomepageServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gsma_homepage.Homepage:
             r"""Call the update homepage method over HTTP.
 
@@ -593,8 +763,10 @@ class HomepageServiceRestTransport(_BaseHomepageServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.gsma_homepage.Homepage:
@@ -604,6 +776,7 @@ class HomepageServiceRestTransport(_BaseHomepageServiceRestTransport):
             http_options = (
                 _BaseHomepageServiceRestTransport._BaseUpdateHomepage._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_homepage(request, metadata)
             transcoded_request = _BaseHomepageServiceRestTransport._BaseUpdateHomepage._get_transcoded_request(
                 http_options, request
@@ -617,6 +790,33 @@ class HomepageServiceRestTransport(_BaseHomepageServiceRestTransport):
             query_params = _BaseHomepageServiceRestTransport._BaseUpdateHomepage._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.shopping.merchant.accounts_v1beta.HomepageServiceClient.UpdateHomepage",
+                    extra={
+                        "serviceName": "google.shopping.merchant.accounts.v1beta.HomepageService",
+                        "rpcName": "UpdateHomepage",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = HomepageServiceRestTransport._UpdateHomepage._get_response(
@@ -639,7 +839,29 @@ class HomepageServiceRestTransport(_BaseHomepageServiceRestTransport):
             pb_resp = gsma_homepage.Homepage.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_homepage(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gsma_homepage.Homepage.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.shopping.merchant.accounts_v1beta.HomepageServiceClient.update_homepage",
+                    extra={
+                        "serviceName": "google.shopping.merchant.accounts.v1beta.HomepageService",
+                        "rpcName": "UpdateHomepage",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property

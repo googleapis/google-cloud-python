@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -38,6 +38,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -128,8 +136,10 @@ class IdentityAwareProxyOAuthServiceRestInterceptor:
     """
 
     def pre_create_brand(
-        self, request: service.CreateBrandRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.CreateBrandRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.CreateBrandRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.CreateBrandRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_brand
 
         Override in a subclass to manipulate the request or metadata
@@ -149,9 +159,10 @@ class IdentityAwareProxyOAuthServiceRestInterceptor:
     def pre_create_identity_aware_proxy_client(
         self,
         request: service.CreateIdentityAwareProxyClientRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        service.CreateIdentityAwareProxyClientRequest, Sequence[Tuple[str, str]]
+        service.CreateIdentityAwareProxyClientRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for create_identity_aware_proxy_client
 
@@ -174,9 +185,10 @@ class IdentityAwareProxyOAuthServiceRestInterceptor:
     def pre_delete_identity_aware_proxy_client(
         self,
         request: service.DeleteIdentityAwareProxyClientRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        service.DeleteIdentityAwareProxyClientRequest, Sequence[Tuple[str, str]]
+        service.DeleteIdentityAwareProxyClientRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for delete_identity_aware_proxy_client
 
@@ -186,8 +198,10 @@ class IdentityAwareProxyOAuthServiceRestInterceptor:
         return request, metadata
 
     def pre_get_brand(
-        self, request: service.GetBrandRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.GetBrandRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.GetBrandRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.GetBrandRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_brand
 
         Override in a subclass to manipulate the request or metadata
@@ -207,8 +221,11 @@ class IdentityAwareProxyOAuthServiceRestInterceptor:
     def pre_get_identity_aware_proxy_client(
         self,
         request: service.GetIdentityAwareProxyClientRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[service.GetIdentityAwareProxyClientRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.GetIdentityAwareProxyClientRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for get_identity_aware_proxy_client
 
         Override in a subclass to manipulate the request or metadata
@@ -228,8 +245,10 @@ class IdentityAwareProxyOAuthServiceRestInterceptor:
         return response
 
     def pre_list_brands(
-        self, request: service.ListBrandsRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.ListBrandsRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.ListBrandsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.ListBrandsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_brands
 
         Override in a subclass to manipulate the request or metadata
@@ -251,8 +270,11 @@ class IdentityAwareProxyOAuthServiceRestInterceptor:
     def pre_list_identity_aware_proxy_clients(
         self,
         request: service.ListIdentityAwareProxyClientsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[service.ListIdentityAwareProxyClientsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.ListIdentityAwareProxyClientsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for list_identity_aware_proxy_clients
 
         Override in a subclass to manipulate the request or metadata
@@ -274,9 +296,10 @@ class IdentityAwareProxyOAuthServiceRestInterceptor:
     def pre_reset_identity_aware_proxy_client_secret(
         self,
         request: service.ResetIdentityAwareProxyClientSecretRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        service.ResetIdentityAwareProxyClientSecretRequest, Sequence[Tuple[str, str]]
+        service.ResetIdentityAwareProxyClientSecretRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for reset_identity_aware_proxy_client_secret
 
@@ -425,7 +448,7 @@ class IdentityAwareProxyOAuthServiceRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> service.Brand:
             r"""Call the create brand method over HTTP.
 
@@ -435,8 +458,10 @@ class IdentityAwareProxyOAuthServiceRestTransport(
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.service.Brand:
@@ -449,6 +474,7 @@ class IdentityAwareProxyOAuthServiceRestTransport(
             http_options = (
                 _BaseIdentityAwareProxyOAuthServiceRestTransport._BaseCreateBrand._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_brand(request, metadata)
             transcoded_request = _BaseIdentityAwareProxyOAuthServiceRestTransport._BaseCreateBrand._get_transcoded_request(
                 http_options, request
@@ -462,6 +488,33 @@ class IdentityAwareProxyOAuthServiceRestTransport(
             query_params = _BaseIdentityAwareProxyOAuthServiceRestTransport._BaseCreateBrand._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.iap_v1.IdentityAwareProxyOAuthServiceClient.CreateBrand",
+                    extra={
+                        "serviceName": "google.cloud.iap.v1.IdentityAwareProxyOAuthService",
+                        "rpcName": "CreateBrand",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -486,7 +539,29 @@ class IdentityAwareProxyOAuthServiceRestTransport(
             pb_resp = service.Brand.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_brand(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = service.Brand.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.iap_v1.IdentityAwareProxyOAuthServiceClient.create_brand",
+                    extra={
+                        "serviceName": "google.cloud.iap.v1.IdentityAwareProxyOAuthService",
+                        "rpcName": "CreateBrand",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateIdentityAwareProxyClient(
@@ -527,7 +602,7 @@ class IdentityAwareProxyOAuthServiceRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> service.IdentityAwareProxyClient:
             r"""Call the create identity aware
             proxy client method over HTTP.
@@ -539,8 +614,10 @@ class IdentityAwareProxyOAuthServiceRestTransport(
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.service.IdentityAwareProxyClient:
@@ -552,6 +629,7 @@ class IdentityAwareProxyOAuthServiceRestTransport(
             http_options = (
                 _BaseIdentityAwareProxyOAuthServiceRestTransport._BaseCreateIdentityAwareProxyClient._get_http_options()
             )
+
             (
                 request,
                 metadata,
@@ -570,6 +648,33 @@ class IdentityAwareProxyOAuthServiceRestTransport(
             query_params = _BaseIdentityAwareProxyOAuthServiceRestTransport._BaseCreateIdentityAwareProxyClient._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.iap_v1.IdentityAwareProxyOAuthServiceClient.CreateIdentityAwareProxyClient",
+                    extra={
+                        "serviceName": "google.cloud.iap.v1.IdentityAwareProxyOAuthService",
+                        "rpcName": "CreateIdentityAwareProxyClient",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = IdentityAwareProxyOAuthServiceRestTransport._CreateIdentityAwareProxyClient._get_response(
@@ -592,7 +697,31 @@ class IdentityAwareProxyOAuthServiceRestTransport(
             pb_resp = service.IdentityAwareProxyClient.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_identity_aware_proxy_client(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = service.IdentityAwareProxyClient.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.iap_v1.IdentityAwareProxyOAuthServiceClient.create_identity_aware_proxy_client",
+                    extra={
+                        "serviceName": "google.cloud.iap.v1.IdentityAwareProxyOAuthService",
+                        "rpcName": "CreateIdentityAwareProxyClient",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteIdentityAwareProxyClient(
@@ -632,7 +761,7 @@ class IdentityAwareProxyOAuthServiceRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete identity aware
             proxy client method over HTTP.
@@ -644,13 +773,16 @@ class IdentityAwareProxyOAuthServiceRestTransport(
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
             """
 
             http_options = (
                 _BaseIdentityAwareProxyOAuthServiceRestTransport._BaseDeleteIdentityAwareProxyClient._get_http_options()
             )
+
             (
                 request,
                 metadata,
@@ -665,6 +797,33 @@ class IdentityAwareProxyOAuthServiceRestTransport(
             query_params = _BaseIdentityAwareProxyOAuthServiceRestTransport._BaseDeleteIdentityAwareProxyClient._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.iap_v1.IdentityAwareProxyOAuthServiceClient.DeleteIdentityAwareProxyClient",
+                    extra={
+                        "serviceName": "google.cloud.iap.v1.IdentityAwareProxyOAuthService",
+                        "rpcName": "DeleteIdentityAwareProxyClient",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = IdentityAwareProxyOAuthServiceRestTransport._DeleteIdentityAwareProxyClient._get_response(
@@ -716,7 +875,7 @@ class IdentityAwareProxyOAuthServiceRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> service.Brand:
             r"""Call the get brand method over HTTP.
 
@@ -726,8 +885,10 @@ class IdentityAwareProxyOAuthServiceRestTransport(
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.service.Brand:
@@ -740,6 +901,7 @@ class IdentityAwareProxyOAuthServiceRestTransport(
             http_options = (
                 _BaseIdentityAwareProxyOAuthServiceRestTransport._BaseGetBrand._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_brand(request, metadata)
             transcoded_request = _BaseIdentityAwareProxyOAuthServiceRestTransport._BaseGetBrand._get_transcoded_request(
                 http_options, request
@@ -749,6 +911,33 @@ class IdentityAwareProxyOAuthServiceRestTransport(
             query_params = _BaseIdentityAwareProxyOAuthServiceRestTransport._BaseGetBrand._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.iap_v1.IdentityAwareProxyOAuthServiceClient.GetBrand",
+                    extra={
+                        "serviceName": "google.cloud.iap.v1.IdentityAwareProxyOAuthService",
+                        "rpcName": "GetBrand",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -772,7 +961,29 @@ class IdentityAwareProxyOAuthServiceRestTransport(
             pb_resp = service.Brand.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_brand(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = service.Brand.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.iap_v1.IdentityAwareProxyOAuthServiceClient.get_brand",
+                    extra={
+                        "serviceName": "google.cloud.iap.v1.IdentityAwareProxyOAuthService",
+                        "rpcName": "GetBrand",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetIdentityAwareProxyClient(
@@ -812,7 +1023,7 @@ class IdentityAwareProxyOAuthServiceRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> service.IdentityAwareProxyClient:
             r"""Call the get identity aware proxy
             client method over HTTP.
@@ -824,8 +1035,10 @@ class IdentityAwareProxyOAuthServiceRestTransport(
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.service.IdentityAwareProxyClient:
@@ -837,6 +1050,7 @@ class IdentityAwareProxyOAuthServiceRestTransport(
             http_options = (
                 _BaseIdentityAwareProxyOAuthServiceRestTransport._BaseGetIdentityAwareProxyClient._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_identity_aware_proxy_client(
                 request, metadata
             )
@@ -848,6 +1062,33 @@ class IdentityAwareProxyOAuthServiceRestTransport(
             query_params = _BaseIdentityAwareProxyOAuthServiceRestTransport._BaseGetIdentityAwareProxyClient._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.iap_v1.IdentityAwareProxyOAuthServiceClient.GetIdentityAwareProxyClient",
+                    extra={
+                        "serviceName": "google.cloud.iap.v1.IdentityAwareProxyOAuthService",
+                        "rpcName": "GetIdentityAwareProxyClient",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = IdentityAwareProxyOAuthServiceRestTransport._GetIdentityAwareProxyClient._get_response(
@@ -869,7 +1110,31 @@ class IdentityAwareProxyOAuthServiceRestTransport(
             pb_resp = service.IdentityAwareProxyClient.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_identity_aware_proxy_client(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = service.IdentityAwareProxyClient.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.iap_v1.IdentityAwareProxyOAuthServiceClient.get_identity_aware_proxy_client",
+                    extra={
+                        "serviceName": "google.cloud.iap.v1.IdentityAwareProxyOAuthService",
+                        "rpcName": "GetIdentityAwareProxyClient",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListBrands(
@@ -907,7 +1172,7 @@ class IdentityAwareProxyOAuthServiceRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> service.ListBrandsResponse:
             r"""Call the list brands method over HTTP.
 
@@ -917,8 +1182,10 @@ class IdentityAwareProxyOAuthServiceRestTransport(
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.service.ListBrandsResponse:
@@ -928,6 +1195,7 @@ class IdentityAwareProxyOAuthServiceRestTransport(
             http_options = (
                 _BaseIdentityAwareProxyOAuthServiceRestTransport._BaseListBrands._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_brands(request, metadata)
             transcoded_request = _BaseIdentityAwareProxyOAuthServiceRestTransport._BaseListBrands._get_transcoded_request(
                 http_options, request
@@ -937,6 +1205,33 @@ class IdentityAwareProxyOAuthServiceRestTransport(
             query_params = _BaseIdentityAwareProxyOAuthServiceRestTransport._BaseListBrands._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.iap_v1.IdentityAwareProxyOAuthServiceClient.ListBrands",
+                    extra={
+                        "serviceName": "google.cloud.iap.v1.IdentityAwareProxyOAuthService",
+                        "rpcName": "ListBrands",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -960,7 +1255,29 @@ class IdentityAwareProxyOAuthServiceRestTransport(
             pb_resp = service.ListBrandsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_brands(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = service.ListBrandsResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.iap_v1.IdentityAwareProxyOAuthServiceClient.list_brands",
+                    extra={
+                        "serviceName": "google.cloud.iap.v1.IdentityAwareProxyOAuthService",
+                        "rpcName": "ListBrands",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListIdentityAwareProxyClients(
@@ -1000,7 +1317,7 @@ class IdentityAwareProxyOAuthServiceRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> service.ListIdentityAwareProxyClientsResponse:
             r"""Call the list identity aware proxy
             clients method over HTTP.
@@ -1012,8 +1329,10 @@ class IdentityAwareProxyOAuthServiceRestTransport(
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.service.ListIdentityAwareProxyClientsResponse:
@@ -1025,6 +1344,7 @@ class IdentityAwareProxyOAuthServiceRestTransport(
             http_options = (
                 _BaseIdentityAwareProxyOAuthServiceRestTransport._BaseListIdentityAwareProxyClients._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_identity_aware_proxy_clients(
                 request, metadata
             )
@@ -1036,6 +1356,33 @@ class IdentityAwareProxyOAuthServiceRestTransport(
             query_params = _BaseIdentityAwareProxyOAuthServiceRestTransport._BaseListIdentityAwareProxyClients._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.iap_v1.IdentityAwareProxyOAuthServiceClient.ListIdentityAwareProxyClients",
+                    extra={
+                        "serviceName": "google.cloud.iap.v1.IdentityAwareProxyOAuthService",
+                        "rpcName": "ListIdentityAwareProxyClients",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = IdentityAwareProxyOAuthServiceRestTransport._ListIdentityAwareProxyClients._get_response(
@@ -1057,7 +1404,31 @@ class IdentityAwareProxyOAuthServiceRestTransport(
             pb_resp = service.ListIdentityAwareProxyClientsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_identity_aware_proxy_clients(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        service.ListIdentityAwareProxyClientsResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.iap_v1.IdentityAwareProxyOAuthServiceClient.list_identity_aware_proxy_clients",
+                    extra={
+                        "serviceName": "google.cloud.iap.v1.IdentityAwareProxyOAuthService",
+                        "rpcName": "ListIdentityAwareProxyClients",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ResetIdentityAwareProxyClientSecret(
@@ -1098,7 +1469,7 @@ class IdentityAwareProxyOAuthServiceRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> service.IdentityAwareProxyClient:
             r"""Call the reset identity aware
             proxy client secret method over HTTP.
@@ -1110,8 +1481,10 @@ class IdentityAwareProxyOAuthServiceRestTransport(
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.service.IdentityAwareProxyClient:
@@ -1123,6 +1496,7 @@ class IdentityAwareProxyOAuthServiceRestTransport(
             http_options = (
                 _BaseIdentityAwareProxyOAuthServiceRestTransport._BaseResetIdentityAwareProxyClientSecret._get_http_options()
             )
+
             (
                 request,
                 metadata,
@@ -1141,6 +1515,33 @@ class IdentityAwareProxyOAuthServiceRestTransport(
             query_params = _BaseIdentityAwareProxyOAuthServiceRestTransport._BaseResetIdentityAwareProxyClientSecret._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.iap_v1.IdentityAwareProxyOAuthServiceClient.ResetIdentityAwareProxyClientSecret",
+                    extra={
+                        "serviceName": "google.cloud.iap.v1.IdentityAwareProxyOAuthService",
+                        "rpcName": "ResetIdentityAwareProxyClientSecret",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = IdentityAwareProxyOAuthServiceRestTransport._ResetIdentityAwareProxyClientSecret._get_response(
@@ -1163,7 +1564,31 @@ class IdentityAwareProxyOAuthServiceRestTransport(
             pb_resp = service.IdentityAwareProxyClient.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_reset_identity_aware_proxy_client_secret(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = service.IdentityAwareProxyClient.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.iap_v1.IdentityAwareProxyOAuthServiceClient.reset_identity_aware_proxy_client_secret",
+                    extra={
+                        "serviceName": "google.cloud.iap.v1.IdentityAwareProxyOAuthService",
+                        "rpcName": "ResetIdentityAwareProxyClientSecret",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property

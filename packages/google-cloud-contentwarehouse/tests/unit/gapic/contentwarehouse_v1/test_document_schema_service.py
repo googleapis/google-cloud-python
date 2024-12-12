@@ -3198,6 +3198,7 @@ def test_create_document_schema_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_document_schema(request)
 
@@ -3252,6 +3253,7 @@ def test_create_document_schema_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_document_schema(**mock_args)
 
@@ -3390,6 +3392,7 @@ def test_update_document_schema_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_document_schema(request)
 
@@ -3446,6 +3449,7 @@ def test_update_document_schema_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_document_schema(**mock_args)
 
@@ -3582,6 +3586,7 @@ def test_get_document_schema_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_document_schema(request)
 
@@ -3629,6 +3634,7 @@ def test_get_document_schema_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_document_schema(**mock_args)
 
@@ -3762,6 +3768,7 @@ def test_delete_document_schema_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_document_schema(request)
 
@@ -3807,6 +3814,7 @@ def test_delete_document_schema_rest_flattened():
         json_return_value = ""
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_document_schema(**mock_args)
 
@@ -3952,6 +3960,7 @@ def test_list_document_schemas_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_document_schemas(request)
 
@@ -4007,6 +4016,7 @@ def test_list_document_schemas_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_document_schemas(**mock_args)
 
@@ -4513,6 +4523,7 @@ def test_create_document_schema_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_document_schema(request)
 
 
@@ -4657,6 +4668,7 @@ def test_create_document_schema_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_document_schema(request)
 
     # Establish that the response is the type that we expect.
@@ -4700,6 +4712,7 @@ def test_create_document_schema_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = gcc_document_schema.DocumentSchema.to_json(
             gcc_document_schema.DocumentSchema()
         )
@@ -4748,6 +4761,7 @@ def test_update_document_schema_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_document_schema(request)
 
 
@@ -4788,6 +4802,7 @@ def test_update_document_schema_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_document_schema(request)
 
     # Establish that the response is the type that we expect.
@@ -4831,6 +4846,7 @@ def test_update_document_schema_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = gcc_document_schema.DocumentSchema.to_json(
             gcc_document_schema.DocumentSchema()
         )
@@ -4879,6 +4895,7 @@ def test_get_document_schema_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_document_schema(request)
 
 
@@ -4919,6 +4936,7 @@ def test_get_document_schema_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_document_schema(request)
 
     # Establish that the response is the type that we expect.
@@ -4962,6 +4980,7 @@ def test_get_document_schema_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = document_schema.DocumentSchema.to_json(
             document_schema.DocumentSchema()
         )
@@ -5010,6 +5029,7 @@ def test_delete_document_schema_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_document_schema(request)
 
 
@@ -5042,6 +5062,7 @@ def test_delete_document_schema_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_document_schema(request)
 
     # Establish that the response is the type that we expect.
@@ -5078,6 +5099,7 @@ def test_delete_document_schema_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = document_schema_service.DeleteDocumentSchemaRequest()
         metadata = [
@@ -5118,6 +5140,7 @@ def test_list_document_schemas_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_document_schemas(request)
 
 
@@ -5155,6 +5178,7 @@ def test_list_document_schemas_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_document_schemas(request)
 
     # Establish that the response is the type that we expect.
@@ -5195,6 +5219,7 @@ def test_list_document_schemas_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = document_schema_service.ListDocumentSchemasResponse.to_json(
             document_schema_service.ListDocumentSchemasResponse()
         )
@@ -5243,6 +5268,7 @@ def test_get_operation_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_operation(request)
 
 
@@ -5273,6 +5299,7 @@ def test_get_operation_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.get_operation(request)
 

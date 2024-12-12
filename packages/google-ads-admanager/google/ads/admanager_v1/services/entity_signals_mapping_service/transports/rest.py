@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -41,6 +41,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -121,10 +129,10 @@ class EntitySignalsMappingServiceRestInterceptor:
     def pre_batch_create_entity_signals_mappings(
         self,
         request: entity_signals_mapping_service.BatchCreateEntitySignalsMappingsRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         entity_signals_mapping_service.BatchCreateEntitySignalsMappingsRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for batch_create_entity_signals_mappings
 
@@ -148,10 +156,10 @@ class EntitySignalsMappingServiceRestInterceptor:
     def pre_batch_update_entity_signals_mappings(
         self,
         request: entity_signals_mapping_service.BatchUpdateEntitySignalsMappingsRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         entity_signals_mapping_service.BatchUpdateEntitySignalsMappingsRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for batch_update_entity_signals_mappings
 
@@ -175,10 +183,10 @@ class EntitySignalsMappingServiceRestInterceptor:
     def pre_create_entity_signals_mapping(
         self,
         request: entity_signals_mapping_service.CreateEntitySignalsMappingRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         entity_signals_mapping_service.CreateEntitySignalsMappingRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for create_entity_signals_mapping
 
@@ -201,10 +209,10 @@ class EntitySignalsMappingServiceRestInterceptor:
     def pre_get_entity_signals_mapping(
         self,
         request: entity_signals_mapping_service.GetEntitySignalsMappingRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         entity_signals_mapping_service.GetEntitySignalsMappingRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for get_entity_signals_mapping
 
@@ -227,10 +235,10 @@ class EntitySignalsMappingServiceRestInterceptor:
     def pre_list_entity_signals_mappings(
         self,
         request: entity_signals_mapping_service.ListEntitySignalsMappingsRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         entity_signals_mapping_service.ListEntitySignalsMappingsRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for list_entity_signals_mappings
 
@@ -253,10 +261,10 @@ class EntitySignalsMappingServiceRestInterceptor:
     def pre_update_entity_signals_mapping(
         self,
         request: entity_signals_mapping_service.UpdateEntitySignalsMappingRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         entity_signals_mapping_service.UpdateEntitySignalsMappingRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for update_entity_signals_mapping
 
@@ -279,8 +287,10 @@ class EntitySignalsMappingServiceRestInterceptor:
     def pre_get_operation(
         self,
         request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -426,7 +436,7 @@ class EntitySignalsMappingServiceRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> entity_signals_mapping_service.BatchCreateEntitySignalsMappingsResponse:
             r"""Call the batch create entity
             signals mappings method over HTTP.
@@ -438,8 +448,10 @@ class EntitySignalsMappingServiceRestTransport(
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.entity_signals_mapping_service.BatchCreateEntitySignalsMappingsResponse:
@@ -451,6 +463,7 @@ class EntitySignalsMappingServiceRestTransport(
             http_options = (
                 _BaseEntitySignalsMappingServiceRestTransport._BaseBatchCreateEntitySignalsMappings._get_http_options()
             )
+
             (
                 request,
                 metadata,
@@ -469,6 +482,33 @@ class EntitySignalsMappingServiceRestTransport(
             query_params = _BaseEntitySignalsMappingServiceRestTransport._BaseBatchCreateEntitySignalsMappings._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.ads.admanager_v1.EntitySignalsMappingServiceClient.BatchCreateEntitySignalsMappings",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.EntitySignalsMappingService",
+                        "rpcName": "BatchCreateEntitySignalsMappings",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EntitySignalsMappingServiceRestTransport._BatchCreateEntitySignalsMappings._get_response(
@@ -495,7 +535,31 @@ class EntitySignalsMappingServiceRestTransport(
             )
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_batch_create_entity_signals_mappings(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = entity_signals_mapping_service.BatchCreateEntitySignalsMappingsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.ads.admanager_v1.EntitySignalsMappingServiceClient.batch_create_entity_signals_mappings",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.EntitySignalsMappingService",
+                        "rpcName": "BatchCreateEntitySignalsMappings",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _BatchUpdateEntitySignalsMappings(
@@ -536,7 +600,7 @@ class EntitySignalsMappingServiceRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> entity_signals_mapping_service.BatchUpdateEntitySignalsMappingsResponse:
             r"""Call the batch update entity
             signals mappings method over HTTP.
@@ -548,8 +612,10 @@ class EntitySignalsMappingServiceRestTransport(
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.entity_signals_mapping_service.BatchUpdateEntitySignalsMappingsResponse:
@@ -561,6 +627,7 @@ class EntitySignalsMappingServiceRestTransport(
             http_options = (
                 _BaseEntitySignalsMappingServiceRestTransport._BaseBatchUpdateEntitySignalsMappings._get_http_options()
             )
+
             (
                 request,
                 metadata,
@@ -579,6 +646,33 @@ class EntitySignalsMappingServiceRestTransport(
             query_params = _BaseEntitySignalsMappingServiceRestTransport._BaseBatchUpdateEntitySignalsMappings._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.ads.admanager_v1.EntitySignalsMappingServiceClient.BatchUpdateEntitySignalsMappings",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.EntitySignalsMappingService",
+                        "rpcName": "BatchUpdateEntitySignalsMappings",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EntitySignalsMappingServiceRestTransport._BatchUpdateEntitySignalsMappings._get_response(
@@ -605,7 +699,31 @@ class EntitySignalsMappingServiceRestTransport(
             )
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_batch_update_entity_signals_mappings(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = entity_signals_mapping_service.BatchUpdateEntitySignalsMappingsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.ads.admanager_v1.EntitySignalsMappingServiceClient.batch_update_entity_signals_mappings",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.EntitySignalsMappingService",
+                        "rpcName": "BatchUpdateEntitySignalsMappings",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateEntitySignalsMapping(
@@ -646,7 +764,7 @@ class EntitySignalsMappingServiceRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> entity_signals_mapping_messages.EntitySignalsMapping:
             r"""Call the create entity signals
             mapping method over HTTP.
@@ -658,8 +776,10 @@ class EntitySignalsMappingServiceRestTransport(
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.entity_signals_mapping_messages.EntitySignalsMapping:
@@ -669,6 +789,7 @@ class EntitySignalsMappingServiceRestTransport(
             http_options = (
                 _BaseEntitySignalsMappingServiceRestTransport._BaseCreateEntitySignalsMapping._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_entity_signals_mapping(
                 request, metadata
             )
@@ -684,6 +805,33 @@ class EntitySignalsMappingServiceRestTransport(
             query_params = _BaseEntitySignalsMappingServiceRestTransport._BaseCreateEntitySignalsMapping._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.ads.admanager_v1.EntitySignalsMappingServiceClient.CreateEntitySignalsMapping",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.EntitySignalsMappingService",
+                        "rpcName": "CreateEntitySignalsMapping",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EntitySignalsMappingServiceRestTransport._CreateEntitySignalsMapping._get_response(
@@ -706,7 +854,33 @@ class EntitySignalsMappingServiceRestTransport(
             pb_resp = entity_signals_mapping_messages.EntitySignalsMapping.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_entity_signals_mapping(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        entity_signals_mapping_messages.EntitySignalsMapping.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.ads.admanager_v1.EntitySignalsMappingServiceClient.create_entity_signals_mapping",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.EntitySignalsMappingService",
+                        "rpcName": "CreateEntitySignalsMapping",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetEntitySignalsMapping(
@@ -746,7 +920,7 @@ class EntitySignalsMappingServiceRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> entity_signals_mapping_messages.EntitySignalsMapping:
             r"""Call the get entity signals
             mapping method over HTTP.
@@ -757,8 +931,10 @@ class EntitySignalsMappingServiceRestTransport(
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.entity_signals_mapping_messages.EntitySignalsMapping:
@@ -768,6 +944,7 @@ class EntitySignalsMappingServiceRestTransport(
             http_options = (
                 _BaseEntitySignalsMappingServiceRestTransport._BaseGetEntitySignalsMapping._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_entity_signals_mapping(
                 request, metadata
             )
@@ -779,6 +956,33 @@ class EntitySignalsMappingServiceRestTransport(
             query_params = _BaseEntitySignalsMappingServiceRestTransport._BaseGetEntitySignalsMapping._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.ads.admanager_v1.EntitySignalsMappingServiceClient.GetEntitySignalsMapping",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.EntitySignalsMappingService",
+                        "rpcName": "GetEntitySignalsMapping",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EntitySignalsMappingServiceRestTransport._GetEntitySignalsMapping._get_response(
@@ -800,7 +1004,33 @@ class EntitySignalsMappingServiceRestTransport(
             pb_resp = entity_signals_mapping_messages.EntitySignalsMapping.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_entity_signals_mapping(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        entity_signals_mapping_messages.EntitySignalsMapping.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.ads.admanager_v1.EntitySignalsMappingServiceClient.get_entity_signals_mapping",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.EntitySignalsMappingService",
+                        "rpcName": "GetEntitySignalsMapping",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListEntitySignalsMappings(
@@ -840,7 +1070,7 @@ class EntitySignalsMappingServiceRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> entity_signals_mapping_service.ListEntitySignalsMappingsResponse:
             r"""Call the list entity signals
             mappings method over HTTP.
@@ -851,8 +1081,10 @@ class EntitySignalsMappingServiceRestTransport(
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.entity_signals_mapping_service.ListEntitySignalsMappingsResponse:
@@ -864,6 +1096,7 @@ class EntitySignalsMappingServiceRestTransport(
             http_options = (
                 _BaseEntitySignalsMappingServiceRestTransport._BaseListEntitySignalsMappings._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_entity_signals_mappings(
                 request, metadata
             )
@@ -875,6 +1108,33 @@ class EntitySignalsMappingServiceRestTransport(
             query_params = _BaseEntitySignalsMappingServiceRestTransport._BaseListEntitySignalsMappings._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.ads.admanager_v1.EntitySignalsMappingServiceClient.ListEntitySignalsMappings",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.EntitySignalsMappingService",
+                        "rpcName": "ListEntitySignalsMappings",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EntitySignalsMappingServiceRestTransport._ListEntitySignalsMappings._get_response(
@@ -900,7 +1160,31 @@ class EntitySignalsMappingServiceRestTransport(
             )
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_entity_signals_mappings(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = entity_signals_mapping_service.ListEntitySignalsMappingsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.ads.admanager_v1.EntitySignalsMappingServiceClient.list_entity_signals_mappings",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.EntitySignalsMappingService",
+                        "rpcName": "ListEntitySignalsMappings",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateEntitySignalsMapping(
@@ -941,7 +1225,7 @@ class EntitySignalsMappingServiceRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> entity_signals_mapping_messages.EntitySignalsMapping:
             r"""Call the update entity signals
             mapping method over HTTP.
@@ -953,8 +1237,10 @@ class EntitySignalsMappingServiceRestTransport(
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.entity_signals_mapping_messages.EntitySignalsMapping:
@@ -964,6 +1250,7 @@ class EntitySignalsMappingServiceRestTransport(
             http_options = (
                 _BaseEntitySignalsMappingServiceRestTransport._BaseUpdateEntitySignalsMapping._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_entity_signals_mapping(
                 request, metadata
             )
@@ -979,6 +1266,33 @@ class EntitySignalsMappingServiceRestTransport(
             query_params = _BaseEntitySignalsMappingServiceRestTransport._BaseUpdateEntitySignalsMapping._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.ads.admanager_v1.EntitySignalsMappingServiceClient.UpdateEntitySignalsMapping",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.EntitySignalsMappingService",
+                        "rpcName": "UpdateEntitySignalsMapping",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EntitySignalsMappingServiceRestTransport._UpdateEntitySignalsMapping._get_response(
@@ -1001,7 +1315,33 @@ class EntitySignalsMappingServiceRestTransport(
             pb_resp = entity_signals_mapping_messages.EntitySignalsMapping.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_entity_signals_mapping(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        entity_signals_mapping_messages.EntitySignalsMapping.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.ads.admanager_v1.EntitySignalsMappingServiceClient.update_entity_signals_mapping",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.EntitySignalsMappingService",
+                        "rpcName": "UpdateEntitySignalsMapping",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -1109,7 +1449,7 @@ class EntitySignalsMappingServiceRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the get operation method over HTTP.
 
@@ -1119,8 +1459,10 @@ class EntitySignalsMappingServiceRestTransport(
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.
@@ -1129,6 +1471,7 @@ class EntitySignalsMappingServiceRestTransport(
             http_options = (
                 _BaseEntitySignalsMappingServiceRestTransport._BaseGetOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseEntitySignalsMappingServiceRestTransport._BaseGetOperation._get_transcoded_request(
                 http_options, request
@@ -1138,6 +1481,33 @@ class EntitySignalsMappingServiceRestTransport(
             query_params = _BaseEntitySignalsMappingServiceRestTransport._BaseGetOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.ads.admanager_v1.EntitySignalsMappingServiceClient.GetOperation",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.EntitySignalsMappingService",
+                        "rpcName": "GetOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1160,6 +1530,27 @@ class EntitySignalsMappingServiceRestTransport(
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.ads.admanager_v1.EntitySignalsMappingServiceAsyncClient.GetOperation",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.EntitySignalsMappingService",
+                        "rpcName": "GetOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property

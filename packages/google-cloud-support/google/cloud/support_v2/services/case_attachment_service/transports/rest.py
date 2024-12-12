@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -37,6 +37,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -77,8 +85,11 @@ class CaseAttachmentServiceRestInterceptor:
     def pre_list_attachments(
         self,
         request: attachment_service.ListAttachmentsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[attachment_service.ListAttachmentsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        attachment_service.ListAttachmentsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for list_attachments
 
         Override in a subclass to manipulate the request or metadata
@@ -220,7 +231,7 @@ class CaseAttachmentServiceRestTransport(_BaseCaseAttachmentServiceRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> attachment_service.ListAttachmentsResponse:
             r"""Call the list attachments method over HTTP.
 
@@ -231,8 +242,10 @@ class CaseAttachmentServiceRestTransport(_BaseCaseAttachmentServiceRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.attachment_service.ListAttachmentsResponse:
@@ -244,6 +257,7 @@ class CaseAttachmentServiceRestTransport(_BaseCaseAttachmentServiceRestTransport
             http_options = (
                 _BaseCaseAttachmentServiceRestTransport._BaseListAttachments._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_attachments(
                 request, metadata
             )
@@ -255,6 +269,33 @@ class CaseAttachmentServiceRestTransport(_BaseCaseAttachmentServiceRestTransport
             query_params = _BaseCaseAttachmentServiceRestTransport._BaseListAttachments._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.support_v2.CaseAttachmentServiceClient.ListAttachments",
+                    extra={
+                        "serviceName": "google.cloud.support.v2.CaseAttachmentService",
+                        "rpcName": "ListAttachments",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -278,7 +319,31 @@ class CaseAttachmentServiceRestTransport(_BaseCaseAttachmentServiceRestTransport
             pb_resp = attachment_service.ListAttachmentsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_attachments(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        attachment_service.ListAttachmentsResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.support_v2.CaseAttachmentServiceClient.list_attachments",
+                    extra={
+                        "serviceName": "google.cloud.support.v2.CaseAttachmentService",
+                        "rpcName": "ListAttachments",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property

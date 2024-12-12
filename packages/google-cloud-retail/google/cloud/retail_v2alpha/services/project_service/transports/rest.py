@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -41,6 +41,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -137,8 +145,10 @@ class ProjectServiceRestInterceptor:
     def pre_accept_terms(
         self,
         request: project_service.AcceptTermsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[project_service.AcceptTermsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        project_service.AcceptTermsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for accept_terms
 
         Override in a subclass to manipulate the request or metadata
@@ -158,8 +168,10 @@ class ProjectServiceRestInterceptor:
     def pre_enroll_solution(
         self,
         request: project_service.EnrollSolutionRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[project_service.EnrollSolutionRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        project_service.EnrollSolutionRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for enroll_solution
 
         Override in a subclass to manipulate the request or metadata
@@ -181,8 +193,10 @@ class ProjectServiceRestInterceptor:
     def pre_get_alert_config(
         self,
         request: project_service.GetAlertConfigRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[project_service.GetAlertConfigRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        project_service.GetAlertConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_alert_config
 
         Override in a subclass to manipulate the request or metadata
@@ -204,8 +218,10 @@ class ProjectServiceRestInterceptor:
     def pre_get_logging_config(
         self,
         request: project_service.GetLoggingConfigRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[project_service.GetLoggingConfigRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        project_service.GetLoggingConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_logging_config
 
         Override in a subclass to manipulate the request or metadata
@@ -227,8 +243,10 @@ class ProjectServiceRestInterceptor:
     def pre_get_project(
         self,
         request: project_service.GetProjectRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[project_service.GetProjectRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        project_service.GetProjectRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_project
 
         Override in a subclass to manipulate the request or metadata
@@ -248,8 +266,11 @@ class ProjectServiceRestInterceptor:
     def pre_list_enrolled_solutions(
         self,
         request: project_service.ListEnrolledSolutionsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[project_service.ListEnrolledSolutionsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        project_service.ListEnrolledSolutionsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for list_enrolled_solutions
 
         Override in a subclass to manipulate the request or metadata
@@ -271,8 +292,11 @@ class ProjectServiceRestInterceptor:
     def pre_update_alert_config(
         self,
         request: project_service.UpdateAlertConfigRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[project_service.UpdateAlertConfigRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        project_service.UpdateAlertConfigRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for update_alert_config
 
         Override in a subclass to manipulate the request or metadata
@@ -294,8 +318,11 @@ class ProjectServiceRestInterceptor:
     def pre_update_logging_config(
         self,
         request: project_service.UpdateLoggingConfigRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[project_service.UpdateLoggingConfigRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        project_service.UpdateLoggingConfigRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for update_logging_config
 
         Override in a subclass to manipulate the request or metadata
@@ -317,8 +344,10 @@ class ProjectServiceRestInterceptor:
     def pre_get_operation(
         self,
         request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -340,8 +369,10 @@ class ProjectServiceRestInterceptor:
     def pre_list_operations(
         self,
         request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -547,7 +578,7 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gcr_project.Project:
             r"""Call the accept terms method over HTTP.
 
@@ -557,8 +588,10 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.gcr_project.Project:
@@ -570,6 +603,7 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
             http_options = (
                 _BaseProjectServiceRestTransport._BaseAcceptTerms._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_accept_terms(request, metadata)
             transcoded_request = _BaseProjectServiceRestTransport._BaseAcceptTerms._get_transcoded_request(
                 http_options, request
@@ -583,6 +617,33 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
             query_params = _BaseProjectServiceRestTransport._BaseAcceptTerms._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.retail_v2alpha.ProjectServiceClient.AcceptTerms",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2alpha.ProjectService",
+                        "rpcName": "AcceptTerms",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ProjectServiceRestTransport._AcceptTerms._get_response(
@@ -605,7 +666,29 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
             pb_resp = gcr_project.Project.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_accept_terms(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gcr_project.Project.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.retail_v2alpha.ProjectServiceClient.accept_terms",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2alpha.ProjectService",
+                        "rpcName": "AcceptTerms",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _EnrollSolution(
@@ -643,7 +726,7 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the enroll solution method over HTTP.
 
@@ -653,8 +736,10 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -667,6 +752,7 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
             http_options = (
                 _BaseProjectServiceRestTransport._BaseEnrollSolution._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_enroll_solution(request, metadata)
             transcoded_request = _BaseProjectServiceRestTransport._BaseEnrollSolution._get_transcoded_request(
                 http_options, request
@@ -680,6 +766,33 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
             query_params = _BaseProjectServiceRestTransport._BaseEnrollSolution._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.retail_v2alpha.ProjectServiceClient.EnrollSolution",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2alpha.ProjectService",
+                        "rpcName": "EnrollSolution",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ProjectServiceRestTransport._EnrollSolution._get_response(
@@ -700,7 +813,29 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_enroll_solution(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.retail_v2alpha.ProjectServiceClient.enroll_solution",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2alpha.ProjectService",
+                        "rpcName": "EnrollSolution",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetAlertConfig(
@@ -737,7 +872,7 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> project.AlertConfig:
             r"""Call the get alert config method over HTTP.
 
@@ -749,8 +884,10 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.project.AlertConfig:
@@ -760,6 +897,7 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
             http_options = (
                 _BaseProjectServiceRestTransport._BaseGetAlertConfig._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_alert_config(
                 request, metadata
             )
@@ -771,6 +909,33 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
             query_params = _BaseProjectServiceRestTransport._BaseGetAlertConfig._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.retail_v2alpha.ProjectServiceClient.GetAlertConfig",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2alpha.ProjectService",
+                        "rpcName": "GetAlertConfig",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ProjectServiceRestTransport._GetAlertConfig._get_response(
@@ -792,7 +957,29 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
             pb_resp = project.AlertConfig.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_alert_config(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = project.AlertConfig.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.retail_v2alpha.ProjectServiceClient.get_alert_config",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2alpha.ProjectService",
+                        "rpcName": "GetAlertConfig",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetLoggingConfig(
@@ -829,7 +1016,7 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> project.LoggingConfig:
             r"""Call the get logging config method over HTTP.
 
@@ -841,8 +1028,10 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.project.LoggingConfig:
@@ -855,6 +1044,7 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
             http_options = (
                 _BaseProjectServiceRestTransport._BaseGetLoggingConfig._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_logging_config(
                 request, metadata
             )
@@ -866,6 +1056,33 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
             query_params = _BaseProjectServiceRestTransport._BaseGetLoggingConfig._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.retail_v2alpha.ProjectServiceClient.GetLoggingConfig",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2alpha.ProjectService",
+                        "rpcName": "GetLoggingConfig",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ProjectServiceRestTransport._GetLoggingConfig._get_response(
@@ -887,7 +1104,29 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
             pb_resp = project.LoggingConfig.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_logging_config(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = project.LoggingConfig.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.retail_v2alpha.ProjectServiceClient.get_logging_config",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2alpha.ProjectService",
+                        "rpcName": "GetLoggingConfig",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetProject(
@@ -924,7 +1163,7 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> project.Project:
             r"""Call the get project method over HTTP.
 
@@ -934,8 +1173,10 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.project.Project:
@@ -947,6 +1188,7 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
             http_options = (
                 _BaseProjectServiceRestTransport._BaseGetProject._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_project(request, metadata)
             transcoded_request = _BaseProjectServiceRestTransport._BaseGetProject._get_transcoded_request(
                 http_options, request
@@ -958,6 +1200,33 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.retail_v2alpha.ProjectServiceClient.GetProject",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2alpha.ProjectService",
+                        "rpcName": "GetProject",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ProjectServiceRestTransport._GetProject._get_response(
@@ -979,7 +1248,29 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
             pb_resp = project.Project.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_project(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = project.Project.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.retail_v2alpha.ProjectServiceClient.get_project",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2alpha.ProjectService",
+                        "rpcName": "GetProject",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListEnrolledSolutions(
@@ -1017,7 +1308,7 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> project_service.ListEnrolledSolutionsResponse:
             r"""Call the list enrolled solutions method over HTTP.
 
@@ -1028,8 +1319,10 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.project_service.ListEnrolledSolutionsResponse:
@@ -1041,6 +1334,7 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
             http_options = (
                 _BaseProjectServiceRestTransport._BaseListEnrolledSolutions._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_enrolled_solutions(
                 request, metadata
             )
@@ -1052,6 +1346,33 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
             query_params = _BaseProjectServiceRestTransport._BaseListEnrolledSolutions._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.retail_v2alpha.ProjectServiceClient.ListEnrolledSolutions",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2alpha.ProjectService",
+                        "rpcName": "ListEnrolledSolutions",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ProjectServiceRestTransport._ListEnrolledSolutions._get_response(
@@ -1073,7 +1394,31 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
             pb_resp = project_service.ListEnrolledSolutionsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_enrolled_solutions(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        project_service.ListEnrolledSolutionsResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.retail_v2alpha.ProjectServiceClient.list_enrolled_solutions",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2alpha.ProjectService",
+                        "rpcName": "ListEnrolledSolutions",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateAlertConfig(
@@ -1111,7 +1456,7 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> project.AlertConfig:
             r"""Call the update alert config method over HTTP.
 
@@ -1123,8 +1468,10 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.project.AlertConfig:
@@ -1134,6 +1481,7 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
             http_options = (
                 _BaseProjectServiceRestTransport._BaseUpdateAlertConfig._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_alert_config(
                 request, metadata
             )
@@ -1149,6 +1497,33 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
             query_params = _BaseProjectServiceRestTransport._BaseUpdateAlertConfig._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.retail_v2alpha.ProjectServiceClient.UpdateAlertConfig",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2alpha.ProjectService",
+                        "rpcName": "UpdateAlertConfig",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ProjectServiceRestTransport._UpdateAlertConfig._get_response(
@@ -1171,7 +1546,29 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
             pb_resp = project.AlertConfig.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_alert_config(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = project.AlertConfig.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.retail_v2alpha.ProjectServiceClient.update_alert_config",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2alpha.ProjectService",
+                        "rpcName": "UpdateAlertConfig",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateLoggingConfig(
@@ -1210,7 +1607,7 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> project.LoggingConfig:
             r"""Call the update logging config method over HTTP.
 
@@ -1222,8 +1619,10 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.project.LoggingConfig:
@@ -1236,6 +1635,7 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
             http_options = (
                 _BaseProjectServiceRestTransport._BaseUpdateLoggingConfig._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_logging_config(
                 request, metadata
             )
@@ -1251,6 +1651,33 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
             query_params = _BaseProjectServiceRestTransport._BaseUpdateLoggingConfig._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.retail_v2alpha.ProjectServiceClient.UpdateLoggingConfig",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2alpha.ProjectService",
+                        "rpcName": "UpdateLoggingConfig",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ProjectServiceRestTransport._UpdateLoggingConfig._get_response(
@@ -1273,7 +1700,29 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
             pb_resp = project.LoggingConfig.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_logging_config(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = project.LoggingConfig.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.retail_v2alpha.ProjectServiceClient.update_logging_config",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2alpha.ProjectService",
+                        "rpcName": "UpdateLoggingConfig",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -1381,7 +1830,7 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the get operation method over HTTP.
 
@@ -1391,8 +1840,10 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.
@@ -1401,6 +1852,7 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
             http_options = (
                 _BaseProjectServiceRestTransport._BaseGetOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseProjectServiceRestTransport._BaseGetOperation._get_transcoded_request(
                 http_options, request
@@ -1410,6 +1862,33 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
             query_params = _BaseProjectServiceRestTransport._BaseGetOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.retail_v2alpha.ProjectServiceClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2alpha.ProjectService",
+                        "rpcName": "GetOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ProjectServiceRestTransport._GetOperation._get_response(
@@ -1430,6 +1909,27 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.retail_v2alpha.ProjectServiceAsyncClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2alpha.ProjectService",
+                        "rpcName": "GetOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -1470,7 +1970,7 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.ListOperationsResponse:
             r"""Call the list operations method over HTTP.
 
@@ -1480,8 +1980,10 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
@@ -1490,6 +1992,7 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
             http_options = (
                 _BaseProjectServiceRestTransport._BaseListOperations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseProjectServiceRestTransport._BaseListOperations._get_transcoded_request(
                 http_options, request
@@ -1499,6 +2002,33 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
             query_params = _BaseProjectServiceRestTransport._BaseListOperations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.retail_v2alpha.ProjectServiceClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2alpha.ProjectService",
+                        "rpcName": "ListOperations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ProjectServiceRestTransport._ListOperations._get_response(
@@ -1519,6 +2049,27 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.retail_v2alpha.ProjectServiceAsyncClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2alpha.ProjectService",
+                        "rpcName": "ListOperations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property

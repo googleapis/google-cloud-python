@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -38,6 +38,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -174,8 +182,10 @@ class GrafeasRestInterceptor:
     def pre_batch_create_notes(
         self,
         request: grafeas.BatchCreateNotesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[grafeas.BatchCreateNotesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        grafeas.BatchCreateNotesRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for batch_create_notes
 
         Override in a subclass to manipulate the request or metadata
@@ -197,8 +207,10 @@ class GrafeasRestInterceptor:
     def pre_batch_create_occurrences(
         self,
         request: grafeas.BatchCreateOccurrencesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[grafeas.BatchCreateOccurrencesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        grafeas.BatchCreateOccurrencesRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for batch_create_occurrences
 
         Override in a subclass to manipulate the request or metadata
@@ -218,8 +230,10 @@ class GrafeasRestInterceptor:
         return response
 
     def pre_create_note(
-        self, request: grafeas.CreateNoteRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[grafeas.CreateNoteRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: grafeas.CreateNoteRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[grafeas.CreateNoteRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_note
 
         Override in a subclass to manipulate the request or metadata
@@ -239,8 +253,10 @@ class GrafeasRestInterceptor:
     def pre_create_occurrence(
         self,
         request: grafeas.CreateOccurrenceRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[grafeas.CreateOccurrenceRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        grafeas.CreateOccurrenceRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_occurrence
 
         Override in a subclass to manipulate the request or metadata
@@ -260,8 +276,10 @@ class GrafeasRestInterceptor:
         return response
 
     def pre_delete_note(
-        self, request: grafeas.DeleteNoteRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[grafeas.DeleteNoteRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: grafeas.DeleteNoteRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[grafeas.DeleteNoteRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_note
 
         Override in a subclass to manipulate the request or metadata
@@ -272,8 +290,10 @@ class GrafeasRestInterceptor:
     def pre_delete_occurrence(
         self,
         request: grafeas.DeleteOccurrenceRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[grafeas.DeleteOccurrenceRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        grafeas.DeleteOccurrenceRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_occurrence
 
         Override in a subclass to manipulate the request or metadata
@@ -282,8 +302,10 @@ class GrafeasRestInterceptor:
         return request, metadata
 
     def pre_get_note(
-        self, request: grafeas.GetNoteRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[grafeas.GetNoteRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: grafeas.GetNoteRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[grafeas.GetNoteRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_note
 
         Override in a subclass to manipulate the request or metadata
@@ -301,8 +323,10 @@ class GrafeasRestInterceptor:
         return response
 
     def pre_get_occurrence(
-        self, request: grafeas.GetOccurrenceRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[grafeas.GetOccurrenceRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: grafeas.GetOccurrenceRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[grafeas.GetOccurrenceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_occurrence
 
         Override in a subclass to manipulate the request or metadata
@@ -322,8 +346,10 @@ class GrafeasRestInterceptor:
     def pre_get_occurrence_note(
         self,
         request: grafeas.GetOccurrenceNoteRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[grafeas.GetOccurrenceNoteRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        grafeas.GetOccurrenceNoteRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_occurrence_note
 
         Override in a subclass to manipulate the request or metadata
@@ -343,8 +369,10 @@ class GrafeasRestInterceptor:
     def pre_list_note_occurrences(
         self,
         request: grafeas.ListNoteOccurrencesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[grafeas.ListNoteOccurrencesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        grafeas.ListNoteOccurrencesRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_note_occurrences
 
         Override in a subclass to manipulate the request or metadata
@@ -364,8 +392,10 @@ class GrafeasRestInterceptor:
         return response
 
     def pre_list_notes(
-        self, request: grafeas.ListNotesRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[grafeas.ListNotesRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: grafeas.ListNotesRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[grafeas.ListNotesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_notes
 
         Override in a subclass to manipulate the request or metadata
@@ -387,8 +417,8 @@ class GrafeasRestInterceptor:
     def pre_list_occurrences(
         self,
         request: grafeas.ListOccurrencesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[grafeas.ListOccurrencesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[grafeas.ListOccurrencesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_occurrences
 
         Override in a subclass to manipulate the request or metadata
@@ -408,8 +438,10 @@ class GrafeasRestInterceptor:
         return response
 
     def pre_update_note(
-        self, request: grafeas.UpdateNoteRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[grafeas.UpdateNoteRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: grafeas.UpdateNoteRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[grafeas.UpdateNoteRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_note
 
         Override in a subclass to manipulate the request or metadata
@@ -429,8 +461,10 @@ class GrafeasRestInterceptor:
     def pre_update_occurrence(
         self,
         request: grafeas.UpdateOccurrenceRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[grafeas.UpdateOccurrenceRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        grafeas.UpdateOccurrenceRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_occurrence
 
         Override in a subclass to manipulate the request or metadata
@@ -586,7 +620,7 @@ class GrafeasRestTransport(_BaseGrafeasRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> grafeas.BatchCreateNotesResponse:
             r"""Call the batch create notes method over HTTP.
 
@@ -596,8 +630,10 @@ class GrafeasRestTransport(_BaseGrafeasRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.grafeas.BatchCreateNotesResponse:
@@ -607,6 +643,7 @@ class GrafeasRestTransport(_BaseGrafeasRestTransport):
             http_options = (
                 _BaseGrafeasRestTransport._BaseBatchCreateNotes._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_batch_create_notes(
                 request, metadata
             )
@@ -629,6 +666,33 @@ class GrafeasRestTransport(_BaseGrafeasRestTransport):
                 )
             )
 
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for grafeas_v1.GrafeasClient.BatchCreateNotes",
+                    extra={
+                        "serviceName": "grafeas.v1.Grafeas",
+                        "rpcName": "BatchCreateNotes",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
             # Send the request
             response = GrafeasRestTransport._BatchCreateNotes._get_response(
                 self._host,
@@ -650,7 +714,31 @@ class GrafeasRestTransport(_BaseGrafeasRestTransport):
             pb_resp = grafeas.BatchCreateNotesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_batch_create_notes(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = grafeas.BatchCreateNotesResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for grafeas_v1.GrafeasClient.batch_create_notes",
+                    extra={
+                        "serviceName": "grafeas.v1.Grafeas",
+                        "rpcName": "BatchCreateNotes",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _BatchCreateOccurrences(
@@ -688,7 +776,7 @@ class GrafeasRestTransport(_BaseGrafeasRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> grafeas.BatchCreateOccurrencesResponse:
             r"""Call the batch create occurrences method over HTTP.
 
@@ -699,8 +787,10 @@ class GrafeasRestTransport(_BaseGrafeasRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.grafeas.BatchCreateOccurrencesResponse:
@@ -712,6 +802,7 @@ class GrafeasRestTransport(_BaseGrafeasRestTransport):
             http_options = (
                 _BaseGrafeasRestTransport._BaseBatchCreateOccurrences._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_batch_create_occurrences(
                 request, metadata
             )
@@ -727,6 +818,33 @@ class GrafeasRestTransport(_BaseGrafeasRestTransport):
             query_params = _BaseGrafeasRestTransport._BaseBatchCreateOccurrences._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for grafeas_v1.GrafeasClient.BatchCreateOccurrences",
+                    extra={
+                        "serviceName": "grafeas.v1.Grafeas",
+                        "rpcName": "BatchCreateOccurrences",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = GrafeasRestTransport._BatchCreateOccurrences._get_response(
@@ -749,7 +867,31 @@ class GrafeasRestTransport(_BaseGrafeasRestTransport):
             pb_resp = grafeas.BatchCreateOccurrencesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_batch_create_occurrences(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = grafeas.BatchCreateOccurrencesResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for grafeas_v1.GrafeasClient.batch_create_occurrences",
+                    extra={
+                        "serviceName": "grafeas.v1.Grafeas",
+                        "rpcName": "BatchCreateOccurrences",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateNote(_BaseGrafeasRestTransport._BaseCreateNote, GrafeasRestStub):
@@ -785,7 +927,7 @@ class GrafeasRestTransport(_BaseGrafeasRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> grafeas.Note:
             r"""Call the create note method over HTTP.
 
@@ -795,8 +937,10 @@ class GrafeasRestTransport(_BaseGrafeasRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.grafeas.Note:
@@ -806,6 +950,7 @@ class GrafeasRestTransport(_BaseGrafeasRestTransport):
             """
 
             http_options = _BaseGrafeasRestTransport._BaseCreateNote._get_http_options()
+
             request, metadata = self._interceptor.pre_create_note(request, metadata)
             transcoded_request = (
                 _BaseGrafeasRestTransport._BaseCreateNote._get_transcoded_request(
@@ -823,6 +968,33 @@ class GrafeasRestTransport(_BaseGrafeasRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for grafeas_v1.GrafeasClient.CreateNote",
+                    extra={
+                        "serviceName": "grafeas.v1.Grafeas",
+                        "rpcName": "CreateNote",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = GrafeasRestTransport._CreateNote._get_response(
@@ -845,7 +1017,29 @@ class GrafeasRestTransport(_BaseGrafeasRestTransport):
             pb_resp = grafeas.Note.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_note(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = grafeas.Note.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for grafeas_v1.GrafeasClient.create_note",
+                    extra={
+                        "serviceName": "grafeas.v1.Grafeas",
+                        "rpcName": "CreateNote",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateOccurrence(
@@ -883,7 +1077,7 @@ class GrafeasRestTransport(_BaseGrafeasRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> grafeas.Occurrence:
             r"""Call the create occurrence method over HTTP.
 
@@ -893,8 +1087,10 @@ class GrafeasRestTransport(_BaseGrafeasRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.grafeas.Occurrence:
@@ -906,6 +1102,7 @@ class GrafeasRestTransport(_BaseGrafeasRestTransport):
             http_options = (
                 _BaseGrafeasRestTransport._BaseCreateOccurrence._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_occurrence(
                 request, metadata
             )
@@ -928,6 +1125,33 @@ class GrafeasRestTransport(_BaseGrafeasRestTransport):
                 )
             )
 
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for grafeas_v1.GrafeasClient.CreateOccurrence",
+                    extra={
+                        "serviceName": "grafeas.v1.Grafeas",
+                        "rpcName": "CreateOccurrence",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
             # Send the request
             response = GrafeasRestTransport._CreateOccurrence._get_response(
                 self._host,
@@ -949,7 +1173,29 @@ class GrafeasRestTransport(_BaseGrafeasRestTransport):
             pb_resp = grafeas.Occurrence.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_occurrence(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = grafeas.Occurrence.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for grafeas_v1.GrafeasClient.create_occurrence",
+                    extra={
+                        "serviceName": "grafeas.v1.Grafeas",
+                        "rpcName": "CreateOccurrence",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteNote(_BaseGrafeasRestTransport._BaseDeleteNote, GrafeasRestStub):
@@ -984,7 +1230,7 @@ class GrafeasRestTransport(_BaseGrafeasRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete note method over HTTP.
 
@@ -994,11 +1240,14 @@ class GrafeasRestTransport(_BaseGrafeasRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = _BaseGrafeasRestTransport._BaseDeleteNote._get_http_options()
+
             request, metadata = self._interceptor.pre_delete_note(request, metadata)
             transcoded_request = (
                 _BaseGrafeasRestTransport._BaseDeleteNote._get_transcoded_request(
@@ -1012,6 +1261,33 @@ class GrafeasRestTransport(_BaseGrafeasRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for grafeas_v1.GrafeasClient.DeleteNote",
+                    extra={
+                        "serviceName": "grafeas.v1.Grafeas",
+                        "rpcName": "DeleteNote",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = GrafeasRestTransport._DeleteNote._get_response(
@@ -1062,7 +1338,7 @@ class GrafeasRestTransport(_BaseGrafeasRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete occurrence method over HTTP.
 
@@ -1072,13 +1348,16 @@ class GrafeasRestTransport(_BaseGrafeasRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseGrafeasRestTransport._BaseDeleteOccurrence._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_occurrence(
                 request, metadata
             )
@@ -1094,6 +1373,33 @@ class GrafeasRestTransport(_BaseGrafeasRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for grafeas_v1.GrafeasClient.DeleteOccurrence",
+                    extra={
+                        "serviceName": "grafeas.v1.Grafeas",
+                        "rpcName": "DeleteOccurrence",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = GrafeasRestTransport._DeleteOccurrence._get_response(
@@ -1142,7 +1448,7 @@ class GrafeasRestTransport(_BaseGrafeasRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> grafeas.Note:
             r"""Call the get note method over HTTP.
 
@@ -1152,8 +1458,10 @@ class GrafeasRestTransport(_BaseGrafeasRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.grafeas.Note:
@@ -1163,6 +1471,7 @@ class GrafeasRestTransport(_BaseGrafeasRestTransport):
             """
 
             http_options = _BaseGrafeasRestTransport._BaseGetNote._get_http_options()
+
             request, metadata = self._interceptor.pre_get_note(request, metadata)
             transcoded_request = (
                 _BaseGrafeasRestTransport._BaseGetNote._get_transcoded_request(
@@ -1176,6 +1485,33 @@ class GrafeasRestTransport(_BaseGrafeasRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for grafeas_v1.GrafeasClient.GetNote",
+                    extra={
+                        "serviceName": "grafeas.v1.Grafeas",
+                        "rpcName": "GetNote",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = GrafeasRestTransport._GetNote._get_response(
@@ -1197,7 +1533,29 @@ class GrafeasRestTransport(_BaseGrafeasRestTransport):
             pb_resp = grafeas.Note.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_note(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = grafeas.Note.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for grafeas_v1.GrafeasClient.get_note",
+                    extra={
+                        "serviceName": "grafeas.v1.Grafeas",
+                        "rpcName": "GetNote",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetOccurrence(_BaseGrafeasRestTransport._BaseGetOccurrence, GrafeasRestStub):
@@ -1232,7 +1590,7 @@ class GrafeasRestTransport(_BaseGrafeasRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> grafeas.Occurrence:
             r"""Call the get occurrence method over HTTP.
 
@@ -1242,8 +1600,10 @@ class GrafeasRestTransport(_BaseGrafeasRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.grafeas.Occurrence:
@@ -1255,6 +1615,7 @@ class GrafeasRestTransport(_BaseGrafeasRestTransport):
             http_options = (
                 _BaseGrafeasRestTransport._BaseGetOccurrence._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_occurrence(request, metadata)
             transcoded_request = (
                 _BaseGrafeasRestTransport._BaseGetOccurrence._get_transcoded_request(
@@ -1268,6 +1629,33 @@ class GrafeasRestTransport(_BaseGrafeasRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for grafeas_v1.GrafeasClient.GetOccurrence",
+                    extra={
+                        "serviceName": "grafeas.v1.Grafeas",
+                        "rpcName": "GetOccurrence",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = GrafeasRestTransport._GetOccurrence._get_response(
@@ -1289,7 +1677,29 @@ class GrafeasRestTransport(_BaseGrafeasRestTransport):
             pb_resp = grafeas.Occurrence.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_occurrence(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = grafeas.Occurrence.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for grafeas_v1.GrafeasClient.get_occurrence",
+                    extra={
+                        "serviceName": "grafeas.v1.Grafeas",
+                        "rpcName": "GetOccurrence",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetOccurrenceNote(
@@ -1326,7 +1736,7 @@ class GrafeasRestTransport(_BaseGrafeasRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> grafeas.Note:
             r"""Call the get occurrence note method over HTTP.
 
@@ -1337,8 +1747,10 @@ class GrafeasRestTransport(_BaseGrafeasRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.grafeas.Note:
@@ -1350,6 +1762,7 @@ class GrafeasRestTransport(_BaseGrafeasRestTransport):
             http_options = (
                 _BaseGrafeasRestTransport._BaseGetOccurrenceNote._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_occurrence_note(
                 request, metadata
             )
@@ -1363,6 +1776,33 @@ class GrafeasRestTransport(_BaseGrafeasRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for grafeas_v1.GrafeasClient.GetOccurrenceNote",
+                    extra={
+                        "serviceName": "grafeas.v1.Grafeas",
+                        "rpcName": "GetOccurrenceNote",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = GrafeasRestTransport._GetOccurrenceNote._get_response(
@@ -1384,7 +1824,29 @@ class GrafeasRestTransport(_BaseGrafeasRestTransport):
             pb_resp = grafeas.Note.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_occurrence_note(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = grafeas.Note.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for grafeas_v1.GrafeasClient.get_occurrence_note",
+                    extra={
+                        "serviceName": "grafeas.v1.Grafeas",
+                        "rpcName": "GetOccurrenceNote",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListNoteOccurrences(
@@ -1421,7 +1883,7 @@ class GrafeasRestTransport(_BaseGrafeasRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> grafeas.ListNoteOccurrencesResponse:
             r"""Call the list note occurrences method over HTTP.
 
@@ -1432,8 +1894,10 @@ class GrafeasRestTransport(_BaseGrafeasRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.grafeas.ListNoteOccurrencesResponse:
@@ -1445,6 +1909,7 @@ class GrafeasRestTransport(_BaseGrafeasRestTransport):
             http_options = (
                 _BaseGrafeasRestTransport._BaseListNoteOccurrences._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_note_occurrences(
                 request, metadata
             )
@@ -1456,6 +1921,33 @@ class GrafeasRestTransport(_BaseGrafeasRestTransport):
             query_params = _BaseGrafeasRestTransport._BaseListNoteOccurrences._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for grafeas_v1.GrafeasClient.ListNoteOccurrences",
+                    extra={
+                        "serviceName": "grafeas.v1.Grafeas",
+                        "rpcName": "ListNoteOccurrences",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = GrafeasRestTransport._ListNoteOccurrences._get_response(
@@ -1477,7 +1969,31 @@ class GrafeasRestTransport(_BaseGrafeasRestTransport):
             pb_resp = grafeas.ListNoteOccurrencesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_note_occurrences(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = grafeas.ListNoteOccurrencesResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for grafeas_v1.GrafeasClient.list_note_occurrences",
+                    extra={
+                        "serviceName": "grafeas.v1.Grafeas",
+                        "rpcName": "ListNoteOccurrences",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListNotes(_BaseGrafeasRestTransport._BaseListNotes, GrafeasRestStub):
@@ -1512,7 +2028,7 @@ class GrafeasRestTransport(_BaseGrafeasRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> grafeas.ListNotesResponse:
             r"""Call the list notes method over HTTP.
 
@@ -1522,8 +2038,10 @@ class GrafeasRestTransport(_BaseGrafeasRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.grafeas.ListNotesResponse:
@@ -1531,6 +2049,7 @@ class GrafeasRestTransport(_BaseGrafeasRestTransport):
             """
 
             http_options = _BaseGrafeasRestTransport._BaseListNotes._get_http_options()
+
             request, metadata = self._interceptor.pre_list_notes(request, metadata)
             transcoded_request = (
                 _BaseGrafeasRestTransport._BaseListNotes._get_transcoded_request(
@@ -1544,6 +2063,33 @@ class GrafeasRestTransport(_BaseGrafeasRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for grafeas_v1.GrafeasClient.ListNotes",
+                    extra={
+                        "serviceName": "grafeas.v1.Grafeas",
+                        "rpcName": "ListNotes",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = GrafeasRestTransport._ListNotes._get_response(
@@ -1565,7 +2111,29 @@ class GrafeasRestTransport(_BaseGrafeasRestTransport):
             pb_resp = grafeas.ListNotesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_notes(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = grafeas.ListNotesResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for grafeas_v1.GrafeasClient.list_notes",
+                    extra={
+                        "serviceName": "grafeas.v1.Grafeas",
+                        "rpcName": "ListNotes",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListOccurrences(
@@ -1602,7 +2170,7 @@ class GrafeasRestTransport(_BaseGrafeasRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> grafeas.ListOccurrencesResponse:
             r"""Call the list occurrences method over HTTP.
 
@@ -1612,8 +2180,10 @@ class GrafeasRestTransport(_BaseGrafeasRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.grafeas.ListOccurrencesResponse:
@@ -1623,6 +2193,7 @@ class GrafeasRestTransport(_BaseGrafeasRestTransport):
             http_options = (
                 _BaseGrafeasRestTransport._BaseListOccurrences._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_occurrences(
                 request, metadata
             )
@@ -1638,6 +2209,33 @@ class GrafeasRestTransport(_BaseGrafeasRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for grafeas_v1.GrafeasClient.ListOccurrences",
+                    extra={
+                        "serviceName": "grafeas.v1.Grafeas",
+                        "rpcName": "ListOccurrences",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = GrafeasRestTransport._ListOccurrences._get_response(
@@ -1659,7 +2257,29 @@ class GrafeasRestTransport(_BaseGrafeasRestTransport):
             pb_resp = grafeas.ListOccurrencesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_occurrences(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = grafeas.ListOccurrencesResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for grafeas_v1.GrafeasClient.list_occurrences",
+                    extra={
+                        "serviceName": "grafeas.v1.Grafeas",
+                        "rpcName": "ListOccurrences",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateNote(_BaseGrafeasRestTransport._BaseUpdateNote, GrafeasRestStub):
@@ -1695,7 +2315,7 @@ class GrafeasRestTransport(_BaseGrafeasRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> grafeas.Note:
             r"""Call the update note method over HTTP.
 
@@ -1705,8 +2325,10 @@ class GrafeasRestTransport(_BaseGrafeasRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.grafeas.Note:
@@ -1716,6 +2338,7 @@ class GrafeasRestTransport(_BaseGrafeasRestTransport):
             """
 
             http_options = _BaseGrafeasRestTransport._BaseUpdateNote._get_http_options()
+
             request, metadata = self._interceptor.pre_update_note(request, metadata)
             transcoded_request = (
                 _BaseGrafeasRestTransport._BaseUpdateNote._get_transcoded_request(
@@ -1733,6 +2356,33 @@ class GrafeasRestTransport(_BaseGrafeasRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for grafeas_v1.GrafeasClient.UpdateNote",
+                    extra={
+                        "serviceName": "grafeas.v1.Grafeas",
+                        "rpcName": "UpdateNote",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = GrafeasRestTransport._UpdateNote._get_response(
@@ -1755,7 +2405,29 @@ class GrafeasRestTransport(_BaseGrafeasRestTransport):
             pb_resp = grafeas.Note.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_note(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = grafeas.Note.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for grafeas_v1.GrafeasClient.update_note",
+                    extra={
+                        "serviceName": "grafeas.v1.Grafeas",
+                        "rpcName": "UpdateNote",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateOccurrence(
@@ -1793,7 +2465,7 @@ class GrafeasRestTransport(_BaseGrafeasRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> grafeas.Occurrence:
             r"""Call the update occurrence method over HTTP.
 
@@ -1803,8 +2475,10 @@ class GrafeasRestTransport(_BaseGrafeasRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.grafeas.Occurrence:
@@ -1816,6 +2490,7 @@ class GrafeasRestTransport(_BaseGrafeasRestTransport):
             http_options = (
                 _BaseGrafeasRestTransport._BaseUpdateOccurrence._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_occurrence(
                 request, metadata
             )
@@ -1838,6 +2513,33 @@ class GrafeasRestTransport(_BaseGrafeasRestTransport):
                 )
             )
 
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for grafeas_v1.GrafeasClient.UpdateOccurrence",
+                    extra={
+                        "serviceName": "grafeas.v1.Grafeas",
+                        "rpcName": "UpdateOccurrence",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
             # Send the request
             response = GrafeasRestTransport._UpdateOccurrence._get_response(
                 self._host,
@@ -1859,7 +2561,29 @@ class GrafeasRestTransport(_BaseGrafeasRestTransport):
             pb_resp = grafeas.Occurrence.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_occurrence(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = grafeas.Occurrence.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for grafeas_v1.GrafeasClient.update_occurrence",
+                    extra={
+                        "serviceName": "grafeas.v1.Grafeas",
+                        "rpcName": "UpdateOccurrence",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property

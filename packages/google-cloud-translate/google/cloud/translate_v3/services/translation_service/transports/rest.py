@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -47,6 +47,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -371,8 +379,10 @@ class TranslationServiceRestInterceptor:
     def pre_adaptive_mt_translate(
         self,
         request: adaptive_mt.AdaptiveMtTranslateRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[adaptive_mt.AdaptiveMtTranslateRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        adaptive_mt.AdaptiveMtTranslateRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for adaptive_mt_translate
 
         Override in a subclass to manipulate the request or metadata
@@ -394,9 +404,10 @@ class TranslationServiceRestInterceptor:
     def pre_batch_translate_document(
         self,
         request: translation_service.BatchTranslateDocumentRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        translation_service.BatchTranslateDocumentRequest, Sequence[Tuple[str, str]]
+        translation_service.BatchTranslateDocumentRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for batch_translate_document
 
@@ -419,9 +430,10 @@ class TranslationServiceRestInterceptor:
     def pre_batch_translate_text(
         self,
         request: translation_service.BatchTranslateTextRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        translation_service.BatchTranslateTextRequest, Sequence[Tuple[str, str]]
+        translation_service.BatchTranslateTextRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for batch_translate_text
 
@@ -444,8 +456,11 @@ class TranslationServiceRestInterceptor:
     def pre_create_adaptive_mt_dataset(
         self,
         request: adaptive_mt.CreateAdaptiveMtDatasetRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[adaptive_mt.CreateAdaptiveMtDatasetRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        adaptive_mt.CreateAdaptiveMtDatasetRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for create_adaptive_mt_dataset
 
         Override in a subclass to manipulate the request or metadata
@@ -467,8 +482,10 @@ class TranslationServiceRestInterceptor:
     def pre_create_dataset(
         self,
         request: automl_translation.CreateDatasetRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[automl_translation.CreateDatasetRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        automl_translation.CreateDatasetRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_dataset
 
         Override in a subclass to manipulate the request or metadata
@@ -490,8 +507,11 @@ class TranslationServiceRestInterceptor:
     def pre_create_glossary(
         self,
         request: translation_service.CreateGlossaryRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[translation_service.CreateGlossaryRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        translation_service.CreateGlossaryRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for create_glossary
 
         Override in a subclass to manipulate the request or metadata
@@ -513,9 +533,10 @@ class TranslationServiceRestInterceptor:
     def pre_create_glossary_entry(
         self,
         request: translation_service.CreateGlossaryEntryRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        translation_service.CreateGlossaryEntryRequest, Sequence[Tuple[str, str]]
+        translation_service.CreateGlossaryEntryRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for create_glossary_entry
 
@@ -538,8 +559,10 @@ class TranslationServiceRestInterceptor:
     def pre_create_model(
         self,
         request: automl_translation.CreateModelRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[automl_translation.CreateModelRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        automl_translation.CreateModelRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_model
 
         Override in a subclass to manipulate the request or metadata
@@ -561,8 +584,11 @@ class TranslationServiceRestInterceptor:
     def pre_delete_adaptive_mt_dataset(
         self,
         request: adaptive_mt.DeleteAdaptiveMtDatasetRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[adaptive_mt.DeleteAdaptiveMtDatasetRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        adaptive_mt.DeleteAdaptiveMtDatasetRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for delete_adaptive_mt_dataset
 
         Override in a subclass to manipulate the request or metadata
@@ -573,8 +599,10 @@ class TranslationServiceRestInterceptor:
     def pre_delete_adaptive_mt_file(
         self,
         request: adaptive_mt.DeleteAdaptiveMtFileRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[adaptive_mt.DeleteAdaptiveMtFileRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        adaptive_mt.DeleteAdaptiveMtFileRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_adaptive_mt_file
 
         Override in a subclass to manipulate the request or metadata
@@ -585,8 +613,10 @@ class TranslationServiceRestInterceptor:
     def pre_delete_dataset(
         self,
         request: automl_translation.DeleteDatasetRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[automl_translation.DeleteDatasetRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        automl_translation.DeleteDatasetRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_dataset
 
         Override in a subclass to manipulate the request or metadata
@@ -608,8 +638,11 @@ class TranslationServiceRestInterceptor:
     def pre_delete_glossary(
         self,
         request: translation_service.DeleteGlossaryRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[translation_service.DeleteGlossaryRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        translation_service.DeleteGlossaryRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for delete_glossary
 
         Override in a subclass to manipulate the request or metadata
@@ -631,9 +664,10 @@ class TranslationServiceRestInterceptor:
     def pre_delete_glossary_entry(
         self,
         request: translation_service.DeleteGlossaryEntryRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        translation_service.DeleteGlossaryEntryRequest, Sequence[Tuple[str, str]]
+        translation_service.DeleteGlossaryEntryRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for delete_glossary_entry
 
@@ -645,8 +679,10 @@ class TranslationServiceRestInterceptor:
     def pre_delete_model(
         self,
         request: automl_translation.DeleteModelRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[automl_translation.DeleteModelRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        automl_translation.DeleteModelRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_model
 
         Override in a subclass to manipulate the request or metadata
@@ -668,8 +704,11 @@ class TranslationServiceRestInterceptor:
     def pre_detect_language(
         self,
         request: translation_service.DetectLanguageRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[translation_service.DetectLanguageRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        translation_service.DetectLanguageRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for detect_language
 
         Override in a subclass to manipulate the request or metadata
@@ -691,8 +730,10 @@ class TranslationServiceRestInterceptor:
     def pre_export_data(
         self,
         request: automl_translation.ExportDataRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[automl_translation.ExportDataRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        automl_translation.ExportDataRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for export_data
 
         Override in a subclass to manipulate the request or metadata
@@ -714,8 +755,10 @@ class TranslationServiceRestInterceptor:
     def pre_get_adaptive_mt_dataset(
         self,
         request: adaptive_mt.GetAdaptiveMtDatasetRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[adaptive_mt.GetAdaptiveMtDatasetRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        adaptive_mt.GetAdaptiveMtDatasetRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_adaptive_mt_dataset
 
         Override in a subclass to manipulate the request or metadata
@@ -737,8 +780,10 @@ class TranslationServiceRestInterceptor:
     def pre_get_adaptive_mt_file(
         self,
         request: adaptive_mt.GetAdaptiveMtFileRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[adaptive_mt.GetAdaptiveMtFileRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        adaptive_mt.GetAdaptiveMtFileRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_adaptive_mt_file
 
         Override in a subclass to manipulate the request or metadata
@@ -760,8 +805,10 @@ class TranslationServiceRestInterceptor:
     def pre_get_dataset(
         self,
         request: automl_translation.GetDatasetRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[automl_translation.GetDatasetRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        automl_translation.GetDatasetRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_dataset
 
         Override in a subclass to manipulate the request or metadata
@@ -783,8 +830,10 @@ class TranslationServiceRestInterceptor:
     def pre_get_glossary(
         self,
         request: translation_service.GetGlossaryRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[translation_service.GetGlossaryRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        translation_service.GetGlossaryRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_glossary
 
         Override in a subclass to manipulate the request or metadata
@@ -806,8 +855,11 @@ class TranslationServiceRestInterceptor:
     def pre_get_glossary_entry(
         self,
         request: translation_service.GetGlossaryEntryRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[translation_service.GetGlossaryEntryRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        translation_service.GetGlossaryEntryRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for get_glossary_entry
 
         Override in a subclass to manipulate the request or metadata
@@ -829,8 +881,10 @@ class TranslationServiceRestInterceptor:
     def pre_get_model(
         self,
         request: automl_translation.GetModelRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[automl_translation.GetModelRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        automl_translation.GetModelRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_model
 
         Override in a subclass to manipulate the request or metadata
@@ -852,9 +906,10 @@ class TranslationServiceRestInterceptor:
     def pre_get_supported_languages(
         self,
         request: translation_service.GetSupportedLanguagesRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        translation_service.GetSupportedLanguagesRequest, Sequence[Tuple[str, str]]
+        translation_service.GetSupportedLanguagesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for get_supported_languages
 
@@ -877,8 +932,10 @@ class TranslationServiceRestInterceptor:
     def pre_import_adaptive_mt_file(
         self,
         request: adaptive_mt.ImportAdaptiveMtFileRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[adaptive_mt.ImportAdaptiveMtFileRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        adaptive_mt.ImportAdaptiveMtFileRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for import_adaptive_mt_file
 
         Override in a subclass to manipulate the request or metadata
@@ -900,8 +957,10 @@ class TranslationServiceRestInterceptor:
     def pre_import_data(
         self,
         request: automl_translation.ImportDataRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[automl_translation.ImportDataRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        automl_translation.ImportDataRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for import_data
 
         Override in a subclass to manipulate the request or metadata
@@ -923,8 +982,11 @@ class TranslationServiceRestInterceptor:
     def pre_list_adaptive_mt_datasets(
         self,
         request: adaptive_mt.ListAdaptiveMtDatasetsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[adaptive_mt.ListAdaptiveMtDatasetsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        adaptive_mt.ListAdaptiveMtDatasetsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for list_adaptive_mt_datasets
 
         Override in a subclass to manipulate the request or metadata
@@ -946,8 +1008,10 @@ class TranslationServiceRestInterceptor:
     def pre_list_adaptive_mt_files(
         self,
         request: adaptive_mt.ListAdaptiveMtFilesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[adaptive_mt.ListAdaptiveMtFilesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        adaptive_mt.ListAdaptiveMtFilesRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_adaptive_mt_files
 
         Override in a subclass to manipulate the request or metadata
@@ -969,8 +1033,11 @@ class TranslationServiceRestInterceptor:
     def pre_list_adaptive_mt_sentences(
         self,
         request: adaptive_mt.ListAdaptiveMtSentencesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[adaptive_mt.ListAdaptiveMtSentencesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        adaptive_mt.ListAdaptiveMtSentencesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for list_adaptive_mt_sentences
 
         Override in a subclass to manipulate the request or metadata
@@ -992,8 +1059,10 @@ class TranslationServiceRestInterceptor:
     def pre_list_datasets(
         self,
         request: automl_translation.ListDatasetsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[automl_translation.ListDatasetsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        automl_translation.ListDatasetsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_datasets
 
         Override in a subclass to manipulate the request or metadata
@@ -1015,8 +1084,10 @@ class TranslationServiceRestInterceptor:
     def pre_list_examples(
         self,
         request: automl_translation.ListExamplesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[automl_translation.ListExamplesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        automl_translation.ListExamplesRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_examples
 
         Override in a subclass to manipulate the request or metadata
@@ -1038,8 +1109,11 @@ class TranslationServiceRestInterceptor:
     def pre_list_glossaries(
         self,
         request: translation_service.ListGlossariesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[translation_service.ListGlossariesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        translation_service.ListGlossariesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for list_glossaries
 
         Override in a subclass to manipulate the request or metadata
@@ -1061,9 +1135,10 @@ class TranslationServiceRestInterceptor:
     def pre_list_glossary_entries(
         self,
         request: translation_service.ListGlossaryEntriesRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        translation_service.ListGlossaryEntriesRequest, Sequence[Tuple[str, str]]
+        translation_service.ListGlossaryEntriesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for list_glossary_entries
 
@@ -1086,8 +1161,10 @@ class TranslationServiceRestInterceptor:
     def pre_list_models(
         self,
         request: automl_translation.ListModelsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[automl_translation.ListModelsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        automl_translation.ListModelsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_models
 
         Override in a subclass to manipulate the request or metadata
@@ -1109,8 +1186,10 @@ class TranslationServiceRestInterceptor:
     def pre_romanize_text(
         self,
         request: translation_service.RomanizeTextRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[translation_service.RomanizeTextRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        translation_service.RomanizeTextRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for romanize_text
 
         Override in a subclass to manipulate the request or metadata
@@ -1132,8 +1211,11 @@ class TranslationServiceRestInterceptor:
     def pre_translate_document(
         self,
         request: translation_service.TranslateDocumentRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[translation_service.TranslateDocumentRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        translation_service.TranslateDocumentRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for translate_document
 
         Override in a subclass to manipulate the request or metadata
@@ -1155,8 +1237,11 @@ class TranslationServiceRestInterceptor:
     def pre_translate_text(
         self,
         request: translation_service.TranslateTextRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[translation_service.TranslateTextRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        translation_service.TranslateTextRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for translate_text
 
         Override in a subclass to manipulate the request or metadata
@@ -1178,8 +1263,11 @@ class TranslationServiceRestInterceptor:
     def pre_update_glossary(
         self,
         request: translation_service.UpdateGlossaryRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[translation_service.UpdateGlossaryRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        translation_service.UpdateGlossaryRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for update_glossary
 
         Override in a subclass to manipulate the request or metadata
@@ -1201,9 +1289,10 @@ class TranslationServiceRestInterceptor:
     def pre_update_glossary_entry(
         self,
         request: translation_service.UpdateGlossaryEntryRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        translation_service.UpdateGlossaryEntryRequest, Sequence[Tuple[str, str]]
+        translation_service.UpdateGlossaryEntryRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for update_glossary_entry
 
@@ -1226,8 +1315,10 @@ class TranslationServiceRestInterceptor:
     def pre_get_location(
         self,
         request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -1249,8 +1340,10 @@ class TranslationServiceRestInterceptor:
     def pre_list_locations(
         self,
         request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -1272,8 +1365,10 @@ class TranslationServiceRestInterceptor:
     def pre_cancel_operation(
         self,
         request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1293,8 +1388,10 @@ class TranslationServiceRestInterceptor:
     def pre_delete_operation(
         self,
         request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1314,8 +1411,10 @@ class TranslationServiceRestInterceptor:
     def pre_get_operation(
         self,
         request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1337,8 +1436,10 @@ class TranslationServiceRestInterceptor:
     def pre_list_operations(
         self,
         request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -1360,8 +1461,10 @@ class TranslationServiceRestInterceptor:
     def pre_wait_operation(
         self,
         request: operations_pb2.WaitOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.WaitOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.WaitOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for wait_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1564,7 +1667,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> adaptive_mt.AdaptiveMtTranslateResponse:
             r"""Call the adaptive mt translate method over HTTP.
 
@@ -1575,8 +1678,10 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.adaptive_mt.AdaptiveMtTranslateResponse:
@@ -1586,6 +1691,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             http_options = (
                 _BaseTranslationServiceRestTransport._BaseAdaptiveMtTranslate._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_adaptive_mt_translate(
                 request, metadata
             )
@@ -1601,6 +1707,33 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             query_params = _BaseTranslationServiceRestTransport._BaseAdaptiveMtTranslate._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.translation_v3.TranslationServiceClient.AdaptiveMtTranslate",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3.TranslationService",
+                        "rpcName": "AdaptiveMtTranslate",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1625,7 +1758,31 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             pb_resp = adaptive_mt.AdaptiveMtTranslateResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_adaptive_mt_translate(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = adaptive_mt.AdaptiveMtTranslateResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.translation_v3.TranslationServiceClient.adaptive_mt_translate",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3.TranslationService",
+                        "rpcName": "AdaptiveMtTranslate",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _BatchTranslateDocument(
@@ -1664,7 +1821,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the batch translate document method over HTTP.
 
@@ -1674,8 +1831,10 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1688,6 +1847,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             http_options = (
                 _BaseTranslationServiceRestTransport._BaseBatchTranslateDocument._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_batch_translate_document(
                 request, metadata
             )
@@ -1703,6 +1863,33 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             query_params = _BaseTranslationServiceRestTransport._BaseBatchTranslateDocument._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.translation_v3.TranslationServiceClient.BatchTranslateDocument",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3.TranslationService",
+                        "rpcName": "BatchTranslateDocument",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1725,7 +1912,29 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_batch_translate_document(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.translation_v3.TranslationServiceClient.batch_translate_document",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3.TranslationService",
+                        "rpcName": "BatchTranslateDocument",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _BatchTranslateText(
@@ -1764,7 +1973,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the batch translate text method over HTTP.
 
@@ -1774,8 +1983,10 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1788,6 +1999,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             http_options = (
                 _BaseTranslationServiceRestTransport._BaseBatchTranslateText._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_batch_translate_text(
                 request, metadata
             )
@@ -1803,6 +2015,33 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             query_params = _BaseTranslationServiceRestTransport._BaseBatchTranslateText._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.translation_v3.TranslationServiceClient.BatchTranslateText",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3.TranslationService",
+                        "rpcName": "BatchTranslateText",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1825,7 +2064,29 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_batch_translate_text(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.translation_v3.TranslationServiceClient.batch_translate_text",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3.TranslationService",
+                        "rpcName": "BatchTranslateText",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateAdaptiveMtDataset(
@@ -1864,7 +2125,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> adaptive_mt.AdaptiveMtDataset:
             r"""Call the create adaptive mt
             dataset method over HTTP.
@@ -1876,8 +2137,10 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.adaptive_mt.AdaptiveMtDataset:
@@ -1887,6 +2150,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             http_options = (
                 _BaseTranslationServiceRestTransport._BaseCreateAdaptiveMtDataset._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_adaptive_mt_dataset(
                 request, metadata
             )
@@ -1902,6 +2166,33 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             query_params = _BaseTranslationServiceRestTransport._BaseCreateAdaptiveMtDataset._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.translation_v3.TranslationServiceClient.CreateAdaptiveMtDataset",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3.TranslationService",
+                        "rpcName": "CreateAdaptiveMtDataset",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1926,7 +2217,29 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             pb_resp = adaptive_mt.AdaptiveMtDataset.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_adaptive_mt_dataset(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = adaptive_mt.AdaptiveMtDataset.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.translation_v3.TranslationServiceClient.create_adaptive_mt_dataset",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3.TranslationService",
+                        "rpcName": "CreateAdaptiveMtDataset",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateDataset(
@@ -1965,7 +2278,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create dataset method over HTTP.
 
@@ -1975,8 +2288,10 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1989,6 +2304,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             http_options = (
                 _BaseTranslationServiceRestTransport._BaseCreateDataset._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_dataset(request, metadata)
             transcoded_request = _BaseTranslationServiceRestTransport._BaseCreateDataset._get_transcoded_request(
                 http_options, request
@@ -2002,6 +2318,33 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             query_params = _BaseTranslationServiceRestTransport._BaseCreateDataset._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.translation_v3.TranslationServiceClient.CreateDataset",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3.TranslationService",
+                        "rpcName": "CreateDataset",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TranslationServiceRestTransport._CreateDataset._get_response(
@@ -2022,7 +2365,29 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_dataset(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.translation_v3.TranslationServiceClient.create_dataset",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3.TranslationService",
+                        "rpcName": "CreateDataset",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateGlossary(
@@ -2061,7 +2426,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create glossary method over HTTP.
 
@@ -2071,8 +2436,10 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2085,6 +2452,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             http_options = (
                 _BaseTranslationServiceRestTransport._BaseCreateGlossary._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_glossary(request, metadata)
             transcoded_request = _BaseTranslationServiceRestTransport._BaseCreateGlossary._get_transcoded_request(
                 http_options, request
@@ -2098,6 +2466,33 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             query_params = _BaseTranslationServiceRestTransport._BaseCreateGlossary._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.translation_v3.TranslationServiceClient.CreateGlossary",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3.TranslationService",
+                        "rpcName": "CreateGlossary",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TranslationServiceRestTransport._CreateGlossary._get_response(
@@ -2118,7 +2513,29 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_glossary(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.translation_v3.TranslationServiceClient.create_glossary",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3.TranslationService",
+                        "rpcName": "CreateGlossary",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateGlossaryEntry(
@@ -2157,7 +2574,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> common.GlossaryEntry:
             r"""Call the create glossary entry method over HTTP.
 
@@ -2168,8 +2585,10 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.common.GlossaryEntry:
@@ -2181,6 +2600,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             http_options = (
                 _BaseTranslationServiceRestTransport._BaseCreateGlossaryEntry._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_glossary_entry(
                 request, metadata
             )
@@ -2196,6 +2616,33 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             query_params = _BaseTranslationServiceRestTransport._BaseCreateGlossaryEntry._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.translation_v3.TranslationServiceClient.CreateGlossaryEntry",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3.TranslationService",
+                        "rpcName": "CreateGlossaryEntry",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -2220,7 +2667,29 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             pb_resp = common.GlossaryEntry.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_glossary_entry(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = common.GlossaryEntry.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.translation_v3.TranslationServiceClient.create_glossary_entry",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3.TranslationService",
+                        "rpcName": "CreateGlossaryEntry",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateModel(
@@ -2259,7 +2728,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create model method over HTTP.
 
@@ -2269,8 +2738,10 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2283,6 +2754,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             http_options = (
                 _BaseTranslationServiceRestTransport._BaseCreateModel._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_model(request, metadata)
             transcoded_request = _BaseTranslationServiceRestTransport._BaseCreateModel._get_transcoded_request(
                 http_options, request
@@ -2296,6 +2768,33 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             query_params = _BaseTranslationServiceRestTransport._BaseCreateModel._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.translation_v3.TranslationServiceClient.CreateModel",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3.TranslationService",
+                        "rpcName": "CreateModel",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TranslationServiceRestTransport._CreateModel._get_response(
@@ -2316,7 +2815,29 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_model(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.translation_v3.TranslationServiceClient.create_model",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3.TranslationService",
+                        "rpcName": "CreateModel",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteAdaptiveMtDataset(
@@ -2354,7 +2875,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete adaptive mt
             dataset method over HTTP.
@@ -2366,13 +2887,16 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
             """
 
             http_options = (
                 _BaseTranslationServiceRestTransport._BaseDeleteAdaptiveMtDataset._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_adaptive_mt_dataset(
                 request, metadata
             )
@@ -2384,6 +2908,33 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             query_params = _BaseTranslationServiceRestTransport._BaseDeleteAdaptiveMtDataset._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.translation_v3.TranslationServiceClient.DeleteAdaptiveMtDataset",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3.TranslationService",
+                        "rpcName": "DeleteAdaptiveMtDataset",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -2437,7 +2988,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete adaptive mt file method over HTTP.
 
@@ -2448,13 +2999,16 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseTranslationServiceRestTransport._BaseDeleteAdaptiveMtFile._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_adaptive_mt_file(
                 request, metadata
             )
@@ -2466,6 +3020,33 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             query_params = _BaseTranslationServiceRestTransport._BaseDeleteAdaptiveMtFile._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.translation_v3.TranslationServiceClient.DeleteAdaptiveMtFile",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3.TranslationService",
+                        "rpcName": "DeleteAdaptiveMtFile",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -2519,7 +3100,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete dataset method over HTTP.
 
@@ -2529,8 +3110,10 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2543,6 +3126,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             http_options = (
                 _BaseTranslationServiceRestTransport._BaseDeleteDataset._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_dataset(request, metadata)
             transcoded_request = _BaseTranslationServiceRestTransport._BaseDeleteDataset._get_transcoded_request(
                 http_options, request
@@ -2552,6 +3136,33 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             query_params = _BaseTranslationServiceRestTransport._BaseDeleteDataset._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.translation_v3.TranslationServiceClient.DeleteDataset",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3.TranslationService",
+                        "rpcName": "DeleteDataset",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TranslationServiceRestTransport._DeleteDataset._get_response(
@@ -2571,7 +3182,29 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_dataset(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.translation_v3.TranslationServiceClient.delete_dataset",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3.TranslationService",
+                        "rpcName": "DeleteDataset",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteGlossary(
@@ -2609,7 +3242,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete glossary method over HTTP.
 
@@ -2619,8 +3252,10 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2633,6 +3268,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             http_options = (
                 _BaseTranslationServiceRestTransport._BaseDeleteGlossary._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_glossary(request, metadata)
             transcoded_request = _BaseTranslationServiceRestTransport._BaseDeleteGlossary._get_transcoded_request(
                 http_options, request
@@ -2642,6 +3278,33 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             query_params = _BaseTranslationServiceRestTransport._BaseDeleteGlossary._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.translation_v3.TranslationServiceClient.DeleteGlossary",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3.TranslationService",
+                        "rpcName": "DeleteGlossary",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TranslationServiceRestTransport._DeleteGlossary._get_response(
@@ -2661,7 +3324,29 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_glossary(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.translation_v3.TranslationServiceClient.delete_glossary",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3.TranslationService",
+                        "rpcName": "DeleteGlossary",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteGlossaryEntry(
@@ -2699,7 +3384,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete glossary entry method over HTTP.
 
@@ -2710,13 +3395,16 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseTranslationServiceRestTransport._BaseDeleteGlossaryEntry._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_glossary_entry(
                 request, metadata
             )
@@ -2728,6 +3416,33 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             query_params = _BaseTranslationServiceRestTransport._BaseDeleteGlossaryEntry._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.translation_v3.TranslationServiceClient.DeleteGlossaryEntry",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3.TranslationService",
+                        "rpcName": "DeleteGlossaryEntry",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -2781,7 +3496,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete model method over HTTP.
 
@@ -2791,8 +3506,10 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2805,6 +3522,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             http_options = (
                 _BaseTranslationServiceRestTransport._BaseDeleteModel._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_model(request, metadata)
             transcoded_request = _BaseTranslationServiceRestTransport._BaseDeleteModel._get_transcoded_request(
                 http_options, request
@@ -2814,6 +3532,33 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             query_params = _BaseTranslationServiceRestTransport._BaseDeleteModel._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.translation_v3.TranslationServiceClient.DeleteModel",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3.TranslationService",
+                        "rpcName": "DeleteModel",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TranslationServiceRestTransport._DeleteModel._get_response(
@@ -2833,7 +3578,29 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_model(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.translation_v3.TranslationServiceClient.delete_model",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3.TranslationService",
+                        "rpcName": "DeleteModel",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DetectLanguage(
@@ -2872,7 +3639,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> translation_service.DetectLanguageResponse:
             r"""Call the detect language method over HTTP.
 
@@ -2883,8 +3650,10 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.translation_service.DetectLanguageResponse:
@@ -2896,6 +3665,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             http_options = (
                 _BaseTranslationServiceRestTransport._BaseDetectLanguage._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_detect_language(request, metadata)
             transcoded_request = _BaseTranslationServiceRestTransport._BaseDetectLanguage._get_transcoded_request(
                 http_options, request
@@ -2909,6 +3679,33 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             query_params = _BaseTranslationServiceRestTransport._BaseDetectLanguage._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.translation_v3.TranslationServiceClient.DetectLanguage",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3.TranslationService",
+                        "rpcName": "DetectLanguage",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TranslationServiceRestTransport._DetectLanguage._get_response(
@@ -2931,7 +3728,31 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             pb_resp = translation_service.DetectLanguageResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_detect_language(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        translation_service.DetectLanguageResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.translation_v3.TranslationServiceClient.detect_language",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3.TranslationService",
+                        "rpcName": "DetectLanguage",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ExportData(
@@ -2969,7 +3790,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the export data method over HTTP.
 
@@ -2979,8 +3800,10 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2993,6 +3816,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             http_options = (
                 _BaseTranslationServiceRestTransport._BaseExportData._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_export_data(request, metadata)
             transcoded_request = _BaseTranslationServiceRestTransport._BaseExportData._get_transcoded_request(
                 http_options, request
@@ -3006,6 +3830,33 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             query_params = _BaseTranslationServiceRestTransport._BaseExportData._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.translation_v3.TranslationServiceClient.ExportData",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3.TranslationService",
+                        "rpcName": "ExportData",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TranslationServiceRestTransport._ExportData._get_response(
@@ -3026,7 +3877,29 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_export_data(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.translation_v3.TranslationServiceClient.export_data",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3.TranslationService",
+                        "rpcName": "ExportData",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetAdaptiveMtDataset(
@@ -3064,7 +3937,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> adaptive_mt.AdaptiveMtDataset:
             r"""Call the get adaptive mt dataset method over HTTP.
 
@@ -3075,8 +3948,10 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.adaptive_mt.AdaptiveMtDataset:
@@ -3086,6 +3961,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             http_options = (
                 _BaseTranslationServiceRestTransport._BaseGetAdaptiveMtDataset._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_adaptive_mt_dataset(
                 request, metadata
             )
@@ -3097,6 +3973,33 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             query_params = _BaseTranslationServiceRestTransport._BaseGetAdaptiveMtDataset._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.translation_v3.TranslationServiceClient.GetAdaptiveMtDataset",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3.TranslationService",
+                        "rpcName": "GetAdaptiveMtDataset",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -3120,7 +4023,29 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             pb_resp = adaptive_mt.AdaptiveMtDataset.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_adaptive_mt_dataset(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = adaptive_mt.AdaptiveMtDataset.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.translation_v3.TranslationServiceClient.get_adaptive_mt_dataset",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3.TranslationService",
+                        "rpcName": "GetAdaptiveMtDataset",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetAdaptiveMtFile(
@@ -3158,7 +4083,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> adaptive_mt.AdaptiveMtFile:
             r"""Call the get adaptive mt file method over HTTP.
 
@@ -3169,8 +4094,10 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.adaptive_mt.AdaptiveMtFile:
@@ -3180,6 +4107,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             http_options = (
                 _BaseTranslationServiceRestTransport._BaseGetAdaptiveMtFile._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_adaptive_mt_file(
                 request, metadata
             )
@@ -3191,6 +4119,33 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             query_params = _BaseTranslationServiceRestTransport._BaseGetAdaptiveMtFile._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.translation_v3.TranslationServiceClient.GetAdaptiveMtFile",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3.TranslationService",
+                        "rpcName": "GetAdaptiveMtFile",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TranslationServiceRestTransport._GetAdaptiveMtFile._get_response(
@@ -3212,7 +4167,29 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             pb_resp = adaptive_mt.AdaptiveMtFile.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_adaptive_mt_file(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = adaptive_mt.AdaptiveMtFile.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.translation_v3.TranslationServiceClient.get_adaptive_mt_file",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3.TranslationService",
+                        "rpcName": "GetAdaptiveMtFile",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetDataset(
@@ -3249,7 +4226,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> automl_translation.Dataset:
             r"""Call the get dataset method over HTTP.
 
@@ -3259,8 +4236,10 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.automl_translation.Dataset:
@@ -3273,6 +4252,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             http_options = (
                 _BaseTranslationServiceRestTransport._BaseGetDataset._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_dataset(request, metadata)
             transcoded_request = _BaseTranslationServiceRestTransport._BaseGetDataset._get_transcoded_request(
                 http_options, request
@@ -3282,6 +4262,33 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             query_params = _BaseTranslationServiceRestTransport._BaseGetDataset._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.translation_v3.TranslationServiceClient.GetDataset",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3.TranslationService",
+                        "rpcName": "GetDataset",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TranslationServiceRestTransport._GetDataset._get_response(
@@ -3303,7 +4310,29 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             pb_resp = automl_translation.Dataset.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_dataset(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = automl_translation.Dataset.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.translation_v3.TranslationServiceClient.get_dataset",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3.TranslationService",
+                        "rpcName": "GetDataset",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetGlossary(
@@ -3341,7 +4370,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> translation_service.Glossary:
             r"""Call the get glossary method over HTTP.
 
@@ -3351,8 +4380,10 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.translation_service.Glossary:
@@ -3364,6 +4395,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             http_options = (
                 _BaseTranslationServiceRestTransport._BaseGetGlossary._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_glossary(request, metadata)
             transcoded_request = _BaseTranslationServiceRestTransport._BaseGetGlossary._get_transcoded_request(
                 http_options, request
@@ -3373,6 +4405,33 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             query_params = _BaseTranslationServiceRestTransport._BaseGetGlossary._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.translation_v3.TranslationServiceClient.GetGlossary",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3.TranslationService",
+                        "rpcName": "GetGlossary",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TranslationServiceRestTransport._GetGlossary._get_response(
@@ -3394,7 +4453,29 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             pb_resp = translation_service.Glossary.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_glossary(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = translation_service.Glossary.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.translation_v3.TranslationServiceClient.get_glossary",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3.TranslationService",
+                        "rpcName": "GetGlossary",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetGlossaryEntry(
@@ -3432,7 +4513,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> common.GlossaryEntry:
             r"""Call the get glossary entry method over HTTP.
 
@@ -3443,8 +4524,10 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.common.GlossaryEntry:
@@ -3456,6 +4539,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             http_options = (
                 _BaseTranslationServiceRestTransport._BaseGetGlossaryEntry._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_glossary_entry(
                 request, metadata
             )
@@ -3467,6 +4551,33 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             query_params = _BaseTranslationServiceRestTransport._BaseGetGlossaryEntry._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.translation_v3.TranslationServiceClient.GetGlossaryEntry",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3.TranslationService",
+                        "rpcName": "GetGlossaryEntry",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TranslationServiceRestTransport._GetGlossaryEntry._get_response(
@@ -3488,7 +4599,29 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             pb_resp = common.GlossaryEntry.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_glossary_entry(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = common.GlossaryEntry.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.translation_v3.TranslationServiceClient.get_glossary_entry",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3.TranslationService",
+                        "rpcName": "GetGlossaryEntry",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetModel(
@@ -3525,7 +4658,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> automl_translation.Model:
             r"""Call the get model method over HTTP.
 
@@ -3535,8 +4668,10 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.automl_translation.Model:
@@ -3546,6 +4681,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             http_options = (
                 _BaseTranslationServiceRestTransport._BaseGetModel._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_model(request, metadata)
             transcoded_request = _BaseTranslationServiceRestTransport._BaseGetModel._get_transcoded_request(
                 http_options, request
@@ -3555,6 +4691,33 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             query_params = _BaseTranslationServiceRestTransport._BaseGetModel._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.translation_v3.TranslationServiceClient.GetModel",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3.TranslationService",
+                        "rpcName": "GetModel",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TranslationServiceRestTransport._GetModel._get_response(
@@ -3576,7 +4739,29 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             pb_resp = automl_translation.Model.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_model(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = automl_translation.Model.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.translation_v3.TranslationServiceClient.get_model",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3.TranslationService",
+                        "rpcName": "GetModel",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetSupportedLanguages(
@@ -3614,7 +4799,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> translation_service.SupportedLanguages:
             r"""Call the get supported languages method over HTTP.
 
@@ -3625,8 +4810,10 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.translation_service.SupportedLanguages:
@@ -3638,6 +4825,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             http_options = (
                 _BaseTranslationServiceRestTransport._BaseGetSupportedLanguages._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_supported_languages(
                 request, metadata
             )
@@ -3649,6 +4837,33 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             query_params = _BaseTranslationServiceRestTransport._BaseGetSupportedLanguages._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.translation_v3.TranslationServiceClient.GetSupportedLanguages",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3.TranslationService",
+                        "rpcName": "GetSupportedLanguages",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -3672,7 +4887,31 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             pb_resp = translation_service.SupportedLanguages.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_supported_languages(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = translation_service.SupportedLanguages.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.translation_v3.TranslationServiceClient.get_supported_languages",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3.TranslationService",
+                        "rpcName": "GetSupportedLanguages",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ImportAdaptiveMtFile(
@@ -3711,7 +4950,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> adaptive_mt.ImportAdaptiveMtFileResponse:
             r"""Call the import adaptive mt file method over HTTP.
 
@@ -3723,8 +4962,10 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.adaptive_mt.ImportAdaptiveMtFileResponse:
@@ -3736,6 +4977,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             http_options = (
                 _BaseTranslationServiceRestTransport._BaseImportAdaptiveMtFile._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_import_adaptive_mt_file(
                 request, metadata
             )
@@ -3751,6 +4993,33 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             query_params = _BaseTranslationServiceRestTransport._BaseImportAdaptiveMtFile._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.translation_v3.TranslationServiceClient.ImportAdaptiveMtFile",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3.TranslationService",
+                        "rpcName": "ImportAdaptiveMtFile",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -3775,7 +5044,31 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             pb_resp = adaptive_mt.ImportAdaptiveMtFileResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_import_adaptive_mt_file(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = adaptive_mt.ImportAdaptiveMtFileResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.translation_v3.TranslationServiceClient.import_adaptive_mt_file",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3.TranslationService",
+                        "rpcName": "ImportAdaptiveMtFile",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ImportData(
@@ -3813,7 +5106,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the import data method over HTTP.
 
@@ -3823,8 +5116,10 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -3837,6 +5132,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             http_options = (
                 _BaseTranslationServiceRestTransport._BaseImportData._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_import_data(request, metadata)
             transcoded_request = _BaseTranslationServiceRestTransport._BaseImportData._get_transcoded_request(
                 http_options, request
@@ -3850,6 +5146,33 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             query_params = _BaseTranslationServiceRestTransport._BaseImportData._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.translation_v3.TranslationServiceClient.ImportData",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3.TranslationService",
+                        "rpcName": "ImportData",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TranslationServiceRestTransport._ImportData._get_response(
@@ -3870,7 +5193,29 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_import_data(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.translation_v3.TranslationServiceClient.import_data",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3.TranslationService",
+                        "rpcName": "ImportData",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListAdaptiveMtDatasets(
@@ -3908,7 +5253,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> adaptive_mt.ListAdaptiveMtDatasetsResponse:
             r"""Call the list adaptive mt datasets method over HTTP.
 
@@ -3920,8 +5265,10 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.adaptive_mt.ListAdaptiveMtDatasetsResponse:
@@ -3931,6 +5278,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             http_options = (
                 _BaseTranslationServiceRestTransport._BaseListAdaptiveMtDatasets._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_adaptive_mt_datasets(
                 request, metadata
             )
@@ -3942,6 +5290,33 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             query_params = _BaseTranslationServiceRestTransport._BaseListAdaptiveMtDatasets._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.translation_v3.TranslationServiceClient.ListAdaptiveMtDatasets",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3.TranslationService",
+                        "rpcName": "ListAdaptiveMtDatasets",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -3965,7 +5340,31 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             pb_resp = adaptive_mt.ListAdaptiveMtDatasetsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_adaptive_mt_datasets(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        adaptive_mt.ListAdaptiveMtDatasetsResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.translation_v3.TranslationServiceClient.list_adaptive_mt_datasets",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3.TranslationService",
+                        "rpcName": "ListAdaptiveMtDatasets",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListAdaptiveMtFiles(
@@ -4003,7 +5402,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> adaptive_mt.ListAdaptiveMtFilesResponse:
             r"""Call the list adaptive mt files method over HTTP.
 
@@ -4014,8 +5413,10 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.adaptive_mt.ListAdaptiveMtFilesResponse:
@@ -4027,6 +5428,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             http_options = (
                 _BaseTranslationServiceRestTransport._BaseListAdaptiveMtFiles._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_adaptive_mt_files(
                 request, metadata
             )
@@ -4038,6 +5440,33 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             query_params = _BaseTranslationServiceRestTransport._BaseListAdaptiveMtFiles._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.translation_v3.TranslationServiceClient.ListAdaptiveMtFiles",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3.TranslationService",
+                        "rpcName": "ListAdaptiveMtFiles",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -4061,7 +5490,31 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             pb_resp = adaptive_mt.ListAdaptiveMtFilesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_adaptive_mt_files(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = adaptive_mt.ListAdaptiveMtFilesResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.translation_v3.TranslationServiceClient.list_adaptive_mt_files",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3.TranslationService",
+                        "rpcName": "ListAdaptiveMtFiles",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListAdaptiveMtSentences(
@@ -4099,7 +5552,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> adaptive_mt.ListAdaptiveMtSentencesResponse:
             r"""Call the list adaptive mt
             sentences method over HTTP.
@@ -4111,8 +5564,10 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.adaptive_mt.ListAdaptiveMtSentencesResponse:
@@ -4122,6 +5577,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             http_options = (
                 _BaseTranslationServiceRestTransport._BaseListAdaptiveMtSentences._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_adaptive_mt_sentences(
                 request, metadata
             )
@@ -4133,6 +5589,33 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             query_params = _BaseTranslationServiceRestTransport._BaseListAdaptiveMtSentences._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.translation_v3.TranslationServiceClient.ListAdaptiveMtSentences",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3.TranslationService",
+                        "rpcName": "ListAdaptiveMtSentences",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -4156,7 +5639,31 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             pb_resp = adaptive_mt.ListAdaptiveMtSentencesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_adaptive_mt_sentences(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        adaptive_mt.ListAdaptiveMtSentencesResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.translation_v3.TranslationServiceClient.list_adaptive_mt_sentences",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3.TranslationService",
+                        "rpcName": "ListAdaptiveMtSentences",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListDatasets(
@@ -4194,7 +5701,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> automl_translation.ListDatasetsResponse:
             r"""Call the list datasets method over HTTP.
 
@@ -4204,8 +5711,10 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.automl_translation.ListDatasetsResponse:
@@ -4215,6 +5724,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             http_options = (
                 _BaseTranslationServiceRestTransport._BaseListDatasets._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_datasets(request, metadata)
             transcoded_request = _BaseTranslationServiceRestTransport._BaseListDatasets._get_transcoded_request(
                 http_options, request
@@ -4224,6 +5734,33 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             query_params = _BaseTranslationServiceRestTransport._BaseListDatasets._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.translation_v3.TranslationServiceClient.ListDatasets",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3.TranslationService",
+                        "rpcName": "ListDatasets",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TranslationServiceRestTransport._ListDatasets._get_response(
@@ -4245,7 +5782,31 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             pb_resp = automl_translation.ListDatasetsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_datasets(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = automl_translation.ListDatasetsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.translation_v3.TranslationServiceClient.list_datasets",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3.TranslationService",
+                        "rpcName": "ListDatasets",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListExamples(
@@ -4283,7 +5844,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> automl_translation.ListExamplesResponse:
             r"""Call the list examples method over HTTP.
 
@@ -4293,8 +5854,10 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.automl_translation.ListExamplesResponse:
@@ -4304,6 +5867,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             http_options = (
                 _BaseTranslationServiceRestTransport._BaseListExamples._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_examples(request, metadata)
             transcoded_request = _BaseTranslationServiceRestTransport._BaseListExamples._get_transcoded_request(
                 http_options, request
@@ -4313,6 +5877,33 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             query_params = _BaseTranslationServiceRestTransport._BaseListExamples._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.translation_v3.TranslationServiceClient.ListExamples",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3.TranslationService",
+                        "rpcName": "ListExamples",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TranslationServiceRestTransport._ListExamples._get_response(
@@ -4334,7 +5925,31 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             pb_resp = automl_translation.ListExamplesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_examples(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = automl_translation.ListExamplesResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.translation_v3.TranslationServiceClient.list_examples",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3.TranslationService",
+                        "rpcName": "ListExamples",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListGlossaries(
@@ -4372,7 +5987,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> translation_service.ListGlossariesResponse:
             r"""Call the list glossaries method over HTTP.
 
@@ -4382,8 +5997,10 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.translation_service.ListGlossariesResponse:
@@ -4393,6 +6010,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             http_options = (
                 _BaseTranslationServiceRestTransport._BaseListGlossaries._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_glossaries(request, metadata)
             transcoded_request = _BaseTranslationServiceRestTransport._BaseListGlossaries._get_transcoded_request(
                 http_options, request
@@ -4402,6 +6020,33 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             query_params = _BaseTranslationServiceRestTransport._BaseListGlossaries._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.translation_v3.TranslationServiceClient.ListGlossaries",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3.TranslationService",
+                        "rpcName": "ListGlossaries",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TranslationServiceRestTransport._ListGlossaries._get_response(
@@ -4423,7 +6068,31 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             pb_resp = translation_service.ListGlossariesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_glossaries(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        translation_service.ListGlossariesResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.translation_v3.TranslationServiceClient.list_glossaries",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3.TranslationService",
+                        "rpcName": "ListGlossaries",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListGlossaryEntries(
@@ -4461,7 +6130,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> translation_service.ListGlossaryEntriesResponse:
             r"""Call the list glossary entries method over HTTP.
 
@@ -4472,8 +6141,10 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.translation_service.ListGlossaryEntriesResponse:
@@ -4485,6 +6156,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             http_options = (
                 _BaseTranslationServiceRestTransport._BaseListGlossaryEntries._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_glossary_entries(
                 request, metadata
             )
@@ -4496,6 +6168,33 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             query_params = _BaseTranslationServiceRestTransport._BaseListGlossaryEntries._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.translation_v3.TranslationServiceClient.ListGlossaryEntries",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3.TranslationService",
+                        "rpcName": "ListGlossaryEntries",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -4519,7 +6218,33 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             pb_resp = translation_service.ListGlossaryEntriesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_glossary_entries(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        translation_service.ListGlossaryEntriesResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.translation_v3.TranslationServiceClient.list_glossary_entries",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3.TranslationService",
+                        "rpcName": "ListGlossaryEntries",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListModels(
@@ -4556,7 +6281,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> automl_translation.ListModelsResponse:
             r"""Call the list models method over HTTP.
 
@@ -4566,8 +6291,10 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.automl_translation.ListModelsResponse:
@@ -4577,6 +6304,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             http_options = (
                 _BaseTranslationServiceRestTransport._BaseListModels._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_models(request, metadata)
             transcoded_request = _BaseTranslationServiceRestTransport._BaseListModels._get_transcoded_request(
                 http_options, request
@@ -4586,6 +6314,33 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             query_params = _BaseTranslationServiceRestTransport._BaseListModels._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.translation_v3.TranslationServiceClient.ListModels",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3.TranslationService",
+                        "rpcName": "ListModels",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TranslationServiceRestTransport._ListModels._get_response(
@@ -4607,7 +6362,31 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             pb_resp = automl_translation.ListModelsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_models(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = automl_translation.ListModelsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.translation_v3.TranslationServiceClient.list_models",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3.TranslationService",
+                        "rpcName": "ListModels",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _RomanizeText(
@@ -4646,7 +6425,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> translation_service.RomanizeTextResponse:
             r"""Call the romanize text method over HTTP.
 
@@ -4657,8 +6436,10 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.translation_service.RomanizeTextResponse:
@@ -4670,6 +6451,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             http_options = (
                 _BaseTranslationServiceRestTransport._BaseRomanizeText._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_romanize_text(request, metadata)
             transcoded_request = _BaseTranslationServiceRestTransport._BaseRomanizeText._get_transcoded_request(
                 http_options, request
@@ -4683,6 +6465,33 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             query_params = _BaseTranslationServiceRestTransport._BaseRomanizeText._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.translation_v3.TranslationServiceClient.RomanizeText",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3.TranslationService",
+                        "rpcName": "RomanizeText",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TranslationServiceRestTransport._RomanizeText._get_response(
@@ -4705,7 +6514,31 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             pb_resp = translation_service.RomanizeTextResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_romanize_text(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = translation_service.RomanizeTextResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.translation_v3.TranslationServiceClient.romanize_text",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3.TranslationService",
+                        "rpcName": "RomanizeText",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _TranslateDocument(
@@ -4744,7 +6577,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> translation_service.TranslateDocumentResponse:
             r"""Call the translate document method over HTTP.
 
@@ -4754,8 +6587,10 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.translation_service.TranslateDocumentResponse:
@@ -4767,6 +6602,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             http_options = (
                 _BaseTranslationServiceRestTransport._BaseTranslateDocument._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_translate_document(
                 request, metadata
             )
@@ -4782,6 +6618,33 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             query_params = _BaseTranslationServiceRestTransport._BaseTranslateDocument._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.translation_v3.TranslationServiceClient.TranslateDocument",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3.TranslationService",
+                        "rpcName": "TranslateDocument",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TranslationServiceRestTransport._TranslateDocument._get_response(
@@ -4804,7 +6667,31 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             pb_resp = translation_service.TranslateDocumentResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_translate_document(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        translation_service.TranslateDocumentResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.translation_v3.TranslationServiceClient.translate_document",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3.TranslationService",
+                        "rpcName": "TranslateDocument",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _TranslateText(
@@ -4843,7 +6730,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> translation_service.TranslateTextResponse:
             r"""Call the translate text method over HTTP.
 
@@ -4854,8 +6741,10 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.translation_service.TranslateTextResponse:
@@ -4865,6 +6754,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             http_options = (
                 _BaseTranslationServiceRestTransport._BaseTranslateText._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_translate_text(request, metadata)
             transcoded_request = _BaseTranslationServiceRestTransport._BaseTranslateText._get_transcoded_request(
                 http_options, request
@@ -4878,6 +6768,33 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             query_params = _BaseTranslationServiceRestTransport._BaseTranslateText._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.translation_v3.TranslationServiceClient.TranslateText",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3.TranslationService",
+                        "rpcName": "TranslateText",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TranslationServiceRestTransport._TranslateText._get_response(
@@ -4900,7 +6817,31 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             pb_resp = translation_service.TranslateTextResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_translate_text(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        translation_service.TranslateTextResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.translation_v3.TranslationServiceClient.translate_text",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3.TranslationService",
+                        "rpcName": "TranslateText",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateGlossary(
@@ -4939,7 +6880,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update glossary method over HTTP.
 
@@ -4950,8 +6891,10 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -4964,6 +6907,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             http_options = (
                 _BaseTranslationServiceRestTransport._BaseUpdateGlossary._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_glossary(request, metadata)
             transcoded_request = _BaseTranslationServiceRestTransport._BaseUpdateGlossary._get_transcoded_request(
                 http_options, request
@@ -4977,6 +6921,33 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             query_params = _BaseTranslationServiceRestTransport._BaseUpdateGlossary._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.translation_v3.TranslationServiceClient.UpdateGlossary",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3.TranslationService",
+                        "rpcName": "UpdateGlossary",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TranslationServiceRestTransport._UpdateGlossary._get_response(
@@ -4997,7 +6968,29 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_glossary(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.translation_v3.TranslationServiceClient.update_glossary",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3.TranslationService",
+                        "rpcName": "UpdateGlossary",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateGlossaryEntry(
@@ -5036,7 +7029,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> common.GlossaryEntry:
             r"""Call the update glossary entry method over HTTP.
 
@@ -5047,8 +7040,10 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.common.GlossaryEntry:
@@ -5060,6 +7055,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             http_options = (
                 _BaseTranslationServiceRestTransport._BaseUpdateGlossaryEntry._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_glossary_entry(
                 request, metadata
             )
@@ -5075,6 +7071,33 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             query_params = _BaseTranslationServiceRestTransport._BaseUpdateGlossaryEntry._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.translation_v3.TranslationServiceClient.UpdateGlossaryEntry",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3.TranslationService",
+                        "rpcName": "UpdateGlossaryEntry",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -5099,7 +7122,29 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             pb_resp = common.GlossaryEntry.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_glossary_entry(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = common.GlossaryEntry.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.translation_v3.TranslationServiceClient.update_glossary_entry",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3.TranslationService",
+                        "rpcName": "UpdateGlossaryEntry",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -5509,7 +7554,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.Location:
             r"""Call the get location method over HTTP.
 
@@ -5519,8 +7564,10 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.Location: Response from GetLocation method.
@@ -5529,6 +7576,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             http_options = (
                 _BaseTranslationServiceRestTransport._BaseGetLocation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_location(request, metadata)
             transcoded_request = _BaseTranslationServiceRestTransport._BaseGetLocation._get_transcoded_request(
                 http_options, request
@@ -5538,6 +7586,33 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             query_params = _BaseTranslationServiceRestTransport._BaseGetLocation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.translation_v3.TranslationServiceClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3.TranslationService",
+                        "rpcName": "GetLocation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TranslationServiceRestTransport._GetLocation._get_response(
@@ -5558,6 +7633,27 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.translation_v3.TranslationServiceAsyncClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3.TranslationService",
+                        "rpcName": "GetLocation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -5599,7 +7695,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.ListLocationsResponse:
             r"""Call the list locations method over HTTP.
 
@@ -5609,8 +7705,10 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
@@ -5619,6 +7717,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             http_options = (
                 _BaseTranslationServiceRestTransport._BaseListLocations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
             transcoded_request = _BaseTranslationServiceRestTransport._BaseListLocations._get_transcoded_request(
                 http_options, request
@@ -5628,6 +7727,33 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             query_params = _BaseTranslationServiceRestTransport._BaseListLocations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.translation_v3.TranslationServiceClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3.TranslationService",
+                        "rpcName": "ListLocations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TranslationServiceRestTransport._ListLocations._get_response(
@@ -5648,6 +7774,27 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.translation_v3.TranslationServiceAsyncClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3.TranslationService",
+                        "rpcName": "ListLocations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -5690,7 +7837,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the cancel operation method over HTTP.
 
@@ -5700,13 +7847,16 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseTranslationServiceRestTransport._BaseCancelOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
@@ -5722,6 +7872,33 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             query_params = _BaseTranslationServiceRestTransport._BaseCancelOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.translation_v3.TranslationServiceClient.CancelOperation",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3.TranslationService",
+                        "rpcName": "CancelOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TranslationServiceRestTransport._CancelOperation._get_response(
@@ -5780,7 +7957,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the delete operation method over HTTP.
 
@@ -5790,13 +7967,16 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseTranslationServiceRestTransport._BaseDeleteOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
             )
@@ -5808,6 +7988,33 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             query_params = _BaseTranslationServiceRestTransport._BaseDeleteOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.translation_v3.TranslationServiceClient.DeleteOperation",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3.TranslationService",
+                        "rpcName": "DeleteOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TranslationServiceRestTransport._DeleteOperation._get_response(
@@ -5865,7 +8072,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the get operation method over HTTP.
 
@@ -5875,8 +8082,10 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.
@@ -5885,6 +8094,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             http_options = (
                 _BaseTranslationServiceRestTransport._BaseGetOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseTranslationServiceRestTransport._BaseGetOperation._get_transcoded_request(
                 http_options, request
@@ -5894,6 +8104,33 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             query_params = _BaseTranslationServiceRestTransport._BaseGetOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.translation_v3.TranslationServiceClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3.TranslationService",
+                        "rpcName": "GetOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TranslationServiceRestTransport._GetOperation._get_response(
@@ -5914,6 +8151,27 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.translation_v3.TranslationServiceAsyncClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3.TranslationService",
+                        "rpcName": "GetOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -5955,7 +8213,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.ListOperationsResponse:
             r"""Call the list operations method over HTTP.
 
@@ -5965,8 +8223,10 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
@@ -5975,6 +8235,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             http_options = (
                 _BaseTranslationServiceRestTransport._BaseListOperations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseTranslationServiceRestTransport._BaseListOperations._get_transcoded_request(
                 http_options, request
@@ -5984,6 +8245,33 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             query_params = _BaseTranslationServiceRestTransport._BaseListOperations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.translation_v3.TranslationServiceClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3.TranslationService",
+                        "rpcName": "ListOperations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TranslationServiceRestTransport._ListOperations._get_response(
@@ -6004,6 +8292,27 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.translation_v3.TranslationServiceAsyncClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3.TranslationService",
+                        "rpcName": "ListOperations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -6046,7 +8355,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the wait operation method over HTTP.
 
@@ -6056,8 +8365,10 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from WaitOperation method.
@@ -6066,6 +8377,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             http_options = (
                 _BaseTranslationServiceRestTransport._BaseWaitOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_wait_operation(request, metadata)
             transcoded_request = _BaseTranslationServiceRestTransport._BaseWaitOperation._get_transcoded_request(
                 http_options, request
@@ -6079,6 +8391,33 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             query_params = _BaseTranslationServiceRestTransport._BaseWaitOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.translation_v3.TranslationServiceClient.WaitOperation",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3.TranslationService",
+                        "rpcName": "WaitOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TranslationServiceRestTransport._WaitOperation._get_response(
@@ -6100,6 +8439,27 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_wait_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.translation_v3.TranslationServiceAsyncClient.WaitOperation",
+                    extra={
+                        "serviceName": "google.cloud.translation.v3.TranslationService",
+                        "rpcName": "WaitOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property

@@ -18616,6 +18616,7 @@ def test_list_repositories_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_repositories(request)
 
@@ -18671,6 +18672,7 @@ def test_list_repositories_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_repositories(**mock_args)
 
@@ -18863,6 +18865,7 @@ def test_get_repository_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_repository(request)
 
@@ -18910,6 +18913,7 @@ def test_get_repository_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_repository(**mock_args)
 
@@ -19053,6 +19057,7 @@ def test_create_repository_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_repository(request)
 
@@ -19115,6 +19120,7 @@ def test_create_repository_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_repository(**mock_args)
 
@@ -19248,6 +19254,7 @@ def test_update_repository_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_repository(request)
 
@@ -19298,6 +19305,7 @@ def test_update_repository_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_repository(**mock_args)
 
@@ -19431,6 +19439,7 @@ def test_delete_repository_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_repository(request)
 
@@ -19476,6 +19485,7 @@ def test_delete_repository_rest_flattened():
         json_return_value = ""
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_repository(**mock_args)
 
@@ -19610,6 +19620,7 @@ def test_commit_repository_changes_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.commit_repository_changes(request)
 
@@ -19755,6 +19766,7 @@ def test_read_repository_file_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.read_repository_file(request)
 
@@ -19909,6 +19921,7 @@ def test_query_repository_directory_contents_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.query_repository_directory_contents(request)
 
@@ -20120,6 +20133,7 @@ def test_fetch_repository_history_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.fetch_repository_history(request)
 
@@ -20323,6 +20337,7 @@ def test_compute_repository_access_token_status_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.compute_repository_access_token_status(request)
 
@@ -20449,6 +20464,7 @@ def test_fetch_remote_branches_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.fetch_remote_branches(request)
 
@@ -20577,6 +20593,7 @@ def test_list_workspaces_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_workspaces(request)
 
@@ -20634,6 +20651,7 @@ def test_list_workspaces_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_workspaces(**mock_args)
 
@@ -20826,6 +20844,7 @@ def test_get_workspace_rest_required_fields(request_type=dataform.GetWorkspaceRe
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_workspace(request)
 
@@ -20873,6 +20892,7 @@ def test_get_workspace_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_workspace(**mock_args)
 
@@ -21016,6 +21036,7 @@ def test_create_workspace_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_workspace(request)
 
@@ -21080,6 +21101,7 @@ def test_create_workspace_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_workspace(**mock_args)
 
@@ -21212,6 +21234,7 @@ def test_delete_workspace_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_workspace(request)
 
@@ -21257,6 +21280,7 @@ def test_delete_workspace_rest_flattened():
         json_return_value = ""
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_workspace(**mock_args)
 
@@ -21393,6 +21417,7 @@ def test_install_npm_packages_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.install_npm_packages(request)
 
@@ -21512,6 +21537,7 @@ def test_pull_git_commits_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.pull_git_commits(request)
 
@@ -21639,6 +21665,7 @@ def test_push_git_commits_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.push_git_commits(request)
 
@@ -21763,6 +21790,7 @@ def test_fetch_file_git_statuses_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.fetch_file_git_statuses(request)
 
@@ -21889,6 +21917,7 @@ def test_fetch_git_ahead_behind_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.fetch_git_ahead_behind(request)
 
@@ -22011,6 +22040,7 @@ def test_commit_workspace_changes_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.commit_workspace_changes(request)
 
@@ -22141,6 +22171,7 @@ def test_reset_workspace_changes_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.reset_workspace_changes(request)
 
@@ -22269,6 +22300,7 @@ def test_fetch_file_diff_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.fetch_file_diff(request)
 
@@ -22415,6 +22447,7 @@ def test_query_directory_contents_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.query_directory_contents(request)
 
@@ -22613,6 +22646,7 @@ def test_make_directory_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.make_directory(request)
 
@@ -22744,6 +22778,7 @@ def test_remove_directory_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.remove_directory(request)
 
@@ -22880,6 +22915,7 @@ def test_move_directory_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.move_directory(request)
 
@@ -23015,6 +23051,7 @@ def test_read_file_rest_required_fields(request_type=dataform.ReadFileRequest):
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.read_file(request)
 
@@ -23148,6 +23185,7 @@ def test_remove_file_rest_required_fields(request_type=dataform.RemoveFileReques
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.remove_file(request)
 
@@ -23282,6 +23320,7 @@ def test_move_file_rest_required_fields(request_type=dataform.MoveFileRequest):
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.move_file(request)
 
@@ -23417,6 +23456,7 @@ def test_write_file_rest_required_fields(request_type=dataform.WriteFileRequest)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.write_file(request)
 
@@ -23556,6 +23596,7 @@ def test_list_release_configs_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_release_configs(request)
 
@@ -23611,6 +23652,7 @@ def test_list_release_configs_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_release_configs(**mock_args)
 
@@ -23811,6 +23853,7 @@ def test_get_release_config_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_release_config(request)
 
@@ -23858,6 +23901,7 @@ def test_get_release_config_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_release_config(**mock_args)
 
@@ -24004,6 +24048,7 @@ def test_create_release_config_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_release_config(request)
 
@@ -24068,6 +24113,7 @@ def test_create_release_config_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_release_config(**mock_args)
 
@@ -24204,6 +24250,7 @@ def test_update_release_config_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_release_config(request)
 
@@ -24254,6 +24301,7 @@ def test_update_release_config_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_release_config(**mock_args)
 
@@ -24388,6 +24436,7 @@ def test_delete_release_config_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_release_config(request)
 
@@ -24433,6 +24482,7 @@ def test_delete_release_config_rest_flattened():
         json_return_value = ""
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_release_config(**mock_args)
 
@@ -24576,6 +24626,7 @@ def test_list_compilation_results_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_compilation_results(request)
 
@@ -24631,6 +24682,7 @@ def test_list_compilation_results_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_compilation_results(**mock_args)
 
@@ -24832,6 +24884,7 @@ def test_get_compilation_result_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_compilation_result(request)
 
@@ -24879,6 +24932,7 @@ def test_get_compilation_result_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_compilation_result(**mock_args)
 
@@ -25016,6 +25070,7 @@ def test_create_compilation_result_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_compilation_result(request)
 
@@ -25072,6 +25127,7 @@ def test_create_compilation_result_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_compilation_result(**mock_args)
 
@@ -25219,6 +25275,7 @@ def test_query_compilation_result_actions_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.query_compilation_result_actions(request)
 
@@ -25428,6 +25485,7 @@ def test_list_workflow_configs_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_workflow_configs(request)
 
@@ -25483,6 +25541,7 @@ def test_list_workflow_configs_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_workflow_configs(**mock_args)
 
@@ -25683,6 +25742,7 @@ def test_get_workflow_config_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_workflow_config(request)
 
@@ -25730,6 +25790,7 @@ def test_get_workflow_config_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_workflow_config(**mock_args)
 
@@ -25876,6 +25937,7 @@ def test_create_workflow_config_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_workflow_config(request)
 
@@ -25940,6 +26002,7 @@ def test_create_workflow_config_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_workflow_config(**mock_args)
 
@@ -26076,6 +26139,7 @@ def test_update_workflow_config_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_workflow_config(request)
 
@@ -26126,6 +26190,7 @@ def test_update_workflow_config_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_workflow_config(**mock_args)
 
@@ -26260,6 +26325,7 @@ def test_delete_workflow_config_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_workflow_config(request)
 
@@ -26305,6 +26371,7 @@ def test_delete_workflow_config_rest_flattened():
         json_return_value = ""
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_workflow_config(**mock_args)
 
@@ -26450,6 +26517,7 @@ def test_list_workflow_invocations_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_workflow_invocations(request)
 
@@ -26507,6 +26575,7 @@ def test_list_workflow_invocations_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_workflow_invocations(**mock_args)
 
@@ -26708,6 +26777,7 @@ def test_get_workflow_invocation_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_workflow_invocation(request)
 
@@ -26755,6 +26825,7 @@ def test_get_workflow_invocation_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_workflow_invocation(**mock_args)
 
@@ -26892,6 +26963,7 @@ def test_create_workflow_invocation_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_workflow_invocation(request)
 
@@ -26948,6 +27020,7 @@ def test_create_workflow_invocation_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_workflow_invocation(**mock_args)
 
@@ -27082,6 +27155,7 @@ def test_delete_workflow_invocation_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_workflow_invocation(request)
 
@@ -27127,6 +27201,7 @@ def test_delete_workflow_invocation_rest_flattened():
         json_return_value = ""
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_workflow_invocation(**mock_args)
 
@@ -27261,6 +27336,7 @@ def test_cancel_workflow_invocation_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.cancel_workflow_invocation(request)
 
@@ -27394,6 +27470,7 @@ def test_query_workflow_invocation_actions_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.query_workflow_invocation_actions(request)
 
@@ -30210,6 +30287,7 @@ def test_list_repositories_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_repositories(request)
 
 
@@ -30246,6 +30324,7 @@ def test_list_repositories_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_repositories(request)
 
     # Establish that the response is the type that we expect.
@@ -30285,6 +30364,7 @@ def test_list_repositories_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = dataform.ListRepositoriesResponse.to_json(
             dataform.ListRepositoriesResponse()
         )
@@ -30329,6 +30409,7 @@ def test_get_repository_rest_bad_request(request_type=dataform.GetRepositoryRequ
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_repository(request)
 
 
@@ -30368,6 +30449,7 @@ def test_get_repository_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_repository(request)
 
     # Establish that the response is the type that we expect.
@@ -30411,6 +30493,7 @@ def test_get_repository_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = dataform.Repository.to_json(dataform.Repository())
         req.return_value.content = return_value
 
@@ -30455,6 +30538,7 @@ def test_create_repository_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_repository(request)
 
 
@@ -30584,6 +30668,7 @@ def test_create_repository_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_repository(request)
 
     # Establish that the response is the type that we expect.
@@ -30629,6 +30714,7 @@ def test_create_repository_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = dataform.Repository.to_json(dataform.Repository())
         req.return_value.content = return_value
 
@@ -30677,6 +30763,7 @@ def test_update_repository_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_repository(request)
 
 
@@ -30810,6 +30897,7 @@ def test_update_repository_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_repository(request)
 
     # Establish that the response is the type that we expect.
@@ -30855,6 +30943,7 @@ def test_update_repository_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = dataform.Repository.to_json(dataform.Repository())
         req.return_value.content = return_value
 
@@ -30899,6 +30988,7 @@ def test_delete_repository_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_repository(request)
 
 
@@ -30929,6 +31019,7 @@ def test_delete_repository_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_repository(request)
 
     # Establish that the response is the type that we expect.
@@ -30963,6 +31054,7 @@ def test_delete_repository_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = dataform.DeleteRepositoryRequest()
         metadata = [
@@ -31003,6 +31095,7 @@ def test_commit_repository_changes_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.commit_repository_changes(request)
 
 
@@ -31033,6 +31126,7 @@ def test_commit_repository_changes_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.commit_repository_changes(request)
 
     # Establish that the response is the type that we expect.
@@ -31067,6 +31161,7 @@ def test_commit_repository_changes_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = dataform.CommitRepositoryChangesRequest()
         metadata = [
@@ -31107,6 +31202,7 @@ def test_read_repository_file_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.read_repository_file(request)
 
 
@@ -31142,6 +31238,7 @@ def test_read_repository_file_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.read_repository_file(request)
 
     # Establish that the response is the type that we expect.
@@ -31180,6 +31277,7 @@ def test_read_repository_file_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = dataform.ReadRepositoryFileResponse.to_json(
             dataform.ReadRepositoryFileResponse()
         )
@@ -31226,6 +31324,7 @@ def test_query_repository_directory_contents_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.query_repository_directory_contents(request)
 
 
@@ -31263,6 +31362,7 @@ def test_query_repository_directory_contents_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.query_repository_directory_contents(request)
 
     # Establish that the response is the type that we expect.
@@ -31301,6 +31401,7 @@ def test_query_repository_directory_contents_rest_interceptors(null_interceptor)
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = dataform.QueryRepositoryDirectoryContentsResponse.to_json(
             dataform.QueryRepositoryDirectoryContentsResponse()
         )
@@ -31347,6 +31448,7 @@ def test_fetch_repository_history_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.fetch_repository_history(request)
 
 
@@ -31382,6 +31484,7 @@ def test_fetch_repository_history_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.fetch_repository_history(request)
 
     # Establish that the response is the type that we expect.
@@ -31420,6 +31523,7 @@ def test_fetch_repository_history_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = dataform.FetchRepositoryHistoryResponse.to_json(
             dataform.FetchRepositoryHistoryResponse()
         )
@@ -31466,6 +31570,7 @@ def test_compute_repository_access_token_status_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.compute_repository_access_token_status(request)
 
 
@@ -31503,6 +31608,7 @@ def test_compute_repository_access_token_status_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.compute_repository_access_token_status(request)
 
     # Establish that the response is the type that we expect.
@@ -31545,6 +31651,7 @@ def test_compute_repository_access_token_status_rest_interceptors(null_intercept
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = dataform.ComputeRepositoryAccessTokenStatusResponse.to_json(
             dataform.ComputeRepositoryAccessTokenStatusResponse()
         )
@@ -31591,6 +31698,7 @@ def test_fetch_remote_branches_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.fetch_remote_branches(request)
 
 
@@ -31626,6 +31734,7 @@ def test_fetch_remote_branches_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.fetch_remote_branches(request)
 
     # Establish that the response is the type that we expect.
@@ -31664,6 +31773,7 @@ def test_fetch_remote_branches_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = dataform.FetchRemoteBranchesResponse.to_json(
             dataform.FetchRemoteBranchesResponse()
         )
@@ -31708,6 +31818,7 @@ def test_list_workspaces_rest_bad_request(request_type=dataform.ListWorkspacesRe
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_workspaces(request)
 
 
@@ -31744,6 +31855,7 @@ def test_list_workspaces_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_workspaces(request)
 
     # Establish that the response is the type that we expect.
@@ -31781,6 +31893,7 @@ def test_list_workspaces_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = dataform.ListWorkspacesResponse.to_json(
             dataform.ListWorkspacesResponse()
         )
@@ -31827,6 +31940,7 @@ def test_get_workspace_rest_bad_request(request_type=dataform.GetWorkspaceReques
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_workspace(request)
 
 
@@ -31864,6 +31978,7 @@ def test_get_workspace_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_workspace(request)
 
     # Establish that the response is the type that we expect.
@@ -31900,6 +32015,7 @@ def test_get_workspace_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = dataform.Workspace.to_json(dataform.Workspace())
         req.return_value.content = return_value
 
@@ -31944,6 +32060,7 @@ def test_create_workspace_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_workspace(request)
 
 
@@ -32047,6 +32164,7 @@ def test_create_workspace_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_workspace(request)
 
     # Establish that the response is the type that we expect.
@@ -32085,6 +32203,7 @@ def test_create_workspace_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = dataform.Workspace.to_json(dataform.Workspace())
         req.return_value.content = return_value
 
@@ -32131,6 +32250,7 @@ def test_delete_workspace_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_workspace(request)
 
 
@@ -32163,6 +32283,7 @@ def test_delete_workspace_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_workspace(request)
 
     # Establish that the response is the type that we expect.
@@ -32197,6 +32318,7 @@ def test_delete_workspace_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = dataform.DeleteWorkspaceRequest()
         metadata = [
@@ -32239,6 +32361,7 @@ def test_install_npm_packages_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.install_npm_packages(request)
 
 
@@ -32274,6 +32397,7 @@ def test_install_npm_packages_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.install_npm_packages(request)
 
     # Establish that the response is the type that we expect.
@@ -32311,6 +32435,7 @@ def test_install_npm_packages_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = dataform.InstallNpmPackagesResponse.to_json(
             dataform.InstallNpmPackagesResponse()
         )
@@ -32357,6 +32482,7 @@ def test_pull_git_commits_rest_bad_request(request_type=dataform.PullGitCommitsR
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.pull_git_commits(request)
 
 
@@ -32389,6 +32515,7 @@ def test_pull_git_commits_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.pull_git_commits(request)
 
     # Establish that the response is the type that we expect.
@@ -32421,6 +32548,7 @@ def test_pull_git_commits_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = dataform.PullGitCommitsRequest()
         metadata = [
@@ -32461,6 +32589,7 @@ def test_push_git_commits_rest_bad_request(request_type=dataform.PushGitCommitsR
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.push_git_commits(request)
 
 
@@ -32493,6 +32622,7 @@ def test_push_git_commits_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.push_git_commits(request)
 
     # Establish that the response is the type that we expect.
@@ -32525,6 +32655,7 @@ def test_push_git_commits_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = dataform.PushGitCommitsRequest()
         metadata = [
@@ -32567,6 +32698,7 @@ def test_fetch_file_git_statuses_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.fetch_file_git_statuses(request)
 
 
@@ -32602,6 +32734,7 @@ def test_fetch_file_git_statuses_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.fetch_file_git_statuses(request)
 
     # Establish that the response is the type that we expect.
@@ -32639,6 +32772,7 @@ def test_fetch_file_git_statuses_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = dataform.FetchFileGitStatusesResponse.to_json(
             dataform.FetchFileGitStatusesResponse()
         )
@@ -32687,6 +32821,7 @@ def test_fetch_git_ahead_behind_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.fetch_git_ahead_behind(request)
 
 
@@ -32725,6 +32860,7 @@ def test_fetch_git_ahead_behind_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.fetch_git_ahead_behind(request)
 
     # Establish that the response is the type that we expect.
@@ -32764,6 +32900,7 @@ def test_fetch_git_ahead_behind_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = dataform.FetchGitAheadBehindResponse.to_json(
             dataform.FetchGitAheadBehindResponse()
         )
@@ -32812,6 +32949,7 @@ def test_commit_workspace_changes_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.commit_workspace_changes(request)
 
 
@@ -32844,6 +32982,7 @@ def test_commit_workspace_changes_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.commit_workspace_changes(request)
 
     # Establish that the response is the type that we expect.
@@ -32878,6 +33017,7 @@ def test_commit_workspace_changes_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = dataform.CommitWorkspaceChangesRequest()
         metadata = [
@@ -32920,6 +33060,7 @@ def test_reset_workspace_changes_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.reset_workspace_changes(request)
 
 
@@ -32952,6 +33093,7 @@ def test_reset_workspace_changes_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.reset_workspace_changes(request)
 
     # Establish that the response is the type that we expect.
@@ -32986,6 +33128,7 @@ def test_reset_workspace_changes_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = dataform.ResetWorkspaceChangesRequest()
         metadata = [
@@ -33026,6 +33169,7 @@ def test_fetch_file_diff_rest_bad_request(request_type=dataform.FetchFileDiffReq
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.fetch_file_diff(request)
 
 
@@ -33063,6 +33207,7 @@ def test_fetch_file_diff_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.fetch_file_diff(request)
 
     # Establish that the response is the type that we expect.
@@ -33099,6 +33244,7 @@ def test_fetch_file_diff_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = dataform.FetchFileDiffResponse.to_json(
             dataform.FetchFileDiffResponse()
         )
@@ -33147,6 +33293,7 @@ def test_query_directory_contents_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.query_directory_contents(request)
 
 
@@ -33184,6 +33331,7 @@ def test_query_directory_contents_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.query_directory_contents(request)
 
     # Establish that the response is the type that we expect.
@@ -33222,6 +33370,7 @@ def test_query_directory_contents_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = dataform.QueryDirectoryContentsResponse.to_json(
             dataform.QueryDirectoryContentsResponse()
         )
@@ -33268,6 +33417,7 @@ def test_make_directory_rest_bad_request(request_type=dataform.MakeDirectoryRequ
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.make_directory(request)
 
 
@@ -33303,6 +33453,7 @@ def test_make_directory_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.make_directory(request)
 
     # Establish that the response is the type that we expect.
@@ -33338,6 +33489,7 @@ def test_make_directory_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = dataform.MakeDirectoryResponse.to_json(
             dataform.MakeDirectoryResponse()
         )
@@ -33386,6 +33538,7 @@ def test_remove_directory_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.remove_directory(request)
 
 
@@ -33418,6 +33571,7 @@ def test_remove_directory_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.remove_directory(request)
 
     # Establish that the response is the type that we expect.
@@ -33452,6 +33606,7 @@ def test_remove_directory_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = dataform.RemoveDirectoryRequest()
         metadata = [
@@ -33492,6 +33647,7 @@ def test_move_directory_rest_bad_request(request_type=dataform.MoveDirectoryRequ
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.move_directory(request)
 
 
@@ -33527,6 +33683,7 @@ def test_move_directory_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.move_directory(request)
 
     # Establish that the response is the type that we expect.
@@ -33562,6 +33719,7 @@ def test_move_directory_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = dataform.MoveDirectoryResponse.to_json(
             dataform.MoveDirectoryResponse()
         )
@@ -33608,6 +33766,7 @@ def test_read_file_rest_bad_request(request_type=dataform.ReadFileRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.read_file(request)
 
 
@@ -33645,6 +33804,7 @@ def test_read_file_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.read_file(request)
 
     # Establish that the response is the type that we expect.
@@ -33681,6 +33841,7 @@ def test_read_file_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = dataform.ReadFileResponse.to_json(dataform.ReadFileResponse())
         req.return_value.content = return_value
 
@@ -33725,6 +33886,7 @@ def test_remove_file_rest_bad_request(request_type=dataform.RemoveFileRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.remove_file(request)
 
 
@@ -33757,6 +33919,7 @@ def test_remove_file_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.remove_file(request)
 
     # Establish that the response is the type that we expect.
@@ -33789,6 +33952,7 @@ def test_remove_file_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = dataform.RemoveFileRequest()
         metadata = [
@@ -33829,6 +33993,7 @@ def test_move_file_rest_bad_request(request_type=dataform.MoveFileRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.move_file(request)
 
 
@@ -33864,6 +34029,7 @@ def test_move_file_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.move_file(request)
 
     # Establish that the response is the type that we expect.
@@ -33899,6 +34065,7 @@ def test_move_file_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = dataform.MoveFileResponse.to_json(dataform.MoveFileResponse())
         req.return_value.content = return_value
 
@@ -33943,6 +34110,7 @@ def test_write_file_rest_bad_request(request_type=dataform.WriteFileRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.write_file(request)
 
 
@@ -33978,6 +34146,7 @@ def test_write_file_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.write_file(request)
 
     # Establish that the response is the type that we expect.
@@ -34013,6 +34182,7 @@ def test_write_file_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = dataform.WriteFileResponse.to_json(dataform.WriteFileResponse())
         req.return_value.content = return_value
 
@@ -34057,6 +34227,7 @@ def test_list_release_configs_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_release_configs(request)
 
 
@@ -34093,6 +34264,7 @@ def test_list_release_configs_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_release_configs(request)
 
     # Establish that the response is the type that we expect.
@@ -34132,6 +34304,7 @@ def test_list_release_configs_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = dataform.ListReleaseConfigsResponse.to_json(
             dataform.ListReleaseConfigsResponse()
         )
@@ -34180,6 +34353,7 @@ def test_get_release_config_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_release_config(request)
 
 
@@ -34221,6 +34395,7 @@ def test_get_release_config_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_release_config(request)
 
     # Establish that the response is the type that we expect.
@@ -34263,6 +34438,7 @@ def test_get_release_config_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = dataform.ReleaseConfig.to_json(dataform.ReleaseConfig())
         req.return_value.content = return_value
 
@@ -34307,6 +34483,7 @@ def test_create_release_config_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_release_config(request)
 
 
@@ -34446,6 +34623,7 @@ def test_create_release_config_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_release_config(request)
 
     # Establish that the response is the type that we expect.
@@ -34488,6 +34666,7 @@ def test_create_release_config_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = dataform.ReleaseConfig.to_json(dataform.ReleaseConfig())
         req.return_value.content = return_value
 
@@ -34536,6 +34715,7 @@ def test_update_release_config_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_release_config(request)
 
 
@@ -34679,6 +34859,7 @@ def test_update_release_config_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_release_config(request)
 
     # Establish that the response is the type that we expect.
@@ -34721,6 +34902,7 @@ def test_update_release_config_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = dataform.ReleaseConfig.to_json(dataform.ReleaseConfig())
         req.return_value.content = return_value
 
@@ -34767,6 +34949,7 @@ def test_delete_release_config_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_release_config(request)
 
 
@@ -34799,6 +34982,7 @@ def test_delete_release_config_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_release_config(request)
 
     # Establish that the response is the type that we expect.
@@ -34833,6 +35017,7 @@ def test_delete_release_config_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = dataform.DeleteReleaseConfigRequest()
         metadata = [
@@ -34873,6 +35058,7 @@ def test_list_compilation_results_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_compilation_results(request)
 
 
@@ -34909,6 +35095,7 @@ def test_list_compilation_results_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_compilation_results(request)
 
     # Establish that the response is the type that we expect.
@@ -34948,6 +35135,7 @@ def test_list_compilation_results_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = dataform.ListCompilationResultsResponse.to_json(
             dataform.ListCompilationResultsResponse()
         )
@@ -34996,6 +35184,7 @@ def test_get_compilation_result_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_compilation_result(request)
 
 
@@ -35036,6 +35225,7 @@ def test_get_compilation_result_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_compilation_result(request)
 
     # Establish that the response is the type that we expect.
@@ -35076,6 +35266,7 @@ def test_get_compilation_result_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = dataform.CompilationResult.to_json(dataform.CompilationResult())
         req.return_value.content = return_value
 
@@ -35120,6 +35311,7 @@ def test_create_compilation_result_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_compilation_result(request)
 
 
@@ -35257,6 +35449,7 @@ def test_create_compilation_result_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_compilation_result(request)
 
     # Establish that the response is the type that we expect.
@@ -35297,6 +35490,7 @@ def test_create_compilation_result_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = dataform.CompilationResult.to_json(dataform.CompilationResult())
         req.return_value.content = return_value
 
@@ -35343,6 +35537,7 @@ def test_query_compilation_result_actions_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.query_compilation_result_actions(request)
 
 
@@ -35380,6 +35575,7 @@ def test_query_compilation_result_actions_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.query_compilation_result_actions(request)
 
     # Establish that the response is the type that we expect.
@@ -35418,6 +35614,7 @@ def test_query_compilation_result_actions_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = dataform.QueryCompilationResultActionsResponse.to_json(
             dataform.QueryCompilationResultActionsResponse()
         )
@@ -35464,6 +35661,7 @@ def test_list_workflow_configs_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_workflow_configs(request)
 
 
@@ -35500,6 +35698,7 @@ def test_list_workflow_configs_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_workflow_configs(request)
 
     # Establish that the response is the type that we expect.
@@ -35539,6 +35738,7 @@ def test_list_workflow_configs_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = dataform.ListWorkflowConfigsResponse.to_json(
             dataform.ListWorkflowConfigsResponse()
         )
@@ -35587,6 +35787,7 @@ def test_get_workflow_config_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_workflow_config(request)
 
 
@@ -35627,6 +35828,7 @@ def test_get_workflow_config_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_workflow_config(request)
 
     # Establish that the response is the type that we expect.
@@ -35668,6 +35870,7 @@ def test_get_workflow_config_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = dataform.WorkflowConfig.to_json(dataform.WorkflowConfig())
         req.return_value.content = return_value
 
@@ -35712,6 +35915,7 @@ def test_create_workflow_config_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_workflow_config(request)
 
 
@@ -35853,6 +36057,7 @@ def test_create_workflow_config_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_workflow_config(request)
 
     # Establish that the response is the type that we expect.
@@ -35894,6 +36099,7 @@ def test_create_workflow_config_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = dataform.WorkflowConfig.to_json(dataform.WorkflowConfig())
         req.return_value.content = return_value
 
@@ -35942,6 +36148,7 @@ def test_update_workflow_config_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_workflow_config(request)
 
 
@@ -36087,6 +36294,7 @@ def test_update_workflow_config_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_workflow_config(request)
 
     # Establish that the response is the type that we expect.
@@ -36128,6 +36336,7 @@ def test_update_workflow_config_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = dataform.WorkflowConfig.to_json(dataform.WorkflowConfig())
         req.return_value.content = return_value
 
@@ -36174,6 +36383,7 @@ def test_delete_workflow_config_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_workflow_config(request)
 
 
@@ -36206,6 +36416,7 @@ def test_delete_workflow_config_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_workflow_config(request)
 
     # Establish that the response is the type that we expect.
@@ -36240,6 +36451,7 @@ def test_delete_workflow_config_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = dataform.DeleteWorkflowConfigRequest()
         metadata = [
@@ -36280,6 +36492,7 @@ def test_list_workflow_invocations_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_workflow_invocations(request)
 
 
@@ -36316,6 +36529,7 @@ def test_list_workflow_invocations_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_workflow_invocations(request)
 
     # Establish that the response is the type that we expect.
@@ -36355,6 +36569,7 @@ def test_list_workflow_invocations_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = dataform.ListWorkflowInvocationsResponse.to_json(
             dataform.ListWorkflowInvocationsResponse()
         )
@@ -36403,6 +36618,7 @@ def test_get_workflow_invocation_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_workflow_invocation(request)
 
 
@@ -36442,6 +36658,7 @@ def test_get_workflow_invocation_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_workflow_invocation(request)
 
     # Establish that the response is the type that we expect.
@@ -36481,6 +36698,7 @@ def test_get_workflow_invocation_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = dataform.WorkflowInvocation.to_json(
             dataform.WorkflowInvocation()
         )
@@ -36527,6 +36745,7 @@ def test_create_workflow_invocation_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_workflow_invocation(request)
 
 
@@ -36657,6 +36876,7 @@ def test_create_workflow_invocation_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_workflow_invocation(request)
 
     # Establish that the response is the type that we expect.
@@ -36696,6 +36916,7 @@ def test_create_workflow_invocation_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = dataform.WorkflowInvocation.to_json(
             dataform.WorkflowInvocation()
         )
@@ -36744,6 +36965,7 @@ def test_delete_workflow_invocation_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_workflow_invocation(request)
 
 
@@ -36776,6 +36998,7 @@ def test_delete_workflow_invocation_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_workflow_invocation(request)
 
     # Establish that the response is the type that we expect.
@@ -36810,6 +37033,7 @@ def test_delete_workflow_invocation_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = dataform.DeleteWorkflowInvocationRequest()
         metadata = [
@@ -36852,6 +37076,7 @@ def test_cancel_workflow_invocation_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.cancel_workflow_invocation(request)
 
 
@@ -36884,6 +37109,7 @@ def test_cancel_workflow_invocation_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.cancel_workflow_invocation(request)
 
     # Establish that the response is the type that we expect.
@@ -36918,6 +37144,7 @@ def test_cancel_workflow_invocation_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = dataform.CancelWorkflowInvocationRequest()
         metadata = [
@@ -36960,6 +37187,7 @@ def test_query_workflow_invocation_actions_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.query_workflow_invocation_actions(request)
 
 
@@ -36997,6 +37225,7 @@ def test_query_workflow_invocation_actions_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.query_workflow_invocation_actions(request)
 
     # Establish that the response is the type that we expect.
@@ -37035,6 +37264,7 @@ def test_query_workflow_invocation_actions_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = dataform.QueryWorkflowInvocationActionsResponse.to_json(
             dataform.QueryWorkflowInvocationActionsResponse()
         )
@@ -37081,6 +37311,7 @@ def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationReq
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_location(request)
 
 
@@ -37111,6 +37342,7 @@ def test_get_location_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.get_location(request)
 
@@ -37139,6 +37371,7 @@ def test_list_locations_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_locations(request)
 
 
@@ -37169,6 +37402,7 @@ def test_list_locations_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.list_locations(request)
 
@@ -37199,6 +37433,7 @@ def test_get_iam_policy_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_iam_policy(request)
 
 
@@ -37231,6 +37466,7 @@ def test_get_iam_policy_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.get_iam_policy(request)
 
@@ -37261,6 +37497,7 @@ def test_set_iam_policy_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.set_iam_policy(request)
 
 
@@ -37293,6 +37530,7 @@ def test_set_iam_policy_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.set_iam_policy(request)
 
@@ -37323,6 +37561,7 @@ def test_test_iam_permissions_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.test_iam_permissions(request)
 
 
@@ -37355,6 +37594,7 @@ def test_test_iam_permissions_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.test_iam_permissions(request)
 

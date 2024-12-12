@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -56,6 +56,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -268,8 +276,11 @@ class SecurityCenterRestInterceptor:
     def pre_create_finding(
         self,
         request: securitycenter_service.CreateFindingRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[securitycenter_service.CreateFindingRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        securitycenter_service.CreateFindingRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for create_finding
 
         Override in a subclass to manipulate the request or metadata
@@ -289,10 +300,10 @@ class SecurityCenterRestInterceptor:
     def pre_create_notification_config(
         self,
         request: securitycenter_service.CreateNotificationConfigRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         securitycenter_service.CreateNotificationConfigRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for create_notification_config
 
@@ -315,8 +326,11 @@ class SecurityCenterRestInterceptor:
     def pre_create_source(
         self,
         request: securitycenter_service.CreateSourceRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[securitycenter_service.CreateSourceRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        securitycenter_service.CreateSourceRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for create_source
 
         Override in a subclass to manipulate the request or metadata
@@ -336,10 +350,10 @@ class SecurityCenterRestInterceptor:
     def pre_delete_notification_config(
         self,
         request: securitycenter_service.DeleteNotificationConfigRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         securitycenter_service.DeleteNotificationConfigRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for delete_notification_config
 
@@ -351,8 +365,10 @@ class SecurityCenterRestInterceptor:
     def pre_get_iam_policy(
         self,
         request: iam_policy_pb2.GetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -372,9 +388,10 @@ class SecurityCenterRestInterceptor:
     def pre_get_notification_config(
         self,
         request: securitycenter_service.GetNotificationConfigRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        securitycenter_service.GetNotificationConfigRequest, Sequence[Tuple[str, str]]
+        securitycenter_service.GetNotificationConfigRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for get_notification_config
 
@@ -397,9 +414,10 @@ class SecurityCenterRestInterceptor:
     def pre_get_organization_settings(
         self,
         request: securitycenter_service.GetOrganizationSettingsRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        securitycenter_service.GetOrganizationSettingsRequest, Sequence[Tuple[str, str]]
+        securitycenter_service.GetOrganizationSettingsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for get_organization_settings
 
@@ -422,8 +440,10 @@ class SecurityCenterRestInterceptor:
     def pre_get_source(
         self,
         request: securitycenter_service.GetSourceRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[securitycenter_service.GetSourceRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        securitycenter_service.GetSourceRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_source
 
         Override in a subclass to manipulate the request or metadata
@@ -443,8 +463,11 @@ class SecurityCenterRestInterceptor:
     def pre_group_assets(
         self,
         request: securitycenter_service.GroupAssetsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[securitycenter_service.GroupAssetsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        securitycenter_service.GroupAssetsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for group_assets
 
         Override in a subclass to manipulate the request or metadata
@@ -466,8 +489,11 @@ class SecurityCenterRestInterceptor:
     def pre_group_findings(
         self,
         request: securitycenter_service.GroupFindingsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[securitycenter_service.GroupFindingsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        securitycenter_service.GroupFindingsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for group_findings
 
         Override in a subclass to manipulate the request or metadata
@@ -489,8 +515,11 @@ class SecurityCenterRestInterceptor:
     def pre_list_assets(
         self,
         request: securitycenter_service.ListAssetsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[securitycenter_service.ListAssetsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        securitycenter_service.ListAssetsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for list_assets
 
         Override in a subclass to manipulate the request or metadata
@@ -512,8 +541,11 @@ class SecurityCenterRestInterceptor:
     def pre_list_findings(
         self,
         request: securitycenter_service.ListFindingsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[securitycenter_service.ListFindingsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        securitycenter_service.ListFindingsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for list_findings
 
         Override in a subclass to manipulate the request or metadata
@@ -535,9 +567,10 @@ class SecurityCenterRestInterceptor:
     def pre_list_notification_configs(
         self,
         request: securitycenter_service.ListNotificationConfigsRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        securitycenter_service.ListNotificationConfigsRequest, Sequence[Tuple[str, str]]
+        securitycenter_service.ListNotificationConfigsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for list_notification_configs
 
@@ -560,8 +593,11 @@ class SecurityCenterRestInterceptor:
     def pre_list_sources(
         self,
         request: securitycenter_service.ListSourcesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[securitycenter_service.ListSourcesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        securitycenter_service.ListSourcesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for list_sources
 
         Override in a subclass to manipulate the request or metadata
@@ -583,9 +619,10 @@ class SecurityCenterRestInterceptor:
     def pre_run_asset_discovery(
         self,
         request: securitycenter_service.RunAssetDiscoveryRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        securitycenter_service.RunAssetDiscoveryRequest, Sequence[Tuple[str, str]]
+        securitycenter_service.RunAssetDiscoveryRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for run_asset_discovery
 
@@ -608,9 +645,10 @@ class SecurityCenterRestInterceptor:
     def pre_set_finding_state(
         self,
         request: securitycenter_service.SetFindingStateRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        securitycenter_service.SetFindingStateRequest, Sequence[Tuple[str, str]]
+        securitycenter_service.SetFindingStateRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for set_finding_state
 
@@ -631,8 +669,10 @@ class SecurityCenterRestInterceptor:
     def pre_set_iam_policy(
         self,
         request: iam_policy_pb2.SetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -652,8 +692,11 @@ class SecurityCenterRestInterceptor:
     def pre_test_iam_permissions(
         self,
         request: iam_policy_pb2.TestIamPermissionsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.TestIamPermissionsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -675,8 +718,11 @@ class SecurityCenterRestInterceptor:
     def pre_update_finding(
         self,
         request: securitycenter_service.UpdateFindingRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[securitycenter_service.UpdateFindingRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        securitycenter_service.UpdateFindingRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for update_finding
 
         Override in a subclass to manipulate the request or metadata
@@ -696,10 +742,10 @@ class SecurityCenterRestInterceptor:
     def pre_update_notification_config(
         self,
         request: securitycenter_service.UpdateNotificationConfigRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         securitycenter_service.UpdateNotificationConfigRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for update_notification_config
 
@@ -722,10 +768,10 @@ class SecurityCenterRestInterceptor:
     def pre_update_organization_settings(
         self,
         request: securitycenter_service.UpdateOrganizationSettingsRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         securitycenter_service.UpdateOrganizationSettingsRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for update_organization_settings
 
@@ -748,9 +794,10 @@ class SecurityCenterRestInterceptor:
     def pre_update_security_marks(
         self,
         request: securitycenter_service.UpdateSecurityMarksRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        securitycenter_service.UpdateSecurityMarksRequest, Sequence[Tuple[str, str]]
+        securitycenter_service.UpdateSecurityMarksRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for update_security_marks
 
@@ -773,8 +820,11 @@ class SecurityCenterRestInterceptor:
     def pre_update_source(
         self,
         request: securitycenter_service.UpdateSourceRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[securitycenter_service.UpdateSourceRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        securitycenter_service.UpdateSourceRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for update_source
 
         Override in a subclass to manipulate the request or metadata
@@ -967,7 +1017,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gcs_finding.Finding:
             r"""Call the create finding method over HTTP.
 
@@ -978,8 +1028,10 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.gcs_finding.Finding:
@@ -999,6 +1051,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             http_options = (
                 _BaseSecurityCenterRestTransport._BaseCreateFinding._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_finding(request, metadata)
             transcoded_request = _BaseSecurityCenterRestTransport._BaseCreateFinding._get_transcoded_request(
                 http_options, request
@@ -1012,6 +1065,33 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             query_params = _BaseSecurityCenterRestTransport._BaseCreateFinding._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securitycenter_v1p1beta1.SecurityCenterClient.CreateFinding",
+                    extra={
+                        "serviceName": "google.cloud.securitycenter.v1p1beta1.SecurityCenter",
+                        "rpcName": "CreateFinding",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SecurityCenterRestTransport._CreateFinding._get_response(
@@ -1034,7 +1114,29 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             pb_resp = gcs_finding.Finding.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_finding(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gcs_finding.Finding.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securitycenter_v1p1beta1.SecurityCenterClient.create_finding",
+                    extra={
+                        "serviceName": "google.cloud.securitycenter.v1p1beta1.SecurityCenter",
+                        "rpcName": "CreateFinding",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateNotificationConfig(
@@ -1073,7 +1175,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gcs_notification_config.NotificationConfig:
             r"""Call the create notification
             config method over HTTP.
@@ -1085,8 +1187,10 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.gcs_notification_config.NotificationConfig:
@@ -1103,6 +1207,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             http_options = (
                 _BaseSecurityCenterRestTransport._BaseCreateNotificationConfig._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_notification_config(
                 request, metadata
             )
@@ -1118,6 +1223,33 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             query_params = _BaseSecurityCenterRestTransport._BaseCreateNotificationConfig._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securitycenter_v1p1beta1.SecurityCenterClient.CreateNotificationConfig",
+                    extra={
+                        "serviceName": "google.cloud.securitycenter.v1p1beta1.SecurityCenter",
+                        "rpcName": "CreateNotificationConfig",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1142,7 +1274,31 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             pb_resp = gcs_notification_config.NotificationConfig.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_notification_config(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        gcs_notification_config.NotificationConfig.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securitycenter_v1p1beta1.SecurityCenterClient.create_notification_config",
+                    extra={
+                        "serviceName": "google.cloud.securitycenter.v1p1beta1.SecurityCenter",
+                        "rpcName": "CreateNotificationConfig",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateSource(
@@ -1180,7 +1336,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gcs_source.Source:
             r"""Call the create source method over HTTP.
 
@@ -1191,8 +1347,10 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.gcs_source.Source:
@@ -1208,6 +1366,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             http_options = (
                 _BaseSecurityCenterRestTransport._BaseCreateSource._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_source(request, metadata)
             transcoded_request = _BaseSecurityCenterRestTransport._BaseCreateSource._get_transcoded_request(
                 http_options, request
@@ -1221,6 +1380,33 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             query_params = _BaseSecurityCenterRestTransport._BaseCreateSource._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securitycenter_v1p1beta1.SecurityCenterClient.CreateSource",
+                    extra={
+                        "serviceName": "google.cloud.securitycenter.v1p1beta1.SecurityCenter",
+                        "rpcName": "CreateSource",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SecurityCenterRestTransport._CreateSource._get_response(
@@ -1243,7 +1429,29 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             pb_resp = gcs_source.Source.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_source(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gcs_source.Source.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securitycenter_v1p1beta1.SecurityCenterClient.create_source",
+                    extra={
+                        "serviceName": "google.cloud.securitycenter.v1p1beta1.SecurityCenter",
+                        "rpcName": "CreateSource",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteNotificationConfig(
@@ -1281,7 +1489,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete notification
             config method over HTTP.
@@ -1293,13 +1501,16 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
             """
 
             http_options = (
                 _BaseSecurityCenterRestTransport._BaseDeleteNotificationConfig._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_notification_config(
                 request, metadata
             )
@@ -1311,6 +1522,33 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             query_params = _BaseSecurityCenterRestTransport._BaseDeleteNotificationConfig._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securitycenter_v1p1beta1.SecurityCenterClient.DeleteNotificationConfig",
+                    extra={
+                        "serviceName": "google.cloud.securitycenter.v1p1beta1.SecurityCenter",
+                        "rpcName": "DeleteNotificationConfig",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1364,7 +1602,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> policy_pb2.Policy:
             r"""Call the get iam policy method over HTTP.
 
@@ -1374,8 +1612,10 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.policy_pb2.Policy:
@@ -1460,6 +1700,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             http_options = (
                 _BaseSecurityCenterRestTransport._BaseGetIamPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
             transcoded_request = _BaseSecurityCenterRestTransport._BaseGetIamPolicy._get_transcoded_request(
                 http_options, request
@@ -1473,6 +1714,33 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             query_params = _BaseSecurityCenterRestTransport._BaseGetIamPolicy._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securitycenter_v1p1beta1.SecurityCenterClient.GetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.securitycenter.v1p1beta1.SecurityCenter",
+                        "rpcName": "GetIamPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SecurityCenterRestTransport._GetIamPolicy._get_response(
@@ -1495,7 +1763,29 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             pb_resp = resp
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_iam_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securitycenter_v1p1beta1.SecurityCenterClient.get_iam_policy",
+                    extra={
+                        "serviceName": "google.cloud.securitycenter.v1p1beta1.SecurityCenter",
+                        "rpcName": "GetIamPolicy",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetNotificationConfig(
@@ -1533,7 +1823,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> notification_config.NotificationConfig:
             r"""Call the get notification config method over HTTP.
 
@@ -1544,8 +1834,10 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.notification_config.NotificationConfig:
@@ -1562,6 +1854,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             http_options = (
                 _BaseSecurityCenterRestTransport._BaseGetNotificationConfig._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_notification_config(
                 request, metadata
             )
@@ -1573,6 +1866,33 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             query_params = _BaseSecurityCenterRestTransport._BaseGetNotificationConfig._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securitycenter_v1p1beta1.SecurityCenterClient.GetNotificationConfig",
+                    extra={
+                        "serviceName": "google.cloud.securitycenter.v1p1beta1.SecurityCenter",
+                        "rpcName": "GetNotificationConfig",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SecurityCenterRestTransport._GetNotificationConfig._get_response(
@@ -1594,7 +1914,31 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             pb_resp = notification_config.NotificationConfig.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_notification_config(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = notification_config.NotificationConfig.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securitycenter_v1p1beta1.SecurityCenterClient.get_notification_config",
+                    extra={
+                        "serviceName": "google.cloud.securitycenter.v1p1beta1.SecurityCenter",
+                        "rpcName": "GetNotificationConfig",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetOrganizationSettings(
@@ -1632,7 +1976,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> organization_settings.OrganizationSettings:
             r"""Call the get organization settings method over HTTP.
 
@@ -1643,8 +1987,10 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.organization_settings.OrganizationSettings:
@@ -1657,6 +2003,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             http_options = (
                 _BaseSecurityCenterRestTransport._BaseGetOrganizationSettings._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_organization_settings(
                 request, metadata
             )
@@ -1668,6 +2015,33 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             query_params = _BaseSecurityCenterRestTransport._BaseGetOrganizationSettings._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securitycenter_v1p1beta1.SecurityCenterClient.GetOrganizationSettings",
+                    extra={
+                        "serviceName": "google.cloud.securitycenter.v1p1beta1.SecurityCenter",
+                        "rpcName": "GetOrganizationSettings",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1691,7 +2065,31 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             pb_resp = organization_settings.OrganizationSettings.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_organization_settings(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        organization_settings.OrganizationSettings.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securitycenter_v1p1beta1.SecurityCenterClient.get_organization_settings",
+                    extra={
+                        "serviceName": "google.cloud.securitycenter.v1p1beta1.SecurityCenter",
+                        "rpcName": "GetOrganizationSettings",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetSource(
@@ -1728,7 +2126,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> source.Source:
             r"""Call the get source method over HTTP.
 
@@ -1738,8 +2136,10 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.source.Source:
@@ -1755,6 +2155,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             http_options = (
                 _BaseSecurityCenterRestTransport._BaseGetSource._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_source(request, metadata)
             transcoded_request = (
                 _BaseSecurityCenterRestTransport._BaseGetSource._get_transcoded_request(
@@ -1768,6 +2169,33 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securitycenter_v1p1beta1.SecurityCenterClient.GetSource",
+                    extra={
+                        "serviceName": "google.cloud.securitycenter.v1p1beta1.SecurityCenter",
+                        "rpcName": "GetSource",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SecurityCenterRestTransport._GetSource._get_response(
@@ -1789,7 +2217,29 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             pb_resp = source.Source.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_source(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = source.Source.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securitycenter_v1p1beta1.SecurityCenterClient.get_source",
+                    extra={
+                        "serviceName": "google.cloud.securitycenter.v1p1beta1.SecurityCenter",
+                        "rpcName": "GetSource",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GroupAssets(
@@ -1827,7 +2277,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> securitycenter_service.GroupAssetsResponse:
             r"""Call the group assets method over HTTP.
 
@@ -1838,8 +2288,10 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.securitycenter_service.GroupAssetsResponse:
@@ -1851,6 +2303,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             http_options = (
                 _BaseSecurityCenterRestTransport._BaseGroupAssets._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_group_assets(request, metadata)
             transcoded_request = _BaseSecurityCenterRestTransport._BaseGroupAssets._get_transcoded_request(
                 http_options, request
@@ -1864,6 +2317,33 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             query_params = _BaseSecurityCenterRestTransport._BaseGroupAssets._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securitycenter_v1p1beta1.SecurityCenterClient.GroupAssets",
+                    extra={
+                        "serviceName": "google.cloud.securitycenter.v1p1beta1.SecurityCenter",
+                        "rpcName": "GroupAssets",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SecurityCenterRestTransport._GroupAssets._get_response(
@@ -1886,7 +2366,31 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             pb_resp = securitycenter_service.GroupAssetsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_group_assets(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        securitycenter_service.GroupAssetsResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securitycenter_v1p1beta1.SecurityCenterClient.group_assets",
+                    extra={
+                        "serviceName": "google.cloud.securitycenter.v1p1beta1.SecurityCenter",
+                        "rpcName": "GroupAssets",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GroupFindings(
@@ -1924,7 +2428,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> securitycenter_service.GroupFindingsResponse:
             r"""Call the group findings method over HTTP.
 
@@ -1935,8 +2439,10 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.securitycenter_service.GroupFindingsResponse:
@@ -1948,6 +2454,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             http_options = (
                 _BaseSecurityCenterRestTransport._BaseGroupFindings._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_group_findings(request, metadata)
             transcoded_request = _BaseSecurityCenterRestTransport._BaseGroupFindings._get_transcoded_request(
                 http_options, request
@@ -1961,6 +2468,33 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             query_params = _BaseSecurityCenterRestTransport._BaseGroupFindings._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securitycenter_v1p1beta1.SecurityCenterClient.GroupFindings",
+                    extra={
+                        "serviceName": "google.cloud.securitycenter.v1p1beta1.SecurityCenter",
+                        "rpcName": "GroupFindings",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SecurityCenterRestTransport._GroupFindings._get_response(
@@ -1983,7 +2517,31 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             pb_resp = securitycenter_service.GroupFindingsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_group_findings(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        securitycenter_service.GroupFindingsResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securitycenter_v1p1beta1.SecurityCenterClient.group_findings",
+                    extra={
+                        "serviceName": "google.cloud.securitycenter.v1p1beta1.SecurityCenter",
+                        "rpcName": "GroupFindings",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListAssets(
@@ -2020,7 +2578,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> securitycenter_service.ListAssetsResponse:
             r"""Call the list assets method over HTTP.
 
@@ -2030,8 +2588,10 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.securitycenter_service.ListAssetsResponse:
@@ -2041,6 +2601,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             http_options = (
                 _BaseSecurityCenterRestTransport._BaseListAssets._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_assets(request, metadata)
             transcoded_request = _BaseSecurityCenterRestTransport._BaseListAssets._get_transcoded_request(
                 http_options, request
@@ -2052,6 +2613,33 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securitycenter_v1p1beta1.SecurityCenterClient.ListAssets",
+                    extra={
+                        "serviceName": "google.cloud.securitycenter.v1p1beta1.SecurityCenter",
+                        "rpcName": "ListAssets",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SecurityCenterRestTransport._ListAssets._get_response(
@@ -2073,7 +2661,31 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             pb_resp = securitycenter_service.ListAssetsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_assets(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        securitycenter_service.ListAssetsResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securitycenter_v1p1beta1.SecurityCenterClient.list_assets",
+                    extra={
+                        "serviceName": "google.cloud.securitycenter.v1p1beta1.SecurityCenter",
+                        "rpcName": "ListAssets",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListFindings(
@@ -2110,7 +2722,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> securitycenter_service.ListFindingsResponse:
             r"""Call the list findings method over HTTP.
 
@@ -2120,8 +2732,10 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.securitycenter_service.ListFindingsResponse:
@@ -2133,6 +2747,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             http_options = (
                 _BaseSecurityCenterRestTransport._BaseListFindings._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_findings(request, metadata)
             transcoded_request = _BaseSecurityCenterRestTransport._BaseListFindings._get_transcoded_request(
                 http_options, request
@@ -2142,6 +2757,33 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             query_params = _BaseSecurityCenterRestTransport._BaseListFindings._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securitycenter_v1p1beta1.SecurityCenterClient.ListFindings",
+                    extra={
+                        "serviceName": "google.cloud.securitycenter.v1p1beta1.SecurityCenter",
+                        "rpcName": "ListFindings",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SecurityCenterRestTransport._ListFindings._get_response(
@@ -2163,7 +2805,31 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             pb_resp = securitycenter_service.ListFindingsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_findings(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        securitycenter_service.ListFindingsResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securitycenter_v1p1beta1.SecurityCenterClient.list_findings",
+                    extra={
+                        "serviceName": "google.cloud.securitycenter.v1p1beta1.SecurityCenter",
+                        "rpcName": "ListFindings",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListNotificationConfigs(
@@ -2201,7 +2867,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> securitycenter_service.ListNotificationConfigsResponse:
             r"""Call the list notification configs method over HTTP.
 
@@ -2212,8 +2878,10 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.securitycenter_service.ListNotificationConfigsResponse:
@@ -2225,6 +2893,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             http_options = (
                 _BaseSecurityCenterRestTransport._BaseListNotificationConfigs._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_notification_configs(
                 request, metadata
             )
@@ -2236,6 +2905,33 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             query_params = _BaseSecurityCenterRestTransport._BaseListNotificationConfigs._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securitycenter_v1p1beta1.SecurityCenterClient.ListNotificationConfigs",
+                    extra={
+                        "serviceName": "google.cloud.securitycenter.v1p1beta1.SecurityCenter",
+                        "rpcName": "ListNotificationConfigs",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -2259,7 +2955,33 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             pb_resp = securitycenter_service.ListNotificationConfigsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_notification_configs(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        securitycenter_service.ListNotificationConfigsResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securitycenter_v1p1beta1.SecurityCenterClient.list_notification_configs",
+                    extra={
+                        "serviceName": "google.cloud.securitycenter.v1p1beta1.SecurityCenter",
+                        "rpcName": "ListNotificationConfigs",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListSources(
@@ -2296,7 +3018,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> securitycenter_service.ListSourcesResponse:
             r"""Call the list sources method over HTTP.
 
@@ -2306,8 +3028,10 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.securitycenter_service.ListSourcesResponse:
@@ -2317,6 +3041,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             http_options = (
                 _BaseSecurityCenterRestTransport._BaseListSources._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_sources(request, metadata)
             transcoded_request = _BaseSecurityCenterRestTransport._BaseListSources._get_transcoded_request(
                 http_options, request
@@ -2326,6 +3051,33 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             query_params = _BaseSecurityCenterRestTransport._BaseListSources._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securitycenter_v1p1beta1.SecurityCenterClient.ListSources",
+                    extra={
+                        "serviceName": "google.cloud.securitycenter.v1p1beta1.SecurityCenter",
+                        "rpcName": "ListSources",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SecurityCenterRestTransport._ListSources._get_response(
@@ -2347,7 +3099,31 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             pb_resp = securitycenter_service.ListSourcesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_sources(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        securitycenter_service.ListSourcesResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securitycenter_v1p1beta1.SecurityCenterClient.list_sources",
+                    extra={
+                        "serviceName": "google.cloud.securitycenter.v1p1beta1.SecurityCenter",
+                        "rpcName": "ListSources",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _RunAssetDiscovery(
@@ -2385,7 +3161,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the run asset discovery method over HTTP.
 
@@ -2396,8 +3172,10 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2410,6 +3188,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             http_options = (
                 _BaseSecurityCenterRestTransport._BaseRunAssetDiscovery._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_run_asset_discovery(
                 request, metadata
             )
@@ -2425,6 +3204,33 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             query_params = _BaseSecurityCenterRestTransport._BaseRunAssetDiscovery._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securitycenter_v1p1beta1.SecurityCenterClient.RunAssetDiscovery",
+                    extra={
+                        "serviceName": "google.cloud.securitycenter.v1p1beta1.SecurityCenter",
+                        "rpcName": "RunAssetDiscovery",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SecurityCenterRestTransport._RunAssetDiscovery._get_response(
@@ -2445,7 +3251,29 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_run_asset_discovery(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securitycenter_v1p1beta1.SecurityCenterClient.run_asset_discovery",
+                    extra={
+                        "serviceName": "google.cloud.securitycenter.v1p1beta1.SecurityCenter",
+                        "rpcName": "RunAssetDiscovery",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _SetFindingState(
@@ -2483,7 +3311,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> finding.Finding:
             r"""Call the set finding state method over HTTP.
 
@@ -2494,8 +3322,10 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.finding.Finding:
@@ -2515,6 +3345,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             http_options = (
                 _BaseSecurityCenterRestTransport._BaseSetFindingState._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_set_finding_state(
                 request, metadata
             )
@@ -2530,6 +3361,33 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             query_params = _BaseSecurityCenterRestTransport._BaseSetFindingState._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securitycenter_v1p1beta1.SecurityCenterClient.SetFindingState",
+                    extra={
+                        "serviceName": "google.cloud.securitycenter.v1p1beta1.SecurityCenter",
+                        "rpcName": "SetFindingState",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SecurityCenterRestTransport._SetFindingState._get_response(
@@ -2552,7 +3410,29 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             pb_resp = finding.Finding.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_set_finding_state(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = finding.Finding.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securitycenter_v1p1beta1.SecurityCenterClient.set_finding_state",
+                    extra={
+                        "serviceName": "google.cloud.securitycenter.v1p1beta1.SecurityCenter",
+                        "rpcName": "SetFindingState",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _SetIamPolicy(
@@ -2590,7 +3470,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> policy_pb2.Policy:
             r"""Call the set iam policy method over HTTP.
 
@@ -2600,8 +3480,10 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.policy_pb2.Policy:
@@ -2686,6 +3568,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             http_options = (
                 _BaseSecurityCenterRestTransport._BaseSetIamPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
             transcoded_request = _BaseSecurityCenterRestTransport._BaseSetIamPolicy._get_transcoded_request(
                 http_options, request
@@ -2699,6 +3582,33 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             query_params = _BaseSecurityCenterRestTransport._BaseSetIamPolicy._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securitycenter_v1p1beta1.SecurityCenterClient.SetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.securitycenter.v1p1beta1.SecurityCenter",
+                        "rpcName": "SetIamPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SecurityCenterRestTransport._SetIamPolicy._get_response(
@@ -2721,7 +3631,29 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             pb_resp = resp
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_set_iam_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securitycenter_v1p1beta1.SecurityCenterClient.set_iam_policy",
+                    extra={
+                        "serviceName": "google.cloud.securitycenter.v1p1beta1.SecurityCenter",
+                        "rpcName": "SetIamPolicy",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _TestIamPermissions(
@@ -2759,7 +3691,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> iam_policy_pb2.TestIamPermissionsResponse:
             r"""Call the test iam permissions method over HTTP.
 
@@ -2769,8 +3701,10 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.iam_policy_pb2.TestIamPermissionsResponse:
@@ -2780,6 +3714,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             http_options = (
                 _BaseSecurityCenterRestTransport._BaseTestIamPermissions._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata
             )
@@ -2795,6 +3730,33 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             query_params = _BaseSecurityCenterRestTransport._BaseTestIamPermissions._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securitycenter_v1p1beta1.SecurityCenterClient.TestIamPermissions",
+                    extra={
+                        "serviceName": "google.cloud.securitycenter.v1p1beta1.SecurityCenter",
+                        "rpcName": "TestIamPermissions",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SecurityCenterRestTransport._TestIamPermissions._get_response(
@@ -2817,7 +3779,29 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             pb_resp = resp
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_test_iam_permissions(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securitycenter_v1p1beta1.SecurityCenterClient.test_iam_permissions",
+                    extra={
+                        "serviceName": "google.cloud.securitycenter.v1p1beta1.SecurityCenter",
+                        "rpcName": "TestIamPermissions",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateFinding(
@@ -2855,7 +3839,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gcs_finding.Finding:
             r"""Call the update finding method over HTTP.
 
@@ -2866,8 +3850,10 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.gcs_finding.Finding:
@@ -2887,6 +3873,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             http_options = (
                 _BaseSecurityCenterRestTransport._BaseUpdateFinding._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_finding(request, metadata)
             transcoded_request = _BaseSecurityCenterRestTransport._BaseUpdateFinding._get_transcoded_request(
                 http_options, request
@@ -2900,6 +3887,33 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             query_params = _BaseSecurityCenterRestTransport._BaseUpdateFinding._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securitycenter_v1p1beta1.SecurityCenterClient.UpdateFinding",
+                    extra={
+                        "serviceName": "google.cloud.securitycenter.v1p1beta1.SecurityCenter",
+                        "rpcName": "UpdateFinding",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SecurityCenterRestTransport._UpdateFinding._get_response(
@@ -2922,7 +3936,29 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             pb_resp = gcs_finding.Finding.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_finding(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gcs_finding.Finding.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securitycenter_v1p1beta1.SecurityCenterClient.update_finding",
+                    extra={
+                        "serviceName": "google.cloud.securitycenter.v1p1beta1.SecurityCenter",
+                        "rpcName": "UpdateFinding",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateNotificationConfig(
@@ -2961,7 +3997,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gcs_notification_config.NotificationConfig:
             r"""Call the update notification
             config method over HTTP.
@@ -2973,8 +4009,10 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.gcs_notification_config.NotificationConfig:
@@ -2991,6 +4029,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             http_options = (
                 _BaseSecurityCenterRestTransport._BaseUpdateNotificationConfig._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_notification_config(
                 request, metadata
             )
@@ -3006,6 +4045,33 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             query_params = _BaseSecurityCenterRestTransport._BaseUpdateNotificationConfig._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securitycenter_v1p1beta1.SecurityCenterClient.UpdateNotificationConfig",
+                    extra={
+                        "serviceName": "google.cloud.securitycenter.v1p1beta1.SecurityCenter",
+                        "rpcName": "UpdateNotificationConfig",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -3030,7 +4096,31 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             pb_resp = gcs_notification_config.NotificationConfig.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_notification_config(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        gcs_notification_config.NotificationConfig.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securitycenter_v1p1beta1.SecurityCenterClient.update_notification_config",
+                    extra={
+                        "serviceName": "google.cloud.securitycenter.v1p1beta1.SecurityCenter",
+                        "rpcName": "UpdateNotificationConfig",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateOrganizationSettings(
@@ -3069,7 +4159,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gcs_organization_settings.OrganizationSettings:
             r"""Call the update organization
             settings method over HTTP.
@@ -3081,8 +4171,10 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.gcs_organization_settings.OrganizationSettings:
@@ -3095,6 +4187,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             http_options = (
                 _BaseSecurityCenterRestTransport._BaseUpdateOrganizationSettings._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_organization_settings(
                 request, metadata
             )
@@ -3110,6 +4203,33 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             query_params = _BaseSecurityCenterRestTransport._BaseUpdateOrganizationSettings._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securitycenter_v1p1beta1.SecurityCenterClient.UpdateOrganizationSettings",
+                    extra={
+                        "serviceName": "google.cloud.securitycenter.v1p1beta1.SecurityCenter",
+                        "rpcName": "UpdateOrganizationSettings",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -3134,7 +4254,31 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             pb_resp = gcs_organization_settings.OrganizationSettings.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_organization_settings(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        gcs_organization_settings.OrganizationSettings.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securitycenter_v1p1beta1.SecurityCenterClient.update_organization_settings",
+                    extra={
+                        "serviceName": "google.cloud.securitycenter.v1p1beta1.SecurityCenter",
+                        "rpcName": "UpdateOrganizationSettings",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateSecurityMarks(
@@ -3173,7 +4317,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gcs_security_marks.SecurityMarks:
             r"""Call the update security marks method over HTTP.
 
@@ -3184,8 +4328,10 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.gcs_security_marks.SecurityMarks:
@@ -3203,6 +4349,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             http_options = (
                 _BaseSecurityCenterRestTransport._BaseUpdateSecurityMarks._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_security_marks(
                 request, metadata
             )
@@ -3218,6 +4365,33 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             query_params = _BaseSecurityCenterRestTransport._BaseUpdateSecurityMarks._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securitycenter_v1p1beta1.SecurityCenterClient.UpdateSecurityMarks",
+                    extra={
+                        "serviceName": "google.cloud.securitycenter.v1p1beta1.SecurityCenter",
+                        "rpcName": "UpdateSecurityMarks",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SecurityCenterRestTransport._UpdateSecurityMarks._get_response(
@@ -3240,7 +4414,31 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             pb_resp = gcs_security_marks.SecurityMarks.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_security_marks(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gcs_security_marks.SecurityMarks.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securitycenter_v1p1beta1.SecurityCenterClient.update_security_marks",
+                    extra={
+                        "serviceName": "google.cloud.securitycenter.v1p1beta1.SecurityCenter",
+                        "rpcName": "UpdateSecurityMarks",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateSource(
@@ -3278,7 +4476,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gcs_source.Source:
             r"""Call the update source method over HTTP.
 
@@ -3289,8 +4487,10 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.gcs_source.Source:
@@ -3306,6 +4506,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             http_options = (
                 _BaseSecurityCenterRestTransport._BaseUpdateSource._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_source(request, metadata)
             transcoded_request = _BaseSecurityCenterRestTransport._BaseUpdateSource._get_transcoded_request(
                 http_options, request
@@ -3319,6 +4520,33 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             query_params = _BaseSecurityCenterRestTransport._BaseUpdateSource._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securitycenter_v1p1beta1.SecurityCenterClient.UpdateSource",
+                    extra={
+                        "serviceName": "google.cloud.securitycenter.v1p1beta1.SecurityCenter",
+                        "rpcName": "UpdateSource",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SecurityCenterRestTransport._UpdateSource._get_response(
@@ -3341,7 +4569,29 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             pb_resp = gcs_source.Source.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_source(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gcs_source.Source.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securitycenter_v1p1beta1.SecurityCenterClient.update_source",
+                    extra={
+                        "serviceName": "google.cloud.securitycenter.v1p1beta1.SecurityCenter",
+                        "rpcName": "UpdateSource",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property

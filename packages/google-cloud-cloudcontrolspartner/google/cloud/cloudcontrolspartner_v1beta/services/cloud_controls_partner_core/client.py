@@ -14,6 +14,7 @@
 # limitations under the License.
 #
 from collections import OrderedDict
+import logging as std_logging
 import os
 import re
 from typing import (
@@ -47,6 +48,15 @@ try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
+
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = std_logging.getLogger(__name__)
 
 from google.protobuf import timestamp_pb2  # type: ignore
 
@@ -715,6 +725,10 @@ class CloudControlsPartnerCoreClient(metaclass=CloudControlsPartnerCoreClientMet
         # Initialize the universe domain validation.
         self._is_universe_domain_valid = False
 
+        if CLIENT_LOGGING_SUPPORTED:  # pragma: NO COVER
+            # Setup logging.
+            client_logging.initialize_logging()
+
         api_key_value = getattr(self._client_options, "api_key", None)
         if api_key_value and credentials:
             raise ValueError(
@@ -781,6 +795,29 @@ class CloudControlsPartnerCoreClient(metaclass=CloudControlsPartnerCoreClientMet
                 api_audience=self._client_options.api_audience,
             )
 
+        if "async" not in str(self._transport):
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                std_logging.DEBUG
+            ):  # pragma: NO COVER
+                _LOGGER.debug(
+                    "Created client `google.cloud.cloudcontrolspartner_v1beta.CloudControlsPartnerCoreClient`.",
+                    extra={
+                        "serviceName": "google.cloud.cloudcontrolspartner.v1beta.CloudControlsPartnerCore",
+                        "universeDomain": getattr(
+                            self._transport._credentials, "universe_domain", ""
+                        ),
+                        "credentialsType": f"{type(self._transport._credentials).__module__}.{type(self._transport._credentials).__qualname__}",
+                        "credentialsInfo": getattr(
+                            self.transport._credentials, "get_cred_info", lambda: None
+                        )(),
+                    }
+                    if hasattr(self._transport, "_credentials")
+                    else {
+                        "serviceName": "google.cloud.cloudcontrolspartner.v1beta.CloudControlsPartnerCore",
+                        "credentialsType": None,
+                    },
+                )
+
     def get_workload(
         self,
         request: Optional[Union[customer_workloads.GetWorkloadRequest, dict]] = None,
@@ -788,7 +825,7 @@ class CloudControlsPartnerCoreClient(metaclass=CloudControlsPartnerCoreClientMet
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> customer_workloads.Workload:
         r"""Gets details of a single workload
 
@@ -832,8 +869,10 @@ class CloudControlsPartnerCoreClient(metaclass=CloudControlsPartnerCoreClientMet
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.cloudcontrolspartner_v1beta.types.Workload:
@@ -892,7 +931,7 @@ class CloudControlsPartnerCoreClient(metaclass=CloudControlsPartnerCoreClientMet
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListWorkloadsPager:
         r"""Lists customer workloads for a given customer org id
 
@@ -936,8 +975,10 @@ class CloudControlsPartnerCoreClient(metaclass=CloudControlsPartnerCoreClientMet
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.cloudcontrolspartner_v1beta.services.cloud_controls_partner_core.pagers.ListWorkloadsPager:
@@ -1009,7 +1050,7 @@ class CloudControlsPartnerCoreClient(metaclass=CloudControlsPartnerCoreClientMet
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> customers.Customer:
         r"""Gets details of a single customer
 
@@ -1052,8 +1093,10 @@ class CloudControlsPartnerCoreClient(metaclass=CloudControlsPartnerCoreClientMet
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.cloudcontrolspartner_v1beta.types.Customer:
@@ -1111,7 +1154,7 @@ class CloudControlsPartnerCoreClient(metaclass=CloudControlsPartnerCoreClientMet
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListCustomersPager:
         r"""Lists customers of a partner identified by its Google
         Cloud organization ID
@@ -1156,8 +1199,10 @@ class CloudControlsPartnerCoreClient(metaclass=CloudControlsPartnerCoreClientMet
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.cloudcontrolspartner_v1beta.services.cloud_controls_partner_core.pagers.ListCustomersPager:
@@ -1229,7 +1274,7 @@ class CloudControlsPartnerCoreClient(metaclass=CloudControlsPartnerCoreClientMet
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> ekm_connections.EkmConnections:
         r"""Gets the EKM connections associated with a workload
 
@@ -1273,8 +1318,10 @@ class CloudControlsPartnerCoreClient(metaclass=CloudControlsPartnerCoreClientMet
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.cloudcontrolspartner_v1beta.types.EkmConnections:
@@ -1334,7 +1381,7 @@ class CloudControlsPartnerCoreClient(metaclass=CloudControlsPartnerCoreClientMet
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> partner_permissions.PartnerPermissions:
         r"""Gets the partner permissions granted for a workload
 
@@ -1378,8 +1425,10 @@ class CloudControlsPartnerCoreClient(metaclass=CloudControlsPartnerCoreClientMet
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.cloudcontrolspartner_v1beta.types.PartnerPermissions:
@@ -1439,7 +1488,7 @@ class CloudControlsPartnerCoreClient(metaclass=CloudControlsPartnerCoreClientMet
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListAccessApprovalRequestsPager:
         r"""Deprecated: Only returns access approval requests
         directly associated with an assured workload folder.
@@ -1485,8 +1534,10 @@ class CloudControlsPartnerCoreClient(metaclass=CloudControlsPartnerCoreClientMet
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.cloudcontrolspartner_v1beta.services.cloud_controls_partner_core.pagers.ListAccessApprovalRequestsPager:
@@ -1569,7 +1620,7 @@ class CloudControlsPartnerCoreClient(metaclass=CloudControlsPartnerCoreClientMet
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> partners.Partner:
         r"""Get details of a Partner.
 
@@ -1612,8 +1663,10 @@ class CloudControlsPartnerCoreClient(metaclass=CloudControlsPartnerCoreClientMet
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.cloudcontrolspartner_v1beta.types.Partner:

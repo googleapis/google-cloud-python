@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -37,6 +37,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -85,8 +93,11 @@ class RoutesRestInterceptor:
     def pre_compute_route_matrix(
         self,
         request: routes_service.ComputeRouteMatrixRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[routes_service.ComputeRouteMatrixRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        routes_service.ComputeRouteMatrixRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for compute_route_matrix
 
         Override in a subclass to manipulate the request or metadata
@@ -108,8 +119,10 @@ class RoutesRestInterceptor:
     def pre_compute_routes(
         self,
         request: routes_service.ComputeRoutesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[routes_service.ComputeRoutesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        routes_service.ComputeRoutesRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for compute_routes
 
         Override in a subclass to manipulate the request or metadata
@@ -251,7 +264,7 @@ class RoutesRestTransport(_BaseRoutesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> rest_streaming.ResponseIterator:
             r"""Call the compute route matrix method over HTTP.
 
@@ -261,8 +274,10 @@ class RoutesRestTransport(_BaseRoutesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.routes_service.RouteMatrixElement:
@@ -276,6 +291,7 @@ class RoutesRestTransport(_BaseRoutesRestTransport):
             http_options = (
                 _BaseRoutesRestTransport._BaseComputeRouteMatrix._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_compute_route_matrix(
                 request, metadata
             )
@@ -295,6 +311,33 @@ class RoutesRestTransport(_BaseRoutesRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.maps.routing_v2.RoutesClient.ComputeRouteMatrix",
+                    extra={
+                        "serviceName": "google.maps.routing.v2.Routes",
+                        "rpcName": "ComputeRouteMatrix",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RoutesRestTransport._ComputeRouteMatrix._get_response(
@@ -316,6 +359,7 @@ class RoutesRestTransport(_BaseRoutesRestTransport):
             resp = rest_streaming.ResponseIterator(
                 response, routes_service.RouteMatrixElement
             )
+
             resp = self._interceptor.post_compute_route_matrix(resp)
             return resp
 
@@ -352,7 +396,7 @@ class RoutesRestTransport(_BaseRoutesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> routes_service.ComputeRoutesResponse:
             r"""Call the compute routes method over HTTP.
 
@@ -362,8 +406,10 @@ class RoutesRestTransport(_BaseRoutesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.routes_service.ComputeRoutesResponse:
@@ -373,6 +419,7 @@ class RoutesRestTransport(_BaseRoutesRestTransport):
             http_options = (
                 _BaseRoutesRestTransport._BaseComputeRoutes._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_compute_routes(request, metadata)
             transcoded_request = (
                 _BaseRoutesRestTransport._BaseComputeRoutes._get_transcoded_request(
@@ -390,6 +437,33 @@ class RoutesRestTransport(_BaseRoutesRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.maps.routing_v2.RoutesClient.ComputeRoutes",
+                    extra={
+                        "serviceName": "google.maps.routing.v2.Routes",
+                        "rpcName": "ComputeRoutes",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RoutesRestTransport._ComputeRoutes._get_response(
@@ -412,7 +486,31 @@ class RoutesRestTransport(_BaseRoutesRestTransport):
             pb_resp = routes_service.ComputeRoutesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_compute_routes(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = routes_service.ComputeRoutesResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.maps.routing_v2.RoutesClient.compute_routes",
+                    extra={
+                        "serviceName": "google.maps.routing.v2.Routes",
+                        "rpcName": "ComputeRoutes",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property

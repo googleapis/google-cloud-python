@@ -2257,6 +2257,7 @@ def test_get_snapshot_rest_bad_request(request_type=snapshots.GetSnapshotRequest
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_snapshot(request)
 
 
@@ -2302,6 +2303,7 @@ def test_get_snapshot_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_snapshot(request)
 
     # Establish that the response is the type that we expect.
@@ -2346,6 +2348,7 @@ def test_get_snapshot_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = snapshots.Snapshot.to_json(snapshots.Snapshot())
         req.return_value.content = return_value
 
@@ -2392,6 +2395,7 @@ def test_delete_snapshot_rest_bad_request(request_type=snapshots.DeleteSnapshotR
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_snapshot(request)
 
 
@@ -2429,6 +2433,7 @@ def test_delete_snapshot_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_snapshot(request)
 
     # Establish that the response is the type that we expect.
@@ -2468,6 +2473,7 @@ def test_delete_snapshot_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = snapshots.DeleteSnapshotResponse.to_json(
             snapshots.DeleteSnapshotResponse()
         )
@@ -2512,6 +2518,7 @@ def test_list_snapshots_rest_bad_request(request_type=snapshots.ListSnapshotsReq
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_snapshots(request)
 
 
@@ -2545,6 +2552,7 @@ def test_list_snapshots_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_snapshots(request)
 
     # Establish that the response is the type that we expect.
@@ -2582,6 +2590,7 @@ def test_list_snapshots_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = snapshots.ListSnapshotsResponse.to_json(
             snapshots.ListSnapshotsResponse()
         )

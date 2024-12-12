@@ -4568,6 +4568,7 @@ def test_get_workload_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_workload(request)
 
@@ -4615,6 +4616,7 @@ def test_get_workload_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_workload(**mock_args)
 
@@ -4755,6 +4757,7 @@ def test_list_workloads_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_workloads(request)
 
@@ -4812,6 +4815,7 @@ def test_list_workloads_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_workloads(**mock_args)
 
@@ -5006,6 +5010,7 @@ def test_get_customer_rest_required_fields(request_type=customers.GetCustomerReq
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_customer(request)
 
@@ -5053,6 +5058,7 @@ def test_get_customer_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_customer(**mock_args)
 
@@ -5193,6 +5199,7 @@ def test_list_customers_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_customers(request)
 
@@ -5248,6 +5255,7 @@ def test_list_customers_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_customers(**mock_args)
 
@@ -5444,6 +5452,7 @@ def test_get_ekm_connections_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_ekm_connections(request)
 
@@ -5491,6 +5500,7 @@ def test_get_ekm_connections_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_ekm_connections(**mock_args)
 
@@ -5627,6 +5637,7 @@ def test_get_partner_permissions_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_partner_permissions(request)
 
@@ -5674,6 +5685,7 @@ def test_get_partner_permissions_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_partner_permissions(**mock_args)
 
@@ -5823,6 +5835,7 @@ def test_list_access_approval_requests_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_access_approval_requests(request)
 
@@ -5884,6 +5897,7 @@ def test_list_access_approval_requests_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_access_approval_requests(**mock_args)
 
@@ -6082,6 +6096,7 @@ def test_get_partner_rest_required_fields(request_type=partners.GetPartnerReques
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_partner(request)
 
@@ -6127,6 +6142,7 @@ def test_get_partner_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_partner(**mock_args)
 
@@ -6720,6 +6736,7 @@ def test_get_workload_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_workload(request)
 
 
@@ -6763,6 +6780,7 @@ def test_get_workload_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_workload(request)
 
     # Establish that the response is the type that we expect.
@@ -6812,6 +6830,7 @@ def test_get_workload_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = customer_workloads.Workload.to_json(
             customer_workloads.Workload()
         )
@@ -6860,6 +6879,7 @@ def test_list_workloads_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_workloads(request)
 
 
@@ -6898,6 +6918,7 @@ def test_list_workloads_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_workloads(request)
 
     # Establish that the response is the type that we expect.
@@ -6939,6 +6960,7 @@ def test_list_workloads_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = customer_workloads.ListWorkloadsResponse.to_json(
             customer_workloads.ListWorkloadsResponse()
         )
@@ -6983,6 +7005,7 @@ def test_get_customer_rest_bad_request(request_type=customers.GetCustomerRequest
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_customer(request)
 
 
@@ -7020,6 +7043,7 @@ def test_get_customer_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_customer(request)
 
     # Establish that the response is the type that we expect.
@@ -7060,6 +7084,7 @@ def test_get_customer_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = customers.Customer.to_json(customers.Customer())
         req.return_value.content = return_value
 
@@ -7102,6 +7127,7 @@ def test_list_customers_rest_bad_request(request_type=customers.ListCustomersReq
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_customers(request)
 
 
@@ -7138,6 +7164,7 @@ def test_list_customers_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_customers(request)
 
     # Establish that the response is the type that we expect.
@@ -7177,6 +7204,7 @@ def test_list_customers_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = customers.ListCustomersResponse.to_json(
             customers.ListCustomersResponse()
         )
@@ -7225,6 +7253,7 @@ def test_get_ekm_connections_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_ekm_connections(request)
 
 
@@ -7262,6 +7291,7 @@ def test_get_ekm_connections_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_ekm_connections(request)
 
     # Establish that the response is the type that we expect.
@@ -7302,6 +7332,7 @@ def test_get_ekm_connections_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = ekm_connections.EkmConnections.to_json(
             ekm_connections.EkmConnections()
         )
@@ -7350,6 +7381,7 @@ def test_get_partner_permissions_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_partner_permissions(request)
 
 
@@ -7390,6 +7422,7 @@ def test_get_partner_permissions_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_partner_permissions(request)
 
     # Establish that the response is the type that we expect.
@@ -7435,6 +7468,7 @@ def test_get_partner_permissions_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = partner_permissions.PartnerPermissions.to_json(
             partner_permissions.PartnerPermissions()
         )
@@ -7483,6 +7517,7 @@ def test_list_access_approval_requests_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_access_approval_requests(request)
 
 
@@ -7523,6 +7558,7 @@ def test_list_access_approval_requests_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_access_approval_requests(request)
 
     # Establish that the response is the type that we expect.
@@ -7566,6 +7602,7 @@ def test_list_access_approval_requests_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = (
             access_approval_requests.ListAccessApprovalRequestsResponse.to_json(
                 access_approval_requests.ListAccessApprovalRequestsResponse()
@@ -7614,6 +7651,7 @@ def test_get_partner_rest_bad_request(request_type=partners.GetPartnerRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_partner(request)
 
 
@@ -7651,6 +7689,7 @@ def test_get_partner_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_partner(request)
 
     # Establish that the response is the type that we expect.
@@ -7691,6 +7730,7 @@ def test_get_partner_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = partners.Partner.to_json(partners.Partner())
         req.return_value.content = return_value
 

@@ -1477,6 +1477,7 @@ def test_compute_routes_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.compute_routes(request)
 
@@ -1605,6 +1606,7 @@ def test_compute_route_matrix_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             with mock.patch.object(response_value, "iter_content") as iter_content:
                 iter_content.return_value = iter(json_return_value)
@@ -1877,6 +1879,7 @@ def test_compute_routes_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.compute_routes(request)
 
 
@@ -1910,6 +1913,7 @@ def test_compute_routes_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.compute_routes(request)
 
     # Establish that the response is the type that we expect.
@@ -1947,6 +1951,7 @@ def test_compute_routes_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = routes_service.ComputeRoutesResponse.to_json(
             routes_service.ComputeRoutesResponse()
         )
@@ -1993,6 +1998,7 @@ def test_compute_route_matrix_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.compute_route_matrix(request)
 
 
@@ -2032,6 +2038,7 @@ def test_compute_route_matrix_rest_call_success(request_type):
         json_return_value = "[{}]".format(json_return_value)
         response_value.iter_content = mock.Mock(return_value=iter(json_return_value))
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.compute_route_matrix(request)
 
     assert isinstance(response, Iterable)
@@ -2076,6 +2083,7 @@ def test_compute_route_matrix_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = routes_service.RouteMatrixElement.to_json(
             routes_service.RouteMatrixElement()
         )

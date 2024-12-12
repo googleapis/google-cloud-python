@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -60,6 +60,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -404,9 +412,10 @@ class NetworkServicesRestInterceptor:
     def pre_create_endpoint_policy(
         self,
         request: gcn_endpoint_policy.CreateEndpointPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        gcn_endpoint_policy.CreateEndpointPolicyRequest, Sequence[Tuple[str, str]]
+        gcn_endpoint_policy.CreateEndpointPolicyRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for create_endpoint_policy
 
@@ -429,8 +438,10 @@ class NetworkServicesRestInterceptor:
     def pre_create_gateway(
         self,
         request: gcn_gateway.CreateGatewayRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[gcn_gateway.CreateGatewayRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gcn_gateway.CreateGatewayRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_gateway
 
         Override in a subclass to manipulate the request or metadata
@@ -452,8 +463,10 @@ class NetworkServicesRestInterceptor:
     def pre_create_grpc_route(
         self,
         request: gcn_grpc_route.CreateGrpcRouteRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[gcn_grpc_route.CreateGrpcRouteRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gcn_grpc_route.CreateGrpcRouteRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_grpc_route
 
         Override in a subclass to manipulate the request or metadata
@@ -475,8 +488,10 @@ class NetworkServicesRestInterceptor:
     def pre_create_http_route(
         self,
         request: gcn_http_route.CreateHttpRouteRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[gcn_http_route.CreateHttpRouteRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gcn_http_route.CreateHttpRouteRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_http_route
 
         Override in a subclass to manipulate the request or metadata
@@ -496,8 +511,10 @@ class NetworkServicesRestInterceptor:
         return response
 
     def pre_create_mesh(
-        self, request: gcn_mesh.CreateMeshRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[gcn_mesh.CreateMeshRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: gcn_mesh.CreateMeshRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[gcn_mesh.CreateMeshRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_mesh
 
         Override in a subclass to manipulate the request or metadata
@@ -519,9 +536,10 @@ class NetworkServicesRestInterceptor:
     def pre_create_service_binding(
         self,
         request: gcn_service_binding.CreateServiceBindingRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        gcn_service_binding.CreateServiceBindingRequest, Sequence[Tuple[str, str]]
+        gcn_service_binding.CreateServiceBindingRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for create_service_binding
 
@@ -544,8 +562,10 @@ class NetworkServicesRestInterceptor:
     def pre_create_tcp_route(
         self,
         request: gcn_tcp_route.CreateTcpRouteRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[gcn_tcp_route.CreateTcpRouteRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gcn_tcp_route.CreateTcpRouteRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_tcp_route
 
         Override in a subclass to manipulate the request or metadata
@@ -567,8 +587,10 @@ class NetworkServicesRestInterceptor:
     def pre_create_tls_route(
         self,
         request: gcn_tls_route.CreateTlsRouteRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[gcn_tls_route.CreateTlsRouteRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gcn_tls_route.CreateTlsRouteRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_tls_route
 
         Override in a subclass to manipulate the request or metadata
@@ -590,8 +612,11 @@ class NetworkServicesRestInterceptor:
     def pre_delete_endpoint_policy(
         self,
         request: endpoint_policy.DeleteEndpointPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[endpoint_policy.DeleteEndpointPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        endpoint_policy.DeleteEndpointPolicyRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for delete_endpoint_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -611,8 +636,10 @@ class NetworkServicesRestInterceptor:
         return response
 
     def pre_delete_gateway(
-        self, request: gateway.DeleteGatewayRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[gateway.DeleteGatewayRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: gateway.DeleteGatewayRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[gateway.DeleteGatewayRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_gateway
 
         Override in a subclass to manipulate the request or metadata
@@ -634,8 +661,10 @@ class NetworkServicesRestInterceptor:
     def pre_delete_grpc_route(
         self,
         request: grpc_route.DeleteGrpcRouteRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[grpc_route.DeleteGrpcRouteRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        grpc_route.DeleteGrpcRouteRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_grpc_route
 
         Override in a subclass to manipulate the request or metadata
@@ -657,8 +686,10 @@ class NetworkServicesRestInterceptor:
     def pre_delete_http_route(
         self,
         request: http_route.DeleteHttpRouteRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[http_route.DeleteHttpRouteRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        http_route.DeleteHttpRouteRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_http_route
 
         Override in a subclass to manipulate the request or metadata
@@ -678,8 +709,10 @@ class NetworkServicesRestInterceptor:
         return response
 
     def pre_delete_mesh(
-        self, request: mesh.DeleteMeshRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[mesh.DeleteMeshRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: mesh.DeleteMeshRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[mesh.DeleteMeshRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_mesh
 
         Override in a subclass to manipulate the request or metadata
@@ -701,8 +734,11 @@ class NetworkServicesRestInterceptor:
     def pre_delete_service_binding(
         self,
         request: service_binding.DeleteServiceBindingRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[service_binding.DeleteServiceBindingRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service_binding.DeleteServiceBindingRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for delete_service_binding
 
         Override in a subclass to manipulate the request or metadata
@@ -724,8 +760,10 @@ class NetworkServicesRestInterceptor:
     def pre_delete_tcp_route(
         self,
         request: tcp_route.DeleteTcpRouteRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[tcp_route.DeleteTcpRouteRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        tcp_route.DeleteTcpRouteRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_tcp_route
 
         Override in a subclass to manipulate the request or metadata
@@ -747,8 +785,10 @@ class NetworkServicesRestInterceptor:
     def pre_delete_tls_route(
         self,
         request: tls_route.DeleteTlsRouteRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[tls_route.DeleteTlsRouteRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        tls_route.DeleteTlsRouteRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_tls_route
 
         Override in a subclass to manipulate the request or metadata
@@ -770,8 +810,11 @@ class NetworkServicesRestInterceptor:
     def pre_get_endpoint_policy(
         self,
         request: endpoint_policy.GetEndpointPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[endpoint_policy.GetEndpointPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        endpoint_policy.GetEndpointPolicyRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for get_endpoint_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -791,8 +834,10 @@ class NetworkServicesRestInterceptor:
         return response
 
     def pre_get_gateway(
-        self, request: gateway.GetGatewayRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[gateway.GetGatewayRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: gateway.GetGatewayRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[gateway.GetGatewayRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_gateway
 
         Override in a subclass to manipulate the request or metadata
@@ -812,8 +857,8 @@ class NetworkServicesRestInterceptor:
     def pre_get_grpc_route(
         self,
         request: grpc_route.GetGrpcRouteRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[grpc_route.GetGrpcRouteRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[grpc_route.GetGrpcRouteRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_grpc_route
 
         Override in a subclass to manipulate the request or metadata
@@ -835,8 +880,8 @@ class NetworkServicesRestInterceptor:
     def pre_get_http_route(
         self,
         request: http_route.GetHttpRouteRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[http_route.GetHttpRouteRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[http_route.GetHttpRouteRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_http_route
 
         Override in a subclass to manipulate the request or metadata
@@ -856,8 +901,10 @@ class NetworkServicesRestInterceptor:
         return response
 
     def pre_get_mesh(
-        self, request: mesh.GetMeshRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[mesh.GetMeshRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: mesh.GetMeshRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[mesh.GetMeshRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_mesh
 
         Override in a subclass to manipulate the request or metadata
@@ -877,8 +924,11 @@ class NetworkServicesRestInterceptor:
     def pre_get_service_binding(
         self,
         request: service_binding.GetServiceBindingRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[service_binding.GetServiceBindingRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service_binding.GetServiceBindingRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for get_service_binding
 
         Override in a subclass to manipulate the request or metadata
@@ -898,8 +948,10 @@ class NetworkServicesRestInterceptor:
         return response
 
     def pre_get_tcp_route(
-        self, request: tcp_route.GetTcpRouteRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[tcp_route.GetTcpRouteRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: tcp_route.GetTcpRouteRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[tcp_route.GetTcpRouteRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_tcp_route
 
         Override in a subclass to manipulate the request or metadata
@@ -917,8 +969,10 @@ class NetworkServicesRestInterceptor:
         return response
 
     def pre_get_tls_route(
-        self, request: tls_route.GetTlsRouteRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[tls_route.GetTlsRouteRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: tls_route.GetTlsRouteRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[tls_route.GetTlsRouteRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_tls_route
 
         Override in a subclass to manipulate the request or metadata
@@ -938,8 +992,11 @@ class NetworkServicesRestInterceptor:
     def pre_list_endpoint_policies(
         self,
         request: endpoint_policy.ListEndpointPoliciesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[endpoint_policy.ListEndpointPoliciesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        endpoint_policy.ListEndpointPoliciesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for list_endpoint_policies
 
         Override in a subclass to manipulate the request or metadata
@@ -959,8 +1016,10 @@ class NetworkServicesRestInterceptor:
         return response
 
     def pre_list_gateways(
-        self, request: gateway.ListGatewaysRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[gateway.ListGatewaysRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: gateway.ListGatewaysRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[gateway.ListGatewaysRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_gateways
 
         Override in a subclass to manipulate the request or metadata
@@ -982,8 +1041,10 @@ class NetworkServicesRestInterceptor:
     def pre_list_grpc_routes(
         self,
         request: grpc_route.ListGrpcRoutesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[grpc_route.ListGrpcRoutesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        grpc_route.ListGrpcRoutesRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_grpc_routes
 
         Override in a subclass to manipulate the request or metadata
@@ -1005,8 +1066,10 @@ class NetworkServicesRestInterceptor:
     def pre_list_http_routes(
         self,
         request: http_route.ListHttpRoutesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[http_route.ListHttpRoutesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        http_route.ListHttpRoutesRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_http_routes
 
         Override in a subclass to manipulate the request or metadata
@@ -1026,8 +1089,10 @@ class NetworkServicesRestInterceptor:
         return response
 
     def pre_list_meshes(
-        self, request: mesh.ListMeshesRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[mesh.ListMeshesRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: mesh.ListMeshesRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[mesh.ListMeshesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_meshes
 
         Override in a subclass to manipulate the request or metadata
@@ -1049,8 +1114,11 @@ class NetworkServicesRestInterceptor:
     def pre_list_service_bindings(
         self,
         request: service_binding.ListServiceBindingsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[service_binding.ListServiceBindingsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service_binding.ListServiceBindingsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for list_service_bindings
 
         Override in a subclass to manipulate the request or metadata
@@ -1072,8 +1140,8 @@ class NetworkServicesRestInterceptor:
     def pre_list_tcp_routes(
         self,
         request: tcp_route.ListTcpRoutesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[tcp_route.ListTcpRoutesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[tcp_route.ListTcpRoutesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_tcp_routes
 
         Override in a subclass to manipulate the request or metadata
@@ -1095,8 +1163,8 @@ class NetworkServicesRestInterceptor:
     def pre_list_tls_routes(
         self,
         request: tls_route.ListTlsRoutesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[tls_route.ListTlsRoutesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[tls_route.ListTlsRoutesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_tls_routes
 
         Override in a subclass to manipulate the request or metadata
@@ -1118,9 +1186,10 @@ class NetworkServicesRestInterceptor:
     def pre_update_endpoint_policy(
         self,
         request: gcn_endpoint_policy.UpdateEndpointPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        gcn_endpoint_policy.UpdateEndpointPolicyRequest, Sequence[Tuple[str, str]]
+        gcn_endpoint_policy.UpdateEndpointPolicyRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for update_endpoint_policy
 
@@ -1143,8 +1212,10 @@ class NetworkServicesRestInterceptor:
     def pre_update_gateway(
         self,
         request: gcn_gateway.UpdateGatewayRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[gcn_gateway.UpdateGatewayRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gcn_gateway.UpdateGatewayRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_gateway
 
         Override in a subclass to manipulate the request or metadata
@@ -1166,8 +1237,10 @@ class NetworkServicesRestInterceptor:
     def pre_update_grpc_route(
         self,
         request: gcn_grpc_route.UpdateGrpcRouteRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[gcn_grpc_route.UpdateGrpcRouteRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gcn_grpc_route.UpdateGrpcRouteRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_grpc_route
 
         Override in a subclass to manipulate the request or metadata
@@ -1189,8 +1262,10 @@ class NetworkServicesRestInterceptor:
     def pre_update_http_route(
         self,
         request: gcn_http_route.UpdateHttpRouteRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[gcn_http_route.UpdateHttpRouteRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gcn_http_route.UpdateHttpRouteRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_http_route
 
         Override in a subclass to manipulate the request or metadata
@@ -1210,8 +1285,10 @@ class NetworkServicesRestInterceptor:
         return response
 
     def pre_update_mesh(
-        self, request: gcn_mesh.UpdateMeshRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[gcn_mesh.UpdateMeshRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: gcn_mesh.UpdateMeshRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[gcn_mesh.UpdateMeshRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_mesh
 
         Override in a subclass to manipulate the request or metadata
@@ -1233,8 +1310,10 @@ class NetworkServicesRestInterceptor:
     def pre_update_tcp_route(
         self,
         request: gcn_tcp_route.UpdateTcpRouteRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[gcn_tcp_route.UpdateTcpRouteRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gcn_tcp_route.UpdateTcpRouteRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_tcp_route
 
         Override in a subclass to manipulate the request or metadata
@@ -1256,8 +1335,10 @@ class NetworkServicesRestInterceptor:
     def pre_update_tls_route(
         self,
         request: gcn_tls_route.UpdateTlsRouteRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[gcn_tls_route.UpdateTlsRouteRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gcn_tls_route.UpdateTlsRouteRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_tls_route
 
         Override in a subclass to manipulate the request or metadata
@@ -1279,8 +1360,10 @@ class NetworkServicesRestInterceptor:
     def pre_get_location(
         self,
         request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -1302,8 +1385,10 @@ class NetworkServicesRestInterceptor:
     def pre_list_locations(
         self,
         request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -1325,8 +1410,10 @@ class NetworkServicesRestInterceptor:
     def pre_get_iam_policy(
         self,
         request: iam_policy_pb2.GetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -1346,8 +1433,10 @@ class NetworkServicesRestInterceptor:
     def pre_set_iam_policy(
         self,
         request: iam_policy_pb2.SetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -1367,8 +1456,11 @@ class NetworkServicesRestInterceptor:
     def pre_test_iam_permissions(
         self,
         request: iam_policy_pb2.TestIamPermissionsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.TestIamPermissionsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -1390,8 +1482,10 @@ class NetworkServicesRestInterceptor:
     def pre_cancel_operation(
         self,
         request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1411,8 +1505,10 @@ class NetworkServicesRestInterceptor:
     def pre_delete_operation(
         self,
         request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1432,8 +1528,10 @@ class NetworkServicesRestInterceptor:
     def pre_get_operation(
         self,
         request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1455,8 +1553,10 @@ class NetworkServicesRestInterceptor:
     def pre_list_operations(
         self,
         request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -1652,7 +1752,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create endpoint policy method over HTTP.
 
@@ -1663,8 +1763,10 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1677,6 +1779,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             http_options = (
                 _BaseNetworkServicesRestTransport._BaseCreateEndpointPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_endpoint_policy(
                 request, metadata
             )
@@ -1692,6 +1795,33 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             query_params = _BaseNetworkServicesRestTransport._BaseCreateEndpointPolicy._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networkservices_v1.NetworkServicesClient.CreateEndpointPolicy",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "CreateEndpointPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetworkServicesRestTransport._CreateEndpointPolicy._get_response(
@@ -1712,7 +1842,29 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_endpoint_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networkservices_v1.NetworkServicesClient.create_endpoint_policy",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "CreateEndpointPolicy",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateGateway(
@@ -1750,7 +1902,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create gateway method over HTTP.
 
@@ -1761,8 +1913,10 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1775,6 +1929,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             http_options = (
                 _BaseNetworkServicesRestTransport._BaseCreateGateway._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_gateway(request, metadata)
             transcoded_request = _BaseNetworkServicesRestTransport._BaseCreateGateway._get_transcoded_request(
                 http_options, request
@@ -1788,6 +1943,33 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             query_params = _BaseNetworkServicesRestTransport._BaseCreateGateway._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networkservices_v1.NetworkServicesClient.CreateGateway",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "CreateGateway",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetworkServicesRestTransport._CreateGateway._get_response(
@@ -1808,7 +1990,29 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_gateway(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networkservices_v1.NetworkServicesClient.create_gateway",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "CreateGateway",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateGrpcRoute(
@@ -1846,7 +2050,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create grpc route method over HTTP.
 
@@ -1857,8 +2061,10 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1871,6 +2077,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             http_options = (
                 _BaseNetworkServicesRestTransport._BaseCreateGrpcRoute._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_grpc_route(
                 request, metadata
             )
@@ -1886,6 +2093,33 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             query_params = _BaseNetworkServicesRestTransport._BaseCreateGrpcRoute._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networkservices_v1.NetworkServicesClient.CreateGrpcRoute",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "CreateGrpcRoute",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetworkServicesRestTransport._CreateGrpcRoute._get_response(
@@ -1906,7 +2140,29 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_grpc_route(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networkservices_v1.NetworkServicesClient.create_grpc_route",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "CreateGrpcRoute",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateHttpRoute(
@@ -1944,7 +2200,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create http route method over HTTP.
 
@@ -1954,8 +2210,10 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1968,6 +2226,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             http_options = (
                 _BaseNetworkServicesRestTransport._BaseCreateHttpRoute._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_http_route(
                 request, metadata
             )
@@ -1983,6 +2242,33 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             query_params = _BaseNetworkServicesRestTransport._BaseCreateHttpRoute._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networkservices_v1.NetworkServicesClient.CreateHttpRoute",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "CreateHttpRoute",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetworkServicesRestTransport._CreateHttpRoute._get_response(
@@ -2003,7 +2289,29 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_http_route(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networkservices_v1.NetworkServicesClient.create_http_route",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "CreateHttpRoute",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateMesh(
@@ -2041,7 +2349,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create mesh method over HTTP.
 
@@ -2052,8 +2360,10 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2066,6 +2376,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             http_options = (
                 _BaseNetworkServicesRestTransport._BaseCreateMesh._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_mesh(request, metadata)
             transcoded_request = _BaseNetworkServicesRestTransport._BaseCreateMesh._get_transcoded_request(
                 http_options, request
@@ -2079,6 +2390,33 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             query_params = _BaseNetworkServicesRestTransport._BaseCreateMesh._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networkservices_v1.NetworkServicesClient.CreateMesh",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "CreateMesh",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetworkServicesRestTransport._CreateMesh._get_response(
@@ -2099,7 +2437,29 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_mesh(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networkservices_v1.NetworkServicesClient.create_mesh",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "CreateMesh",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateServiceBinding(
@@ -2138,7 +2498,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create service binding method over HTTP.
 
@@ -2149,8 +2509,10 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2163,6 +2525,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             http_options = (
                 _BaseNetworkServicesRestTransport._BaseCreateServiceBinding._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_service_binding(
                 request, metadata
             )
@@ -2178,6 +2541,33 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             query_params = _BaseNetworkServicesRestTransport._BaseCreateServiceBinding._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networkservices_v1.NetworkServicesClient.CreateServiceBinding",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "CreateServiceBinding",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetworkServicesRestTransport._CreateServiceBinding._get_response(
@@ -2198,7 +2588,29 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_service_binding(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networkservices_v1.NetworkServicesClient.create_service_binding",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "CreateServiceBinding",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateTcpRoute(
@@ -2236,7 +2648,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create tcp route method over HTTP.
 
@@ -2246,8 +2658,10 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2260,6 +2674,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             http_options = (
                 _BaseNetworkServicesRestTransport._BaseCreateTcpRoute._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_tcp_route(
                 request, metadata
             )
@@ -2275,6 +2690,33 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             query_params = _BaseNetworkServicesRestTransport._BaseCreateTcpRoute._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networkservices_v1.NetworkServicesClient.CreateTcpRoute",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "CreateTcpRoute",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetworkServicesRestTransport._CreateTcpRoute._get_response(
@@ -2295,7 +2737,29 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_tcp_route(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networkservices_v1.NetworkServicesClient.create_tcp_route",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "CreateTcpRoute",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateTlsRoute(
@@ -2333,7 +2797,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create tls route method over HTTP.
 
@@ -2343,8 +2807,10 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2357,6 +2823,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             http_options = (
                 _BaseNetworkServicesRestTransport._BaseCreateTlsRoute._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_tls_route(
                 request, metadata
             )
@@ -2372,6 +2839,33 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             query_params = _BaseNetworkServicesRestTransport._BaseCreateTlsRoute._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networkservices_v1.NetworkServicesClient.CreateTlsRoute",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "CreateTlsRoute",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetworkServicesRestTransport._CreateTlsRoute._get_response(
@@ -2392,7 +2886,29 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_tls_route(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networkservices_v1.NetworkServicesClient.create_tls_route",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "CreateTlsRoute",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteEndpointPolicy(
@@ -2430,7 +2946,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete endpoint policy method over HTTP.
 
@@ -2441,8 +2957,10 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2455,6 +2973,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             http_options = (
                 _BaseNetworkServicesRestTransport._BaseDeleteEndpointPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_endpoint_policy(
                 request, metadata
             )
@@ -2466,6 +2985,33 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             query_params = _BaseNetworkServicesRestTransport._BaseDeleteEndpointPolicy._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networkservices_v1.NetworkServicesClient.DeleteEndpointPolicy",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "DeleteEndpointPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetworkServicesRestTransport._DeleteEndpointPolicy._get_response(
@@ -2485,7 +3031,29 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_endpoint_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networkservices_v1.NetworkServicesClient.delete_endpoint_policy",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "DeleteEndpointPolicy",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteGateway(
@@ -2522,7 +3090,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete gateway method over HTTP.
 
@@ -2533,8 +3101,10 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2547,6 +3117,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             http_options = (
                 _BaseNetworkServicesRestTransport._BaseDeleteGateway._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_gateway(request, metadata)
             transcoded_request = _BaseNetworkServicesRestTransport._BaseDeleteGateway._get_transcoded_request(
                 http_options, request
@@ -2556,6 +3127,33 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             query_params = _BaseNetworkServicesRestTransport._BaseDeleteGateway._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networkservices_v1.NetworkServicesClient.DeleteGateway",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "DeleteGateway",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetworkServicesRestTransport._DeleteGateway._get_response(
@@ -2575,7 +3173,29 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_gateway(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networkservices_v1.NetworkServicesClient.delete_gateway",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "DeleteGateway",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteGrpcRoute(
@@ -2612,7 +3232,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete grpc route method over HTTP.
 
@@ -2623,8 +3243,10 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2637,6 +3259,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             http_options = (
                 _BaseNetworkServicesRestTransport._BaseDeleteGrpcRoute._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_grpc_route(
                 request, metadata
             )
@@ -2648,6 +3271,33 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             query_params = _BaseNetworkServicesRestTransport._BaseDeleteGrpcRoute._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networkservices_v1.NetworkServicesClient.DeleteGrpcRoute",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "DeleteGrpcRoute",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetworkServicesRestTransport._DeleteGrpcRoute._get_response(
@@ -2667,7 +3317,29 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_grpc_route(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networkservices_v1.NetworkServicesClient.delete_grpc_route",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "DeleteGrpcRoute",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteHttpRoute(
@@ -2704,7 +3376,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete http route method over HTTP.
 
@@ -2715,8 +3387,10 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2729,6 +3403,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             http_options = (
                 _BaseNetworkServicesRestTransport._BaseDeleteHttpRoute._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_http_route(
                 request, metadata
             )
@@ -2740,6 +3415,33 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             query_params = _BaseNetworkServicesRestTransport._BaseDeleteHttpRoute._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networkservices_v1.NetworkServicesClient.DeleteHttpRoute",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "DeleteHttpRoute",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetworkServicesRestTransport._DeleteHttpRoute._get_response(
@@ -2759,7 +3461,29 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_http_route(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networkservices_v1.NetworkServicesClient.delete_http_route",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "DeleteHttpRoute",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteMesh(
@@ -2796,7 +3520,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete mesh method over HTTP.
 
@@ -2807,8 +3531,10 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2821,6 +3547,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             http_options = (
                 _BaseNetworkServicesRestTransport._BaseDeleteMesh._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_mesh(request, metadata)
             transcoded_request = _BaseNetworkServicesRestTransport._BaseDeleteMesh._get_transcoded_request(
                 http_options, request
@@ -2830,6 +3557,33 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             query_params = _BaseNetworkServicesRestTransport._BaseDeleteMesh._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networkservices_v1.NetworkServicesClient.DeleteMesh",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "DeleteMesh",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetworkServicesRestTransport._DeleteMesh._get_response(
@@ -2849,7 +3603,29 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_mesh(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networkservices_v1.NetworkServicesClient.delete_mesh",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "DeleteMesh",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteServiceBinding(
@@ -2887,7 +3663,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete service binding method over HTTP.
 
@@ -2898,8 +3674,10 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2912,6 +3690,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             http_options = (
                 _BaseNetworkServicesRestTransport._BaseDeleteServiceBinding._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_service_binding(
                 request, metadata
             )
@@ -2923,6 +3702,33 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             query_params = _BaseNetworkServicesRestTransport._BaseDeleteServiceBinding._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networkservices_v1.NetworkServicesClient.DeleteServiceBinding",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "DeleteServiceBinding",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetworkServicesRestTransport._DeleteServiceBinding._get_response(
@@ -2942,7 +3748,29 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_service_binding(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networkservices_v1.NetworkServicesClient.delete_service_binding",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "DeleteServiceBinding",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteTcpRoute(
@@ -2979,7 +3807,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete tcp route method over HTTP.
 
@@ -2990,8 +3818,10 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -3004,6 +3834,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             http_options = (
                 _BaseNetworkServicesRestTransport._BaseDeleteTcpRoute._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_tcp_route(
                 request, metadata
             )
@@ -3015,6 +3846,33 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             query_params = _BaseNetworkServicesRestTransport._BaseDeleteTcpRoute._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networkservices_v1.NetworkServicesClient.DeleteTcpRoute",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "DeleteTcpRoute",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetworkServicesRestTransport._DeleteTcpRoute._get_response(
@@ -3034,7 +3892,29 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_tcp_route(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networkservices_v1.NetworkServicesClient.delete_tcp_route",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "DeleteTcpRoute",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteTlsRoute(
@@ -3071,7 +3951,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete tls route method over HTTP.
 
@@ -3082,8 +3962,10 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -3096,6 +3978,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             http_options = (
                 _BaseNetworkServicesRestTransport._BaseDeleteTlsRoute._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_tls_route(
                 request, metadata
             )
@@ -3107,6 +3990,33 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             query_params = _BaseNetworkServicesRestTransport._BaseDeleteTlsRoute._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networkservices_v1.NetworkServicesClient.DeleteTlsRoute",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "DeleteTlsRoute",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetworkServicesRestTransport._DeleteTlsRoute._get_response(
@@ -3126,7 +4036,29 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_tls_route(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networkservices_v1.NetworkServicesClient.delete_tls_route",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "DeleteTlsRoute",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetEndpointPolicy(
@@ -3164,7 +4096,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> endpoint_policy.EndpointPolicy:
             r"""Call the get endpoint policy method over HTTP.
 
@@ -3175,8 +4107,10 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.endpoint_policy.EndpointPolicy:
@@ -3192,6 +4126,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             http_options = (
                 _BaseNetworkServicesRestTransport._BaseGetEndpointPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_endpoint_policy(
                 request, metadata
             )
@@ -3203,6 +4138,33 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             query_params = _BaseNetworkServicesRestTransport._BaseGetEndpointPolicy._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networkservices_v1.NetworkServicesClient.GetEndpointPolicy",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "GetEndpointPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetworkServicesRestTransport._GetEndpointPolicy._get_response(
@@ -3224,7 +4186,29 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             pb_resp = endpoint_policy.EndpointPolicy.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_endpoint_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = endpoint_policy.EndpointPolicy.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networkservices_v1.NetworkServicesClient.get_endpoint_policy",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "GetEndpointPolicy",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetGateway(
@@ -3261,7 +4245,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gateway.Gateway:
             r"""Call the get gateway method over HTTP.
 
@@ -3272,8 +4256,10 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.gateway.Gateway:
@@ -3291,6 +4277,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             http_options = (
                 _BaseNetworkServicesRestTransport._BaseGetGateway._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_gateway(request, metadata)
             transcoded_request = _BaseNetworkServicesRestTransport._BaseGetGateway._get_transcoded_request(
                 http_options, request
@@ -3300,6 +4287,33 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             query_params = _BaseNetworkServicesRestTransport._BaseGetGateway._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networkservices_v1.NetworkServicesClient.GetGateway",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "GetGateway",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetworkServicesRestTransport._GetGateway._get_response(
@@ -3321,7 +4335,29 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             pb_resp = gateway.Gateway.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_gateway(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gateway.Gateway.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networkservices_v1.NetworkServicesClient.get_gateway",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "GetGateway",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetGrpcRoute(
@@ -3358,7 +4394,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> grpc_route.GrpcRoute:
             r"""Call the get grpc route method over HTTP.
 
@@ -3369,8 +4405,10 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.grpc_route.GrpcRoute:
@@ -3383,6 +4421,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             http_options = (
                 _BaseNetworkServicesRestTransport._BaseGetGrpcRoute._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_grpc_route(request, metadata)
             transcoded_request = _BaseNetworkServicesRestTransport._BaseGetGrpcRoute._get_transcoded_request(
                 http_options, request
@@ -3392,6 +4431,33 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             query_params = _BaseNetworkServicesRestTransport._BaseGetGrpcRoute._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networkservices_v1.NetworkServicesClient.GetGrpcRoute",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "GetGrpcRoute",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetworkServicesRestTransport._GetGrpcRoute._get_response(
@@ -3413,7 +4479,29 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             pb_resp = grpc_route.GrpcRoute.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_grpc_route(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = grpc_route.GrpcRoute.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networkservices_v1.NetworkServicesClient.get_grpc_route",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "GetGrpcRoute",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetHttpRoute(
@@ -3450,7 +4538,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> http_route.HttpRoute:
             r"""Call the get http route method over HTTP.
 
@@ -3461,8 +4549,10 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.http_route.HttpRoute:
@@ -3475,6 +4565,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             http_options = (
                 _BaseNetworkServicesRestTransport._BaseGetHttpRoute._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_http_route(request, metadata)
             transcoded_request = _BaseNetworkServicesRestTransport._BaseGetHttpRoute._get_transcoded_request(
                 http_options, request
@@ -3484,6 +4575,33 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             query_params = _BaseNetworkServicesRestTransport._BaseGetHttpRoute._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networkservices_v1.NetworkServicesClient.GetHttpRoute",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "GetHttpRoute",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetworkServicesRestTransport._GetHttpRoute._get_response(
@@ -3505,7 +4623,29 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             pb_resp = http_route.HttpRoute.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_http_route(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = http_route.HttpRoute.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networkservices_v1.NetworkServicesClient.get_http_route",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "GetHttpRoute",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetMesh(
@@ -3542,7 +4682,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> mesh.Mesh:
             r"""Call the get mesh method over HTTP.
 
@@ -3552,8 +4692,10 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.mesh.Mesh:
@@ -3569,6 +4711,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             http_options = (
                 _BaseNetworkServicesRestTransport._BaseGetMesh._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_mesh(request, metadata)
             transcoded_request = (
                 _BaseNetworkServicesRestTransport._BaseGetMesh._get_transcoded_request(
@@ -3582,6 +4725,33 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networkservices_v1.NetworkServicesClient.GetMesh",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "GetMesh",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetworkServicesRestTransport._GetMesh._get_response(
@@ -3603,7 +4773,29 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             pb_resp = mesh.Mesh.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_mesh(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = mesh.Mesh.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networkservices_v1.NetworkServicesClient.get_mesh",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "GetMesh",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetServiceBinding(
@@ -3641,7 +4833,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> service_binding.ServiceBinding:
             r"""Call the get service binding method over HTTP.
 
@@ -3652,8 +4844,10 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.service_binding.ServiceBinding:
@@ -3666,6 +4860,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             http_options = (
                 _BaseNetworkServicesRestTransport._BaseGetServiceBinding._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_service_binding(
                 request, metadata
             )
@@ -3677,6 +4872,33 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             query_params = _BaseNetworkServicesRestTransport._BaseGetServiceBinding._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networkservices_v1.NetworkServicesClient.GetServiceBinding",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "GetServiceBinding",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetworkServicesRestTransport._GetServiceBinding._get_response(
@@ -3698,7 +4920,29 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             pb_resp = service_binding.ServiceBinding.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_service_binding(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = service_binding.ServiceBinding.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networkservices_v1.NetworkServicesClient.get_service_binding",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "GetServiceBinding",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetTcpRoute(
@@ -3735,7 +4979,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> tcp_route.TcpRoute:
             r"""Call the get tcp route method over HTTP.
 
@@ -3746,8 +4990,10 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.tcp_route.TcpRoute:
@@ -3760,6 +5006,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             http_options = (
                 _BaseNetworkServicesRestTransport._BaseGetTcpRoute._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_tcp_route(request, metadata)
             transcoded_request = _BaseNetworkServicesRestTransport._BaseGetTcpRoute._get_transcoded_request(
                 http_options, request
@@ -3769,6 +5016,33 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             query_params = _BaseNetworkServicesRestTransport._BaseGetTcpRoute._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networkservices_v1.NetworkServicesClient.GetTcpRoute",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "GetTcpRoute",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetworkServicesRestTransport._GetTcpRoute._get_response(
@@ -3790,7 +5064,29 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             pb_resp = tcp_route.TcpRoute.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_tcp_route(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = tcp_route.TcpRoute.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networkservices_v1.NetworkServicesClient.get_tcp_route",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "GetTcpRoute",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetTlsRoute(
@@ -3827,7 +5123,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> tls_route.TlsRoute:
             r"""Call the get tls route method over HTTP.
 
@@ -3838,8 +5134,10 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.tls_route.TlsRoute:
@@ -3852,6 +5150,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             http_options = (
                 _BaseNetworkServicesRestTransport._BaseGetTlsRoute._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_tls_route(request, metadata)
             transcoded_request = _BaseNetworkServicesRestTransport._BaseGetTlsRoute._get_transcoded_request(
                 http_options, request
@@ -3861,6 +5160,33 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             query_params = _BaseNetworkServicesRestTransport._BaseGetTlsRoute._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networkservices_v1.NetworkServicesClient.GetTlsRoute",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "GetTlsRoute",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetworkServicesRestTransport._GetTlsRoute._get_response(
@@ -3882,7 +5208,29 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             pb_resp = tls_route.TlsRoute.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_tls_route(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = tls_route.TlsRoute.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networkservices_v1.NetworkServicesClient.get_tls_route",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "GetTlsRoute",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListEndpointPolicies(
@@ -3920,7 +5268,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> endpoint_policy.ListEndpointPoliciesResponse:
             r"""Call the list endpoint policies method over HTTP.
 
@@ -3931,8 +5279,10 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.endpoint_policy.ListEndpointPoliciesResponse:
@@ -3944,6 +5294,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             http_options = (
                 _BaseNetworkServicesRestTransport._BaseListEndpointPolicies._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_endpoint_policies(
                 request, metadata
             )
@@ -3955,6 +5306,33 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             query_params = _BaseNetworkServicesRestTransport._BaseListEndpointPolicies._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networkservices_v1.NetworkServicesClient.ListEndpointPolicies",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "ListEndpointPolicies",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetworkServicesRestTransport._ListEndpointPolicies._get_response(
@@ -3976,7 +5354,31 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             pb_resp = endpoint_policy.ListEndpointPoliciesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_endpoint_policies(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        endpoint_policy.ListEndpointPoliciesResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networkservices_v1.NetworkServicesClient.list_endpoint_policies",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "ListEndpointPolicies",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListGateways(
@@ -4013,7 +5415,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gateway.ListGatewaysResponse:
             r"""Call the list gateways method over HTTP.
 
@@ -4024,8 +5426,10 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.gateway.ListGatewaysResponse:
@@ -4037,6 +5441,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             http_options = (
                 _BaseNetworkServicesRestTransport._BaseListGateways._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_gateways(request, metadata)
             transcoded_request = _BaseNetworkServicesRestTransport._BaseListGateways._get_transcoded_request(
                 http_options, request
@@ -4046,6 +5451,33 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             query_params = _BaseNetworkServicesRestTransport._BaseListGateways._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networkservices_v1.NetworkServicesClient.ListGateways",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "ListGateways",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetworkServicesRestTransport._ListGateways._get_response(
@@ -4067,7 +5499,29 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             pb_resp = gateway.ListGatewaysResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_gateways(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gateway.ListGatewaysResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networkservices_v1.NetworkServicesClient.list_gateways",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "ListGateways",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListGrpcRoutes(
@@ -4104,7 +5558,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> grpc_route.ListGrpcRoutesResponse:
             r"""Call the list grpc routes method over HTTP.
 
@@ -4115,8 +5569,10 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.grpc_route.ListGrpcRoutesResponse:
@@ -4128,6 +5584,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             http_options = (
                 _BaseNetworkServicesRestTransport._BaseListGrpcRoutes._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_grpc_routes(
                 request, metadata
             )
@@ -4139,6 +5596,33 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             query_params = _BaseNetworkServicesRestTransport._BaseListGrpcRoutes._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networkservices_v1.NetworkServicesClient.ListGrpcRoutes",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "ListGrpcRoutes",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetworkServicesRestTransport._ListGrpcRoutes._get_response(
@@ -4160,7 +5644,31 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             pb_resp = grpc_route.ListGrpcRoutesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_grpc_routes(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = grpc_route.ListGrpcRoutesResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networkservices_v1.NetworkServicesClient.list_grpc_routes",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "ListGrpcRoutes",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListHttpRoutes(
@@ -4197,7 +5705,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> http_route.ListHttpRoutesResponse:
             r"""Call the list http routes method over HTTP.
 
@@ -4208,8 +5716,10 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.http_route.ListHttpRoutesResponse:
@@ -4221,6 +5731,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             http_options = (
                 _BaseNetworkServicesRestTransport._BaseListHttpRoutes._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_http_routes(
                 request, metadata
             )
@@ -4232,6 +5743,33 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             query_params = _BaseNetworkServicesRestTransport._BaseListHttpRoutes._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networkservices_v1.NetworkServicesClient.ListHttpRoutes",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "ListHttpRoutes",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetworkServicesRestTransport._ListHttpRoutes._get_response(
@@ -4253,7 +5791,31 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             pb_resp = http_route.ListHttpRoutesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_http_routes(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = http_route.ListHttpRoutesResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networkservices_v1.NetworkServicesClient.list_http_routes",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "ListHttpRoutes",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListMeshes(
@@ -4290,7 +5852,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> mesh.ListMeshesResponse:
             r"""Call the list meshes method over HTTP.
 
@@ -4301,8 +5863,10 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.mesh.ListMeshesResponse:
@@ -4314,6 +5878,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             http_options = (
                 _BaseNetworkServicesRestTransport._BaseListMeshes._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_meshes(request, metadata)
             transcoded_request = _BaseNetworkServicesRestTransport._BaseListMeshes._get_transcoded_request(
                 http_options, request
@@ -4323,6 +5888,33 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             query_params = _BaseNetworkServicesRestTransport._BaseListMeshes._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networkservices_v1.NetworkServicesClient.ListMeshes",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "ListMeshes",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetworkServicesRestTransport._ListMeshes._get_response(
@@ -4344,7 +5936,29 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             pb_resp = mesh.ListMeshesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_meshes(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = mesh.ListMeshesResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networkservices_v1.NetworkServicesClient.list_meshes",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "ListMeshes",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListServiceBindings(
@@ -4382,7 +5996,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> service_binding.ListServiceBindingsResponse:
             r"""Call the list service bindings method over HTTP.
 
@@ -4393,8 +6007,10 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.service_binding.ListServiceBindingsResponse:
@@ -4406,6 +6022,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             http_options = (
                 _BaseNetworkServicesRestTransport._BaseListServiceBindings._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_service_bindings(
                 request, metadata
             )
@@ -4417,6 +6034,33 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             query_params = _BaseNetworkServicesRestTransport._BaseListServiceBindings._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networkservices_v1.NetworkServicesClient.ListServiceBindings",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "ListServiceBindings",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetworkServicesRestTransport._ListServiceBindings._get_response(
@@ -4438,7 +6082,31 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             pb_resp = service_binding.ListServiceBindingsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_service_bindings(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        service_binding.ListServiceBindingsResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networkservices_v1.NetworkServicesClient.list_service_bindings",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "ListServiceBindings",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListTcpRoutes(
@@ -4475,7 +6143,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> tcp_route.ListTcpRoutesResponse:
             r"""Call the list tcp routes method over HTTP.
 
@@ -4486,8 +6154,10 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.tcp_route.ListTcpRoutesResponse:
@@ -4499,6 +6169,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             http_options = (
                 _BaseNetworkServicesRestTransport._BaseListTcpRoutes._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_tcp_routes(request, metadata)
             transcoded_request = _BaseNetworkServicesRestTransport._BaseListTcpRoutes._get_transcoded_request(
                 http_options, request
@@ -4508,6 +6179,33 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             query_params = _BaseNetworkServicesRestTransport._BaseListTcpRoutes._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networkservices_v1.NetworkServicesClient.ListTcpRoutes",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "ListTcpRoutes",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetworkServicesRestTransport._ListTcpRoutes._get_response(
@@ -4529,7 +6227,29 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             pb_resp = tcp_route.ListTcpRoutesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_tcp_routes(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = tcp_route.ListTcpRoutesResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networkservices_v1.NetworkServicesClient.list_tcp_routes",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "ListTcpRoutes",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListTlsRoutes(
@@ -4566,7 +6286,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> tls_route.ListTlsRoutesResponse:
             r"""Call the list tls routes method over HTTP.
 
@@ -4577,8 +6297,10 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.tls_route.ListTlsRoutesResponse:
@@ -4590,6 +6312,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             http_options = (
                 _BaseNetworkServicesRestTransport._BaseListTlsRoutes._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_tls_routes(request, metadata)
             transcoded_request = _BaseNetworkServicesRestTransport._BaseListTlsRoutes._get_transcoded_request(
                 http_options, request
@@ -4599,6 +6322,33 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             query_params = _BaseNetworkServicesRestTransport._BaseListTlsRoutes._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networkservices_v1.NetworkServicesClient.ListTlsRoutes",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "ListTlsRoutes",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetworkServicesRestTransport._ListTlsRoutes._get_response(
@@ -4620,7 +6370,29 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             pb_resp = tls_route.ListTlsRoutesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_tls_routes(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = tls_route.ListTlsRoutesResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networkservices_v1.NetworkServicesClient.list_tls_routes",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "ListTlsRoutes",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateEndpointPolicy(
@@ -4659,7 +6431,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update endpoint policy method over HTTP.
 
@@ -4670,8 +6442,10 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -4684,6 +6458,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             http_options = (
                 _BaseNetworkServicesRestTransport._BaseUpdateEndpointPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_endpoint_policy(
                 request, metadata
             )
@@ -4699,6 +6474,33 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             query_params = _BaseNetworkServicesRestTransport._BaseUpdateEndpointPolicy._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networkservices_v1.NetworkServicesClient.UpdateEndpointPolicy",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "UpdateEndpointPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetworkServicesRestTransport._UpdateEndpointPolicy._get_response(
@@ -4719,7 +6521,29 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_endpoint_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networkservices_v1.NetworkServicesClient.update_endpoint_policy",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "UpdateEndpointPolicy",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateGateway(
@@ -4757,7 +6581,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update gateway method over HTTP.
 
@@ -4768,8 +6592,10 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -4782,6 +6608,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             http_options = (
                 _BaseNetworkServicesRestTransport._BaseUpdateGateway._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_gateway(request, metadata)
             transcoded_request = _BaseNetworkServicesRestTransport._BaseUpdateGateway._get_transcoded_request(
                 http_options, request
@@ -4795,6 +6622,33 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             query_params = _BaseNetworkServicesRestTransport._BaseUpdateGateway._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networkservices_v1.NetworkServicesClient.UpdateGateway",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "UpdateGateway",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetworkServicesRestTransport._UpdateGateway._get_response(
@@ -4815,7 +6669,29 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_gateway(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networkservices_v1.NetworkServicesClient.update_gateway",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "UpdateGateway",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateGrpcRoute(
@@ -4853,7 +6729,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update grpc route method over HTTP.
 
@@ -4864,8 +6740,10 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -4878,6 +6756,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             http_options = (
                 _BaseNetworkServicesRestTransport._BaseUpdateGrpcRoute._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_grpc_route(
                 request, metadata
             )
@@ -4893,6 +6772,33 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             query_params = _BaseNetworkServicesRestTransport._BaseUpdateGrpcRoute._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networkservices_v1.NetworkServicesClient.UpdateGrpcRoute",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "UpdateGrpcRoute",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetworkServicesRestTransport._UpdateGrpcRoute._get_response(
@@ -4913,7 +6819,29 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_grpc_route(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networkservices_v1.NetworkServicesClient.update_grpc_route",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "UpdateGrpcRoute",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateHttpRoute(
@@ -4951,7 +6879,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update http route method over HTTP.
 
@@ -4962,8 +6890,10 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -4976,6 +6906,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             http_options = (
                 _BaseNetworkServicesRestTransport._BaseUpdateHttpRoute._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_http_route(
                 request, metadata
             )
@@ -4991,6 +6922,33 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             query_params = _BaseNetworkServicesRestTransport._BaseUpdateHttpRoute._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networkservices_v1.NetworkServicesClient.UpdateHttpRoute",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "UpdateHttpRoute",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetworkServicesRestTransport._UpdateHttpRoute._get_response(
@@ -5011,7 +6969,29 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_http_route(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networkservices_v1.NetworkServicesClient.update_http_route",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "UpdateHttpRoute",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateMesh(
@@ -5049,7 +7029,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update mesh method over HTTP.
 
@@ -5060,8 +7040,10 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -5074,6 +7056,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             http_options = (
                 _BaseNetworkServicesRestTransport._BaseUpdateMesh._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_mesh(request, metadata)
             transcoded_request = _BaseNetworkServicesRestTransport._BaseUpdateMesh._get_transcoded_request(
                 http_options, request
@@ -5087,6 +7070,33 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             query_params = _BaseNetworkServicesRestTransport._BaseUpdateMesh._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networkservices_v1.NetworkServicesClient.UpdateMesh",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "UpdateMesh",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetworkServicesRestTransport._UpdateMesh._get_response(
@@ -5107,7 +7117,29 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_mesh(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networkservices_v1.NetworkServicesClient.update_mesh",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "UpdateMesh",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateTcpRoute(
@@ -5145,7 +7177,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update tcp route method over HTTP.
 
@@ -5156,8 +7188,10 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -5170,6 +7204,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             http_options = (
                 _BaseNetworkServicesRestTransport._BaseUpdateTcpRoute._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_tcp_route(
                 request, metadata
             )
@@ -5185,6 +7220,33 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             query_params = _BaseNetworkServicesRestTransport._BaseUpdateTcpRoute._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networkservices_v1.NetworkServicesClient.UpdateTcpRoute",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "UpdateTcpRoute",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetworkServicesRestTransport._UpdateTcpRoute._get_response(
@@ -5205,7 +7267,29 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_tcp_route(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networkservices_v1.NetworkServicesClient.update_tcp_route",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "UpdateTcpRoute",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateTlsRoute(
@@ -5243,7 +7327,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update tls route method over HTTP.
 
@@ -5254,8 +7338,10 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -5268,6 +7354,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             http_options = (
                 _BaseNetworkServicesRestTransport._BaseUpdateTlsRoute._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_tls_route(
                 request, metadata
             )
@@ -5283,6 +7370,33 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             query_params = _BaseNetworkServicesRestTransport._BaseUpdateTlsRoute._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networkservices_v1.NetworkServicesClient.UpdateTlsRoute",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "UpdateTlsRoute",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetworkServicesRestTransport._UpdateTlsRoute._get_response(
@@ -5303,7 +7417,29 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_tls_route(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networkservices_v1.NetworkServicesClient.update_tls_route",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "UpdateTlsRoute",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -5676,7 +7812,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.Location:
             r"""Call the get location method over HTTP.
 
@@ -5686,8 +7822,10 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.Location: Response from GetLocation method.
@@ -5696,6 +7834,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             http_options = (
                 _BaseNetworkServicesRestTransport._BaseGetLocation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_location(request, metadata)
             transcoded_request = _BaseNetworkServicesRestTransport._BaseGetLocation._get_transcoded_request(
                 http_options, request
@@ -5705,6 +7844,33 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             query_params = _BaseNetworkServicesRestTransport._BaseGetLocation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networkservices_v1.NetworkServicesClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "GetLocation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetworkServicesRestTransport._GetLocation._get_response(
@@ -5725,6 +7891,27 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networkservices_v1.NetworkServicesAsyncClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "GetLocation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -5765,7 +7952,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.ListLocationsResponse:
             r"""Call the list locations method over HTTP.
 
@@ -5775,8 +7962,10 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
@@ -5785,6 +7974,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             http_options = (
                 _BaseNetworkServicesRestTransport._BaseListLocations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
             transcoded_request = _BaseNetworkServicesRestTransport._BaseListLocations._get_transcoded_request(
                 http_options, request
@@ -5794,6 +7984,33 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             query_params = _BaseNetworkServicesRestTransport._BaseListLocations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networkservices_v1.NetworkServicesClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "ListLocations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetworkServicesRestTransport._ListLocations._get_response(
@@ -5814,6 +8031,27 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networkservices_v1.NetworkServicesAsyncClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "ListLocations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -5854,7 +8092,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> policy_pb2.Policy:
             r"""Call the get iam policy method over HTTP.
 
@@ -5864,8 +8102,10 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 policy_pb2.Policy: Response from GetIamPolicy method.
@@ -5874,6 +8114,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             http_options = (
                 _BaseNetworkServicesRestTransport._BaseGetIamPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
             transcoded_request = _BaseNetworkServicesRestTransport._BaseGetIamPolicy._get_transcoded_request(
                 http_options, request
@@ -5883,6 +8124,33 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             query_params = _BaseNetworkServicesRestTransport._BaseGetIamPolicy._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networkservices_v1.NetworkServicesClient.GetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "GetIamPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetworkServicesRestTransport._GetIamPolicy._get_response(
@@ -5903,6 +8171,27 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_iam_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networkservices_v1.NetworkServicesAsyncClient.GetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "GetIamPolicy",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -5944,7 +8233,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> policy_pb2.Policy:
             r"""Call the set iam policy method over HTTP.
 
@@ -5954,8 +8243,10 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 policy_pb2.Policy: Response from SetIamPolicy method.
@@ -5964,6 +8255,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             http_options = (
                 _BaseNetworkServicesRestTransport._BaseSetIamPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
             transcoded_request = _BaseNetworkServicesRestTransport._BaseSetIamPolicy._get_transcoded_request(
                 http_options, request
@@ -5977,6 +8269,33 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             query_params = _BaseNetworkServicesRestTransport._BaseSetIamPolicy._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networkservices_v1.NetworkServicesClient.SetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "SetIamPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetworkServicesRestTransport._SetIamPolicy._get_response(
@@ -5998,6 +8317,27 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_set_iam_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networkservices_v1.NetworkServicesAsyncClient.SetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "SetIamPolicy",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -6040,7 +8380,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> iam_policy_pb2.TestIamPermissionsResponse:
             r"""Call the test iam permissions method over HTTP.
 
@@ -6050,8 +8390,10 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 iam_policy_pb2.TestIamPermissionsResponse: Response from TestIamPermissions method.
@@ -6060,6 +8402,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             http_options = (
                 _BaseNetworkServicesRestTransport._BaseTestIamPermissions._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata
             )
@@ -6075,6 +8418,33 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             query_params = _BaseNetworkServicesRestTransport._BaseTestIamPermissions._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networkservices_v1.NetworkServicesClient.TestIamPermissions",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "TestIamPermissions",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetworkServicesRestTransport._TestIamPermissions._get_response(
@@ -6096,6 +8466,27 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             resp = iam_policy_pb2.TestIamPermissionsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_test_iam_permissions(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networkservices_v1.NetworkServicesAsyncClient.TestIamPermissions",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "TestIamPermissions",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -6137,7 +8528,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the cancel operation method over HTTP.
 
@@ -6147,13 +8538,16 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseNetworkServicesRestTransport._BaseCancelOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
@@ -6169,6 +8563,33 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             query_params = _BaseNetworkServicesRestTransport._BaseCancelOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networkservices_v1.NetworkServicesClient.CancelOperation",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "CancelOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetworkServicesRestTransport._CancelOperation._get_response(
@@ -6226,7 +8647,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the delete operation method over HTTP.
 
@@ -6236,13 +8657,16 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseNetworkServicesRestTransport._BaseDeleteOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
             )
@@ -6254,6 +8678,33 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             query_params = _BaseNetworkServicesRestTransport._BaseDeleteOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networkservices_v1.NetworkServicesClient.DeleteOperation",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "DeleteOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetworkServicesRestTransport._DeleteOperation._get_response(
@@ -6310,7 +8761,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the get operation method over HTTP.
 
@@ -6320,8 +8771,10 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.
@@ -6330,6 +8783,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             http_options = (
                 _BaseNetworkServicesRestTransport._BaseGetOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseNetworkServicesRestTransport._BaseGetOperation._get_transcoded_request(
                 http_options, request
@@ -6339,6 +8793,33 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             query_params = _BaseNetworkServicesRestTransport._BaseGetOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networkservices_v1.NetworkServicesClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "GetOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetworkServicesRestTransport._GetOperation._get_response(
@@ -6359,6 +8840,27 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networkservices_v1.NetworkServicesAsyncClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "GetOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -6399,7 +8901,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.ListOperationsResponse:
             r"""Call the list operations method over HTTP.
 
@@ -6409,8 +8911,10 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
@@ -6419,6 +8923,7 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             http_options = (
                 _BaseNetworkServicesRestTransport._BaseListOperations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseNetworkServicesRestTransport._BaseListOperations._get_transcoded_request(
                 http_options, request
@@ -6428,6 +8933,33 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             query_params = _BaseNetworkServicesRestTransport._BaseListOperations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.networkservices_v1.NetworkServicesClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "ListOperations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetworkServicesRestTransport._ListOperations._get_response(
@@ -6448,6 +8980,27 @@ class NetworkServicesRestTransport(_BaseNetworkServicesRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.networkservices_v1.NetworkServicesAsyncClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                        "rpcName": "ListOperations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property

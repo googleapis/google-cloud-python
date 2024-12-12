@@ -4128,6 +4128,7 @@ def test_get_case_rest_required_fields(request_type=case_service.GetCaseRequest)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_case(request)
 
@@ -4173,6 +4174,7 @@ def test_get_case_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_case(**mock_args)
 
@@ -4308,6 +4310,7 @@ def test_list_cases_rest_required_fields(request_type=case_service.ListCasesRequ
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_cases(request)
 
@@ -4362,6 +4365,7 @@ def test_list_cases_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_cases(**mock_args)
 
@@ -4648,6 +4652,7 @@ def test_create_case_rest_required_fields(request_type=case_service.CreateCaseRe
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_case(request)
 
@@ -4702,6 +4707,7 @@ def test_create_case_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_case(**mock_args)
 
@@ -4828,6 +4834,7 @@ def test_update_case_rest_required_fields(request_type=case_service.UpdateCaseRe
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_case(request)
 
@@ -4874,6 +4881,7 @@ def test_update_case_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_case(**mock_args)
 
@@ -5005,6 +5013,7 @@ def test_escalate_case_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.escalate_case(request)
 
@@ -5123,6 +5132,7 @@ def test_close_case_rest_required_fields(request_type=case_service.CloseCaseRequ
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.close_case(request)
 
@@ -5828,6 +5838,7 @@ def test_get_case_rest_bad_request(request_type=case_service.GetCaseRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_case(request)
 
 
@@ -5873,6 +5884,7 @@ def test_get_case_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_case(request)
 
     # Establish that the response is the type that we expect.
@@ -5921,6 +5933,7 @@ def test_get_case_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = case.Case.to_json(case.Case())
         req.return_value.content = return_value
 
@@ -5963,6 +5976,7 @@ def test_list_cases_rest_bad_request(request_type=case_service.ListCasesRequest)
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_cases(request)
 
 
@@ -5998,6 +6012,7 @@ def test_list_cases_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_cases(request)
 
     # Establish that the response is the type that we expect.
@@ -6036,6 +6051,7 @@ def test_list_cases_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = case_service.ListCasesResponse.to_json(
             case_service.ListCasesResponse()
         )
@@ -6080,6 +6096,7 @@ def test_search_cases_rest_bad_request(request_type=case_service.SearchCasesRequ
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.search_cases(request)
 
 
@@ -6115,6 +6132,7 @@ def test_search_cases_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.search_cases(request)
 
     # Establish that the response is the type that we expect.
@@ -6155,6 +6173,7 @@ def test_search_cases_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = case_service.SearchCasesResponse.to_json(
             case_service.SearchCasesResponse()
         )
@@ -6199,6 +6218,7 @@ def test_create_case_rest_bad_request(request_type=case_service.CreateCaseReques
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_case(request)
 
 
@@ -6335,6 +6355,7 @@ def test_create_case_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_case(request)
 
     # Establish that the response is the type that we expect.
@@ -6383,6 +6404,7 @@ def test_create_case_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = gcs_case.Case.to_json(gcs_case.Case())
         req.return_value.content = return_value
 
@@ -6425,6 +6447,7 @@ def test_update_case_rest_bad_request(request_type=case_service.UpdateCaseReques
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_case(request)
 
 
@@ -6561,6 +6584,7 @@ def test_update_case_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_case(request)
 
     # Establish that the response is the type that we expect.
@@ -6609,6 +6633,7 @@ def test_update_case_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = gcs_case.Case.to_json(gcs_case.Case())
         req.return_value.content = return_value
 
@@ -6651,6 +6676,7 @@ def test_escalate_case_rest_bad_request(request_type=case_service.EscalateCaseRe
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.escalate_case(request)
 
 
@@ -6696,6 +6722,7 @@ def test_escalate_case_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.escalate_case(request)
 
     # Establish that the response is the type that we expect.
@@ -6746,6 +6773,7 @@ def test_escalate_case_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = case.Case.to_json(case.Case())
         req.return_value.content = return_value
 
@@ -6788,6 +6816,7 @@ def test_close_case_rest_bad_request(request_type=case_service.CloseCaseRequest)
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.close_case(request)
 
 
@@ -6833,6 +6862,7 @@ def test_close_case_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.close_case(request)
 
     # Establish that the response is the type that we expect.
@@ -6881,6 +6911,7 @@ def test_close_case_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = case.Case.to_json(case.Case())
         req.return_value.content = return_value
 
@@ -6925,6 +6956,7 @@ def test_search_case_classifications_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.search_case_classifications(request)
 
 
@@ -6960,6 +6992,7 @@ def test_search_case_classifications_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.search_case_classifications(request)
 
     # Establish that the response is the type that we expect.
@@ -7000,6 +7033,7 @@ def test_search_case_classifications_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = case_service.SearchCaseClassificationsResponse.to_json(
             case_service.SearchCaseClassificationsResponse()
         )

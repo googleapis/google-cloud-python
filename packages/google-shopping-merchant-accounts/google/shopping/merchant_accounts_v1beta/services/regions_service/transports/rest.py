@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -38,6 +38,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -104,8 +112,10 @@ class RegionsServiceRestInterceptor:
     """
 
     def pre_create_region(
-        self, request: regions.CreateRegionRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[regions.CreateRegionRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: regions.CreateRegionRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[regions.CreateRegionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_region
 
         Override in a subclass to manipulate the request or metadata
@@ -123,8 +133,10 @@ class RegionsServiceRestInterceptor:
         return response
 
     def pre_delete_region(
-        self, request: regions.DeleteRegionRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[regions.DeleteRegionRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: regions.DeleteRegionRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[regions.DeleteRegionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_region
 
         Override in a subclass to manipulate the request or metadata
@@ -133,8 +145,10 @@ class RegionsServiceRestInterceptor:
         return request, metadata
 
     def pre_get_region(
-        self, request: regions.GetRegionRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[regions.GetRegionRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: regions.GetRegionRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[regions.GetRegionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_region
 
         Override in a subclass to manipulate the request or metadata
@@ -152,8 +166,10 @@ class RegionsServiceRestInterceptor:
         return response
 
     def pre_list_regions(
-        self, request: regions.ListRegionsRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[regions.ListRegionsRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: regions.ListRegionsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[regions.ListRegionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_regions
 
         Override in a subclass to manipulate the request or metadata
@@ -173,8 +189,10 @@ class RegionsServiceRestInterceptor:
         return response
 
     def pre_update_region(
-        self, request: regions.UpdateRegionRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[regions.UpdateRegionRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: regions.UpdateRegionRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[regions.UpdateRegionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_region
 
         Override in a subclass to manipulate the request or metadata
@@ -317,7 +335,7 @@ class RegionsServiceRestTransport(_BaseRegionsServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> regions.Region:
             r"""Call the create region method over HTTP.
 
@@ -327,8 +345,10 @@ class RegionsServiceRestTransport(_BaseRegionsServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.regions.Region:
@@ -346,6 +366,7 @@ class RegionsServiceRestTransport(_BaseRegionsServiceRestTransport):
             http_options = (
                 _BaseRegionsServiceRestTransport._BaseCreateRegion._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_region(request, metadata)
             transcoded_request = _BaseRegionsServiceRestTransport._BaseCreateRegion._get_transcoded_request(
                 http_options, request
@@ -359,6 +380,33 @@ class RegionsServiceRestTransport(_BaseRegionsServiceRestTransport):
             query_params = _BaseRegionsServiceRestTransport._BaseCreateRegion._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.shopping.merchant.accounts_v1beta.RegionsServiceClient.CreateRegion",
+                    extra={
+                        "serviceName": "google.shopping.merchant.accounts.v1beta.RegionsService",
+                        "rpcName": "CreateRegion",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegionsServiceRestTransport._CreateRegion._get_response(
@@ -381,7 +429,29 @@ class RegionsServiceRestTransport(_BaseRegionsServiceRestTransport):
             pb_resp = regions.Region.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_region(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = regions.Region.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.shopping.merchant.accounts_v1beta.RegionsServiceClient.create_region",
+                    extra={
+                        "serviceName": "google.shopping.merchant.accounts.v1beta.RegionsService",
+                        "rpcName": "CreateRegion",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteRegion(
@@ -418,7 +488,7 @@ class RegionsServiceRestTransport(_BaseRegionsServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete region method over HTTP.
 
@@ -428,13 +498,16 @@ class RegionsServiceRestTransport(_BaseRegionsServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseRegionsServiceRestTransport._BaseDeleteRegion._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_region(request, metadata)
             transcoded_request = _BaseRegionsServiceRestTransport._BaseDeleteRegion._get_transcoded_request(
                 http_options, request
@@ -444,6 +517,33 @@ class RegionsServiceRestTransport(_BaseRegionsServiceRestTransport):
             query_params = _BaseRegionsServiceRestTransport._BaseDeleteRegion._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.shopping.merchant.accounts_v1beta.RegionsServiceClient.DeleteRegion",
+                    extra={
+                        "serviceName": "google.shopping.merchant.accounts.v1beta.RegionsService",
+                        "rpcName": "DeleteRegion",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegionsServiceRestTransport._DeleteRegion._get_response(
@@ -494,7 +594,7 @@ class RegionsServiceRestTransport(_BaseRegionsServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> regions.Region:
             r"""Call the get region method over HTTP.
 
@@ -504,8 +604,10 @@ class RegionsServiceRestTransport(_BaseRegionsServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.regions.Region:
@@ -523,6 +625,7 @@ class RegionsServiceRestTransport(_BaseRegionsServiceRestTransport):
             http_options = (
                 _BaseRegionsServiceRestTransport._BaseGetRegion._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_region(request, metadata)
             transcoded_request = (
                 _BaseRegionsServiceRestTransport._BaseGetRegion._get_transcoded_request(
@@ -536,6 +639,33 @@ class RegionsServiceRestTransport(_BaseRegionsServiceRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.shopping.merchant.accounts_v1beta.RegionsServiceClient.GetRegion",
+                    extra={
+                        "serviceName": "google.shopping.merchant.accounts.v1beta.RegionsService",
+                        "rpcName": "GetRegion",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegionsServiceRestTransport._GetRegion._get_response(
@@ -557,7 +687,29 @@ class RegionsServiceRestTransport(_BaseRegionsServiceRestTransport):
             pb_resp = regions.Region.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_region(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = regions.Region.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.shopping.merchant.accounts_v1beta.RegionsServiceClient.get_region",
+                    extra={
+                        "serviceName": "google.shopping.merchant.accounts.v1beta.RegionsService",
+                        "rpcName": "GetRegion",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListRegions(
@@ -594,7 +746,7 @@ class RegionsServiceRestTransport(_BaseRegionsServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> regions.ListRegionsResponse:
             r"""Call the list regions method over HTTP.
 
@@ -604,8 +756,10 @@ class RegionsServiceRestTransport(_BaseRegionsServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.regions.ListRegionsResponse:
@@ -615,6 +769,7 @@ class RegionsServiceRestTransport(_BaseRegionsServiceRestTransport):
             http_options = (
                 _BaseRegionsServiceRestTransport._BaseListRegions._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_regions(request, metadata)
             transcoded_request = _BaseRegionsServiceRestTransport._BaseListRegions._get_transcoded_request(
                 http_options, request
@@ -624,6 +779,33 @@ class RegionsServiceRestTransport(_BaseRegionsServiceRestTransport):
             query_params = _BaseRegionsServiceRestTransport._BaseListRegions._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.shopping.merchant.accounts_v1beta.RegionsServiceClient.ListRegions",
+                    extra={
+                        "serviceName": "google.shopping.merchant.accounts.v1beta.RegionsService",
+                        "rpcName": "ListRegions",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegionsServiceRestTransport._ListRegions._get_response(
@@ -645,7 +827,29 @@ class RegionsServiceRestTransport(_BaseRegionsServiceRestTransport):
             pb_resp = regions.ListRegionsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_regions(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = regions.ListRegionsResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.shopping.merchant.accounts_v1beta.RegionsServiceClient.list_regions",
+                    extra={
+                        "serviceName": "google.shopping.merchant.accounts.v1beta.RegionsService",
+                        "rpcName": "ListRegions",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateRegion(
@@ -683,7 +887,7 @@ class RegionsServiceRestTransport(_BaseRegionsServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> regions.Region:
             r"""Call the update region method over HTTP.
 
@@ -693,8 +897,10 @@ class RegionsServiceRestTransport(_BaseRegionsServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.regions.Region:
@@ -712,6 +918,7 @@ class RegionsServiceRestTransport(_BaseRegionsServiceRestTransport):
             http_options = (
                 _BaseRegionsServiceRestTransport._BaseUpdateRegion._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_region(request, metadata)
             transcoded_request = _BaseRegionsServiceRestTransport._BaseUpdateRegion._get_transcoded_request(
                 http_options, request
@@ -725,6 +932,33 @@ class RegionsServiceRestTransport(_BaseRegionsServiceRestTransport):
             query_params = _BaseRegionsServiceRestTransport._BaseUpdateRegion._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.shopping.merchant.accounts_v1beta.RegionsServiceClient.UpdateRegion",
+                    extra={
+                        "serviceName": "google.shopping.merchant.accounts.v1beta.RegionsService",
+                        "rpcName": "UpdateRegion",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegionsServiceRestTransport._UpdateRegion._get_response(
@@ -747,7 +981,29 @@ class RegionsServiceRestTransport(_BaseRegionsServiceRestTransport):
             pb_resp = regions.Region.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_region(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = regions.Region.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.shopping.merchant.accounts_v1beta.RegionsServiceClient.update_region",
+                    extra={
+                        "serviceName": "google.shopping.merchant.accounts.v1beta.RegionsService",
+                        "rpcName": "UpdateRegion",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property

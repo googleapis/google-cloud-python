@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -37,6 +37,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -93,8 +101,10 @@ class WebRiskServiceV1Beta1RestInterceptor:
     def pre_compute_threat_list_diff(
         self,
         request: webrisk.ComputeThreatListDiffRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[webrisk.ComputeThreatListDiffRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        webrisk.ComputeThreatListDiffRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for compute_threat_list_diff
 
         Override in a subclass to manipulate the request or metadata
@@ -114,8 +124,10 @@ class WebRiskServiceV1Beta1RestInterceptor:
         return response
 
     def pre_search_hashes(
-        self, request: webrisk.SearchHashesRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[webrisk.SearchHashesRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: webrisk.SearchHashesRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[webrisk.SearchHashesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for search_hashes
 
         Override in a subclass to manipulate the request or metadata
@@ -135,8 +147,10 @@ class WebRiskServiceV1Beta1RestInterceptor:
         return response
 
     def pre_search_uris(
-        self, request: webrisk.SearchUrisRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[webrisk.SearchUrisRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: webrisk.SearchUrisRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[webrisk.SearchUrisRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for search_uris
 
         Override in a subclass to manipulate the request or metadata
@@ -278,7 +292,7 @@ class WebRiskServiceV1Beta1RestTransport(_BaseWebRiskServiceV1Beta1RestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> webrisk.ComputeThreatListDiffResponse:
             r"""Call the compute threat list diff method over HTTP.
 
@@ -288,8 +302,10 @@ class WebRiskServiceV1Beta1RestTransport(_BaseWebRiskServiceV1Beta1RestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.webrisk.ComputeThreatListDiffResponse:
@@ -299,6 +315,7 @@ class WebRiskServiceV1Beta1RestTransport(_BaseWebRiskServiceV1Beta1RestTransport
             http_options = (
                 _BaseWebRiskServiceV1Beta1RestTransport._BaseComputeThreatListDiff._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_compute_threat_list_diff(
                 request, metadata
             )
@@ -310,6 +327,33 @@ class WebRiskServiceV1Beta1RestTransport(_BaseWebRiskServiceV1Beta1RestTransport
             query_params = _BaseWebRiskServiceV1Beta1RestTransport._BaseComputeThreatListDiff._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.webrisk_v1beta1.WebRiskServiceV1Beta1Client.ComputeThreatListDiff",
+                    extra={
+                        "serviceName": "google.cloud.webrisk.v1beta1.WebRiskServiceV1Beta1",
+                        "rpcName": "ComputeThreatListDiff",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -333,7 +377,31 @@ class WebRiskServiceV1Beta1RestTransport(_BaseWebRiskServiceV1Beta1RestTransport
             pb_resp = webrisk.ComputeThreatListDiffResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_compute_threat_list_diff(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = webrisk.ComputeThreatListDiffResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.webrisk_v1beta1.WebRiskServiceV1Beta1Client.compute_threat_list_diff",
+                    extra={
+                        "serviceName": "google.cloud.webrisk.v1beta1.WebRiskServiceV1Beta1",
+                        "rpcName": "ComputeThreatListDiff",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _SearchHashes(
@@ -371,7 +439,7 @@ class WebRiskServiceV1Beta1RestTransport(_BaseWebRiskServiceV1Beta1RestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> webrisk.SearchHashesResponse:
             r"""Call the search hashes method over HTTP.
 
@@ -382,8 +450,10 @@ class WebRiskServiceV1Beta1RestTransport(_BaseWebRiskServiceV1Beta1RestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.webrisk.SearchHashesResponse:
@@ -393,6 +463,7 @@ class WebRiskServiceV1Beta1RestTransport(_BaseWebRiskServiceV1Beta1RestTransport
             http_options = (
                 _BaseWebRiskServiceV1Beta1RestTransport._BaseSearchHashes._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_search_hashes(request, metadata)
             transcoded_request = _BaseWebRiskServiceV1Beta1RestTransport._BaseSearchHashes._get_transcoded_request(
                 http_options, request
@@ -402,6 +473,33 @@ class WebRiskServiceV1Beta1RestTransport(_BaseWebRiskServiceV1Beta1RestTransport
             query_params = _BaseWebRiskServiceV1Beta1RestTransport._BaseSearchHashes._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.webrisk_v1beta1.WebRiskServiceV1Beta1Client.SearchHashes",
+                    extra={
+                        "serviceName": "google.cloud.webrisk.v1beta1.WebRiskServiceV1Beta1",
+                        "rpcName": "SearchHashes",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = WebRiskServiceV1Beta1RestTransport._SearchHashes._get_response(
@@ -423,7 +521,29 @@ class WebRiskServiceV1Beta1RestTransport(_BaseWebRiskServiceV1Beta1RestTransport
             pb_resp = webrisk.SearchHashesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_search_hashes(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = webrisk.SearchHashesResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.webrisk_v1beta1.WebRiskServiceV1Beta1Client.search_hashes",
+                    extra={
+                        "serviceName": "google.cloud.webrisk.v1beta1.WebRiskServiceV1Beta1",
+                        "rpcName": "SearchHashes",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _SearchUris(
@@ -461,7 +581,7 @@ class WebRiskServiceV1Beta1RestTransport(_BaseWebRiskServiceV1Beta1RestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> webrisk.SearchUrisResponse:
             r"""Call the search uris method over HTTP.
 
@@ -472,8 +592,10 @@ class WebRiskServiceV1Beta1RestTransport(_BaseWebRiskServiceV1Beta1RestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.webrisk.SearchUrisResponse:
@@ -483,6 +605,7 @@ class WebRiskServiceV1Beta1RestTransport(_BaseWebRiskServiceV1Beta1RestTransport
             http_options = (
                 _BaseWebRiskServiceV1Beta1RestTransport._BaseSearchUris._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_search_uris(request, metadata)
             transcoded_request = _BaseWebRiskServiceV1Beta1RestTransport._BaseSearchUris._get_transcoded_request(
                 http_options, request
@@ -492,6 +615,33 @@ class WebRiskServiceV1Beta1RestTransport(_BaseWebRiskServiceV1Beta1RestTransport
             query_params = _BaseWebRiskServiceV1Beta1RestTransport._BaseSearchUris._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.webrisk_v1beta1.WebRiskServiceV1Beta1Client.SearchUris",
+                    extra={
+                        "serviceName": "google.cloud.webrisk.v1beta1.WebRiskServiceV1Beta1",
+                        "rpcName": "SearchUris",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = WebRiskServiceV1Beta1RestTransport._SearchUris._get_response(
@@ -513,7 +663,29 @@ class WebRiskServiceV1Beta1RestTransport(_BaseWebRiskServiceV1Beta1RestTransport
             pb_resp = webrisk.SearchUrisResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_search_uris(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = webrisk.SearchUrisResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.webrisk_v1beta1.WebRiskServiceV1Beta1Client.search_uris",
+                    extra={
+                        "serviceName": "google.cloud.webrisk.v1beta1.WebRiskServiceV1Beta1",
+                        "rpcName": "SearchUris",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property

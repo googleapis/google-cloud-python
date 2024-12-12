@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -38,6 +38,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -84,8 +92,10 @@ class RoleServiceRestInterceptor:
     """
 
     def pre_get_role(
-        self, request: role_service.GetRoleRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[role_service.GetRoleRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: role_service.GetRoleRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[role_service.GetRoleRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_role
 
         Override in a subclass to manipulate the request or metadata
@@ -105,8 +115,8 @@ class RoleServiceRestInterceptor:
     def pre_list_roles(
         self,
         request: role_service.ListRolesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[role_service.ListRolesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[role_service.ListRolesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_roles
 
         Override in a subclass to manipulate the request or metadata
@@ -128,8 +138,10 @@ class RoleServiceRestInterceptor:
     def pre_get_operation(
         self,
         request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -267,7 +279,7 @@ class RoleServiceRestTransport(_BaseRoleServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> role_messages.Role:
             r"""Call the get role method over HTTP.
 
@@ -277,8 +289,10 @@ class RoleServiceRestTransport(_BaseRoleServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.role_messages.Role:
@@ -288,6 +302,7 @@ class RoleServiceRestTransport(_BaseRoleServiceRestTransport):
             http_options = (
                 _BaseRoleServiceRestTransport._BaseGetRole._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_role(request, metadata)
             transcoded_request = (
                 _BaseRoleServiceRestTransport._BaseGetRole._get_transcoded_request(
@@ -301,6 +316,33 @@ class RoleServiceRestTransport(_BaseRoleServiceRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.ads.admanager_v1.RoleServiceClient.GetRole",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.RoleService",
+                        "rpcName": "GetRole",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RoleServiceRestTransport._GetRole._get_response(
@@ -322,7 +364,29 @@ class RoleServiceRestTransport(_BaseRoleServiceRestTransport):
             pb_resp = role_messages.Role.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_role(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = role_messages.Role.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.ads.admanager_v1.RoleServiceClient.get_role",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.RoleService",
+                        "rpcName": "GetRole",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListRoles(_BaseRoleServiceRestTransport._BaseListRoles, RoleServiceRestStub):
@@ -357,7 +421,7 @@ class RoleServiceRestTransport(_BaseRoleServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> role_service.ListRolesResponse:
             r"""Call the list roles method over HTTP.
 
@@ -367,8 +431,10 @@ class RoleServiceRestTransport(_BaseRoleServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.role_service.ListRolesResponse:
@@ -380,6 +446,7 @@ class RoleServiceRestTransport(_BaseRoleServiceRestTransport):
             http_options = (
                 _BaseRoleServiceRestTransport._BaseListRoles._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_roles(request, metadata)
             transcoded_request = (
                 _BaseRoleServiceRestTransport._BaseListRoles._get_transcoded_request(
@@ -393,6 +460,33 @@ class RoleServiceRestTransport(_BaseRoleServiceRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.ads.admanager_v1.RoleServiceClient.ListRoles",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.RoleService",
+                        "rpcName": "ListRoles",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RoleServiceRestTransport._ListRoles._get_response(
@@ -414,7 +508,29 @@ class RoleServiceRestTransport(_BaseRoleServiceRestTransport):
             pb_resp = role_service.ListRolesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_roles(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = role_service.ListRolesResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.ads.admanager_v1.RoleServiceClient.list_roles",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.RoleService",
+                        "rpcName": "ListRoles",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -469,7 +585,7 @@ class RoleServiceRestTransport(_BaseRoleServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the get operation method over HTTP.
 
@@ -479,8 +595,10 @@ class RoleServiceRestTransport(_BaseRoleServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.
@@ -489,6 +607,7 @@ class RoleServiceRestTransport(_BaseRoleServiceRestTransport):
             http_options = (
                 _BaseRoleServiceRestTransport._BaseGetOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = (
                 _BaseRoleServiceRestTransport._BaseGetOperation._get_transcoded_request(
@@ -502,6 +621,33 @@ class RoleServiceRestTransport(_BaseRoleServiceRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.ads.admanager_v1.RoleServiceClient.GetOperation",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.RoleService",
+                        "rpcName": "GetOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RoleServiceRestTransport._GetOperation._get_response(
@@ -522,6 +668,27 @@ class RoleServiceRestTransport(_BaseRoleServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.ads.admanager_v1.RoleServiceAsyncClient.GetOperation",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.RoleService",
+                        "rpcName": "GetOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
