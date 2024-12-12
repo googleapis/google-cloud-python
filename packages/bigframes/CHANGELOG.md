@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/bigframes/#history
 
+## [1.29.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v1.28.0...v1.29.0) (2024-12-12)
+
+
+### Features
+
+* Add Gemini 2.0 preview text model support ([#1209](https://github.com/googleapis/python-bigquery-dataframes/issues/1209)) ([1021d57](https://github.com/googleapis/python-bigquery-dataframes/commit/1021d5761a291f2327fc10216e938826e53dbcc4))
+
+
+### Documentation
+
+* Add Gemini 2.0 text gen sample notebook ([#1211](https://github.com/googleapis/python-bigquery-dataframes/issues/1211)) ([9596b66](https://github.com/googleapis/python-bigquery-dataframes/commit/9596b66a8a41f5e5db6fa5f87b01c5363ffa89c4))
+* Update bigframes.pandas.index docs return types ([#1191](https://github.com/googleapis/python-bigquery-dataframes/issues/1191)) ([c63e7da](https://github.com/googleapis/python-bigquery-dataframes/commit/c63e7dad6fe67f5769ddcdd1730666580a7e7a05))
+
 ## [1.28.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v1.27.0...v1.28.0) (2024-12-11)
 
 
