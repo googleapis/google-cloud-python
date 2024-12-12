@@ -8,7 +8,7 @@
     ],
     "language": "PYTHON",
     "name": "google-cloud-datacatalog",
-    "version": "3.23.0"
+    "version": "0.1.0"
   },
   "snippets": [
     {
@@ -55,7 +55,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.datacatalog_v1beta1.types.EntryGroup",
@@ -143,7 +143,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.datacatalog_v1beta1.types.EntryGroup",
@@ -232,7 +232,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.datacatalog_v1beta1.types.Entry",
@@ -320,7 +320,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.datacatalog_v1beta1.types.Entry",
@@ -409,7 +409,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.datacatalog_v1beta1.types.TagTemplateField",
@@ -497,7 +497,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.datacatalog_v1beta1.types.TagTemplateField",
@@ -586,7 +586,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.datacatalog_v1beta1.types.TagTemplate",
@@ -674,7 +674,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.datacatalog_v1beta1.types.TagTemplate",
@@ -759,7 +759,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.datacatalog_v1beta1.types.Tag",
@@ -843,7 +843,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.datacatalog_v1beta1.types.Tag",
@@ -924,7 +924,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "shortName": "delete_entry_group"
@@ -1001,7 +1001,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "shortName": "delete_entry_group"
@@ -1079,7 +1079,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "shortName": "delete_entry"
@@ -1156,7 +1156,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "shortName": "delete_entry"
@@ -1238,7 +1238,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "shortName": "delete_tag_template_field"
@@ -1319,7 +1319,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "shortName": "delete_tag_template_field"
@@ -1401,7 +1401,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "shortName": "delete_tag_template"
@@ -1482,7 +1482,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "shortName": "delete_tag_template"
@@ -1560,7 +1560,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "shortName": "delete_tag"
@@ -1637,7 +1637,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "shortName": "delete_tag"
@@ -1719,7 +1719,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.datacatalog_v1beta1.types.EntryGroup",
@@ -1803,7 +1803,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.datacatalog_v1beta1.types.EntryGroup",
@@ -1884,7 +1884,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.datacatalog_v1beta1.types.Entry",
@@ -1964,7 +1964,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.datacatalog_v1beta1.types.Entry",
@@ -2045,7 +2045,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.iam.v1.policy_pb2.Policy",
@@ -2125,7 +2125,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.iam.v1.policy_pb2.Policy",
@@ -2206,7 +2206,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.datacatalog_v1beta1.types.TagTemplate",
@@ -2286,7 +2286,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.datacatalog_v1beta1.types.TagTemplate",
@@ -2367,7 +2367,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.datacatalog_v1beta1.services.data_catalog.pagers.ListEntriesAsyncPager",
@@ -2447,7 +2447,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.datacatalog_v1beta1.services.data_catalog.pagers.ListEntriesPager",
@@ -2528,7 +2528,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.datacatalog_v1beta1.services.data_catalog.pagers.ListEntryGroupsAsyncPager",
@@ -2608,7 +2608,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.datacatalog_v1beta1.services.data_catalog.pagers.ListEntryGroupsPager",
@@ -2689,7 +2689,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.datacatalog_v1beta1.services.data_catalog.pagers.ListTagsAsyncPager",
@@ -2769,7 +2769,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.datacatalog_v1beta1.services.data_catalog.pagers.ListTagsPager",
@@ -2846,7 +2846,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.datacatalog_v1beta1.types.Entry",
@@ -2922,7 +2922,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.datacatalog_v1beta1.types.Entry",
@@ -3007,7 +3007,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.datacatalog_v1beta1.types.TagTemplateField",
@@ -3091,7 +3091,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.datacatalog_v1beta1.types.TagTemplateField",
@@ -3176,7 +3176,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.datacatalog_v1beta1.types.TagTemplateField",
@@ -3260,7 +3260,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.datacatalog_v1beta1.types.TagTemplateField",
@@ -3345,7 +3345,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.datacatalog_v1beta1.services.data_catalog.pagers.SearchCatalogAsyncPager",
@@ -3429,7 +3429,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.datacatalog_v1beta1.services.data_catalog.pagers.SearchCatalogPager",
@@ -3510,7 +3510,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.iam.v1.policy_pb2.Policy",
@@ -3590,7 +3590,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.iam.v1.policy_pb2.Policy",
@@ -3667,7 +3667,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.iam.v1.iam_policy_pb2.TestIamPermissionsResponse",
@@ -3743,7 +3743,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.iam.v1.iam_policy_pb2.TestIamPermissionsResponse",
@@ -3828,7 +3828,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.datacatalog_v1beta1.types.EntryGroup",
@@ -3912,7 +3912,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.datacatalog_v1beta1.types.EntryGroup",
@@ -3997,7 +3997,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.datacatalog_v1beta1.types.Entry",
@@ -4081,7 +4081,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.datacatalog_v1beta1.types.Entry",
@@ -4170,7 +4170,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.datacatalog_v1beta1.types.TagTemplateField",
@@ -4258,7 +4258,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.datacatalog_v1beta1.types.TagTemplateField",
@@ -4343,7 +4343,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.datacatalog_v1beta1.types.TagTemplate",
@@ -4427,7 +4427,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.datacatalog_v1beta1.types.TagTemplate",
@@ -4512,7 +4512,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.datacatalog_v1beta1.types.Tag",
@@ -4596,7 +4596,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.datacatalog_v1beta1.types.Tag",
@@ -4673,7 +4673,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.datacatalog_v1beta1.types.ExportTaxonomiesResponse",
@@ -4749,7 +4749,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.datacatalog_v1beta1.types.ExportTaxonomiesResponse",
@@ -4826,7 +4826,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.datacatalog_v1beta1.types.ImportTaxonomiesResponse",
@@ -4902,7 +4902,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.datacatalog_v1beta1.types.ImportTaxonomiesResponse",
@@ -4987,7 +4987,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.datacatalog_v1beta1.types.PolicyTag",
@@ -5071,7 +5071,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.datacatalog_v1beta1.types.PolicyTag",
@@ -5156,7 +5156,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.datacatalog_v1beta1.types.Taxonomy",
@@ -5240,7 +5240,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.datacatalog_v1beta1.types.Taxonomy",
@@ -5321,7 +5321,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "shortName": "delete_policy_tag"
@@ -5398,7 +5398,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "shortName": "delete_policy_tag"
@@ -5476,7 +5476,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "shortName": "delete_taxonomy"
@@ -5553,7 +5553,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "shortName": "delete_taxonomy"
@@ -5627,7 +5627,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.iam.v1.policy_pb2.Policy",
@@ -5703,7 +5703,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.iam.v1.policy_pb2.Policy",
@@ -5784,7 +5784,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.datacatalog_v1beta1.types.PolicyTag",
@@ -5864,7 +5864,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.datacatalog_v1beta1.types.PolicyTag",
@@ -5945,7 +5945,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.datacatalog_v1beta1.types.Taxonomy",
@@ -6025,7 +6025,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.datacatalog_v1beta1.types.Taxonomy",
@@ -6106,7 +6106,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.datacatalog_v1beta1.services.policy_tag_manager.pagers.ListPolicyTagsAsyncPager",
@@ -6186,7 +6186,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.datacatalog_v1beta1.services.policy_tag_manager.pagers.ListPolicyTagsPager",
@@ -6267,7 +6267,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.datacatalog_v1beta1.services.policy_tag_manager.pagers.ListTaxonomiesAsyncPager",
@@ -6347,7 +6347,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.datacatalog_v1beta1.services.policy_tag_manager.pagers.ListTaxonomiesPager",
@@ -6424,7 +6424,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.iam.v1.policy_pb2.Policy",
@@ -6500,7 +6500,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.iam.v1.policy_pb2.Policy",
@@ -6577,7 +6577,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.iam.v1.iam_policy_pb2.TestIamPermissionsResponse",
@@ -6653,7 +6653,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.iam.v1.iam_policy_pb2.TestIamPermissionsResponse",
@@ -6734,7 +6734,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.datacatalog_v1beta1.types.PolicyTag",
@@ -6814,7 +6814,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.datacatalog_v1beta1.types.PolicyTag",
@@ -6895,7 +6895,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.datacatalog_v1beta1.types.Taxonomy",
@@ -6975,7 +6975,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.datacatalog_v1beta1.types.Taxonomy",

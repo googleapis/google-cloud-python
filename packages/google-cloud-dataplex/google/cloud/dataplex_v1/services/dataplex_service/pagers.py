@@ -67,7 +67,7 @@ class ListLakesPager:
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = ()
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
     ):
         """Instantiate the pager.
 
@@ -81,8 +81,10 @@ class ListLakesPager:
             retry (google.api_core.retry.Retry): Designation of what errors,
                 if any, should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
         """
         self._method = method
         self._request = service.ListLakesRequest(request)
@@ -141,7 +143,7 @@ class ListLakesAsyncPager:
         *,
         retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = ()
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
     ):
         """Instantiates the pager.
 
@@ -155,8 +157,10 @@ class ListLakesAsyncPager:
             retry (google.api_core.retry.AsyncRetry): Designation of what errors,
                 if any, should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
         """
         self._method = method
         self._request = service.ListLakesRequest(request)
@@ -219,7 +223,7 @@ class ListLakeActionsPager:
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = ()
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
     ):
         """Instantiate the pager.
 
@@ -233,8 +237,10 @@ class ListLakeActionsPager:
             retry (google.api_core.retry.Retry): Designation of what errors,
                 if any, should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
         """
         self._method = method
         self._request = service.ListLakeActionsRequest(request)
@@ -293,7 +299,7 @@ class ListLakeActionsAsyncPager:
         *,
         retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = ()
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
     ):
         """Instantiates the pager.
 
@@ -307,8 +313,10 @@ class ListLakeActionsAsyncPager:
             retry (google.api_core.retry.AsyncRetry): Designation of what errors,
                 if any, should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
         """
         self._method = method
         self._request = service.ListLakeActionsRequest(request)
@@ -371,7 +379,7 @@ class ListZonesPager:
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = ()
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
     ):
         """Instantiate the pager.
 
@@ -385,8 +393,10 @@ class ListZonesPager:
             retry (google.api_core.retry.Retry): Designation of what errors,
                 if any, should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
         """
         self._method = method
         self._request = service.ListZonesRequest(request)
@@ -445,7 +455,7 @@ class ListZonesAsyncPager:
         *,
         retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = ()
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
     ):
         """Instantiates the pager.
 
@@ -459,8 +469,10 @@ class ListZonesAsyncPager:
             retry (google.api_core.retry.AsyncRetry): Designation of what errors,
                 if any, should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
         """
         self._method = method
         self._request = service.ListZonesRequest(request)
@@ -523,7 +535,7 @@ class ListZoneActionsPager:
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = ()
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
     ):
         """Instantiate the pager.
 
@@ -537,8 +549,10 @@ class ListZoneActionsPager:
             retry (google.api_core.retry.Retry): Designation of what errors,
                 if any, should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
         """
         self._method = method
         self._request = service.ListZoneActionsRequest(request)
@@ -597,7 +611,7 @@ class ListZoneActionsAsyncPager:
         *,
         retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = ()
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
     ):
         """Instantiates the pager.
 
@@ -611,8 +625,10 @@ class ListZoneActionsAsyncPager:
             retry (google.api_core.retry.AsyncRetry): Designation of what errors,
                 if any, should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
         """
         self._method = method
         self._request = service.ListZoneActionsRequest(request)
@@ -675,7 +691,7 @@ class ListAssetsPager:
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = ()
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
     ):
         """Instantiate the pager.
 
@@ -689,8 +705,10 @@ class ListAssetsPager:
             retry (google.api_core.retry.Retry): Designation of what errors,
                 if any, should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
         """
         self._method = method
         self._request = service.ListAssetsRequest(request)
@@ -749,7 +767,7 @@ class ListAssetsAsyncPager:
         *,
         retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = ()
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
     ):
         """Instantiates the pager.
 
@@ -763,8 +781,10 @@ class ListAssetsAsyncPager:
             retry (google.api_core.retry.AsyncRetry): Designation of what errors,
                 if any, should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
         """
         self._method = method
         self._request = service.ListAssetsRequest(request)
@@ -827,7 +847,7 @@ class ListAssetActionsPager:
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = ()
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
     ):
         """Instantiate the pager.
 
@@ -841,8 +861,10 @@ class ListAssetActionsPager:
             retry (google.api_core.retry.Retry): Designation of what errors,
                 if any, should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
         """
         self._method = method
         self._request = service.ListAssetActionsRequest(request)
@@ -901,7 +923,7 @@ class ListAssetActionsAsyncPager:
         *,
         retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = ()
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
     ):
         """Instantiates the pager.
 
@@ -915,8 +937,10 @@ class ListAssetActionsAsyncPager:
             retry (google.api_core.retry.AsyncRetry): Designation of what errors,
                 if any, should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
         """
         self._method = method
         self._request = service.ListAssetActionsRequest(request)
@@ -979,7 +1003,7 @@ class ListTasksPager:
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = ()
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
     ):
         """Instantiate the pager.
 
@@ -993,8 +1017,10 @@ class ListTasksPager:
             retry (google.api_core.retry.Retry): Designation of what errors,
                 if any, should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
         """
         self._method = method
         self._request = service.ListTasksRequest(request)
@@ -1053,7 +1079,7 @@ class ListTasksAsyncPager:
         *,
         retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = ()
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
     ):
         """Instantiates the pager.
 
@@ -1067,8 +1093,10 @@ class ListTasksAsyncPager:
             retry (google.api_core.retry.AsyncRetry): Designation of what errors,
                 if any, should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
         """
         self._method = method
         self._request = service.ListTasksRequest(request)
@@ -1131,7 +1159,7 @@ class ListJobsPager:
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = ()
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
     ):
         """Instantiate the pager.
 
@@ -1145,8 +1173,10 @@ class ListJobsPager:
             retry (google.api_core.retry.Retry): Designation of what errors,
                 if any, should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
         """
         self._method = method
         self._request = service.ListJobsRequest(request)
@@ -1205,7 +1235,7 @@ class ListJobsAsyncPager:
         *,
         retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = ()
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
     ):
         """Instantiates the pager.
 
@@ -1219,8 +1249,10 @@ class ListJobsAsyncPager:
             retry (google.api_core.retry.AsyncRetry): Designation of what errors,
                 if any, should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
         """
         self._method = method
         self._request = service.ListJobsRequest(request)
@@ -1283,7 +1315,7 @@ class ListEnvironmentsPager:
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = ()
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
     ):
         """Instantiate the pager.
 
@@ -1297,8 +1329,10 @@ class ListEnvironmentsPager:
             retry (google.api_core.retry.Retry): Designation of what errors,
                 if any, should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
         """
         self._method = method
         self._request = service.ListEnvironmentsRequest(request)
@@ -1357,7 +1391,7 @@ class ListEnvironmentsAsyncPager:
         *,
         retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = ()
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
     ):
         """Instantiates the pager.
 
@@ -1371,8 +1405,10 @@ class ListEnvironmentsAsyncPager:
             retry (google.api_core.retry.AsyncRetry): Designation of what errors,
                 if any, should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
         """
         self._method = method
         self._request = service.ListEnvironmentsRequest(request)
@@ -1435,7 +1471,7 @@ class ListSessionsPager:
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = ()
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
     ):
         """Instantiate the pager.
 
@@ -1449,8 +1485,10 @@ class ListSessionsPager:
             retry (google.api_core.retry.Retry): Designation of what errors,
                 if any, should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
         """
         self._method = method
         self._request = service.ListSessionsRequest(request)
@@ -1509,7 +1547,7 @@ class ListSessionsAsyncPager:
         *,
         retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = ()
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
     ):
         """Instantiates the pager.
 
@@ -1523,8 +1561,10 @@ class ListSessionsAsyncPager:
             retry (google.api_core.retry.AsyncRetry): Designation of what errors,
                 if any, should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
         """
         self._method = method
         self._request = service.ListSessionsRequest(request)

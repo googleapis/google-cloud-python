@@ -13,6 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import json
+import logging as std_logging
+import pickle
 from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -24,11 +27,89 @@ from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
+from google.protobuf.json_format import MessageToJson
+import google.protobuf.message
 import grpc  # type: ignore
+import proto  # type: ignore
 
 from google.cloud.datacatalog_v1.types import datacatalog, tags
 
 from .base import DEFAULT_CLIENT_INFO, DataCatalogTransport
+
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = std_logging.getLogger(__name__)
+
+
+class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
+    def intercept_unary_unary(self, continuation, client_call_details, request):
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+            std_logging.DEBUG
+        )
+        if logging_enabled:  # pragma: NO COVER
+            request_metadata = client_call_details.metadata
+            if isinstance(request, proto.Message):
+                request_payload = type(request).to_json(request)
+            elif isinstance(request, google.protobuf.message.Message):
+                request_payload = MessageToJson(request)
+            else:
+                request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
+
+            request_metadata = {
+                key: value.decode("utf-8") if isinstance(value, bytes) else value
+                for key, value in request_metadata
+            }
+            grpc_request = {
+                "payload": request_payload,
+                "requestMethod": "grpc",
+                "metadata": dict(request_metadata),
+            }
+            _LOGGER.debug(
+                f"Sending request for {client_call_details.method}",
+                extra={
+                    "serviceName": "google.cloud.datacatalog.v1.DataCatalog",
+                    "rpcName": client_call_details.method,
+                    "request": grpc_request,
+                    "metadata": grpc_request["metadata"],
+                },
+            )
+
+        response = continuation(client_call_details, request)
+        if logging_enabled:  # pragma: NO COVER
+            response_metadata = response.trailing_metadata()
+            # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
+            metadata = (
+                dict([(k, str(v)) for k, v in response_metadata])
+                if response_metadata
+                else None
+            )
+            result = response.result()
+            if isinstance(result, proto.Message):
+                response_payload = type(result).to_json(result)
+            elif isinstance(result, google.protobuf.message.Message):
+                response_payload = MessageToJson(result)
+            else:
+                response_payload = f"{type(result).__name__}: {pickle.dumps(result)}"
+            grpc_response = {
+                "payload": response_payload,
+                "metadata": metadata,
+                "status": "OK",
+            }
+            _LOGGER.debug(
+                f"Received response for {client_call_details.method}.",
+                extra={
+                    "serviceName": "google.cloud.datacatalog.v1.DataCatalog",
+                    "rpcName": client_call_details.method,
+                    "response": grpc_response,
+                    "metadata": grpc_response["metadata"],
+                },
+            )
+        return response
 
 
 class DataCatalogGrpcTransport(DataCatalogTransport):
@@ -185,7 +266,12 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
                 ],
             )
 
-        # Wrap messages. This must be done after self._grpc_channel exists
+        self._interceptor = _LoggingClientInterceptor()
+        self._logged_channel = grpc.intercept_channel(
+            self._grpc_channel, self._interceptor
+        )
+
+        # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
     @classmethod
@@ -249,7 +335,9 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsClient(self.grpc_channel)
+            self._operations_client = operations_v1.OperationsClient(
+                self._logged_channel
+            )
 
         # Return the client from cache.
         return self._operations_client
@@ -290,7 +378,7 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "search_catalog" not in self._stubs:
-            self._stubs["search_catalog"] = self.grpc_channel.unary_unary(
+            self._stubs["search_catalog"] = self._logged_channel.unary_unary(
                 "/google.cloud.datacatalog.v1.DataCatalog/SearchCatalog",
                 request_serializer=datacatalog.SearchCatalogRequest.serialize,
                 response_deserializer=datacatalog.SearchCatalogResponse.deserialize,
@@ -345,7 +433,7 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_entry_group" not in self._stubs:
-            self._stubs["create_entry_group"] = self.grpc_channel.unary_unary(
+            self._stubs["create_entry_group"] = self._logged_channel.unary_unary(
                 "/google.cloud.datacatalog.v1.DataCatalog/CreateEntryGroup",
                 request_serializer=datacatalog.CreateEntryGroupRequest.serialize,
                 response_deserializer=datacatalog.EntryGroup.deserialize,
@@ -371,7 +459,7 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_entry_group" not in self._stubs:
-            self._stubs["get_entry_group"] = self.grpc_channel.unary_unary(
+            self._stubs["get_entry_group"] = self._logged_channel.unary_unary(
                 "/google.cloud.datacatalog.v1.DataCatalog/GetEntryGroup",
                 request_serializer=datacatalog.GetEntryGroupRequest.serialize,
                 response_deserializer=datacatalog.EntryGroup.deserialize,
@@ -402,7 +490,7 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_entry_group" not in self._stubs:
-            self._stubs["update_entry_group"] = self.grpc_channel.unary_unary(
+            self._stubs["update_entry_group"] = self._logged_channel.unary_unary(
                 "/google.cloud.datacatalog.v1.DataCatalog/UpdateEntryGroup",
                 request_serializer=datacatalog.UpdateEntryGroupRequest.serialize,
                 response_deserializer=datacatalog.EntryGroup.deserialize,
@@ -433,7 +521,7 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_entry_group" not in self._stubs:
-            self._stubs["delete_entry_group"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_entry_group"] = self._logged_channel.unary_unary(
                 "/google.cloud.datacatalog.v1.DataCatalog/DeleteEntryGroup",
                 request_serializer=datacatalog.DeleteEntryGroupRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -461,7 +549,7 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_entry_groups" not in self._stubs:
-            self._stubs["list_entry_groups"] = self.grpc_channel.unary_unary(
+            self._stubs["list_entry_groups"] = self._logged_channel.unary_unary(
                 "/google.cloud.datacatalog.v1.DataCatalog/ListEntryGroups",
                 request_serializer=datacatalog.ListEntryGroupsRequest.serialize,
                 response_deserializer=datacatalog.ListEntryGroupsResponse.deserialize,
@@ -499,7 +587,7 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_entry" not in self._stubs:
-            self._stubs["create_entry"] = self.grpc_channel.unary_unary(
+            self._stubs["create_entry"] = self._logged_channel.unary_unary(
                 "/google.cloud.datacatalog.v1.DataCatalog/CreateEntry",
                 request_serializer=datacatalog.CreateEntryRequest.serialize,
                 response_deserializer=datacatalog.Entry.deserialize,
@@ -530,7 +618,7 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_entry" not in self._stubs:
-            self._stubs["update_entry"] = self.grpc_channel.unary_unary(
+            self._stubs["update_entry"] = self._logged_channel.unary_unary(
                 "/google.cloud.datacatalog.v1.DataCatalog/UpdateEntry",
                 request_serializer=datacatalog.UpdateEntryRequest.serialize,
                 response_deserializer=datacatalog.Entry.deserialize,
@@ -565,7 +653,7 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_entry" not in self._stubs:
-            self._stubs["delete_entry"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_entry"] = self._logged_channel.unary_unary(
                 "/google.cloud.datacatalog.v1.DataCatalog/DeleteEntry",
                 request_serializer=datacatalog.DeleteEntryRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -589,7 +677,7 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_entry" not in self._stubs:
-            self._stubs["get_entry"] = self.grpc_channel.unary_unary(
+            self._stubs["get_entry"] = self._logged_channel.unary_unary(
                 "/google.cloud.datacatalog.v1.DataCatalog/GetEntry",
                 request_serializer=datacatalog.GetEntryRequest.serialize,
                 response_deserializer=datacatalog.Entry.deserialize,
@@ -618,7 +706,7 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "lookup_entry" not in self._stubs:
-            self._stubs["lookup_entry"] = self.grpc_channel.unary_unary(
+            self._stubs["lookup_entry"] = self._logged_channel.unary_unary(
                 "/google.cloud.datacatalog.v1.DataCatalog/LookupEntry",
                 request_serializer=datacatalog.LookupEntryRequest.serialize,
                 response_deserializer=datacatalog.Entry.deserialize,
@@ -648,7 +736,7 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_entries" not in self._stubs:
-            self._stubs["list_entries"] = self.grpc_channel.unary_unary(
+            self._stubs["list_entries"] = self._logged_channel.unary_unary(
                 "/google.cloud.datacatalog.v1.DataCatalog/ListEntries",
                 request_serializer=datacatalog.ListEntriesRequest.serialize,
                 response_deserializer=datacatalog.ListEntriesResponse.deserialize,
@@ -679,7 +767,7 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "modify_entry_overview" not in self._stubs:
-            self._stubs["modify_entry_overview"] = self.grpc_channel.unary_unary(
+            self._stubs["modify_entry_overview"] = self._logged_channel.unary_unary(
                 "/google.cloud.datacatalog.v1.DataCatalog/ModifyEntryOverview",
                 request_serializer=datacatalog.ModifyEntryOverviewRequest.serialize,
                 response_deserializer=datacatalog.EntryOverview.deserialize,
@@ -710,7 +798,7 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "modify_entry_contacts" not in self._stubs:
-            self._stubs["modify_entry_contacts"] = self.grpc_channel.unary_unary(
+            self._stubs["modify_entry_contacts"] = self._logged_channel.unary_unary(
                 "/google.cloud.datacatalog.v1.DataCatalog/ModifyEntryContacts",
                 request_serializer=datacatalog.ModifyEntryContactsRequest.serialize,
                 response_deserializer=datacatalog.Contacts.deserialize,
@@ -741,7 +829,7 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_tag_template" not in self._stubs:
-            self._stubs["create_tag_template"] = self.grpc_channel.unary_unary(
+            self._stubs["create_tag_template"] = self._logged_channel.unary_unary(
                 "/google.cloud.datacatalog.v1.DataCatalog/CreateTagTemplate",
                 request_serializer=datacatalog.CreateTagTemplateRequest.serialize,
                 response_deserializer=tags.TagTemplate.deserialize,
@@ -767,7 +855,7 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_tag_template" not in self._stubs:
-            self._stubs["get_tag_template"] = self.grpc_channel.unary_unary(
+            self._stubs["get_tag_template"] = self._logged_channel.unary_unary(
                 "/google.cloud.datacatalog.v1.DataCatalog/GetTagTemplate",
                 request_serializer=datacatalog.GetTagTemplateRequest.serialize,
                 response_deserializer=tags.TagTemplate.deserialize,
@@ -802,7 +890,7 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_tag_template" not in self._stubs:
-            self._stubs["update_tag_template"] = self.grpc_channel.unary_unary(
+            self._stubs["update_tag_template"] = self._logged_channel.unary_unary(
                 "/google.cloud.datacatalog.v1.DataCatalog/UpdateTagTemplate",
                 request_serializer=datacatalog.UpdateTagTemplateRequest.serialize,
                 response_deserializer=tags.TagTemplate.deserialize,
@@ -833,7 +921,7 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_tag_template" not in self._stubs:
-            self._stubs["delete_tag_template"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_tag_template"] = self._logged_channel.unary_unary(
                 "/google.cloud.datacatalog.v1.DataCatalog/DeleteTagTemplate",
                 request_serializer=datacatalog.DeleteTagTemplateRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -864,7 +952,7 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_tag_template_field" not in self._stubs:
-            self._stubs["create_tag_template_field"] = self.grpc_channel.unary_unary(
+            self._stubs["create_tag_template_field"] = self._logged_channel.unary_unary(
                 "/google.cloud.datacatalog.v1.DataCatalog/CreateTagTemplateField",
                 request_serializer=datacatalog.CreateTagTemplateFieldRequest.serialize,
                 response_deserializer=tags.TagTemplateField.deserialize,
@@ -897,7 +985,7 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_tag_template_field" not in self._stubs:
-            self._stubs["update_tag_template_field"] = self.grpc_channel.unary_unary(
+            self._stubs["update_tag_template_field"] = self._logged_channel.unary_unary(
                 "/google.cloud.datacatalog.v1.DataCatalog/UpdateTagTemplateField",
                 request_serializer=datacatalog.UpdateTagTemplateFieldRequest.serialize,
                 response_deserializer=tags.TagTemplateField.deserialize,
@@ -928,7 +1016,7 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "rename_tag_template_field" not in self._stubs:
-            self._stubs["rename_tag_template_field"] = self.grpc_channel.unary_unary(
+            self._stubs["rename_tag_template_field"] = self._logged_channel.unary_unary(
                 "/google.cloud.datacatalog.v1.DataCatalog/RenameTagTemplateField",
                 request_serializer=datacatalog.RenameTagTemplateFieldRequest.serialize,
                 response_deserializer=tags.TagTemplateField.deserialize,
@@ -961,7 +1049,7 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
         if "rename_tag_template_field_enum_value" not in self._stubs:
             self._stubs[
                 "rename_tag_template_field_enum_value"
-            ] = self.grpc_channel.unary_unary(
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.datacatalog.v1.DataCatalog/RenameTagTemplateFieldEnumValue",
                 request_serializer=datacatalog.RenameTagTemplateFieldEnumValueRequest.serialize,
                 response_deserializer=tags.TagTemplateField.deserialize,
@@ -993,7 +1081,7 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_tag_template_field" not in self._stubs:
-            self._stubs["delete_tag_template_field"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_tag_template_field"] = self._logged_channel.unary_unary(
                 "/google.cloud.datacatalog.v1.DataCatalog/DeleteTagTemplateField",
                 request_serializer=datacatalog.DeleteTagTemplateFieldRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -1031,7 +1119,7 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_tag" not in self._stubs:
-            self._stubs["create_tag"] = self.grpc_channel.unary_unary(
+            self._stubs["create_tag"] = self._logged_channel.unary_unary(
                 "/google.cloud.datacatalog.v1.DataCatalog/CreateTag",
                 request_serializer=datacatalog.CreateTagRequest.serialize,
                 response_deserializer=tags.Tag.deserialize,
@@ -1055,7 +1143,7 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_tag" not in self._stubs:
-            self._stubs["update_tag"] = self.grpc_channel.unary_unary(
+            self._stubs["update_tag"] = self._logged_channel.unary_unary(
                 "/google.cloud.datacatalog.v1.DataCatalog/UpdateTag",
                 request_serializer=datacatalog.UpdateTagRequest.serialize,
                 response_deserializer=tags.Tag.deserialize,
@@ -1079,7 +1167,7 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_tag" not in self._stubs:
-            self._stubs["delete_tag"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_tag"] = self._logged_channel.unary_unary(
                 "/google.cloud.datacatalog.v1.DataCatalog/DeleteTag",
                 request_serializer=datacatalog.DeleteTagRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -1108,7 +1196,7 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_tags" not in self._stubs:
-            self._stubs["list_tags"] = self.grpc_channel.unary_unary(
+            self._stubs["list_tags"] = self._logged_channel.unary_unary(
                 "/google.cloud.datacatalog.v1.DataCatalog/ListTags",
                 request_serializer=datacatalog.ListTagsRequest.serialize,
                 response_deserializer=datacatalog.ListTagsResponse.deserialize,
@@ -1146,7 +1234,7 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "reconcile_tags" not in self._stubs:
-            self._stubs["reconcile_tags"] = self.grpc_channel.unary_unary(
+            self._stubs["reconcile_tags"] = self._logged_channel.unary_unary(
                 "/google.cloud.datacatalog.v1.DataCatalog/ReconcileTags",
                 request_serializer=datacatalog.ReconcileTagsRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1174,7 +1262,7 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "star_entry" not in self._stubs:
-            self._stubs["star_entry"] = self.grpc_channel.unary_unary(
+            self._stubs["star_entry"] = self._logged_channel.unary_unary(
                 "/google.cloud.datacatalog.v1.DataCatalog/StarEntry",
                 request_serializer=datacatalog.StarEntryRequest.serialize,
                 response_deserializer=datacatalog.StarEntryResponse.deserialize,
@@ -1202,7 +1290,7 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "unstar_entry" not in self._stubs:
-            self._stubs["unstar_entry"] = self.grpc_channel.unary_unary(
+            self._stubs["unstar_entry"] = self._logged_channel.unary_unary(
                 "/google.cloud.datacatalog.v1.DataCatalog/UnstarEntry",
                 request_serializer=datacatalog.UnstarEntryRequest.serialize,
                 response_deserializer=datacatalog.UnstarEntryResponse.deserialize,
@@ -1247,7 +1335,7 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "set_iam_policy" not in self._stubs:
-            self._stubs["set_iam_policy"] = self.grpc_channel.unary_unary(
+            self._stubs["set_iam_policy"] = self._logged_channel.unary_unary(
                 "/google.cloud.datacatalog.v1.DataCatalog/SetIamPolicy",
                 request_serializer=iam_policy_pb2.SetIamPolicyRequest.SerializeToString,
                 response_deserializer=policy_pb2.Policy.FromString,
@@ -1296,7 +1384,7 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_iam_policy" not in self._stubs:
-            self._stubs["get_iam_policy"] = self.grpc_channel.unary_unary(
+            self._stubs["get_iam_policy"] = self._logged_channel.unary_unary(
                 "/google.cloud.datacatalog.v1.DataCatalog/GetIamPolicy",
                 request_serializer=iam_policy_pb2.GetIamPolicyRequest.SerializeToString,
                 response_deserializer=policy_pb2.Policy.FromString,
@@ -1341,7 +1429,7 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "test_iam_permissions" not in self._stubs:
-            self._stubs["test_iam_permissions"] = self.grpc_channel.unary_unary(
+            self._stubs["test_iam_permissions"] = self._logged_channel.unary_unary(
                 "/google.cloud.datacatalog.v1.DataCatalog/TestIamPermissions",
                 request_serializer=iam_policy_pb2.TestIamPermissionsRequest.SerializeToString,
                 response_deserializer=iam_policy_pb2.TestIamPermissionsResponse.FromString,
@@ -1385,7 +1473,7 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "import_entries" not in self._stubs:
-            self._stubs["import_entries"] = self.grpc_channel.unary_unary(
+            self._stubs["import_entries"] = self._logged_channel.unary_unary(
                 "/google.cloud.datacatalog.v1.DataCatalog/ImportEntries",
                 request_serializer=datacatalog.ImportEntriesRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1412,7 +1500,7 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "set_config" not in self._stubs:
-            self._stubs["set_config"] = self.grpc_channel.unary_unary(
+            self._stubs["set_config"] = self._logged_channel.unary_unary(
                 "/google.cloud.datacatalog.v1.DataCatalog/SetConfig",
                 request_serializer=datacatalog.SetConfigRequest.serialize,
                 response_deserializer=datacatalog.MigrationConfig.deserialize,
@@ -1441,7 +1529,7 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "retrieve_config" not in self._stubs:
-            self._stubs["retrieve_config"] = self.grpc_channel.unary_unary(
+            self._stubs["retrieve_config"] = self._logged_channel.unary_unary(
                 "/google.cloud.datacatalog.v1.DataCatalog/RetrieveConfig",
                 request_serializer=datacatalog.RetrieveConfigRequest.serialize,
                 response_deserializer=datacatalog.OrganizationConfig.deserialize,
@@ -1474,7 +1562,7 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "retrieve_effective_config" not in self._stubs:
-            self._stubs["retrieve_effective_config"] = self.grpc_channel.unary_unary(
+            self._stubs["retrieve_effective_config"] = self._logged_channel.unary_unary(
                 "/google.cloud.datacatalog.v1.DataCatalog/RetrieveEffectiveConfig",
                 request_serializer=datacatalog.RetrieveEffectiveConfigRequest.serialize,
                 response_deserializer=datacatalog.MigrationConfig.deserialize,
@@ -1482,7 +1570,7 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
         return self._stubs["retrieve_effective_config"]
 
     def close(self):
-        self.grpc_channel.close()
+        self._logged_channel.close()
 
     @property
     def delete_operation(
@@ -1494,7 +1582,7 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_operation" not in self._stubs:
-            self._stubs["delete_operation"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_operation"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/DeleteOperation",
                 request_serializer=operations_pb2.DeleteOperationRequest.SerializeToString,
                 response_deserializer=None,
@@ -1511,7 +1599,7 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "cancel_operation" not in self._stubs:
-            self._stubs["cancel_operation"] = self.grpc_channel.unary_unary(
+            self._stubs["cancel_operation"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/CancelOperation",
                 request_serializer=operations_pb2.CancelOperationRequest.SerializeToString,
                 response_deserializer=None,
@@ -1528,7 +1616,7 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_operation" not in self._stubs:
-            self._stubs["get_operation"] = self.grpc_channel.unary_unary(
+            self._stubs["get_operation"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/GetOperation",
                 request_serializer=operations_pb2.GetOperationRequest.SerializeToString,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1547,7 +1635,7 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_operations" not in self._stubs:
-            self._stubs["list_operations"] = self.grpc_channel.unary_unary(
+            self._stubs["list_operations"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/ListOperations",
                 request_serializer=operations_pb2.ListOperationsRequest.SerializeToString,
                 response_deserializer=operations_pb2.ListOperationsResponse.FromString,

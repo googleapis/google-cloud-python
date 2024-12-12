@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -37,6 +37,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -93,8 +101,10 @@ class MetricsV1Beta3RestInterceptor:
     def pre_get_job_execution_details(
         self,
         request: metrics.GetJobExecutionDetailsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[metrics.GetJobExecutionDetailsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        metrics.GetJobExecutionDetailsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_job_execution_details
 
         Override in a subclass to manipulate the request or metadata
@@ -114,8 +124,10 @@ class MetricsV1Beta3RestInterceptor:
         return response
 
     def pre_get_job_metrics(
-        self, request: metrics.GetJobMetricsRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[metrics.GetJobMetricsRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: metrics.GetJobMetricsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[metrics.GetJobMetricsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_job_metrics
 
         Override in a subclass to manipulate the request or metadata
@@ -135,8 +147,10 @@ class MetricsV1Beta3RestInterceptor:
     def pre_get_stage_execution_details(
         self,
         request: metrics.GetStageExecutionDetailsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[metrics.GetStageExecutionDetailsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        metrics.GetStageExecutionDetailsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_stage_execution_details
 
         Override in a subclass to manipulate the request or metadata
@@ -278,7 +292,7 @@ class MetricsV1Beta3RestTransport(_BaseMetricsV1Beta3RestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> metrics.JobExecutionDetails:
             r"""Call the get job execution details method over HTTP.
 
@@ -288,8 +302,10 @@ class MetricsV1Beta3RestTransport(_BaseMetricsV1Beta3RestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.metrics.JobExecutionDetails:
@@ -301,6 +317,7 @@ class MetricsV1Beta3RestTransport(_BaseMetricsV1Beta3RestTransport):
             http_options = (
                 _BaseMetricsV1Beta3RestTransport._BaseGetJobExecutionDetails._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_job_execution_details(
                 request, metadata
             )
@@ -312,6 +329,33 @@ class MetricsV1Beta3RestTransport(_BaseMetricsV1Beta3RestTransport):
             query_params = _BaseMetricsV1Beta3RestTransport._BaseGetJobExecutionDetails._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.dataflow_v1beta3.MetricsV1Beta3Client.GetJobExecutionDetails",
+                    extra={
+                        "serviceName": "google.dataflow.v1beta3.MetricsV1Beta3",
+                        "rpcName": "GetJobExecutionDetails",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -335,7 +379,29 @@ class MetricsV1Beta3RestTransport(_BaseMetricsV1Beta3RestTransport):
             pb_resp = metrics.JobExecutionDetails.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_job_execution_details(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = metrics.JobExecutionDetails.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.dataflow_v1beta3.MetricsV1Beta3Client.get_job_execution_details",
+                    extra={
+                        "serviceName": "google.dataflow.v1beta3.MetricsV1Beta3",
+                        "rpcName": "GetJobExecutionDetails",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetJobMetrics(
@@ -372,7 +438,7 @@ class MetricsV1Beta3RestTransport(_BaseMetricsV1Beta3RestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> metrics.JobMetrics:
             r"""Call the get job metrics method over HTTP.
 
@@ -382,8 +448,10 @@ class MetricsV1Beta3RestTransport(_BaseMetricsV1Beta3RestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.metrics.JobMetrics:
@@ -404,6 +472,7 @@ class MetricsV1Beta3RestTransport(_BaseMetricsV1Beta3RestTransport):
             http_options = (
                 _BaseMetricsV1Beta3RestTransport._BaseGetJobMetrics._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_job_metrics(request, metadata)
             transcoded_request = _BaseMetricsV1Beta3RestTransport._BaseGetJobMetrics._get_transcoded_request(
                 http_options, request
@@ -413,6 +482,33 @@ class MetricsV1Beta3RestTransport(_BaseMetricsV1Beta3RestTransport):
             query_params = _BaseMetricsV1Beta3RestTransport._BaseGetJobMetrics._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.dataflow_v1beta3.MetricsV1Beta3Client.GetJobMetrics",
+                    extra={
+                        "serviceName": "google.dataflow.v1beta3.MetricsV1Beta3",
+                        "rpcName": "GetJobMetrics",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = MetricsV1Beta3RestTransport._GetJobMetrics._get_response(
@@ -434,7 +530,29 @@ class MetricsV1Beta3RestTransport(_BaseMetricsV1Beta3RestTransport):
             pb_resp = metrics.JobMetrics.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_job_metrics(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = metrics.JobMetrics.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.dataflow_v1beta3.MetricsV1Beta3Client.get_job_metrics",
+                    extra={
+                        "serviceName": "google.dataflow.v1beta3.MetricsV1Beta3",
+                        "rpcName": "GetJobMetrics",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetStageExecutionDetails(
@@ -472,7 +590,7 @@ class MetricsV1Beta3RestTransport(_BaseMetricsV1Beta3RestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> metrics.StageExecutionDetails:
             r"""Call the get stage execution
             details method over HTTP.
@@ -485,8 +603,10 @@ class MetricsV1Beta3RestTransport(_BaseMetricsV1Beta3RestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.metrics.StageExecutionDetails:
@@ -498,6 +618,7 @@ class MetricsV1Beta3RestTransport(_BaseMetricsV1Beta3RestTransport):
             http_options = (
                 _BaseMetricsV1Beta3RestTransport._BaseGetStageExecutionDetails._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_stage_execution_details(
                 request, metadata
             )
@@ -509,6 +630,33 @@ class MetricsV1Beta3RestTransport(_BaseMetricsV1Beta3RestTransport):
             query_params = _BaseMetricsV1Beta3RestTransport._BaseGetStageExecutionDetails._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.dataflow_v1beta3.MetricsV1Beta3Client.GetStageExecutionDetails",
+                    extra={
+                        "serviceName": "google.dataflow.v1beta3.MetricsV1Beta3",
+                        "rpcName": "GetStageExecutionDetails",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -532,7 +680,29 @@ class MetricsV1Beta3RestTransport(_BaseMetricsV1Beta3RestTransport):
             pb_resp = metrics.StageExecutionDetails.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_stage_execution_details(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = metrics.StageExecutionDetails.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.dataflow_v1beta3.MetricsV1Beta3Client.get_stage_execution_details",
+                    extra={
+                        "serviceName": "google.dataflow.v1beta3.MetricsV1Beta3",
+                        "rpcName": "GetStageExecutionDetails",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property

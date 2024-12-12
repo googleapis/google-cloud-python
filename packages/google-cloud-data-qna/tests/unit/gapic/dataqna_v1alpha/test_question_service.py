@@ -2932,6 +2932,7 @@ def test_get_question_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_question(request)
 
@@ -2979,6 +2980,7 @@ def test_get_question_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_question(**mock_args)
 
@@ -3111,6 +3113,7 @@ def test_create_question_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_question(request)
 
@@ -3165,6 +3168,7 @@ def test_create_question_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_question(**mock_args)
 
@@ -3304,6 +3308,7 @@ def test_execute_question_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.execute_question(request)
 
@@ -3360,6 +3365,7 @@ def test_execute_question_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.execute_question(**mock_args)
 
@@ -3494,6 +3500,7 @@ def test_get_user_feedback_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_user_feedback(request)
 
@@ -3541,6 +3548,7 @@ def test_get_user_feedback_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_user_feedback(**mock_args)
 
@@ -3674,6 +3682,7 @@ def test_update_user_feedback_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_user_feedback(request)
 
@@ -3724,6 +3733,7 @@ def test_update_user_feedback_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_user_feedback(**mock_args)
 
@@ -4166,6 +4176,7 @@ def test_get_question_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_question(request)
 
 
@@ -4205,6 +4216,7 @@ def test_get_question_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_question(request)
 
     # Establish that the response is the type that we expect.
@@ -4249,6 +4261,7 @@ def test_get_question_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = question.Question.to_json(question.Question())
         req.return_value.content = return_value
 
@@ -4293,6 +4306,7 @@ def test_create_question_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_question(request)
 
 
@@ -4483,6 +4497,7 @@ def test_create_question_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_question(request)
 
     # Establish that the response is the type that we expect.
@@ -4527,6 +4542,7 @@ def test_create_question_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = gcd_question.Question.to_json(gcd_question.Question())
         req.return_value.content = return_value
 
@@ -4571,6 +4587,7 @@ def test_execute_question_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.execute_question(request)
 
 
@@ -4610,6 +4627,7 @@ def test_execute_question_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.execute_question(request)
 
     # Establish that the response is the type that we expect.
@@ -4654,6 +4672,7 @@ def test_execute_question_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = question.Question.to_json(question.Question())
         req.return_value.content = return_value
 
@@ -4700,6 +4719,7 @@ def test_get_user_feedback_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_user_feedback(request)
 
 
@@ -4739,6 +4759,7 @@ def test_get_user_feedback_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_user_feedback(request)
 
     # Establish that the response is the type that we expect.
@@ -4781,6 +4802,7 @@ def test_get_user_feedback_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = user_feedback.UserFeedback.to_json(user_feedback.UserFeedback())
         req.return_value.content = return_value
 
@@ -4829,6 +4851,7 @@ def test_update_user_feedback_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_user_feedback(request)
 
 
@@ -4942,6 +4965,7 @@ def test_update_user_feedback_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_user_feedback(request)
 
     # Establish that the response is the type that we expect.
@@ -4984,6 +5008,7 @@ def test_update_user_feedback_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = gcd_user_feedback.UserFeedback.to_json(
             gcd_user_feedback.UserFeedback()
         )

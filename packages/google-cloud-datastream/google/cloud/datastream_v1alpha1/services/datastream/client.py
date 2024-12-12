@@ -14,6 +14,7 @@
 # limitations under the License.
 #
 from collections import OrderedDict
+import logging as std_logging
 import os
 import re
 from typing import (
@@ -47,6 +48,15 @@ try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
+
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = std_logging.getLogger(__name__)
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
@@ -650,6 +660,10 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         # Initialize the universe domain validation.
         self._is_universe_domain_valid = False
 
+        if CLIENT_LOGGING_SUPPORTED:  # pragma: NO COVER
+            # Setup logging.
+            client_logging.initialize_logging()
+
         api_key_value = getattr(self._client_options, "api_key", None)
         if api_key_value and credentials:
             raise ValueError(
@@ -712,6 +726,29 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
                 api_audience=self._client_options.api_audience,
             )
 
+        if "async" not in str(self._transport):
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                std_logging.DEBUG
+            ):  # pragma: NO COVER
+                _LOGGER.debug(
+                    "Created client `google.cloud.datastream_v1alpha1.DatastreamClient`.",
+                    extra={
+                        "serviceName": "google.cloud.datastream.v1alpha1.Datastream",
+                        "universeDomain": getattr(
+                            self._transport._credentials, "universe_domain", ""
+                        ),
+                        "credentialsType": f"{type(self._transport._credentials).__module__}.{type(self._transport._credentials).__qualname__}",
+                        "credentialsInfo": getattr(
+                            self.transport._credentials, "get_cred_info", lambda: None
+                        )(),
+                    }
+                    if hasattr(self._transport, "_credentials")
+                    else {
+                        "serviceName": "google.cloud.datastream.v1alpha1.Datastream",
+                        "credentialsType": None,
+                    },
+                )
+
     def list_connection_profiles(
         self,
         request: Optional[Union[datastream.ListConnectionProfilesRequest, dict]] = None,
@@ -719,7 +756,7 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListConnectionProfilesPager:
         r"""Use this method to list connection profiles created
         in a project and location.
@@ -764,8 +801,10 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.datastream_v1alpha1.services.datastream.pagers.ListConnectionProfilesPager:
@@ -835,7 +874,7 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> datastream_resources.ConnectionProfile:
         r"""Use this method to get details about a connection
         profile.
@@ -879,8 +918,10 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.datastream_v1alpha1.types.ConnectionProfile:
@@ -940,7 +981,7 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         connection_profile_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation.Operation:
         r"""Use this method to create a connection profile in a
         project and location.
@@ -1011,8 +1052,10 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.api_core.operation.Operation:
@@ -1089,7 +1132,7 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation.Operation:
         r"""Use this method to update the parameters of a
         connection profile.
@@ -1156,8 +1199,10 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.api_core.operation.Operation:
@@ -1233,7 +1278,7 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation.Operation:
         r"""Use this method to delete a connection profile..
 
@@ -1280,8 +1325,10 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.api_core.operation.Operation:
@@ -1360,7 +1407,7 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> datastream.DiscoverConnectionProfileResponse:
         r"""Use this method to discover a connection profile.
         The discover API call exposes the data objects and
@@ -1410,8 +1457,10 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.datastream_v1alpha1.types.DiscoverConnectionProfileResponse:
@@ -1456,7 +1505,7 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListStreamsPager:
         r"""Use this method to list streams in a project and
         location.
@@ -1501,8 +1550,10 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.datastream_v1alpha1.services.datastream.pagers.ListStreamsPager:
@@ -1572,7 +1623,7 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> datastream_resources.Stream:
         r"""Use this method to get details about a stream.
 
@@ -1615,8 +1666,10 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.datastream_v1alpha1.types.Stream:
@@ -1674,7 +1727,7 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         stream_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation.Operation:
         r"""Use this method to create a stream.
 
@@ -1740,8 +1793,10 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.api_core.operation.Operation:
@@ -1814,7 +1869,7 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation.Operation:
         r"""Use this method to update the configuration of a
         stream.
@@ -1878,8 +1933,10 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.api_core.operation.Operation:
@@ -1951,7 +2008,7 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation.Operation:
         r"""Use this method to delete a stream.
 
@@ -1998,8 +2055,10 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.api_core.operation.Operation:
@@ -2074,7 +2133,7 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation.Operation:
         r"""Use this method to fetch any errors associated with a
         stream.
@@ -2115,8 +2174,10 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.api_core.operation.Operation:
@@ -2172,7 +2233,7 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.FetchStaticIpsPager:
         r"""The FetchStaticIps API call exposes the static ips
         used by Datastream. Typically, a request returns
@@ -2220,8 +2281,10 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.datastream_v1alpha1.services.datastream.pagers.FetchStaticIpsPager:
@@ -2297,7 +2360,7 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         private_connection_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation.Operation:
         r"""Use this method to create a private connectivity
         configuration.
@@ -2364,8 +2427,10 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.api_core.operation.Operation:
@@ -2439,7 +2504,7 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> datastream_resources.PrivateConnection:
         r"""Use this method to get details about a private
         connectivity configuration.
@@ -2483,8 +2548,10 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.datastream_v1alpha1.types.PrivateConnection:
@@ -2544,7 +2611,7 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListPrivateConnectionsPager:
         r"""Use this method to list private connectivity
         configurations in a project and location.
@@ -2590,8 +2657,10 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.datastream_v1alpha1.services.datastream.pagers.ListPrivateConnectionsPager:
@@ -2663,7 +2732,7 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation.Operation:
         r"""Use this method to delete a private connectivity
         configuration.
@@ -2711,8 +2780,10 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.api_core.operation.Operation:
@@ -2792,7 +2863,7 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         route_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation.Operation:
         r"""Use this method to create a route for a private
         connectivity in a project and location.
@@ -2858,8 +2929,10 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.api_core.operation.Operation:
@@ -2932,7 +3005,7 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> datastream_resources.Route:
         r"""Use this method to get details about a route.
 
@@ -2975,8 +3048,10 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.datastream_v1alpha1.types.Route:
@@ -3036,7 +3111,7 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListRoutesPager:
         r"""Use this method to list routes created for a private
         connectivity in a project and location.
@@ -3081,8 +3156,10 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.datastream_v1alpha1.services.datastream.pagers.ListRoutesPager:
@@ -3154,7 +3231,7 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation.Operation:
         r"""Use this method to delete a route.
 
@@ -3201,8 +3278,10 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.api_core.operation.Operation:

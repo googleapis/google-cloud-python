@@ -13,6 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import json
+import logging as std_logging
+import pickle
 from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -21,11 +24,89 @@ import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
+from google.protobuf.json_format import MessageToJson
+import google.protobuf.message
 import grpc  # type: ignore
+import proto  # type: ignore
 
 from google.cloud.container_v1.types import cluster_service
 
 from .base import DEFAULT_CLIENT_INFO, ClusterManagerTransport
+
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = std_logging.getLogger(__name__)
+
+
+class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
+    def intercept_unary_unary(self, continuation, client_call_details, request):
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+            std_logging.DEBUG
+        )
+        if logging_enabled:  # pragma: NO COVER
+            request_metadata = client_call_details.metadata
+            if isinstance(request, proto.Message):
+                request_payload = type(request).to_json(request)
+            elif isinstance(request, google.protobuf.message.Message):
+                request_payload = MessageToJson(request)
+            else:
+                request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
+
+            request_metadata = {
+                key: value.decode("utf-8") if isinstance(value, bytes) else value
+                for key, value in request_metadata
+            }
+            grpc_request = {
+                "payload": request_payload,
+                "requestMethod": "grpc",
+                "metadata": dict(request_metadata),
+            }
+            _LOGGER.debug(
+                f"Sending request for {client_call_details.method}",
+                extra={
+                    "serviceName": "google.container.v1.ClusterManager",
+                    "rpcName": client_call_details.method,
+                    "request": grpc_request,
+                    "metadata": grpc_request["metadata"],
+                },
+            )
+
+        response = continuation(client_call_details, request)
+        if logging_enabled:  # pragma: NO COVER
+            response_metadata = response.trailing_metadata()
+            # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
+            metadata = (
+                dict([(k, str(v)) for k, v in response_metadata])
+                if response_metadata
+                else None
+            )
+            result = response.result()
+            if isinstance(result, proto.Message):
+                response_payload = type(result).to_json(result)
+            elif isinstance(result, google.protobuf.message.Message):
+                response_payload = MessageToJson(result)
+            else:
+                response_payload = f"{type(result).__name__}: {pickle.dumps(result)}"
+            grpc_response = {
+                "payload": response_payload,
+                "metadata": metadata,
+                "status": "OK",
+            }
+            _LOGGER.debug(
+                f"Received response for {client_call_details.method}.",
+                extra={
+                    "serviceName": "google.container.v1.ClusterManager",
+                    "rpcName": client_call_details.method,
+                    "response": grpc_response,
+                    "metadata": grpc_response["metadata"],
+                },
+            )
+        return response
 
 
 class ClusterManagerGrpcTransport(ClusterManagerTransport):
@@ -180,7 +261,12 @@ class ClusterManagerGrpcTransport(ClusterManagerTransport):
                 ],
             )
 
-        # Wrap messages. This must be done after self._grpc_channel exists
+        self._interceptor = _LoggingClientInterceptor()
+        self._logged_channel = grpc.intercept_channel(
+            self._grpc_channel, self._interceptor
+        )
+
+        # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
     @classmethod
@@ -257,7 +343,7 @@ class ClusterManagerGrpcTransport(ClusterManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_clusters" not in self._stubs:
-            self._stubs["list_clusters"] = self.grpc_channel.unary_unary(
+            self._stubs["list_clusters"] = self._logged_channel.unary_unary(
                 "/google.container.v1.ClusterManager/ListClusters",
                 request_serializer=cluster_service.ListClustersRequest.serialize,
                 response_deserializer=cluster_service.ListClustersResponse.deserialize,
@@ -283,7 +369,7 @@ class ClusterManagerGrpcTransport(ClusterManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_cluster" not in self._stubs:
-            self._stubs["get_cluster"] = self.grpc_channel.unary_unary(
+            self._stubs["get_cluster"] = self._logged_channel.unary_unary(
                 "/google.container.v1.ClusterManager/GetCluster",
                 request_serializer=cluster_service.GetClusterRequest.serialize,
                 response_deserializer=cluster_service.Cluster.deserialize,
@@ -321,7 +407,7 @@ class ClusterManagerGrpcTransport(ClusterManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_cluster" not in self._stubs:
-            self._stubs["create_cluster"] = self.grpc_channel.unary_unary(
+            self._stubs["create_cluster"] = self._logged_channel.unary_unary(
                 "/google.container.v1.ClusterManager/CreateCluster",
                 request_serializer=cluster_service.CreateClusterRequest.serialize,
                 response_deserializer=cluster_service.Operation.deserialize,
@@ -347,7 +433,7 @@ class ClusterManagerGrpcTransport(ClusterManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_cluster" not in self._stubs:
-            self._stubs["update_cluster"] = self.grpc_channel.unary_unary(
+            self._stubs["update_cluster"] = self._logged_channel.unary_unary(
                 "/google.container.v1.ClusterManager/UpdateCluster",
                 request_serializer=cluster_service.UpdateClusterRequest.serialize,
                 response_deserializer=cluster_service.Operation.deserialize,
@@ -374,7 +460,7 @@ class ClusterManagerGrpcTransport(ClusterManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_node_pool" not in self._stubs:
-            self._stubs["update_node_pool"] = self.grpc_channel.unary_unary(
+            self._stubs["update_node_pool"] = self._logged_channel.unary_unary(
                 "/google.container.v1.ClusterManager/UpdateNodePool",
                 request_serializer=cluster_service.UpdateNodePoolRequest.serialize,
                 response_deserializer=cluster_service.Operation.deserialize,
@@ -403,7 +489,7 @@ class ClusterManagerGrpcTransport(ClusterManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "set_node_pool_autoscaling" not in self._stubs:
-            self._stubs["set_node_pool_autoscaling"] = self.grpc_channel.unary_unary(
+            self._stubs["set_node_pool_autoscaling"] = self._logged_channel.unary_unary(
                 "/google.container.v1.ClusterManager/SetNodePoolAutoscaling",
                 request_serializer=cluster_service.SetNodePoolAutoscalingRequest.serialize,
                 response_deserializer=cluster_service.Operation.deserialize,
@@ -431,7 +517,7 @@ class ClusterManagerGrpcTransport(ClusterManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "set_logging_service" not in self._stubs:
-            self._stubs["set_logging_service"] = self.grpc_channel.unary_unary(
+            self._stubs["set_logging_service"] = self._logged_channel.unary_unary(
                 "/google.container.v1.ClusterManager/SetLoggingService",
                 request_serializer=cluster_service.SetLoggingServiceRequest.serialize,
                 response_deserializer=cluster_service.Operation.deserialize,
@@ -459,7 +545,7 @@ class ClusterManagerGrpcTransport(ClusterManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "set_monitoring_service" not in self._stubs:
-            self._stubs["set_monitoring_service"] = self.grpc_channel.unary_unary(
+            self._stubs["set_monitoring_service"] = self._logged_channel.unary_unary(
                 "/google.container.v1.ClusterManager/SetMonitoringService",
                 request_serializer=cluster_service.SetMonitoringServiceRequest.serialize,
                 response_deserializer=cluster_service.Operation.deserialize,
@@ -485,7 +571,7 @@ class ClusterManagerGrpcTransport(ClusterManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "set_addons_config" not in self._stubs:
-            self._stubs["set_addons_config"] = self.grpc_channel.unary_unary(
+            self._stubs["set_addons_config"] = self._logged_channel.unary_unary(
                 "/google.container.v1.ClusterManager/SetAddonsConfig",
                 request_serializer=cluster_service.SetAddonsConfigRequest.serialize,
                 response_deserializer=cluster_service.Operation.deserialize,
@@ -513,7 +599,7 @@ class ClusterManagerGrpcTransport(ClusterManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "set_locations" not in self._stubs:
-            self._stubs["set_locations"] = self.grpc_channel.unary_unary(
+            self._stubs["set_locations"] = self._logged_channel.unary_unary(
                 "/google.container.v1.ClusterManager/SetLocations",
                 request_serializer=cluster_service.SetLocationsRequest.serialize,
                 response_deserializer=cluster_service.Operation.deserialize,
@@ -539,7 +625,7 @@ class ClusterManagerGrpcTransport(ClusterManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_master" not in self._stubs:
-            self._stubs["update_master"] = self.grpc_channel.unary_unary(
+            self._stubs["update_master"] = self._logged_channel.unary_unary(
                 "/google.container.v1.ClusterManager/UpdateMaster",
                 request_serializer=cluster_service.UpdateMasterRequest.serialize,
                 response_deserializer=cluster_service.Operation.deserialize,
@@ -568,7 +654,7 @@ class ClusterManagerGrpcTransport(ClusterManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "set_master_auth" not in self._stubs:
-            self._stubs["set_master_auth"] = self.grpc_channel.unary_unary(
+            self._stubs["set_master_auth"] = self._logged_channel.unary_unary(
                 "/google.container.v1.ClusterManager/SetMasterAuth",
                 request_serializer=cluster_service.SetMasterAuthRequest.serialize,
                 response_deserializer=cluster_service.Operation.deserialize,
@@ -603,7 +689,7 @@ class ClusterManagerGrpcTransport(ClusterManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_cluster" not in self._stubs:
-            self._stubs["delete_cluster"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_cluster"] = self._logged_channel.unary_unary(
                 "/google.container.v1.ClusterManager/DeleteCluster",
                 request_serializer=cluster_service.DeleteClusterRequest.serialize,
                 response_deserializer=cluster_service.Operation.deserialize,
@@ -632,7 +718,7 @@ class ClusterManagerGrpcTransport(ClusterManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_operations" not in self._stubs:
-            self._stubs["list_operations"] = self.grpc_channel.unary_unary(
+            self._stubs["list_operations"] = self._logged_channel.unary_unary(
                 "/google.container.v1.ClusterManager/ListOperations",
                 request_serializer=cluster_service.ListOperationsRequest.serialize,
                 response_deserializer=cluster_service.ListOperationsResponse.deserialize,
@@ -658,7 +744,7 @@ class ClusterManagerGrpcTransport(ClusterManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_operation" not in self._stubs:
-            self._stubs["get_operation"] = self.grpc_channel.unary_unary(
+            self._stubs["get_operation"] = self._logged_channel.unary_unary(
                 "/google.container.v1.ClusterManager/GetOperation",
                 request_serializer=cluster_service.GetOperationRequest.serialize,
                 response_deserializer=cluster_service.Operation.deserialize,
@@ -684,7 +770,7 @@ class ClusterManagerGrpcTransport(ClusterManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "cancel_operation" not in self._stubs:
-            self._stubs["cancel_operation"] = self.grpc_channel.unary_unary(
+            self._stubs["cancel_operation"] = self._logged_channel.unary_unary(
                 "/google.container.v1.ClusterManager/CancelOperation",
                 request_serializer=cluster_service.CancelOperationRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -713,7 +799,7 @@ class ClusterManagerGrpcTransport(ClusterManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_server_config" not in self._stubs:
-            self._stubs["get_server_config"] = self.grpc_channel.unary_unary(
+            self._stubs["get_server_config"] = self._logged_channel.unary_unary(
                 "/google.container.v1.ClusterManager/GetServerConfig",
                 request_serializer=cluster_service.GetServerConfigRequest.serialize,
                 response_deserializer=cluster_service.ServerConfig.deserialize,
@@ -742,7 +828,7 @@ class ClusterManagerGrpcTransport(ClusterManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_json_web_keys" not in self._stubs:
-            self._stubs["get_json_web_keys"] = self.grpc_channel.unary_unary(
+            self._stubs["get_json_web_keys"] = self._logged_channel.unary_unary(
                 "/google.container.v1.ClusterManager/GetJSONWebKeys",
                 request_serializer=cluster_service.GetJSONWebKeysRequest.serialize,
                 response_deserializer=cluster_service.GetJSONWebKeysResponse.deserialize,
@@ -770,7 +856,7 @@ class ClusterManagerGrpcTransport(ClusterManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_node_pools" not in self._stubs:
-            self._stubs["list_node_pools"] = self.grpc_channel.unary_unary(
+            self._stubs["list_node_pools"] = self._logged_channel.unary_unary(
                 "/google.container.v1.ClusterManager/ListNodePools",
                 request_serializer=cluster_service.ListNodePoolsRequest.serialize,
                 response_deserializer=cluster_service.ListNodePoolsResponse.deserialize,
@@ -796,7 +882,7 @@ class ClusterManagerGrpcTransport(ClusterManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_node_pool" not in self._stubs:
-            self._stubs["get_node_pool"] = self.grpc_channel.unary_unary(
+            self._stubs["get_node_pool"] = self._logged_channel.unary_unary(
                 "/google.container.v1.ClusterManager/GetNodePool",
                 request_serializer=cluster_service.GetNodePoolRequest.serialize,
                 response_deserializer=cluster_service.NodePool.deserialize,
@@ -822,7 +908,7 @@ class ClusterManagerGrpcTransport(ClusterManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_node_pool" not in self._stubs:
-            self._stubs["create_node_pool"] = self.grpc_channel.unary_unary(
+            self._stubs["create_node_pool"] = self._logged_channel.unary_unary(
                 "/google.container.v1.ClusterManager/CreateNodePool",
                 request_serializer=cluster_service.CreateNodePoolRequest.serialize,
                 response_deserializer=cluster_service.Operation.deserialize,
@@ -848,7 +934,7 @@ class ClusterManagerGrpcTransport(ClusterManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_node_pool" not in self._stubs:
-            self._stubs["delete_node_pool"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_node_pool"] = self._logged_channel.unary_unary(
                 "/google.container.v1.ClusterManager/DeleteNodePool",
                 request_serializer=cluster_service.DeleteNodePoolRequest.serialize,
                 response_deserializer=cluster_service.Operation.deserialize,
@@ -875,7 +961,9 @@ class ClusterManagerGrpcTransport(ClusterManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "complete_node_pool_upgrade" not in self._stubs:
-            self._stubs["complete_node_pool_upgrade"] = self.grpc_channel.unary_unary(
+            self._stubs[
+                "complete_node_pool_upgrade"
+            ] = self._logged_channel.unary_unary(
                 "/google.container.v1.ClusterManager/CompleteNodePoolUpgrade",
                 request_serializer=cluster_service.CompleteNodePoolUpgradeRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -905,7 +993,9 @@ class ClusterManagerGrpcTransport(ClusterManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "rollback_node_pool_upgrade" not in self._stubs:
-            self._stubs["rollback_node_pool_upgrade"] = self.grpc_channel.unary_unary(
+            self._stubs[
+                "rollback_node_pool_upgrade"
+            ] = self._logged_channel.unary_unary(
                 "/google.container.v1.ClusterManager/RollbackNodePoolUpgrade",
                 request_serializer=cluster_service.RollbackNodePoolUpgradeRequest.serialize,
                 response_deserializer=cluster_service.Operation.deserialize,
@@ -933,7 +1023,7 @@ class ClusterManagerGrpcTransport(ClusterManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "set_node_pool_management" not in self._stubs:
-            self._stubs["set_node_pool_management"] = self.grpc_channel.unary_unary(
+            self._stubs["set_node_pool_management"] = self._logged_channel.unary_unary(
                 "/google.container.v1.ClusterManager/SetNodePoolManagement",
                 request_serializer=cluster_service.SetNodePoolManagementRequest.serialize,
                 response_deserializer=cluster_service.Operation.deserialize,
@@ -959,7 +1049,7 @@ class ClusterManagerGrpcTransport(ClusterManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "set_labels" not in self._stubs:
-            self._stubs["set_labels"] = self.grpc_channel.unary_unary(
+            self._stubs["set_labels"] = self._logged_channel.unary_unary(
                 "/google.container.v1.ClusterManager/SetLabels",
                 request_serializer=cluster_service.SetLabelsRequest.serialize,
                 response_deserializer=cluster_service.Operation.deserialize,
@@ -986,7 +1076,7 @@ class ClusterManagerGrpcTransport(ClusterManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "set_legacy_abac" not in self._stubs:
-            self._stubs["set_legacy_abac"] = self.grpc_channel.unary_unary(
+            self._stubs["set_legacy_abac"] = self._logged_channel.unary_unary(
                 "/google.container.v1.ClusterManager/SetLegacyAbac",
                 request_serializer=cluster_service.SetLegacyAbacRequest.serialize,
                 response_deserializer=cluster_service.Operation.deserialize,
@@ -1012,7 +1102,7 @@ class ClusterManagerGrpcTransport(ClusterManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "start_ip_rotation" not in self._stubs:
-            self._stubs["start_ip_rotation"] = self.grpc_channel.unary_unary(
+            self._stubs["start_ip_rotation"] = self._logged_channel.unary_unary(
                 "/google.container.v1.ClusterManager/StartIPRotation",
                 request_serializer=cluster_service.StartIPRotationRequest.serialize,
                 response_deserializer=cluster_service.Operation.deserialize,
@@ -1040,7 +1130,7 @@ class ClusterManagerGrpcTransport(ClusterManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "complete_ip_rotation" not in self._stubs:
-            self._stubs["complete_ip_rotation"] = self.grpc_channel.unary_unary(
+            self._stubs["complete_ip_rotation"] = self._logged_channel.unary_unary(
                 "/google.container.v1.ClusterManager/CompleteIPRotation",
                 request_serializer=cluster_service.CompleteIPRotationRequest.serialize,
                 response_deserializer=cluster_service.Operation.deserialize,
@@ -1069,7 +1159,7 @@ class ClusterManagerGrpcTransport(ClusterManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "set_node_pool_size" not in self._stubs:
-            self._stubs["set_node_pool_size"] = self.grpc_channel.unary_unary(
+            self._stubs["set_node_pool_size"] = self._logged_channel.unary_unary(
                 "/google.container.v1.ClusterManager/SetNodePoolSize",
                 request_serializer=cluster_service.SetNodePoolSizeRequest.serialize,
                 response_deserializer=cluster_service.Operation.deserialize,
@@ -1095,7 +1185,7 @@ class ClusterManagerGrpcTransport(ClusterManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "set_network_policy" not in self._stubs:
-            self._stubs["set_network_policy"] = self.grpc_channel.unary_unary(
+            self._stubs["set_network_policy"] = self._logged_channel.unary_unary(
                 "/google.container.v1.ClusterManager/SetNetworkPolicy",
                 request_serializer=cluster_service.SetNetworkPolicyRequest.serialize,
                 response_deserializer=cluster_service.Operation.deserialize,
@@ -1123,7 +1213,7 @@ class ClusterManagerGrpcTransport(ClusterManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "set_maintenance_policy" not in self._stubs:
-            self._stubs["set_maintenance_policy"] = self.grpc_channel.unary_unary(
+            self._stubs["set_maintenance_policy"] = self._logged_channel.unary_unary(
                 "/google.container.v1.ClusterManager/SetMaintenancePolicy",
                 request_serializer=cluster_service.SetMaintenancePolicyRequest.serialize,
                 response_deserializer=cluster_service.Operation.deserialize,
@@ -1153,7 +1243,7 @@ class ClusterManagerGrpcTransport(ClusterManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_usable_subnetworks" not in self._stubs:
-            self._stubs["list_usable_subnetworks"] = self.grpc_channel.unary_unary(
+            self._stubs["list_usable_subnetworks"] = self._logged_channel.unary_unary(
                 "/google.container.v1.ClusterManager/ListUsableSubnetworks",
                 request_serializer=cluster_service.ListUsableSubnetworksRequest.serialize,
                 response_deserializer=cluster_service.ListUsableSubnetworksResponse.deserialize,
@@ -1185,7 +1275,7 @@ class ClusterManagerGrpcTransport(ClusterManagerTransport):
         if "check_autopilot_compatibility" not in self._stubs:
             self._stubs[
                 "check_autopilot_compatibility"
-            ] = self.grpc_channel.unary_unary(
+            ] = self._logged_channel.unary_unary(
                 "/google.container.v1.ClusterManager/CheckAutopilotCompatibility",
                 request_serializer=cluster_service.CheckAutopilotCompatibilityRequest.serialize,
                 response_deserializer=cluster_service.CheckAutopilotCompatibilityResponse.deserialize,
@@ -1193,7 +1283,7 @@ class ClusterManagerGrpcTransport(ClusterManagerTransport):
         return self._stubs["check_autopilot_compatibility"]
 
     def close(self):
-        self.grpc_channel.close()
+        self._logged_channel.close()
 
     @property
     def kind(self) -> str:

@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -39,6 +39,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -203,8 +211,10 @@ class LineageRestInterceptor:
     def pre_batch_search_link_processes(
         self,
         request: lineage.BatchSearchLinkProcessesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[lineage.BatchSearchLinkProcessesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        lineage.BatchSearchLinkProcessesRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for batch_search_link_processes
 
         Override in a subclass to manipulate the request or metadata
@@ -226,8 +236,10 @@ class LineageRestInterceptor:
     def pre_create_lineage_event(
         self,
         request: lineage.CreateLineageEventRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[lineage.CreateLineageEventRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        lineage.CreateLineageEventRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_lineage_event
 
         Override in a subclass to manipulate the request or metadata
@@ -247,8 +259,10 @@ class LineageRestInterceptor:
         return response
 
     def pre_create_process(
-        self, request: lineage.CreateProcessRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[lineage.CreateProcessRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: lineage.CreateProcessRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[lineage.CreateProcessRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_process
 
         Override in a subclass to manipulate the request or metadata
@@ -266,8 +280,10 @@ class LineageRestInterceptor:
         return response
 
     def pre_create_run(
-        self, request: lineage.CreateRunRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[lineage.CreateRunRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: lineage.CreateRunRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[lineage.CreateRunRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_run
 
         Override in a subclass to manipulate the request or metadata
@@ -287,8 +303,10 @@ class LineageRestInterceptor:
     def pre_delete_lineage_event(
         self,
         request: lineage.DeleteLineageEventRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[lineage.DeleteLineageEventRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        lineage.DeleteLineageEventRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_lineage_event
 
         Override in a subclass to manipulate the request or metadata
@@ -297,8 +315,10 @@ class LineageRestInterceptor:
         return request, metadata
 
     def pre_delete_process(
-        self, request: lineage.DeleteProcessRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[lineage.DeleteProcessRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: lineage.DeleteProcessRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[lineage.DeleteProcessRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_process
 
         Override in a subclass to manipulate the request or metadata
@@ -318,8 +338,10 @@ class LineageRestInterceptor:
         return response
 
     def pre_delete_run(
-        self, request: lineage.DeleteRunRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[lineage.DeleteRunRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: lineage.DeleteRunRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[lineage.DeleteRunRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_run
 
         Override in a subclass to manipulate the request or metadata
@@ -341,8 +363,8 @@ class LineageRestInterceptor:
     def pre_get_lineage_event(
         self,
         request: lineage.GetLineageEventRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[lineage.GetLineageEventRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[lineage.GetLineageEventRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_lineage_event
 
         Override in a subclass to manipulate the request or metadata
@@ -362,8 +384,10 @@ class LineageRestInterceptor:
         return response
 
     def pre_get_process(
-        self, request: lineage.GetProcessRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[lineage.GetProcessRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: lineage.GetProcessRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[lineage.GetProcessRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_process
 
         Override in a subclass to manipulate the request or metadata
@@ -381,8 +405,10 @@ class LineageRestInterceptor:
         return response
 
     def pre_get_run(
-        self, request: lineage.GetRunRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[lineage.GetRunRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: lineage.GetRunRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[lineage.GetRunRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_run
 
         Override in a subclass to manipulate the request or metadata
@@ -402,8 +428,10 @@ class LineageRestInterceptor:
     def pre_list_lineage_events(
         self,
         request: lineage.ListLineageEventsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[lineage.ListLineageEventsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        lineage.ListLineageEventsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_lineage_events
 
         Override in a subclass to manipulate the request or metadata
@@ -423,8 +451,10 @@ class LineageRestInterceptor:
         return response
 
     def pre_list_processes(
-        self, request: lineage.ListProcessesRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[lineage.ListProcessesRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: lineage.ListProcessesRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[lineage.ListProcessesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_processes
 
         Override in a subclass to manipulate the request or metadata
@@ -444,8 +474,10 @@ class LineageRestInterceptor:
         return response
 
     def pre_list_runs(
-        self, request: lineage.ListRunsRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[lineage.ListRunsRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: lineage.ListRunsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[lineage.ListRunsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_runs
 
         Override in a subclass to manipulate the request or metadata
@@ -467,8 +499,11 @@ class LineageRestInterceptor:
     def pre_process_open_lineage_run_event(
         self,
         request: lineage.ProcessOpenLineageRunEventRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[lineage.ProcessOpenLineageRunEventRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        lineage.ProcessOpenLineageRunEventRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for process_open_lineage_run_event
 
         Override in a subclass to manipulate the request or metadata
@@ -488,8 +523,10 @@ class LineageRestInterceptor:
         return response
 
     def pre_search_links(
-        self, request: lineage.SearchLinksRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[lineage.SearchLinksRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: lineage.SearchLinksRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[lineage.SearchLinksRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for search_links
 
         Override in a subclass to manipulate the request or metadata
@@ -509,8 +546,10 @@ class LineageRestInterceptor:
         return response
 
     def pre_update_process(
-        self, request: lineage.UpdateProcessRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[lineage.UpdateProcessRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: lineage.UpdateProcessRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[lineage.UpdateProcessRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_process
 
         Override in a subclass to manipulate the request or metadata
@@ -528,8 +567,10 @@ class LineageRestInterceptor:
         return response
 
     def pre_update_run(
-        self, request: lineage.UpdateRunRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[lineage.UpdateRunRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: lineage.UpdateRunRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[lineage.UpdateRunRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_run
 
         Override in a subclass to manipulate the request or metadata
@@ -549,8 +590,10 @@ class LineageRestInterceptor:
     def pre_cancel_operation(
         self,
         request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -570,8 +613,10 @@ class LineageRestInterceptor:
     def pre_delete_operation(
         self,
         request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -591,8 +636,10 @@ class LineageRestInterceptor:
     def pre_get_operation(
         self,
         request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -614,8 +661,10 @@ class LineageRestInterceptor:
     def pre_list_operations(
         self,
         request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -814,7 +863,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> lineage.BatchSearchLinkProcessesResponse:
             r"""Call the batch search link
             processes method over HTTP.
@@ -826,8 +875,10 @@ class LineageRestTransport(_BaseLineageRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.lineage.BatchSearchLinkProcessesResponse:
@@ -839,6 +890,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
             http_options = (
                 _BaseLineageRestTransport._BaseBatchSearchLinkProcesses._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_batch_search_link_processes(
                 request, metadata
             )
@@ -854,6 +906,33 @@ class LineageRestTransport(_BaseLineageRestTransport):
             query_params = _BaseLineageRestTransport._BaseBatchSearchLinkProcesses._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.datacatalog.lineage_v1.LineageClient.BatchSearchLinkProcesses",
+                    extra={
+                        "serviceName": "google.cloud.datacatalog.lineage.v1.Lineage",
+                        "rpcName": "BatchSearchLinkProcesses",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = LineageRestTransport._BatchSearchLinkProcesses._get_response(
@@ -876,7 +955,31 @@ class LineageRestTransport(_BaseLineageRestTransport):
             pb_resp = lineage.BatchSearchLinkProcessesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_batch_search_link_processes(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = lineage.BatchSearchLinkProcessesResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.datacatalog.lineage_v1.LineageClient.batch_search_link_processes",
+                    extra={
+                        "serviceName": "google.cloud.datacatalog.lineage.v1.Lineage",
+                        "rpcName": "BatchSearchLinkProcesses",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateLineageEvent(
@@ -914,7 +1017,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> lineage.LineageEvent:
             r"""Call the create lineage event method over HTTP.
 
@@ -925,8 +1028,10 @@ class LineageRestTransport(_BaseLineageRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.lineage.LineageEvent:
@@ -941,6 +1046,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
             http_options = (
                 _BaseLineageRestTransport._BaseCreateLineageEvent._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_lineage_event(
                 request, metadata
             )
@@ -956,6 +1062,33 @@ class LineageRestTransport(_BaseLineageRestTransport):
             query_params = _BaseLineageRestTransport._BaseCreateLineageEvent._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.datacatalog.lineage_v1.LineageClient.CreateLineageEvent",
+                    extra={
+                        "serviceName": "google.cloud.datacatalog.lineage.v1.Lineage",
+                        "rpcName": "CreateLineageEvent",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = LineageRestTransport._CreateLineageEvent._get_response(
@@ -978,7 +1111,29 @@ class LineageRestTransport(_BaseLineageRestTransport):
             pb_resp = lineage.LineageEvent.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_lineage_event(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = lineage.LineageEvent.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.datacatalog.lineage_v1.LineageClient.create_lineage_event",
+                    extra={
+                        "serviceName": "google.cloud.datacatalog.lineage.v1.Lineage",
+                        "rpcName": "CreateLineageEvent",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateProcess(_BaseLineageRestTransport._BaseCreateProcess, LineageRestStub):
@@ -1014,7 +1169,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> lineage.Process:
             r"""Call the create process method over HTTP.
 
@@ -1025,8 +1180,10 @@ class LineageRestTransport(_BaseLineageRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.lineage.Process:
@@ -1038,6 +1195,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
             http_options = (
                 _BaseLineageRestTransport._BaseCreateProcess._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_process(request, metadata)
             transcoded_request = (
                 _BaseLineageRestTransport._BaseCreateProcess._get_transcoded_request(
@@ -1055,6 +1213,33 @@ class LineageRestTransport(_BaseLineageRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.datacatalog.lineage_v1.LineageClient.CreateProcess",
+                    extra={
+                        "serviceName": "google.cloud.datacatalog.lineage.v1.Lineage",
+                        "rpcName": "CreateProcess",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = LineageRestTransport._CreateProcess._get_response(
@@ -1077,7 +1262,29 @@ class LineageRestTransport(_BaseLineageRestTransport):
             pb_resp = lineage.Process.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_process(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = lineage.Process.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.datacatalog.lineage_v1.LineageClient.create_process",
+                    extra={
+                        "serviceName": "google.cloud.datacatalog.lineage.v1.Lineage",
+                        "rpcName": "CreateProcess",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateRun(_BaseLineageRestTransport._BaseCreateRun, LineageRestStub):
@@ -1113,7 +1320,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> lineage.Run:
             r"""Call the create run method over HTTP.
 
@@ -1124,8 +1331,10 @@ class LineageRestTransport(_BaseLineageRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.lineage.Run:
@@ -1136,6 +1345,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
             """
 
             http_options = _BaseLineageRestTransport._BaseCreateRun._get_http_options()
+
             request, metadata = self._interceptor.pre_create_run(request, metadata)
             transcoded_request = (
                 _BaseLineageRestTransport._BaseCreateRun._get_transcoded_request(
@@ -1153,6 +1363,33 @@ class LineageRestTransport(_BaseLineageRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.datacatalog.lineage_v1.LineageClient.CreateRun",
+                    extra={
+                        "serviceName": "google.cloud.datacatalog.lineage.v1.Lineage",
+                        "rpcName": "CreateRun",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = LineageRestTransport._CreateRun._get_response(
@@ -1175,7 +1412,29 @@ class LineageRestTransport(_BaseLineageRestTransport):
             pb_resp = lineage.Run.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_run(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = lineage.Run.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.datacatalog.lineage_v1.LineageClient.create_run",
+                    extra={
+                        "serviceName": "google.cloud.datacatalog.lineage.v1.Lineage",
+                        "rpcName": "CreateRun",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteLineageEvent(
@@ -1212,7 +1471,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete lineage event method over HTTP.
 
@@ -1223,13 +1482,16 @@ class LineageRestTransport(_BaseLineageRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseLineageRestTransport._BaseDeleteLineageEvent._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_lineage_event(
                 request, metadata
             )
@@ -1241,6 +1503,33 @@ class LineageRestTransport(_BaseLineageRestTransport):
             query_params = _BaseLineageRestTransport._BaseDeleteLineageEvent._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.datacatalog.lineage_v1.LineageClient.DeleteLineageEvent",
+                    extra={
+                        "serviceName": "google.cloud.datacatalog.lineage.v1.Lineage",
+                        "rpcName": "DeleteLineageEvent",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = LineageRestTransport._DeleteLineageEvent._get_response(
@@ -1289,7 +1578,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete process method over HTTP.
 
@@ -1300,8 +1589,10 @@ class LineageRestTransport(_BaseLineageRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1314,6 +1605,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
             http_options = (
                 _BaseLineageRestTransport._BaseDeleteProcess._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_process(request, metadata)
             transcoded_request = (
                 _BaseLineageRestTransport._BaseDeleteProcess._get_transcoded_request(
@@ -1327,6 +1619,33 @@ class LineageRestTransport(_BaseLineageRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.datacatalog.lineage_v1.LineageClient.DeleteProcess",
+                    extra={
+                        "serviceName": "google.cloud.datacatalog.lineage.v1.Lineage",
+                        "rpcName": "DeleteProcess",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = LineageRestTransport._DeleteProcess._get_response(
@@ -1346,7 +1665,29 @@ class LineageRestTransport(_BaseLineageRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_process(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.datacatalog.lineage_v1.LineageClient.delete_process",
+                    extra={
+                        "serviceName": "google.cloud.datacatalog.lineage.v1.Lineage",
+                        "rpcName": "DeleteProcess",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteRun(_BaseLineageRestTransport._BaseDeleteRun, LineageRestStub):
@@ -1381,7 +1722,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete run method over HTTP.
 
@@ -1392,8 +1733,10 @@ class LineageRestTransport(_BaseLineageRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1404,6 +1747,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
             """
 
             http_options = _BaseLineageRestTransport._BaseDeleteRun._get_http_options()
+
             request, metadata = self._interceptor.pre_delete_run(request, metadata)
             transcoded_request = (
                 _BaseLineageRestTransport._BaseDeleteRun._get_transcoded_request(
@@ -1417,6 +1761,33 @@ class LineageRestTransport(_BaseLineageRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.datacatalog.lineage_v1.LineageClient.DeleteRun",
+                    extra={
+                        "serviceName": "google.cloud.datacatalog.lineage.v1.Lineage",
+                        "rpcName": "DeleteRun",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = LineageRestTransport._DeleteRun._get_response(
@@ -1436,7 +1807,29 @@ class LineageRestTransport(_BaseLineageRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_run(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.datacatalog.lineage_v1.LineageClient.delete_run",
+                    extra={
+                        "serviceName": "google.cloud.datacatalog.lineage.v1.Lineage",
+                        "rpcName": "DeleteRun",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetLineageEvent(
@@ -1473,7 +1866,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> lineage.LineageEvent:
             r"""Call the get lineage event method over HTTP.
 
@@ -1484,8 +1877,10 @@ class LineageRestTransport(_BaseLineageRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.lineage.LineageEvent:
@@ -1500,6 +1895,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
             http_options = (
                 _BaseLineageRestTransport._BaseGetLineageEvent._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_lineage_event(
                 request, metadata
             )
@@ -1515,6 +1911,33 @@ class LineageRestTransport(_BaseLineageRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.datacatalog.lineage_v1.LineageClient.GetLineageEvent",
+                    extra={
+                        "serviceName": "google.cloud.datacatalog.lineage.v1.Lineage",
+                        "rpcName": "GetLineageEvent",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = LineageRestTransport._GetLineageEvent._get_response(
@@ -1536,7 +1959,29 @@ class LineageRestTransport(_BaseLineageRestTransport):
             pb_resp = lineage.LineageEvent.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_lineage_event(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = lineage.LineageEvent.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.datacatalog.lineage_v1.LineageClient.get_lineage_event",
+                    extra={
+                        "serviceName": "google.cloud.datacatalog.lineage.v1.Lineage",
+                        "rpcName": "GetLineageEvent",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetProcess(_BaseLineageRestTransport._BaseGetProcess, LineageRestStub):
@@ -1571,7 +2016,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> lineage.Process:
             r"""Call the get process method over HTTP.
 
@@ -1582,8 +2027,10 @@ class LineageRestTransport(_BaseLineageRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.lineage.Process:
@@ -1593,6 +2040,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
             """
 
             http_options = _BaseLineageRestTransport._BaseGetProcess._get_http_options()
+
             request, metadata = self._interceptor.pre_get_process(request, metadata)
             transcoded_request = (
                 _BaseLineageRestTransport._BaseGetProcess._get_transcoded_request(
@@ -1606,6 +2054,33 @@ class LineageRestTransport(_BaseLineageRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.datacatalog.lineage_v1.LineageClient.GetProcess",
+                    extra={
+                        "serviceName": "google.cloud.datacatalog.lineage.v1.Lineage",
+                        "rpcName": "GetProcess",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = LineageRestTransport._GetProcess._get_response(
@@ -1627,7 +2102,29 @@ class LineageRestTransport(_BaseLineageRestTransport):
             pb_resp = lineage.Process.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_process(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = lineage.Process.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.datacatalog.lineage_v1.LineageClient.get_process",
+                    extra={
+                        "serviceName": "google.cloud.datacatalog.lineage.v1.Lineage",
+                        "rpcName": "GetProcess",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetRun(_BaseLineageRestTransport._BaseGetRun, LineageRestStub):
@@ -1662,7 +2159,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> lineage.Run:
             r"""Call the get run method over HTTP.
 
@@ -1673,8 +2170,10 @@ class LineageRestTransport(_BaseLineageRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.lineage.Run:
@@ -1685,6 +2184,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
             """
 
             http_options = _BaseLineageRestTransport._BaseGetRun._get_http_options()
+
             request, metadata = self._interceptor.pre_get_run(request, metadata)
             transcoded_request = (
                 _BaseLineageRestTransport._BaseGetRun._get_transcoded_request(
@@ -1696,6 +2196,33 @@ class LineageRestTransport(_BaseLineageRestTransport):
             query_params = _BaseLineageRestTransport._BaseGetRun._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.datacatalog.lineage_v1.LineageClient.GetRun",
+                    extra={
+                        "serviceName": "google.cloud.datacatalog.lineage.v1.Lineage",
+                        "rpcName": "GetRun",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = LineageRestTransport._GetRun._get_response(
@@ -1717,7 +2244,29 @@ class LineageRestTransport(_BaseLineageRestTransport):
             pb_resp = lineage.Run.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_run(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = lineage.Run.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.datacatalog.lineage_v1.LineageClient.get_run",
+                    extra={
+                        "serviceName": "google.cloud.datacatalog.lineage.v1.Lineage",
+                        "rpcName": "GetRun",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListLineageEvents(
@@ -1754,7 +2303,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> lineage.ListLineageEventsResponse:
             r"""Call the list lineage events method over HTTP.
 
@@ -1765,8 +2314,10 @@ class LineageRestTransport(_BaseLineageRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.lineage.ListLineageEventsResponse:
@@ -1778,6 +2329,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
             http_options = (
                 _BaseLineageRestTransport._BaseListLineageEvents._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_lineage_events(
                 request, metadata
             )
@@ -1791,6 +2343,33 @@ class LineageRestTransport(_BaseLineageRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.datacatalog.lineage_v1.LineageClient.ListLineageEvents",
+                    extra={
+                        "serviceName": "google.cloud.datacatalog.lineage.v1.Lineage",
+                        "rpcName": "ListLineageEvents",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = LineageRestTransport._ListLineageEvents._get_response(
@@ -1812,7 +2391,31 @@ class LineageRestTransport(_BaseLineageRestTransport):
             pb_resp = lineage.ListLineageEventsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_lineage_events(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = lineage.ListLineageEventsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.datacatalog.lineage_v1.LineageClient.list_lineage_events",
+                    extra={
+                        "serviceName": "google.cloud.datacatalog.lineage.v1.Lineage",
+                        "rpcName": "ListLineageEvents",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListProcesses(_BaseLineageRestTransport._BaseListProcesses, LineageRestStub):
@@ -1847,7 +2450,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> lineage.ListProcessesResponse:
             r"""Call the list processes method over HTTP.
 
@@ -1858,8 +2461,10 @@ class LineageRestTransport(_BaseLineageRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.lineage.ListProcessesResponse:
@@ -1871,6 +2476,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
             http_options = (
                 _BaseLineageRestTransport._BaseListProcesses._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_processes(request, metadata)
             transcoded_request = (
                 _BaseLineageRestTransport._BaseListProcesses._get_transcoded_request(
@@ -1884,6 +2490,33 @@ class LineageRestTransport(_BaseLineageRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.datacatalog.lineage_v1.LineageClient.ListProcesses",
+                    extra={
+                        "serviceName": "google.cloud.datacatalog.lineage.v1.Lineage",
+                        "rpcName": "ListProcesses",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = LineageRestTransport._ListProcesses._get_response(
@@ -1905,7 +2538,29 @@ class LineageRestTransport(_BaseLineageRestTransport):
             pb_resp = lineage.ListProcessesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_processes(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = lineage.ListProcessesResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.datacatalog.lineage_v1.LineageClient.list_processes",
+                    extra={
+                        "serviceName": "google.cloud.datacatalog.lineage.v1.Lineage",
+                        "rpcName": "ListProcesses",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListRuns(_BaseLineageRestTransport._BaseListRuns, LineageRestStub):
@@ -1940,7 +2595,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> lineage.ListRunsResponse:
             r"""Call the list runs method over HTTP.
 
@@ -1951,8 +2606,10 @@ class LineageRestTransport(_BaseLineageRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.lineage.ListRunsResponse:
@@ -1962,6 +2619,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
             """
 
             http_options = _BaseLineageRestTransport._BaseListRuns._get_http_options()
+
             request, metadata = self._interceptor.pre_list_runs(request, metadata)
             transcoded_request = (
                 _BaseLineageRestTransport._BaseListRuns._get_transcoded_request(
@@ -1975,6 +2633,33 @@ class LineageRestTransport(_BaseLineageRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.datacatalog.lineage_v1.LineageClient.ListRuns",
+                    extra={
+                        "serviceName": "google.cloud.datacatalog.lineage.v1.Lineage",
+                        "rpcName": "ListRuns",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = LineageRestTransport._ListRuns._get_response(
@@ -1996,7 +2681,29 @@ class LineageRestTransport(_BaseLineageRestTransport):
             pb_resp = lineage.ListRunsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_runs(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = lineage.ListRunsResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.datacatalog.lineage_v1.LineageClient.list_runs",
+                    extra={
+                        "serviceName": "google.cloud.datacatalog.lineage.v1.Lineage",
+                        "rpcName": "ListRuns",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ProcessOpenLineageRunEvent(
@@ -2034,7 +2741,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> lineage.ProcessOpenLineageRunEventResponse:
             r"""Call the process open lineage run
             event method over HTTP.
@@ -2046,8 +2753,10 @@ class LineageRestTransport(_BaseLineageRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.lineage.ProcessOpenLineageRunEventResponse:
@@ -2059,6 +2768,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
             http_options = (
                 _BaseLineageRestTransport._BaseProcessOpenLineageRunEvent._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_process_open_lineage_run_event(
                 request, metadata
             )
@@ -2074,6 +2784,33 @@ class LineageRestTransport(_BaseLineageRestTransport):
             query_params = _BaseLineageRestTransport._BaseProcessOpenLineageRunEvent._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.datacatalog.lineage_v1.LineageClient.ProcessOpenLineageRunEvent",
+                    extra={
+                        "serviceName": "google.cloud.datacatalog.lineage.v1.Lineage",
+                        "rpcName": "ProcessOpenLineageRunEvent",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = LineageRestTransport._ProcessOpenLineageRunEvent._get_response(
@@ -2096,7 +2833,31 @@ class LineageRestTransport(_BaseLineageRestTransport):
             pb_resp = lineage.ProcessOpenLineageRunEventResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_process_open_lineage_run_event(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        lineage.ProcessOpenLineageRunEventResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.datacatalog.lineage_v1.LineageClient.process_open_lineage_run_event",
+                    extra={
+                        "serviceName": "google.cloud.datacatalog.lineage.v1.Lineage",
+                        "rpcName": "ProcessOpenLineageRunEvent",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _SearchLinks(_BaseLineageRestTransport._BaseSearchLinks, LineageRestStub):
@@ -2132,7 +2893,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> lineage.SearchLinksResponse:
             r"""Call the search links method over HTTP.
 
@@ -2143,8 +2904,10 @@ class LineageRestTransport(_BaseLineageRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.lineage.SearchLinksResponse:
@@ -2156,6 +2919,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
             http_options = (
                 _BaseLineageRestTransport._BaseSearchLinks._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_search_links(request, metadata)
             transcoded_request = (
                 _BaseLineageRestTransport._BaseSearchLinks._get_transcoded_request(
@@ -2173,6 +2937,33 @@ class LineageRestTransport(_BaseLineageRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.datacatalog.lineage_v1.LineageClient.SearchLinks",
+                    extra={
+                        "serviceName": "google.cloud.datacatalog.lineage.v1.Lineage",
+                        "rpcName": "SearchLinks",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = LineageRestTransport._SearchLinks._get_response(
@@ -2195,7 +2986,29 @@ class LineageRestTransport(_BaseLineageRestTransport):
             pb_resp = lineage.SearchLinksResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_search_links(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = lineage.SearchLinksResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.datacatalog.lineage_v1.LineageClient.search_links",
+                    extra={
+                        "serviceName": "google.cloud.datacatalog.lineage.v1.Lineage",
+                        "rpcName": "SearchLinks",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateProcess(_BaseLineageRestTransport._BaseUpdateProcess, LineageRestStub):
@@ -2231,7 +3044,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> lineage.Process:
             r"""Call the update process method over HTTP.
 
@@ -2242,8 +3055,10 @@ class LineageRestTransport(_BaseLineageRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.lineage.Process:
@@ -2255,6 +3070,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
             http_options = (
                 _BaseLineageRestTransport._BaseUpdateProcess._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_process(request, metadata)
             transcoded_request = (
                 _BaseLineageRestTransport._BaseUpdateProcess._get_transcoded_request(
@@ -2272,6 +3088,33 @@ class LineageRestTransport(_BaseLineageRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.datacatalog.lineage_v1.LineageClient.UpdateProcess",
+                    extra={
+                        "serviceName": "google.cloud.datacatalog.lineage.v1.Lineage",
+                        "rpcName": "UpdateProcess",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = LineageRestTransport._UpdateProcess._get_response(
@@ -2294,7 +3137,29 @@ class LineageRestTransport(_BaseLineageRestTransport):
             pb_resp = lineage.Process.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_process(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = lineage.Process.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.datacatalog.lineage_v1.LineageClient.update_process",
+                    extra={
+                        "serviceName": "google.cloud.datacatalog.lineage.v1.Lineage",
+                        "rpcName": "UpdateProcess",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateRun(_BaseLineageRestTransport._BaseUpdateRun, LineageRestStub):
@@ -2330,7 +3195,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> lineage.Run:
             r"""Call the update run method over HTTP.
 
@@ -2341,8 +3206,10 @@ class LineageRestTransport(_BaseLineageRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.lineage.Run:
@@ -2353,6 +3220,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
             """
 
             http_options = _BaseLineageRestTransport._BaseUpdateRun._get_http_options()
+
             request, metadata = self._interceptor.pre_update_run(request, metadata)
             transcoded_request = (
                 _BaseLineageRestTransport._BaseUpdateRun._get_transcoded_request(
@@ -2370,6 +3238,33 @@ class LineageRestTransport(_BaseLineageRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.datacatalog.lineage_v1.LineageClient.UpdateRun",
+                    extra={
+                        "serviceName": "google.cloud.datacatalog.lineage.v1.Lineage",
+                        "rpcName": "UpdateRun",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = LineageRestTransport._UpdateRun._get_response(
@@ -2392,7 +3287,29 @@ class LineageRestTransport(_BaseLineageRestTransport):
             pb_resp = lineage.Run.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_run(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = lineage.Run.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.datacatalog.lineage_v1.LineageClient.update_run",
+                    extra={
+                        "serviceName": "google.cloud.datacatalog.lineage.v1.Lineage",
+                        "rpcName": "UpdateRun",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -2570,7 +3487,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the cancel operation method over HTTP.
 
@@ -2580,13 +3497,16 @@ class LineageRestTransport(_BaseLineageRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseLineageRestTransport._BaseCancelOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
@@ -2608,6 +3528,33 @@ class LineageRestTransport(_BaseLineageRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.datacatalog.lineage_v1.LineageClient.CancelOperation",
+                    extra={
+                        "serviceName": "google.cloud.datacatalog.lineage.v1.Lineage",
+                        "rpcName": "CancelOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = LineageRestTransport._CancelOperation._get_response(
@@ -2665,7 +3612,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the delete operation method over HTTP.
 
@@ -2675,13 +3622,16 @@ class LineageRestTransport(_BaseLineageRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseLineageRestTransport._BaseDeleteOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
             )
@@ -2697,6 +3647,33 @@ class LineageRestTransport(_BaseLineageRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.datacatalog.lineage_v1.LineageClient.DeleteOperation",
+                    extra={
+                        "serviceName": "google.cloud.datacatalog.lineage.v1.Lineage",
+                        "rpcName": "DeleteOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = LineageRestTransport._DeleteOperation._get_response(
@@ -2751,7 +3728,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the get operation method over HTTP.
 
@@ -2761,8 +3738,10 @@ class LineageRestTransport(_BaseLineageRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.
@@ -2771,6 +3750,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
             http_options = (
                 _BaseLineageRestTransport._BaseGetOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = (
                 _BaseLineageRestTransport._BaseGetOperation._get_transcoded_request(
@@ -2784,6 +3764,33 @@ class LineageRestTransport(_BaseLineageRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.datacatalog.lineage_v1.LineageClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.datacatalog.lineage.v1.Lineage",
+                        "rpcName": "GetOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = LineageRestTransport._GetOperation._get_response(
@@ -2804,6 +3811,27 @@ class LineageRestTransport(_BaseLineageRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.datacatalog.lineage_v1.LineageAsyncClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.datacatalog.lineage.v1.Lineage",
+                        "rpcName": "GetOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -2844,7 +3872,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.ListOperationsResponse:
             r"""Call the list operations method over HTTP.
 
@@ -2854,8 +3882,10 @@ class LineageRestTransport(_BaseLineageRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
@@ -2864,6 +3894,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
             http_options = (
                 _BaseLineageRestTransport._BaseListOperations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = (
                 _BaseLineageRestTransport._BaseListOperations._get_transcoded_request(
@@ -2877,6 +3908,33 @@ class LineageRestTransport(_BaseLineageRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.datacatalog.lineage_v1.LineageClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.datacatalog.lineage.v1.Lineage",
+                        "rpcName": "ListOperations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = LineageRestTransport._ListOperations._get_response(
@@ -2897,6 +3955,27 @@ class LineageRestTransport(_BaseLineageRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.datacatalog.lineage_v1.LineageAsyncClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.datacatalog.lineage.v1.Lineage",
+                        "rpcName": "ListOperations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property

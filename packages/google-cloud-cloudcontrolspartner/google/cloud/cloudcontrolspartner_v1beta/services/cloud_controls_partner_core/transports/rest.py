@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -44,6 +44,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -138,8 +146,10 @@ class CloudControlsPartnerCoreRestInterceptor:
     """
 
     def pre_get_customer(
-        self, request: customers.GetCustomerRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[customers.GetCustomerRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: customers.GetCustomerRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[customers.GetCustomerRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_customer
 
         Override in a subclass to manipulate the request or metadata
@@ -159,8 +169,11 @@ class CloudControlsPartnerCoreRestInterceptor:
     def pre_get_ekm_connections(
         self,
         request: ekm_connections.GetEkmConnectionsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[ekm_connections.GetEkmConnectionsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        ekm_connections.GetEkmConnectionsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for get_ekm_connections
 
         Override in a subclass to manipulate the request or metadata
@@ -180,8 +193,10 @@ class CloudControlsPartnerCoreRestInterceptor:
         return response
 
     def pre_get_partner(
-        self, request: partners.GetPartnerRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[partners.GetPartnerRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: partners.GetPartnerRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[partners.GetPartnerRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_partner
 
         Override in a subclass to manipulate the request or metadata
@@ -201,9 +216,10 @@ class CloudControlsPartnerCoreRestInterceptor:
     def pre_get_partner_permissions(
         self,
         request: partner_permissions.GetPartnerPermissionsRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        partner_permissions.GetPartnerPermissionsRequest, Sequence[Tuple[str, str]]
+        partner_permissions.GetPartnerPermissionsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for get_partner_permissions
 
@@ -226,8 +242,10 @@ class CloudControlsPartnerCoreRestInterceptor:
     def pre_get_workload(
         self,
         request: customer_workloads.GetWorkloadRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[customer_workloads.GetWorkloadRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        customer_workloads.GetWorkloadRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_workload
 
         Override in a subclass to manipulate the request or metadata
@@ -249,10 +267,10 @@ class CloudControlsPartnerCoreRestInterceptor:
     def pre_list_access_approval_requests(
         self,
         request: access_approval_requests.ListAccessApprovalRequestsRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         access_approval_requests.ListAccessApprovalRequestsRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for list_access_approval_requests
 
@@ -275,8 +293,8 @@ class CloudControlsPartnerCoreRestInterceptor:
     def pre_list_customers(
         self,
         request: customers.ListCustomersRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[customers.ListCustomersRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[customers.ListCustomersRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_customers
 
         Override in a subclass to manipulate the request or metadata
@@ -298,8 +316,10 @@ class CloudControlsPartnerCoreRestInterceptor:
     def pre_list_workloads(
         self,
         request: customer_workloads.ListWorkloadsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[customer_workloads.ListWorkloadsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        customer_workloads.ListWorkloadsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_workloads
 
         Override in a subclass to manipulate the request or metadata
@@ -440,7 +460,7 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> customers.Customer:
             r"""Call the get customer method over HTTP.
 
@@ -450,8 +470,10 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.customers.Customer:
@@ -463,6 +485,7 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
             http_options = (
                 _BaseCloudControlsPartnerCoreRestTransport._BaseGetCustomer._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_customer(request, metadata)
             transcoded_request = _BaseCloudControlsPartnerCoreRestTransport._BaseGetCustomer._get_transcoded_request(
                 http_options, request
@@ -472,6 +495,33 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
             query_params = _BaseCloudControlsPartnerCoreRestTransport._BaseGetCustomer._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.cloudcontrolspartner_v1beta.CloudControlsPartnerCoreClient.GetCustomer",
+                    extra={
+                        "serviceName": "google.cloud.cloudcontrolspartner.v1beta.CloudControlsPartnerCore",
+                        "rpcName": "GetCustomer",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudControlsPartnerCoreRestTransport._GetCustomer._get_response(
@@ -493,7 +543,29 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
             pb_resp = customers.Customer.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_customer(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = customers.Customer.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.cloudcontrolspartner_v1beta.CloudControlsPartnerCoreClient.get_customer",
+                    extra={
+                        "serviceName": "google.cloud.cloudcontrolspartner.v1beta.CloudControlsPartnerCore",
+                        "rpcName": "GetCustomer",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetEkmConnections(
@@ -531,7 +603,7 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> ekm_connections.EkmConnections:
             r"""Call the get ekm connections method over HTTP.
 
@@ -542,8 +614,10 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.ekm_connections.EkmConnections:
@@ -555,6 +629,7 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
             http_options = (
                 _BaseCloudControlsPartnerCoreRestTransport._BaseGetEkmConnections._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_ekm_connections(
                 request, metadata
             )
@@ -566,6 +641,33 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
             query_params = _BaseCloudControlsPartnerCoreRestTransport._BaseGetEkmConnections._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.cloudcontrolspartner_v1beta.CloudControlsPartnerCoreClient.GetEkmConnections",
+                    extra={
+                        "serviceName": "google.cloud.cloudcontrolspartner.v1beta.CloudControlsPartnerCore",
+                        "rpcName": "GetEkmConnections",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -589,7 +691,29 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
             pb_resp = ekm_connections.EkmConnections.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_ekm_connections(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = ekm_connections.EkmConnections.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.cloudcontrolspartner_v1beta.CloudControlsPartnerCoreClient.get_ekm_connections",
+                    extra={
+                        "serviceName": "google.cloud.cloudcontrolspartner.v1beta.CloudControlsPartnerCore",
+                        "rpcName": "GetEkmConnections",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetPartner(
@@ -627,7 +751,7 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> partners.Partner:
             r"""Call the get partner method over HTTP.
 
@@ -637,8 +761,10 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.partners.Partner:
@@ -648,6 +774,7 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
             http_options = (
                 _BaseCloudControlsPartnerCoreRestTransport._BaseGetPartner._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_partner(request, metadata)
             transcoded_request = _BaseCloudControlsPartnerCoreRestTransport._BaseGetPartner._get_transcoded_request(
                 http_options, request
@@ -657,6 +784,33 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
             query_params = _BaseCloudControlsPartnerCoreRestTransport._BaseGetPartner._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.cloudcontrolspartner_v1beta.CloudControlsPartnerCoreClient.GetPartner",
+                    extra={
+                        "serviceName": "google.cloud.cloudcontrolspartner.v1beta.CloudControlsPartnerCore",
+                        "rpcName": "GetPartner",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudControlsPartnerCoreRestTransport._GetPartner._get_response(
@@ -678,7 +832,29 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
             pb_resp = partners.Partner.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_partner(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = partners.Partner.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.cloudcontrolspartner_v1beta.CloudControlsPartnerCoreClient.get_partner",
+                    extra={
+                        "serviceName": "google.cloud.cloudcontrolspartner.v1beta.CloudControlsPartnerCore",
+                        "rpcName": "GetPartner",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetPartnerPermissions(
@@ -716,7 +892,7 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> partner_permissions.PartnerPermissions:
             r"""Call the get partner permissions method over HTTP.
 
@@ -727,8 +903,10 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.partner_permissions.PartnerPermissions:
@@ -740,6 +918,7 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
             http_options = (
                 _BaseCloudControlsPartnerCoreRestTransport._BaseGetPartnerPermissions._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_partner_permissions(
                 request, metadata
             )
@@ -751,6 +930,33 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
             query_params = _BaseCloudControlsPartnerCoreRestTransport._BaseGetPartnerPermissions._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.cloudcontrolspartner_v1beta.CloudControlsPartnerCoreClient.GetPartnerPermissions",
+                    extra={
+                        "serviceName": "google.cloud.cloudcontrolspartner.v1beta.CloudControlsPartnerCore",
+                        "rpcName": "GetPartnerPermissions",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudControlsPartnerCoreRestTransport._GetPartnerPermissions._get_response(
@@ -772,7 +978,31 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
             pb_resp = partner_permissions.PartnerPermissions.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_partner_permissions(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = partner_permissions.PartnerPermissions.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.cloudcontrolspartner_v1beta.CloudControlsPartnerCoreClient.get_partner_permissions",
+                    extra={
+                        "serviceName": "google.cloud.cloudcontrolspartner.v1beta.CloudControlsPartnerCore",
+                        "rpcName": "GetPartnerPermissions",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetWorkload(
@@ -810,7 +1040,7 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> customer_workloads.Workload:
             r"""Call the get workload method over HTTP.
 
@@ -821,8 +1051,10 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.customer_workloads.Workload:
@@ -835,6 +1067,7 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
             http_options = (
                 _BaseCloudControlsPartnerCoreRestTransport._BaseGetWorkload._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_workload(request, metadata)
             transcoded_request = _BaseCloudControlsPartnerCoreRestTransport._BaseGetWorkload._get_transcoded_request(
                 http_options, request
@@ -844,6 +1077,33 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
             query_params = _BaseCloudControlsPartnerCoreRestTransport._BaseGetWorkload._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.cloudcontrolspartner_v1beta.CloudControlsPartnerCoreClient.GetWorkload",
+                    extra={
+                        "serviceName": "google.cloud.cloudcontrolspartner.v1beta.CloudControlsPartnerCore",
+                        "rpcName": "GetWorkload",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudControlsPartnerCoreRestTransport._GetWorkload._get_response(
@@ -865,7 +1125,29 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
             pb_resp = customer_workloads.Workload.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_workload(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = customer_workloads.Workload.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.cloudcontrolspartner_v1beta.CloudControlsPartnerCoreClient.get_workload",
+                    extra={
+                        "serviceName": "google.cloud.cloudcontrolspartner.v1beta.CloudControlsPartnerCore",
+                        "rpcName": "GetWorkload",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListAccessApprovalRequests(
@@ -905,7 +1187,7 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> access_approval_requests.ListAccessApprovalRequestsResponse:
             r"""Call the list access approval
             requests method over HTTP.
@@ -917,8 +1199,10 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.access_approval_requests.ListAccessApprovalRequestsResponse:
@@ -930,6 +1214,7 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
             http_options = (
                 _BaseCloudControlsPartnerCoreRestTransport._BaseListAccessApprovalRequests._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_access_approval_requests(
                 request, metadata
             )
@@ -941,6 +1226,33 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
             query_params = _BaseCloudControlsPartnerCoreRestTransport._BaseListAccessApprovalRequests._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.cloudcontrolspartner_v1beta.CloudControlsPartnerCoreClient.ListAccessApprovalRequests",
+                    extra={
+                        "serviceName": "google.cloud.cloudcontrolspartner.v1beta.CloudControlsPartnerCore",
+                        "rpcName": "ListAccessApprovalRequests",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudControlsPartnerCoreRestTransport._ListAccessApprovalRequests._get_response(
@@ -964,7 +1276,31 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
             )
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_access_approval_requests(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = access_approval_requests.ListAccessApprovalRequestsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.cloudcontrolspartner_v1beta.CloudControlsPartnerCoreClient.list_access_approval_requests",
+                    extra={
+                        "serviceName": "google.cloud.cloudcontrolspartner.v1beta.CloudControlsPartnerCore",
+                        "rpcName": "ListAccessApprovalRequests",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListCustomers(
@@ -1002,7 +1338,7 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> customers.ListCustomersResponse:
             r"""Call the list customers method over HTTP.
 
@@ -1012,8 +1348,10 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.customers.ListCustomersResponse:
@@ -1025,6 +1363,7 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
             http_options = (
                 _BaseCloudControlsPartnerCoreRestTransport._BaseListCustomers._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_customers(request, metadata)
             transcoded_request = _BaseCloudControlsPartnerCoreRestTransport._BaseListCustomers._get_transcoded_request(
                 http_options, request
@@ -1034,6 +1373,33 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
             query_params = _BaseCloudControlsPartnerCoreRestTransport._BaseListCustomers._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.cloudcontrolspartner_v1beta.CloudControlsPartnerCoreClient.ListCustomers",
+                    extra={
+                        "serviceName": "google.cloud.cloudcontrolspartner.v1beta.CloudControlsPartnerCore",
+                        "rpcName": "ListCustomers",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1057,7 +1423,29 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
             pb_resp = customers.ListCustomersResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_customers(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = customers.ListCustomersResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.cloudcontrolspartner_v1beta.CloudControlsPartnerCoreClient.list_customers",
+                    extra={
+                        "serviceName": "google.cloud.cloudcontrolspartner.v1beta.CloudControlsPartnerCore",
+                        "rpcName": "ListCustomers",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListWorkloads(
@@ -1095,7 +1483,7 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> customer_workloads.ListWorkloadsResponse:
             r"""Call the list workloads method over HTTP.
 
@@ -1105,8 +1493,10 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.customer_workloads.ListWorkloadsResponse:
@@ -1118,6 +1508,7 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
             http_options = (
                 _BaseCloudControlsPartnerCoreRestTransport._BaseListWorkloads._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_workloads(request, metadata)
             transcoded_request = _BaseCloudControlsPartnerCoreRestTransport._BaseListWorkloads._get_transcoded_request(
                 http_options, request
@@ -1127,6 +1518,33 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
             query_params = _BaseCloudControlsPartnerCoreRestTransport._BaseListWorkloads._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.cloudcontrolspartner_v1beta.CloudControlsPartnerCoreClient.ListWorkloads",
+                    extra={
+                        "serviceName": "google.cloud.cloudcontrolspartner.v1beta.CloudControlsPartnerCore",
+                        "rpcName": "ListWorkloads",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1150,7 +1568,31 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
             pb_resp = customer_workloads.ListWorkloadsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_workloads(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = customer_workloads.ListWorkloadsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.cloudcontrolspartner_v1beta.CloudControlsPartnerCoreClient.list_workloads",
+                    extra={
+                        "serviceName": "google.cloud.cloudcontrolspartner.v1beta.CloudControlsPartnerCore",
+                        "rpcName": "ListWorkloads",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property

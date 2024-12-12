@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -41,6 +41,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -113,8 +121,10 @@ class QuestionServiceRestInterceptor:
     def pre_create_question(
         self,
         request: question_service.CreateQuestionRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[question_service.CreateQuestionRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        question_service.CreateQuestionRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_question
 
         Override in a subclass to manipulate the request or metadata
@@ -136,8 +146,10 @@ class QuestionServiceRestInterceptor:
     def pre_execute_question(
         self,
         request: question_service.ExecuteQuestionRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[question_service.ExecuteQuestionRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        question_service.ExecuteQuestionRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for execute_question
 
         Override in a subclass to manipulate the request or metadata
@@ -157,8 +169,10 @@ class QuestionServiceRestInterceptor:
     def pre_get_question(
         self,
         request: question_service.GetQuestionRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[question_service.GetQuestionRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        question_service.GetQuestionRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_question
 
         Override in a subclass to manipulate the request or metadata
@@ -178,8 +192,10 @@ class QuestionServiceRestInterceptor:
     def pre_get_user_feedback(
         self,
         request: question_service.GetUserFeedbackRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[question_service.GetUserFeedbackRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        question_service.GetUserFeedbackRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_user_feedback
 
         Override in a subclass to manipulate the request or metadata
@@ -201,8 +217,11 @@ class QuestionServiceRestInterceptor:
     def pre_update_user_feedback(
         self,
         request: question_service.UpdateUserFeedbackRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[question_service.UpdateUserFeedbackRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        question_service.UpdateUserFeedbackRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for update_user_feedback
 
         Override in a subclass to manipulate the request or metadata
@@ -363,7 +382,7 @@ class QuestionServiceRestTransport(_BaseQuestionServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gcd_question.Question:
             r"""Call the create question method over HTTP.
 
@@ -374,8 +393,10 @@ class QuestionServiceRestTransport(_BaseQuestionServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.gcd_question.Question:
@@ -390,6 +411,7 @@ class QuestionServiceRestTransport(_BaseQuestionServiceRestTransport):
             http_options = (
                 _BaseQuestionServiceRestTransport._BaseCreateQuestion._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_question(request, metadata)
             transcoded_request = _BaseQuestionServiceRestTransport._BaseCreateQuestion._get_transcoded_request(
                 http_options, request
@@ -403,6 +425,33 @@ class QuestionServiceRestTransport(_BaseQuestionServiceRestTransport):
             query_params = _BaseQuestionServiceRestTransport._BaseCreateQuestion._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataqna_v1alpha.QuestionServiceClient.CreateQuestion",
+                    extra={
+                        "serviceName": "google.cloud.dataqna.v1alpha.QuestionService",
+                        "rpcName": "CreateQuestion",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = QuestionServiceRestTransport._CreateQuestion._get_response(
@@ -425,7 +474,29 @@ class QuestionServiceRestTransport(_BaseQuestionServiceRestTransport):
             pb_resp = gcd_question.Question.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_question(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gcd_question.Question.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dataqna_v1alpha.QuestionServiceClient.create_question",
+                    extra={
+                        "serviceName": "google.cloud.dataqna.v1alpha.QuestionService",
+                        "rpcName": "CreateQuestion",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ExecuteQuestion(
@@ -463,7 +534,7 @@ class QuestionServiceRestTransport(_BaseQuestionServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> question.Question:
             r"""Call the execute question method over HTTP.
 
@@ -473,8 +544,10 @@ class QuestionServiceRestTransport(_BaseQuestionServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.question.Question:
@@ -489,6 +562,7 @@ class QuestionServiceRestTransport(_BaseQuestionServiceRestTransport):
             http_options = (
                 _BaseQuestionServiceRestTransport._BaseExecuteQuestion._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_execute_question(
                 request, metadata
             )
@@ -504,6 +578,33 @@ class QuestionServiceRestTransport(_BaseQuestionServiceRestTransport):
             query_params = _BaseQuestionServiceRestTransport._BaseExecuteQuestion._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataqna_v1alpha.QuestionServiceClient.ExecuteQuestion",
+                    extra={
+                        "serviceName": "google.cloud.dataqna.v1alpha.QuestionService",
+                        "rpcName": "ExecuteQuestion",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = QuestionServiceRestTransport._ExecuteQuestion._get_response(
@@ -526,7 +627,29 @@ class QuestionServiceRestTransport(_BaseQuestionServiceRestTransport):
             pb_resp = question.Question.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_execute_question(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = question.Question.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dataqna_v1alpha.QuestionServiceClient.execute_question",
+                    extra={
+                        "serviceName": "google.cloud.dataqna.v1alpha.QuestionService",
+                        "rpcName": "ExecuteQuestion",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetQuestion(
@@ -563,7 +686,7 @@ class QuestionServiceRestTransport(_BaseQuestionServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> question.Question:
             r"""Call the get question method over HTTP.
 
@@ -574,8 +697,10 @@ class QuestionServiceRestTransport(_BaseQuestionServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.question.Question:
@@ -590,6 +715,7 @@ class QuestionServiceRestTransport(_BaseQuestionServiceRestTransport):
             http_options = (
                 _BaseQuestionServiceRestTransport._BaseGetQuestion._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_question(request, metadata)
             transcoded_request = _BaseQuestionServiceRestTransport._BaseGetQuestion._get_transcoded_request(
                 http_options, request
@@ -599,6 +725,33 @@ class QuestionServiceRestTransport(_BaseQuestionServiceRestTransport):
             query_params = _BaseQuestionServiceRestTransport._BaseGetQuestion._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataqna_v1alpha.QuestionServiceClient.GetQuestion",
+                    extra={
+                        "serviceName": "google.cloud.dataqna.v1alpha.QuestionService",
+                        "rpcName": "GetQuestion",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = QuestionServiceRestTransport._GetQuestion._get_response(
@@ -620,7 +773,29 @@ class QuestionServiceRestTransport(_BaseQuestionServiceRestTransport):
             pb_resp = question.Question.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_question(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = question.Question.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dataqna_v1alpha.QuestionServiceClient.get_question",
+                    extra={
+                        "serviceName": "google.cloud.dataqna.v1alpha.QuestionService",
+                        "rpcName": "GetQuestion",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetUserFeedback(
@@ -657,7 +832,7 @@ class QuestionServiceRestTransport(_BaseQuestionServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> user_feedback.UserFeedback:
             r"""Call the get user feedback method over HTTP.
 
@@ -667,8 +842,10 @@ class QuestionServiceRestTransport(_BaseQuestionServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.user_feedback.UserFeedback:
@@ -678,6 +855,7 @@ class QuestionServiceRestTransport(_BaseQuestionServiceRestTransport):
             http_options = (
                 _BaseQuestionServiceRestTransport._BaseGetUserFeedback._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_user_feedback(
                 request, metadata
             )
@@ -689,6 +867,33 @@ class QuestionServiceRestTransport(_BaseQuestionServiceRestTransport):
             query_params = _BaseQuestionServiceRestTransport._BaseGetUserFeedback._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataqna_v1alpha.QuestionServiceClient.GetUserFeedback",
+                    extra={
+                        "serviceName": "google.cloud.dataqna.v1alpha.QuestionService",
+                        "rpcName": "GetUserFeedback",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = QuestionServiceRestTransport._GetUserFeedback._get_response(
@@ -710,7 +915,29 @@ class QuestionServiceRestTransport(_BaseQuestionServiceRestTransport):
             pb_resp = user_feedback.UserFeedback.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_user_feedback(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = user_feedback.UserFeedback.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dataqna_v1alpha.QuestionServiceClient.get_user_feedback",
+                    extra={
+                        "serviceName": "google.cloud.dataqna.v1alpha.QuestionService",
+                        "rpcName": "GetUserFeedback",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateUserFeedback(
@@ -749,7 +976,7 @@ class QuestionServiceRestTransport(_BaseQuestionServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gcd_user_feedback.UserFeedback:
             r"""Call the update user feedback method over HTTP.
 
@@ -759,8 +986,10 @@ class QuestionServiceRestTransport(_BaseQuestionServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.gcd_user_feedback.UserFeedback:
@@ -770,6 +999,7 @@ class QuestionServiceRestTransport(_BaseQuestionServiceRestTransport):
             http_options = (
                 _BaseQuestionServiceRestTransport._BaseUpdateUserFeedback._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_user_feedback(
                 request, metadata
             )
@@ -785,6 +1015,33 @@ class QuestionServiceRestTransport(_BaseQuestionServiceRestTransport):
             query_params = _BaseQuestionServiceRestTransport._BaseUpdateUserFeedback._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataqna_v1alpha.QuestionServiceClient.UpdateUserFeedback",
+                    extra={
+                        "serviceName": "google.cloud.dataqna.v1alpha.QuestionService",
+                        "rpcName": "UpdateUserFeedback",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = QuestionServiceRestTransport._UpdateUserFeedback._get_response(
@@ -807,7 +1064,29 @@ class QuestionServiceRestTransport(_BaseQuestionServiceRestTransport):
             pb_resp = gcd_user_feedback.UserFeedback.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_user_feedback(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gcd_user_feedback.UserFeedback.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dataqna_v1alpha.QuestionServiceClient.update_user_feedback",
+                    extra={
+                        "serviceName": "google.cloud.dataqna.v1alpha.QuestionService",
+                        "rpcName": "UpdateUserFeedback",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property

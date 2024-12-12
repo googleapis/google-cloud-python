@@ -14,6 +14,7 @@
 # limitations under the License.
 #
 from collections import OrderedDict
+import logging as std_logging
 import re
 from typing import (
     Callable,
@@ -63,6 +64,15 @@ from google.cloud.contact_center_insights_v1.types import (
 from .client import ContactCenterInsightsClient
 from .transports.base import DEFAULT_CLIENT_INFO, ContactCenterInsightsTransport
 from .transports.grpc_asyncio import ContactCenterInsightsGrpcAsyncIOTransport
+
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = std_logging.getLogger(__name__)
 
 
 class ContactCenterInsightsAsyncClient:
@@ -343,6 +353,28 @@ class ContactCenterInsightsAsyncClient:
             client_info=client_info,
         )
 
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+            std_logging.DEBUG
+        ):  # pragma: NO COVER
+            _LOGGER.debug(
+                "Created client `google.cloud.contactcenterinsights_v1.ContactCenterInsightsAsyncClient`.",
+                extra={
+                    "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                    "universeDomain": getattr(
+                        self._client._transport._credentials, "universe_domain", ""
+                    ),
+                    "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
+                    "credentialsInfo": getattr(
+                        self.transport._credentials, "get_cred_info", lambda: None
+                    )(),
+                }
+                if hasattr(self._client._transport, "_credentials")
+                else {
+                    "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                    "credentialsType": None,
+                },
+            )
+
     async def create_conversation(
         self,
         request: Optional[
@@ -354,7 +386,7 @@ class ContactCenterInsightsAsyncClient:
         conversation_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> resources.Conversation:
         r"""Creates a conversation. Note that this method does not support
         audio transcription or redaction. Use ``conversations.upload``
@@ -419,8 +451,10 @@ class ContactCenterInsightsAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.contact_center_insights_v1.types.Conversation:
@@ -484,7 +518,7 @@ class ContactCenterInsightsAsyncClient:
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Create a long-running conversation upload operation. This method
         differs from ``CreateConversation`` by allowing audio
@@ -526,8 +560,10 @@ class ContactCenterInsightsAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.api_core.operation_async.AsyncOperation:
@@ -588,7 +624,7 @@ class ContactCenterInsightsAsyncClient:
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> resources.Conversation:
         r"""Updates a conversation.
 
@@ -649,8 +685,10 @@ class ContactCenterInsightsAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.contact_center_insights_v1.types.Conversation:
@@ -715,7 +753,7 @@ class ContactCenterInsightsAsyncClient:
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> resources.Conversation:
         r"""Gets a conversation.
 
@@ -758,8 +796,10 @@ class ContactCenterInsightsAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.contact_center_insights_v1.types.Conversation:
@@ -820,7 +860,7 @@ class ContactCenterInsightsAsyncClient:
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListConversationsAsyncPager:
         r"""Lists conversations.
 
@@ -864,8 +904,10 @@ class ContactCenterInsightsAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.contact_center_insights_v1.services.contact_center_insights.pagers.ListConversationsAsyncPager:
@@ -942,7 +984,7 @@ class ContactCenterInsightsAsyncClient:
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> None:
         r"""Deletes a conversation.
 
@@ -982,8 +1024,10 @@ class ContactCenterInsightsAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
         """
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
@@ -1038,7 +1082,7 @@ class ContactCenterInsightsAsyncClient:
         analysis: Optional[resources.Analysis] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Creates an analysis. The long running operation is
         done when the analysis has completed.
@@ -1091,8 +1135,10 @@ class ContactCenterInsightsAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.api_core.operation_async.AsyncOperation:
@@ -1168,7 +1214,7 @@ class ContactCenterInsightsAsyncClient:
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> resources.Analysis:
         r"""Gets an analysis.
 
@@ -1211,8 +1257,10 @@ class ContactCenterInsightsAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.contact_center_insights_v1.types.Analysis:
@@ -1273,7 +1321,7 @@ class ContactCenterInsightsAsyncClient:
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListAnalysesAsyncPager:
         r"""Lists analyses.
 
@@ -1317,8 +1365,10 @@ class ContactCenterInsightsAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.contact_center_insights_v1.services.contact_center_insights.pagers.ListAnalysesAsyncPager:
@@ -1395,7 +1445,7 @@ class ContactCenterInsightsAsyncClient:
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> None:
         r"""Deletes an analysis.
 
@@ -1435,8 +1485,10 @@ class ContactCenterInsightsAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
         """
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
@@ -1492,7 +1544,7 @@ class ContactCenterInsightsAsyncClient:
         analysis_percentage: Optional[float] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Analyzes multiple conversations in a single request.
 
@@ -1556,8 +1608,10 @@ class ContactCenterInsightsAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.api_core.operation_async.AsyncOperation:
@@ -1638,7 +1692,7 @@ class ContactCenterInsightsAsyncClient:
         filter: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Deletes multiple conversations in a single request.
 
@@ -1695,8 +1749,10 @@ class ContactCenterInsightsAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.api_core.operation_async.AsyncOperation:
@@ -1774,7 +1830,7 @@ class ContactCenterInsightsAsyncClient:
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Imports conversations and processes them according to
         the user's configuration.
@@ -1830,8 +1886,10 @@ class ContactCenterInsightsAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.api_core.operation_async.AsyncOperation:
@@ -1905,7 +1963,7 @@ class ContactCenterInsightsAsyncClient:
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Export insights data to a destination defined in the
         request body.
@@ -1957,8 +2015,10 @@ class ContactCenterInsightsAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.api_core.operation_async.AsyncOperation:
@@ -2033,7 +2093,7 @@ class ContactCenterInsightsAsyncClient:
         issue_model: Optional[resources.IssueModel] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Creates an issue model.
 
@@ -2085,8 +2145,10 @@ class ContactCenterInsightsAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.api_core.operation_async.AsyncOperation:
@@ -2163,7 +2225,7 @@ class ContactCenterInsightsAsyncClient:
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> resources.IssueModel:
         r"""Updates an issue model.
 
@@ -2210,8 +2272,10 @@ class ContactCenterInsightsAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.contact_center_insights_v1.types.IssueModel:
@@ -2276,7 +2340,7 @@ class ContactCenterInsightsAsyncClient:
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> resources.IssueModel:
         r"""Gets an issue model.
 
@@ -2319,8 +2383,10 @@ class ContactCenterInsightsAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.contact_center_insights_v1.types.IssueModel:
@@ -2381,7 +2447,7 @@ class ContactCenterInsightsAsyncClient:
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> contact_center_insights.ListIssueModelsResponse:
         r"""Lists issue models.
 
@@ -2424,8 +2490,10 @@ class ContactCenterInsightsAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.contact_center_insights_v1.types.ListIssueModelsResponse:
@@ -2486,7 +2554,7 @@ class ContactCenterInsightsAsyncClient:
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Deletes an issue model.
 
@@ -2533,8 +2601,10 @@ class ContactCenterInsightsAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.api_core.operation_async.AsyncOperation:
@@ -2615,7 +2685,7 @@ class ContactCenterInsightsAsyncClient:
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Deploys an issue model. Returns an error if a model
         is already deployed. An issue model can only be used in
@@ -2662,8 +2732,10 @@ class ContactCenterInsightsAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.api_core.operation_async.AsyncOperation:
@@ -2737,7 +2809,7 @@ class ContactCenterInsightsAsyncClient:
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Undeploys an issue model.
         An issue model can not be used in analysis after it has
@@ -2787,8 +2859,10 @@ class ContactCenterInsightsAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.api_core.operation_async.AsyncOperation:
@@ -2862,7 +2936,7 @@ class ContactCenterInsightsAsyncClient:
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Exports an issue model to the provided destination.
 
@@ -2911,8 +2985,10 @@ class ContactCenterInsightsAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.api_core.operation_async.AsyncOperation:
@@ -2986,7 +3062,7 @@ class ContactCenterInsightsAsyncClient:
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Imports an issue model from a Cloud Storage bucket.
 
@@ -3037,8 +3113,10 @@ class ContactCenterInsightsAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.api_core.operation_async.AsyncOperation:
@@ -3110,7 +3188,7 @@ class ContactCenterInsightsAsyncClient:
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> resources.Issue:
         r"""Gets an issue.
 
@@ -3153,8 +3231,10 @@ class ContactCenterInsightsAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.contact_center_insights_v1.types.Issue:
@@ -3215,7 +3295,7 @@ class ContactCenterInsightsAsyncClient:
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> contact_center_insights.ListIssuesResponse:
         r"""Lists issues.
 
@@ -3258,8 +3338,10 @@ class ContactCenterInsightsAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.contact_center_insights_v1.types.ListIssuesResponse:
@@ -3321,7 +3403,7 @@ class ContactCenterInsightsAsyncClient:
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> resources.Issue:
         r"""Updates an issue.
 
@@ -3368,8 +3450,10 @@ class ContactCenterInsightsAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.contact_center_insights_v1.types.Issue:
@@ -3434,7 +3518,7 @@ class ContactCenterInsightsAsyncClient:
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> None:
         r"""Deletes an issue.
 
@@ -3474,8 +3558,10 @@ class ContactCenterInsightsAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
         """
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
@@ -3529,7 +3615,7 @@ class ContactCenterInsightsAsyncClient:
         issue_model: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> contact_center_insights.CalculateIssueModelStatsResponse:
         r"""Gets an issue model's statistics.
 
@@ -3573,8 +3659,10 @@ class ContactCenterInsightsAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.contact_center_insights_v1.types.CalculateIssueModelStatsResponse:
@@ -3642,7 +3730,7 @@ class ContactCenterInsightsAsyncClient:
         phrase_matcher: Optional[resources.PhraseMatcher] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> resources.PhraseMatcher:
         r"""Creates a phrase matcher.
 
@@ -3699,8 +3787,10 @@ class ContactCenterInsightsAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.contact_center_insights_v1.types.PhraseMatcher:
@@ -3763,7 +3853,7 @@ class ContactCenterInsightsAsyncClient:
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> resources.PhraseMatcher:
         r"""Gets a phrase matcher.
 
@@ -3807,8 +3897,10 @@ class ContactCenterInsightsAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.contact_center_insights_v1.types.PhraseMatcher:
@@ -3869,7 +3961,7 @@ class ContactCenterInsightsAsyncClient:
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListPhraseMatchersAsyncPager:
         r"""Lists phrase matchers.
 
@@ -3913,8 +4005,10 @@ class ContactCenterInsightsAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.contact_center_insights_v1.services.contact_center_insights.pagers.ListPhraseMatchersAsyncPager:
@@ -3991,7 +4085,7 @@ class ContactCenterInsightsAsyncClient:
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> None:
         r"""Deletes a phrase matcher.
 
@@ -4032,8 +4126,10 @@ class ContactCenterInsightsAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
         """
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
@@ -4088,7 +4184,7 @@ class ContactCenterInsightsAsyncClient:
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> resources.PhraseMatcher:
         r"""Updates a phrase matcher.
 
@@ -4140,8 +4236,10 @@ class ContactCenterInsightsAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.contact_center_insights_v1.types.PhraseMatcher:
@@ -4206,7 +4304,7 @@ class ContactCenterInsightsAsyncClient:
         location: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> contact_center_insights.CalculateStatsResponse:
         r"""Gets conversation statistics.
 
@@ -4250,8 +4348,10 @@ class ContactCenterInsightsAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.contact_center_insights_v1.types.CalculateStatsResponse:
@@ -4314,7 +4414,7 @@ class ContactCenterInsightsAsyncClient:
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> resources.Settings:
         r"""Gets project-level settings.
 
@@ -4358,8 +4458,10 @@ class ContactCenterInsightsAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.contact_center_insights_v1.types.Settings:
@@ -4427,7 +4529,7 @@ class ContactCenterInsightsAsyncClient:
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> resources.Settings:
         r"""Updates project-level settings.
 
@@ -4475,8 +4577,10 @@ class ContactCenterInsightsAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.contact_center_insights_v1.types.Settings:
@@ -4548,7 +4652,7 @@ class ContactCenterInsightsAsyncClient:
         analysis_rule: Optional[resources.AnalysisRule] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> resources.AnalysisRule:
         r"""Creates a analysis rule.
 
@@ -4602,8 +4706,10 @@ class ContactCenterInsightsAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.contact_center_insights_v1.types.AnalysisRule:
@@ -4676,7 +4782,7 @@ class ContactCenterInsightsAsyncClient:
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> resources.AnalysisRule:
         r"""Get a analysis rule.
 
@@ -4720,8 +4826,10 @@ class ContactCenterInsightsAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.contact_center_insights_v1.types.AnalysisRule:
@@ -4792,7 +4900,7 @@ class ContactCenterInsightsAsyncClient:
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListAnalysisRulesAsyncPager:
         r"""Lists analysis rules.
 
@@ -4836,8 +4944,10 @@ class ContactCenterInsightsAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.contact_center_insights_v1.services.contact_center_insights.pagers.ListAnalysisRulesAsyncPager:
@@ -4915,7 +5025,7 @@ class ContactCenterInsightsAsyncClient:
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> resources.AnalysisRule:
         r"""Updates a analysis rule.
 
@@ -4964,8 +5074,10 @@ class ContactCenterInsightsAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.contact_center_insights_v1.types.AnalysisRule:
@@ -5040,7 +5152,7 @@ class ContactCenterInsightsAsyncClient:
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> None:
         r"""Deletes a analysis rule.
 
@@ -5081,8 +5193,10 @@ class ContactCenterInsightsAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
         """
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
@@ -5136,7 +5250,7 @@ class ContactCenterInsightsAsyncClient:
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> resources.EncryptionSpec:
         r"""Gets location-level encryption key specification.
 
@@ -5180,8 +5294,10 @@ class ContactCenterInsightsAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.contact_center_insights_v1.types.EncryptionSpec:
@@ -5244,7 +5360,7 @@ class ContactCenterInsightsAsyncClient:
         encryption_spec: Optional[resources.EncryptionSpec] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Initializes a location-level encryption key
         specification. An error will result if the location has
@@ -5305,8 +5421,10 @@ class ContactCenterInsightsAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.api_core.operation_async.AsyncOperation:
@@ -5386,7 +5504,7 @@ class ContactCenterInsightsAsyncClient:
         view: Optional[resources.View] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> resources.View:
         r"""Creates a view.
 
@@ -5438,8 +5556,10 @@ class ContactCenterInsightsAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.contact_center_insights_v1.types.View:
@@ -5500,7 +5620,7 @@ class ContactCenterInsightsAsyncClient:
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> resources.View:
         r"""Gets a view.
 
@@ -5543,8 +5663,10 @@ class ContactCenterInsightsAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.contact_center_insights_v1.types.View:
@@ -5601,7 +5723,7 @@ class ContactCenterInsightsAsyncClient:
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListViewsAsyncPager:
         r"""Lists views.
 
@@ -5645,8 +5767,10 @@ class ContactCenterInsightsAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.contact_center_insights_v1.services.contact_center_insights.pagers.ListViewsAsyncPager:
@@ -5724,7 +5848,7 @@ class ContactCenterInsightsAsyncClient:
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> resources.View:
         r"""Updates a view.
 
@@ -5769,8 +5893,10 @@ class ContactCenterInsightsAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.contact_center_insights_v1.types.View:
@@ -5835,7 +5961,7 @@ class ContactCenterInsightsAsyncClient:
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> None:
         r"""Deletes a view.
 
@@ -5875,8 +6001,10 @@ class ContactCenterInsightsAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
         """
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
@@ -5929,7 +6057,7 @@ class ContactCenterInsightsAsyncClient:
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Query metrics.
 
@@ -5970,8 +6098,10 @@ class ContactCenterInsightsAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.api_core.operation_async.AsyncOperation:
@@ -6033,7 +6163,7 @@ class ContactCenterInsightsAsyncClient:
         qa_question_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> resources.QaQuestion:
         r"""Create a QaQuestion.
 
@@ -6095,8 +6225,10 @@ class ContactCenterInsightsAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.contact_center_insights_v1.types.QaQuestion:
@@ -6163,7 +6295,7 @@ class ContactCenterInsightsAsyncClient:
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> resources.QaQuestion:
         r"""Gets a QaQuestion.
 
@@ -6206,8 +6338,10 @@ class ContactCenterInsightsAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.contact_center_insights_v1.types.QaQuestion:
@@ -6271,7 +6405,7 @@ class ContactCenterInsightsAsyncClient:
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> resources.QaQuestion:
         r"""Updates a QaQuestion.
 
@@ -6327,8 +6461,10 @@ class ContactCenterInsightsAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.contact_center_insights_v1.types.QaQuestion:
@@ -6395,7 +6531,7 @@ class ContactCenterInsightsAsyncClient:
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> None:
         r"""Deletes a QaQuestion.
 
@@ -6436,8 +6572,10 @@ class ContactCenterInsightsAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
         """
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
@@ -6491,7 +6629,7 @@ class ContactCenterInsightsAsyncClient:
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListQaQuestionsAsyncPager:
         r"""Lists QaQuestions.
 
@@ -6535,8 +6673,10 @@ class ContactCenterInsightsAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.contact_center_insights_v1.services.contact_center_insights.pagers.ListQaQuestionsAsyncPager:
@@ -6615,7 +6755,7 @@ class ContactCenterInsightsAsyncClient:
         qa_scorecard_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> resources.QaScorecard:
         r"""Create a QaScorecard.
 
@@ -6677,8 +6817,10 @@ class ContactCenterInsightsAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.contact_center_insights_v1.types.QaScorecard:
@@ -6746,7 +6888,7 @@ class ContactCenterInsightsAsyncClient:
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> resources.QaScorecard:
         r"""Gets a QaScorecard.
 
@@ -6790,8 +6932,10 @@ class ContactCenterInsightsAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.contact_center_insights_v1.types.QaScorecard:
@@ -6856,7 +7000,7 @@ class ContactCenterInsightsAsyncClient:
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> resources.QaScorecard:
         r"""Updates a QaScorecard.
 
@@ -6908,8 +7052,10 @@ class ContactCenterInsightsAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.contact_center_insights_v1.types.QaScorecard:
@@ -6977,7 +7123,7 @@ class ContactCenterInsightsAsyncClient:
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> None:
         r"""Deletes a QaScorecard.
 
@@ -7018,8 +7164,10 @@ class ContactCenterInsightsAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
         """
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
@@ -7073,7 +7221,7 @@ class ContactCenterInsightsAsyncClient:
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListQaScorecardsAsyncPager:
         r"""Lists QaScorecards.
 
@@ -7117,8 +7265,10 @@ class ContactCenterInsightsAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.contact_center_insights_v1.services.contact_center_insights.pagers.ListQaScorecardsAsyncPager:
@@ -7197,7 +7347,7 @@ class ContactCenterInsightsAsyncClient:
         qa_scorecard_revision_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> resources.QaScorecardRevision:
         r"""Creates a QaScorecardRevision.
 
@@ -7261,8 +7411,10 @@ class ContactCenterInsightsAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.contact_center_insights_v1.types.QaScorecardRevision:
@@ -7341,7 +7493,7 @@ class ContactCenterInsightsAsyncClient:
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> resources.QaScorecardRevision:
         r"""Gets a QaScorecardRevision.
 
@@ -7385,8 +7537,10 @@ class ContactCenterInsightsAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.contact_center_insights_v1.types.QaScorecardRevision:
@@ -7461,7 +7615,7 @@ class ContactCenterInsightsAsyncClient:
         validate_only: Optional[bool] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Fine tune one or more QaModels.
 
@@ -7534,8 +7688,10 @@ class ContactCenterInsightsAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.api_core.operation_async.AsyncOperation:
@@ -7614,7 +7770,7 @@ class ContactCenterInsightsAsyncClient:
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> resources.QaScorecardRevision:
         r"""Deploy a QaScorecardRevision.
 
@@ -7651,8 +7807,10 @@ class ContactCenterInsightsAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.contact_center_insights_v1.types.QaScorecardRevision:
@@ -7710,7 +7868,7 @@ class ContactCenterInsightsAsyncClient:
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> resources.QaScorecardRevision:
         r"""Undeploy a QaScorecardRevision.
 
@@ -7747,8 +7905,10 @@ class ContactCenterInsightsAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.contact_center_insights_v1.types.QaScorecardRevision:
@@ -7809,7 +7969,7 @@ class ContactCenterInsightsAsyncClient:
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> None:
         r"""Deletes a QaScorecardRevision.
 
@@ -7850,8 +8010,10 @@ class ContactCenterInsightsAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
         """
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
@@ -7907,7 +8069,7 @@ class ContactCenterInsightsAsyncClient:
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListQaScorecardRevisionsAsyncPager:
         r"""Lists all revisions under the parent QaScorecard.
 
@@ -7953,8 +8115,10 @@ class ContactCenterInsightsAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.contact_center_insights_v1.services.contact_center_insights.pagers.ListQaScorecardRevisionsAsyncPager:
@@ -8035,7 +8199,7 @@ class ContactCenterInsightsAsyncClient:
         feedback_label_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> resources.FeedbackLabel:
         r"""Create feedback label.
 
@@ -8098,8 +8262,10 @@ class ContactCenterInsightsAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.contact_center_insights_v1.types.FeedbackLabel:
@@ -8166,7 +8332,7 @@ class ContactCenterInsightsAsyncClient:
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListFeedbackLabelsAsyncPager:
         r"""List feedback labels.
 
@@ -8211,8 +8377,10 @@ class ContactCenterInsightsAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.contact_center_insights_v1.services.contact_center_insights.pagers.ListFeedbackLabelsAsyncPager:
@@ -8289,7 +8457,7 @@ class ContactCenterInsightsAsyncClient:
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> resources.FeedbackLabel:
         r"""Get feedback label.
 
@@ -8333,8 +8501,10 @@ class ContactCenterInsightsAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.contact_center_insights_v1.types.FeedbackLabel:
@@ -8398,7 +8568,7 @@ class ContactCenterInsightsAsyncClient:
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> resources.FeedbackLabel:
         r"""Update feedback label.
 
@@ -8452,8 +8622,10 @@ class ContactCenterInsightsAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.contact_center_insights_v1.types.FeedbackLabel:
@@ -8520,7 +8692,7 @@ class ContactCenterInsightsAsyncClient:
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> None:
         r"""Delete feedback label.
 
@@ -8561,8 +8733,10 @@ class ContactCenterInsightsAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
         """
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
@@ -8616,7 +8790,7 @@ class ContactCenterInsightsAsyncClient:
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListAllFeedbackLabelsAsyncPager:
         r"""List all feedback labels by project number.
 
@@ -8661,8 +8835,10 @@ class ContactCenterInsightsAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.contact_center_insights_v1.services.contact_center_insights.pagers.ListAllFeedbackLabelsAsyncPager:
@@ -8741,7 +8917,7 @@ class ContactCenterInsightsAsyncClient:
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Upload feedback labels in bulk.
 
@@ -8794,8 +8970,10 @@ class ContactCenterInsightsAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.api_core.operation_async.AsyncOperation:
@@ -8871,7 +9049,7 @@ class ContactCenterInsightsAsyncClient:
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Download feedback labels in bulk.
 
@@ -8924,8 +9102,10 @@ class ContactCenterInsightsAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.api_core.operation_async.AsyncOperation:
@@ -8998,7 +9178,7 @@ class ContactCenterInsightsAsyncClient:
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operations_pb2.ListOperationsResponse:
         r"""Lists operations that match the specified filter in the request.
 
@@ -9009,8 +9189,10 @@ class ContactCenterInsightsAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors,
                     if any, should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
         Returns:
             ~.operations_pb2.ListOperationsResponse:
                 Response message for ``ListOperations`` method.
@@ -9051,7 +9233,7 @@ class ContactCenterInsightsAsyncClient:
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operations_pb2.Operation:
         r"""Gets the latest state of a long-running operation.
 
@@ -9062,8 +9244,10 @@ class ContactCenterInsightsAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors,
                     if any, should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
         Returns:
             ~.operations_pb2.Operation:
                 An ``Operation`` object.
@@ -9104,7 +9288,7 @@ class ContactCenterInsightsAsyncClient:
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> None:
         r"""Starts asynchronous cancellation on a long-running operation.
 
@@ -9119,8 +9303,10 @@ class ContactCenterInsightsAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors,
                     if any, should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
         Returns:
             None
         """

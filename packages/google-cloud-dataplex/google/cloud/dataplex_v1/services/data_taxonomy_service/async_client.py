@@ -14,6 +14,7 @@
 # limitations under the License.
 #
 from collections import OrderedDict
+import logging as std_logging
 import re
 from typing import (
     Callable,
@@ -60,6 +61,15 @@ from google.cloud.dataplex_v1.types import security, service
 from .client import DataTaxonomyServiceClient
 from .transports.base import DEFAULT_CLIENT_INFO, DataTaxonomyServiceTransport
 from .transports.grpc_asyncio import DataTaxonomyServiceGrpcAsyncIOTransport
+
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = std_logging.getLogger(__name__)
 
 
 class DataTaxonomyServiceAsyncClient:
@@ -285,6 +295,28 @@ class DataTaxonomyServiceAsyncClient:
             client_info=client_info,
         )
 
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+            std_logging.DEBUG
+        ):  # pragma: NO COVER
+            _LOGGER.debug(
+                "Created client `google.cloud.dataplex_v1.DataTaxonomyServiceAsyncClient`.",
+                extra={
+                    "serviceName": "google.cloud.dataplex.v1.DataTaxonomyService",
+                    "universeDomain": getattr(
+                        self._client._transport._credentials, "universe_domain", ""
+                    ),
+                    "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
+                    "credentialsInfo": getattr(
+                        self.transport._credentials, "get_cred_info", lambda: None
+                    )(),
+                }
+                if hasattr(self._client._transport, "_credentials")
+                else {
+                    "serviceName": "google.cloud.dataplex.v1.DataTaxonomyService",
+                    "credentialsType": None,
+                },
+            )
+
     async def create_data_taxonomy(
         self,
         request: Optional[
@@ -296,7 +328,7 @@ class DataTaxonomyServiceAsyncClient:
         data_taxonomy_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Create a DataTaxonomy resource.
 
@@ -364,8 +396,10 @@ class DataTaxonomyServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.api_core.operation_async.AsyncOperation:
@@ -445,7 +479,7 @@ class DataTaxonomyServiceAsyncClient:
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Updates a DataTaxonomy resource.
 
@@ -496,8 +530,10 @@ class DataTaxonomyServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.api_core.operation_async.AsyncOperation:
@@ -574,7 +610,7 @@ class DataTaxonomyServiceAsyncClient:
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Deletes a DataTaxonomy resource. All attributes
         within the DataTaxonomy must be deleted before the
@@ -623,8 +659,10 @@ class DataTaxonomyServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.api_core.operation_async.AsyncOperation:
@@ -703,7 +741,7 @@ class DataTaxonomyServiceAsyncClient:
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListDataTaxonomiesAsyncPager:
         r"""Lists DataTaxonomy resources in a project and
         location.
@@ -750,8 +788,10 @@ class DataTaxonomyServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.dataplex_v1.services.data_taxonomy_service.pagers.ListDataTaxonomiesAsyncPager:
@@ -826,7 +866,7 @@ class DataTaxonomyServiceAsyncClient:
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> data_taxonomy.DataTaxonomy:
         r"""Retrieves a DataTaxonomy resource.
 
@@ -869,8 +909,10 @@ class DataTaxonomyServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.dataplex_v1.types.DataTaxonomy:
@@ -939,7 +981,7 @@ class DataTaxonomyServiceAsyncClient:
         data_attribute_binding_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Create a DataAttributeBinding resource.
 
@@ -1011,8 +1053,10 @@ class DataTaxonomyServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.api_core.operation_async.AsyncOperation:
@@ -1092,7 +1136,7 @@ class DataTaxonomyServiceAsyncClient:
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Updates a DataAttributeBinding resource.
 
@@ -1147,8 +1191,10 @@ class DataTaxonomyServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.api_core.operation_async.AsyncOperation:
@@ -1225,7 +1271,7 @@ class DataTaxonomyServiceAsyncClient:
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Deletes a DataAttributeBinding resource. All
         attributes within the DataAttributeBinding must be
@@ -1275,8 +1321,10 @@ class DataTaxonomyServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.api_core.operation_async.AsyncOperation:
@@ -1357,7 +1405,7 @@ class DataTaxonomyServiceAsyncClient:
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListDataAttributeBindingsAsyncPager:
         r"""Lists DataAttributeBinding resources in a project and
         location.
@@ -1402,8 +1450,10 @@ class DataTaxonomyServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.dataplex_v1.services.data_taxonomy_service.pagers.ListDataAttributeBindingsAsyncPager:
@@ -1480,7 +1530,7 @@ class DataTaxonomyServiceAsyncClient:
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> data_taxonomy.DataAttributeBinding:
         r"""Retrieves a DataAttributeBinding resource.
 
@@ -1523,8 +1573,10 @@ class DataTaxonomyServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.dataplex_v1.types.DataAttributeBinding:
@@ -1589,7 +1641,7 @@ class DataTaxonomyServiceAsyncClient:
         data_attribute_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Create a DataAttribute resource.
 
@@ -1655,8 +1707,10 @@ class DataTaxonomyServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.api_core.operation_async.AsyncOperation:
@@ -1736,7 +1790,7 @@ class DataTaxonomyServiceAsyncClient:
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Updates a DataAttribute resource.
 
@@ -1787,8 +1841,10 @@ class DataTaxonomyServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.api_core.operation_async.AsyncOperation:
@@ -1867,7 +1923,7 @@ class DataTaxonomyServiceAsyncClient:
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Deletes a Data Attribute resource.
 
@@ -1914,8 +1970,10 @@ class DataTaxonomyServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.api_core.operation_async.AsyncOperation:
@@ -1994,7 +2052,7 @@ class DataTaxonomyServiceAsyncClient:
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListDataAttributesAsyncPager:
         r"""Lists Data Attribute resources in a DataTaxonomy.
 
@@ -2038,8 +2096,10 @@ class DataTaxonomyServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.dataplex_v1.services.data_taxonomy_service.pagers.ListDataAttributesAsyncPager:
@@ -2114,7 +2174,7 @@ class DataTaxonomyServiceAsyncClient:
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> data_taxonomy.DataAttribute:
         r"""Retrieves a Data Attribute resource.
 
@@ -2157,8 +2217,10 @@ class DataTaxonomyServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.dataplex_v1.types.DataAttribute:
@@ -2222,7 +2284,7 @@ class DataTaxonomyServiceAsyncClient:
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operations_pb2.ListOperationsResponse:
         r"""Lists operations that match the specified filter in the request.
 
@@ -2233,8 +2295,10 @@ class DataTaxonomyServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors,
                     if any, should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
         Returns:
             ~.operations_pb2.ListOperationsResponse:
                 Response message for ``ListOperations`` method.
@@ -2275,7 +2339,7 @@ class DataTaxonomyServiceAsyncClient:
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operations_pb2.Operation:
         r"""Gets the latest state of a long-running operation.
 
@@ -2286,8 +2350,10 @@ class DataTaxonomyServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors,
                     if any, should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
         Returns:
             ~.operations_pb2.Operation:
                 An ``Operation`` object.
@@ -2328,7 +2394,7 @@ class DataTaxonomyServiceAsyncClient:
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> None:
         r"""Deletes a long-running operation.
 
@@ -2344,8 +2410,10 @@ class DataTaxonomyServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors,
                     if any, should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
         Returns:
             None
         """
@@ -2382,7 +2450,7 @@ class DataTaxonomyServiceAsyncClient:
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> None:
         r"""Starts asynchronous cancellation on a long-running operation.
 
@@ -2397,8 +2465,10 @@ class DataTaxonomyServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors,
                     if any, should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
         Returns:
             None
         """
@@ -2435,7 +2505,7 @@ class DataTaxonomyServiceAsyncClient:
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> locations_pb2.Location:
         r"""Gets information about a location.
 
@@ -2446,8 +2516,10 @@ class DataTaxonomyServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors,
                  if any, should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
         Returns:
             ~.location_pb2.Location:
                 Location object.
@@ -2488,7 +2560,7 @@ class DataTaxonomyServiceAsyncClient:
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> locations_pb2.ListLocationsResponse:
         r"""Lists information about the supported locations for this service.
 
@@ -2499,8 +2571,10 @@ class DataTaxonomyServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors,
                  if any, should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
         Returns:
             ~.location_pb2.ListLocationsResponse:
                 Response message for ``ListLocations`` method.

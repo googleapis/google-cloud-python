@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -41,6 +41,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -281,8 +289,11 @@ class DatastreamRestInterceptor:
     def pre_create_connection_profile(
         self,
         request: datastream.CreateConnectionProfileRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[datastream.CreateConnectionProfileRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        datastream.CreateConnectionProfileRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for create_connection_profile
 
         Override in a subclass to manipulate the request or metadata
@@ -304,8 +315,11 @@ class DatastreamRestInterceptor:
     def pre_create_private_connection(
         self,
         request: datastream.CreatePrivateConnectionRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[datastream.CreatePrivateConnectionRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        datastream.CreatePrivateConnectionRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for create_private_connection
 
         Override in a subclass to manipulate the request or metadata
@@ -327,8 +341,8 @@ class DatastreamRestInterceptor:
     def pre_create_route(
         self,
         request: datastream.CreateRouteRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[datastream.CreateRouteRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[datastream.CreateRouteRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_route
 
         Override in a subclass to manipulate the request or metadata
@@ -350,8 +364,8 @@ class DatastreamRestInterceptor:
     def pre_create_stream(
         self,
         request: datastream.CreateStreamRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[datastream.CreateStreamRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[datastream.CreateStreamRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_stream
 
         Override in a subclass to manipulate the request or metadata
@@ -373,8 +387,11 @@ class DatastreamRestInterceptor:
     def pre_delete_connection_profile(
         self,
         request: datastream.DeleteConnectionProfileRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[datastream.DeleteConnectionProfileRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        datastream.DeleteConnectionProfileRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for delete_connection_profile
 
         Override in a subclass to manipulate the request or metadata
@@ -396,8 +413,11 @@ class DatastreamRestInterceptor:
     def pre_delete_private_connection(
         self,
         request: datastream.DeletePrivateConnectionRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[datastream.DeletePrivateConnectionRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        datastream.DeletePrivateConnectionRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for delete_private_connection
 
         Override in a subclass to manipulate the request or metadata
@@ -419,8 +439,8 @@ class DatastreamRestInterceptor:
     def pre_delete_route(
         self,
         request: datastream.DeleteRouteRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[datastream.DeleteRouteRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[datastream.DeleteRouteRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_route
 
         Override in a subclass to manipulate the request or metadata
@@ -442,8 +462,8 @@ class DatastreamRestInterceptor:
     def pre_delete_stream(
         self,
         request: datastream.DeleteStreamRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[datastream.DeleteStreamRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[datastream.DeleteStreamRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_stream
 
         Override in a subclass to manipulate the request or metadata
@@ -465,8 +485,11 @@ class DatastreamRestInterceptor:
     def pre_discover_connection_profile(
         self,
         request: datastream.DiscoverConnectionProfileRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[datastream.DiscoverConnectionProfileRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        datastream.DiscoverConnectionProfileRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for discover_connection_profile
 
         Override in a subclass to manipulate the request or metadata
@@ -488,8 +511,10 @@ class DatastreamRestInterceptor:
     def pre_fetch_static_ips(
         self,
         request: datastream.FetchStaticIpsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[datastream.FetchStaticIpsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        datastream.FetchStaticIpsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for fetch_static_ips
 
         Override in a subclass to manipulate the request or metadata
@@ -511,8 +536,10 @@ class DatastreamRestInterceptor:
     def pre_get_connection_profile(
         self,
         request: datastream.GetConnectionProfileRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[datastream.GetConnectionProfileRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        datastream.GetConnectionProfileRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_connection_profile
 
         Override in a subclass to manipulate the request or metadata
@@ -534,8 +561,10 @@ class DatastreamRestInterceptor:
     def pre_get_private_connection(
         self,
         request: datastream.GetPrivateConnectionRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[datastream.GetPrivateConnectionRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        datastream.GetPrivateConnectionRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_private_connection
 
         Override in a subclass to manipulate the request or metadata
@@ -555,8 +584,10 @@ class DatastreamRestInterceptor:
         return response
 
     def pre_get_route(
-        self, request: datastream.GetRouteRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[datastream.GetRouteRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: datastream.GetRouteRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[datastream.GetRouteRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_route
 
         Override in a subclass to manipulate the request or metadata
@@ -576,8 +607,10 @@ class DatastreamRestInterceptor:
         return response
 
     def pre_get_stream(
-        self, request: datastream.GetStreamRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[datastream.GetStreamRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: datastream.GetStreamRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[datastream.GetStreamRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_stream
 
         Override in a subclass to manipulate the request or metadata
@@ -599,8 +632,10 @@ class DatastreamRestInterceptor:
     def pre_get_stream_object(
         self,
         request: datastream.GetStreamObjectRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[datastream.GetStreamObjectRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        datastream.GetStreamObjectRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_stream_object
 
         Override in a subclass to manipulate the request or metadata
@@ -622,8 +657,11 @@ class DatastreamRestInterceptor:
     def pre_list_connection_profiles(
         self,
         request: datastream.ListConnectionProfilesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[datastream.ListConnectionProfilesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        datastream.ListConnectionProfilesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for list_connection_profiles
 
         Override in a subclass to manipulate the request or metadata
@@ -645,8 +683,11 @@ class DatastreamRestInterceptor:
     def pre_list_private_connections(
         self,
         request: datastream.ListPrivateConnectionsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[datastream.ListPrivateConnectionsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        datastream.ListPrivateConnectionsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for list_private_connections
 
         Override in a subclass to manipulate the request or metadata
@@ -666,8 +707,10 @@ class DatastreamRestInterceptor:
         return response
 
     def pre_list_routes(
-        self, request: datastream.ListRoutesRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[datastream.ListRoutesRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: datastream.ListRoutesRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[datastream.ListRoutesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_routes
 
         Override in a subclass to manipulate the request or metadata
@@ -689,8 +732,10 @@ class DatastreamRestInterceptor:
     def pre_list_stream_objects(
         self,
         request: datastream.ListStreamObjectsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[datastream.ListStreamObjectsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        datastream.ListStreamObjectsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_stream_objects
 
         Override in a subclass to manipulate the request or metadata
@@ -712,8 +757,8 @@ class DatastreamRestInterceptor:
     def pre_list_streams(
         self,
         request: datastream.ListStreamsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[datastream.ListStreamsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[datastream.ListStreamsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_streams
 
         Override in a subclass to manipulate the request or metadata
@@ -735,8 +780,10 @@ class DatastreamRestInterceptor:
     def pre_lookup_stream_object(
         self,
         request: datastream.LookupStreamObjectRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[datastream.LookupStreamObjectRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        datastream.LookupStreamObjectRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for lookup_stream_object
 
         Override in a subclass to manipulate the request or metadata
@@ -756,8 +803,10 @@ class DatastreamRestInterceptor:
         return response
 
     def pre_run_stream(
-        self, request: datastream.RunStreamRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[datastream.RunStreamRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: datastream.RunStreamRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[datastream.RunStreamRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for run_stream
 
         Override in a subclass to manipulate the request or metadata
@@ -779,8 +828,10 @@ class DatastreamRestInterceptor:
     def pre_start_backfill_job(
         self,
         request: datastream.StartBackfillJobRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[datastream.StartBackfillJobRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        datastream.StartBackfillJobRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for start_backfill_job
 
         Override in a subclass to manipulate the request or metadata
@@ -802,8 +853,10 @@ class DatastreamRestInterceptor:
     def pre_stop_backfill_job(
         self,
         request: datastream.StopBackfillJobRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[datastream.StopBackfillJobRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        datastream.StopBackfillJobRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for stop_backfill_job
 
         Override in a subclass to manipulate the request or metadata
@@ -825,8 +878,11 @@ class DatastreamRestInterceptor:
     def pre_update_connection_profile(
         self,
         request: datastream.UpdateConnectionProfileRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[datastream.UpdateConnectionProfileRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        datastream.UpdateConnectionProfileRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for update_connection_profile
 
         Override in a subclass to manipulate the request or metadata
@@ -848,8 +904,8 @@ class DatastreamRestInterceptor:
     def pre_update_stream(
         self,
         request: datastream.UpdateStreamRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[datastream.UpdateStreamRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[datastream.UpdateStreamRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_stream
 
         Override in a subclass to manipulate the request or metadata
@@ -871,8 +927,10 @@ class DatastreamRestInterceptor:
     def pre_get_location(
         self,
         request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -894,8 +952,10 @@ class DatastreamRestInterceptor:
     def pre_list_locations(
         self,
         request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -917,8 +977,10 @@ class DatastreamRestInterceptor:
     def pre_cancel_operation(
         self,
         request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -938,8 +1000,10 @@ class DatastreamRestInterceptor:
     def pre_delete_operation(
         self,
         request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -959,8 +1023,10 @@ class DatastreamRestInterceptor:
     def pre_get_operation(
         self,
         request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -982,8 +1048,10 @@ class DatastreamRestInterceptor:
     def pre_list_operations(
         self,
         request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -1178,7 +1246,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create connection profile method over HTTP.
 
@@ -1189,8 +1257,10 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1203,6 +1273,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             http_options = (
                 _BaseDatastreamRestTransport._BaseCreateConnectionProfile._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_connection_profile(
                 request, metadata
             )
@@ -1218,6 +1289,33 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             query_params = _BaseDatastreamRestTransport._BaseCreateConnectionProfile._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.datastream_v1.DatastreamClient.CreateConnectionProfile",
+                    extra={
+                        "serviceName": "google.cloud.datastream.v1.Datastream",
+                        "rpcName": "CreateConnectionProfile",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DatastreamRestTransport._CreateConnectionProfile._get_response(
@@ -1238,7 +1336,29 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_connection_profile(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.datastream_v1.DatastreamClient.create_connection_profile",
+                    extra={
+                        "serviceName": "google.cloud.datastream.v1.Datastream",
+                        "rpcName": "CreateConnectionProfile",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreatePrivateConnection(
@@ -1276,7 +1396,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create private connection method over HTTP.
 
@@ -1287,8 +1407,10 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1301,6 +1423,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             http_options = (
                 _BaseDatastreamRestTransport._BaseCreatePrivateConnection._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_private_connection(
                 request, metadata
             )
@@ -1316,6 +1439,33 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             query_params = _BaseDatastreamRestTransport._BaseCreatePrivateConnection._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.datastream_v1.DatastreamClient.CreatePrivateConnection",
+                    extra={
+                        "serviceName": "google.cloud.datastream.v1.Datastream",
+                        "rpcName": "CreatePrivateConnection",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DatastreamRestTransport._CreatePrivateConnection._get_response(
@@ -1336,7 +1486,29 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_private_connection(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.datastream_v1.DatastreamClient.create_private_connection",
+                    extra={
+                        "serviceName": "google.cloud.datastream.v1.Datastream",
+                        "rpcName": "CreatePrivateConnection",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateRoute(
@@ -1374,7 +1546,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create route method over HTTP.
 
@@ -1384,8 +1556,10 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1398,6 +1572,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             http_options = (
                 _BaseDatastreamRestTransport._BaseCreateRoute._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_route(request, metadata)
             transcoded_request = (
                 _BaseDatastreamRestTransport._BaseCreateRoute._get_transcoded_request(
@@ -1415,6 +1590,33 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.datastream_v1.DatastreamClient.CreateRoute",
+                    extra={
+                        "serviceName": "google.cloud.datastream.v1.Datastream",
+                        "rpcName": "CreateRoute",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DatastreamRestTransport._CreateRoute._get_response(
@@ -1435,7 +1637,29 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_route(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.datastream_v1.DatastreamClient.create_route",
+                    extra={
+                        "serviceName": "google.cloud.datastream.v1.Datastream",
+                        "rpcName": "CreateRoute",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateStream(
@@ -1473,7 +1697,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create stream method over HTTP.
 
@@ -1484,8 +1708,10 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1498,6 +1724,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             http_options = (
                 _BaseDatastreamRestTransport._BaseCreateStream._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_stream(request, metadata)
             transcoded_request = (
                 _BaseDatastreamRestTransport._BaseCreateStream._get_transcoded_request(
@@ -1518,6 +1745,33 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
                 )
             )
 
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.datastream_v1.DatastreamClient.CreateStream",
+                    extra={
+                        "serviceName": "google.cloud.datastream.v1.Datastream",
+                        "rpcName": "CreateStream",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
             # Send the request
             response = DatastreamRestTransport._CreateStream._get_response(
                 self._host,
@@ -1537,7 +1791,29 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_stream(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.datastream_v1.DatastreamClient.create_stream",
+                    extra={
+                        "serviceName": "google.cloud.datastream.v1.Datastream",
+                        "rpcName": "CreateStream",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteConnectionProfile(
@@ -1574,7 +1850,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete connection profile method over HTTP.
 
@@ -1585,8 +1861,10 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1599,6 +1877,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             http_options = (
                 _BaseDatastreamRestTransport._BaseDeleteConnectionProfile._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_connection_profile(
                 request, metadata
             )
@@ -1610,6 +1889,33 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             query_params = _BaseDatastreamRestTransport._BaseDeleteConnectionProfile._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.datastream_v1.DatastreamClient.DeleteConnectionProfile",
+                    extra={
+                        "serviceName": "google.cloud.datastream.v1.Datastream",
+                        "rpcName": "DeleteConnectionProfile",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DatastreamRestTransport._DeleteConnectionProfile._get_response(
@@ -1629,7 +1935,29 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_connection_profile(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.datastream_v1.DatastreamClient.delete_connection_profile",
+                    extra={
+                        "serviceName": "google.cloud.datastream.v1.Datastream",
+                        "rpcName": "DeleteConnectionProfile",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeletePrivateConnection(
@@ -1666,7 +1994,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete private connection method over HTTP.
 
@@ -1677,8 +2005,10 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1691,6 +2021,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             http_options = (
                 _BaseDatastreamRestTransport._BaseDeletePrivateConnection._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_private_connection(
                 request, metadata
             )
@@ -1702,6 +2033,33 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             query_params = _BaseDatastreamRestTransport._BaseDeletePrivateConnection._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.datastream_v1.DatastreamClient.DeletePrivateConnection",
+                    extra={
+                        "serviceName": "google.cloud.datastream.v1.Datastream",
+                        "rpcName": "DeletePrivateConnection",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DatastreamRestTransport._DeletePrivateConnection._get_response(
@@ -1721,7 +2079,29 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_private_connection(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.datastream_v1.DatastreamClient.delete_private_connection",
+                    extra={
+                        "serviceName": "google.cloud.datastream.v1.Datastream",
+                        "rpcName": "DeletePrivateConnection",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteRoute(
@@ -1758,7 +2138,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete route method over HTTP.
 
@@ -1768,8 +2148,10 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1782,6 +2164,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             http_options = (
                 _BaseDatastreamRestTransport._BaseDeleteRoute._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_route(request, metadata)
             transcoded_request = (
                 _BaseDatastreamRestTransport._BaseDeleteRoute._get_transcoded_request(
@@ -1795,6 +2178,33 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.datastream_v1.DatastreamClient.DeleteRoute",
+                    extra={
+                        "serviceName": "google.cloud.datastream.v1.Datastream",
+                        "rpcName": "DeleteRoute",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DatastreamRestTransport._DeleteRoute._get_response(
@@ -1814,7 +2224,29 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_route(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.datastream_v1.DatastreamClient.delete_route",
+                    extra={
+                        "serviceName": "google.cloud.datastream.v1.Datastream",
+                        "rpcName": "DeleteRoute",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteStream(
@@ -1851,7 +2283,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete stream method over HTTP.
 
@@ -1862,8 +2294,10 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1876,6 +2310,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             http_options = (
                 _BaseDatastreamRestTransport._BaseDeleteStream._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_stream(request, metadata)
             transcoded_request = (
                 _BaseDatastreamRestTransport._BaseDeleteStream._get_transcoded_request(
@@ -1889,6 +2324,33 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.datastream_v1.DatastreamClient.DeleteStream",
+                    extra={
+                        "serviceName": "google.cloud.datastream.v1.Datastream",
+                        "rpcName": "DeleteStream",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DatastreamRestTransport._DeleteStream._get_response(
@@ -1908,7 +2370,29 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_stream(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.datastream_v1.DatastreamClient.delete_stream",
+                    extra={
+                        "serviceName": "google.cloud.datastream.v1.Datastream",
+                        "rpcName": "DeleteStream",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DiscoverConnectionProfile(
@@ -1946,7 +2430,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> datastream.DiscoverConnectionProfileResponse:
             r"""Call the discover connection
             profile method over HTTP.
@@ -1958,8 +2442,10 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.datastream.DiscoverConnectionProfileResponse:
@@ -1969,6 +2455,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             http_options = (
                 _BaseDatastreamRestTransport._BaseDiscoverConnectionProfile._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_discover_connection_profile(
                 request, metadata
             )
@@ -1984,6 +2471,33 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             query_params = _BaseDatastreamRestTransport._BaseDiscoverConnectionProfile._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.datastream_v1.DatastreamClient.DiscoverConnectionProfile",
+                    extra={
+                        "serviceName": "google.cloud.datastream.v1.Datastream",
+                        "rpcName": "DiscoverConnectionProfile",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DatastreamRestTransport._DiscoverConnectionProfile._get_response(
@@ -2006,7 +2520,31 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             pb_resp = datastream.DiscoverConnectionProfileResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_discover_connection_profile(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        datastream.DiscoverConnectionProfileResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.datastream_v1.DatastreamClient.discover_connection_profile",
+                    extra={
+                        "serviceName": "google.cloud.datastream.v1.Datastream",
+                        "rpcName": "DiscoverConnectionProfile",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _FetchStaticIps(
@@ -2043,7 +2581,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> datastream.FetchStaticIpsResponse:
             r"""Call the fetch static ips method over HTTP.
 
@@ -2054,8 +2592,10 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.datastream.FetchStaticIpsResponse:
@@ -2067,6 +2607,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             http_options = (
                 _BaseDatastreamRestTransport._BaseFetchStaticIps._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_fetch_static_ips(
                 request, metadata
             )
@@ -2080,6 +2621,33 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.datastream_v1.DatastreamClient.FetchStaticIps",
+                    extra={
+                        "serviceName": "google.cloud.datastream.v1.Datastream",
+                        "rpcName": "FetchStaticIps",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DatastreamRestTransport._FetchStaticIps._get_response(
@@ -2101,7 +2669,31 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             pb_resp = datastream.FetchStaticIpsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_fetch_static_ips(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = datastream.FetchStaticIpsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.datastream_v1.DatastreamClient.fetch_static_ips",
+                    extra={
+                        "serviceName": "google.cloud.datastream.v1.Datastream",
+                        "rpcName": "FetchStaticIps",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetConnectionProfile(
@@ -2138,7 +2730,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> datastream_resources.ConnectionProfile:
             r"""Call the get connection profile method over HTTP.
 
@@ -2149,8 +2741,10 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.datastream_resources.ConnectionProfile:
@@ -2163,6 +2757,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             http_options = (
                 _BaseDatastreamRestTransport._BaseGetConnectionProfile._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_connection_profile(
                 request, metadata
             )
@@ -2174,6 +2769,33 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             query_params = _BaseDatastreamRestTransport._BaseGetConnectionProfile._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.datastream_v1.DatastreamClient.GetConnectionProfile",
+                    extra={
+                        "serviceName": "google.cloud.datastream.v1.Datastream",
+                        "rpcName": "GetConnectionProfile",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DatastreamRestTransport._GetConnectionProfile._get_response(
@@ -2195,7 +2817,31 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             pb_resp = datastream_resources.ConnectionProfile.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_connection_profile(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = datastream_resources.ConnectionProfile.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.datastream_v1.DatastreamClient.get_connection_profile",
+                    extra={
+                        "serviceName": "google.cloud.datastream.v1.Datastream",
+                        "rpcName": "GetConnectionProfile",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetPrivateConnection(
@@ -2232,7 +2878,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> datastream_resources.PrivateConnection:
             r"""Call the get private connection method over HTTP.
 
@@ -2243,8 +2889,10 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.datastream_resources.PrivateConnection:
@@ -2258,6 +2906,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             http_options = (
                 _BaseDatastreamRestTransport._BaseGetPrivateConnection._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_private_connection(
                 request, metadata
             )
@@ -2269,6 +2918,33 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             query_params = _BaseDatastreamRestTransport._BaseGetPrivateConnection._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.datastream_v1.DatastreamClient.GetPrivateConnection",
+                    extra={
+                        "serviceName": "google.cloud.datastream.v1.Datastream",
+                        "rpcName": "GetPrivateConnection",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DatastreamRestTransport._GetPrivateConnection._get_response(
@@ -2290,7 +2966,31 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             pb_resp = datastream_resources.PrivateConnection.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_private_connection(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = datastream_resources.PrivateConnection.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.datastream_v1.DatastreamClient.get_private_connection",
+                    extra={
+                        "serviceName": "google.cloud.datastream.v1.Datastream",
+                        "rpcName": "GetPrivateConnection",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetRoute(_BaseDatastreamRestTransport._BaseGetRoute, DatastreamRestStub):
@@ -2325,7 +3025,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> datastream_resources.Route:
             r"""Call the get route method over HTTP.
 
@@ -2335,8 +3035,10 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.datastream_resources.Route:
@@ -2350,6 +3052,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             http_options = (
                 _BaseDatastreamRestTransport._BaseGetRoute._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_route(request, metadata)
             transcoded_request = (
                 _BaseDatastreamRestTransport._BaseGetRoute._get_transcoded_request(
@@ -2363,6 +3066,33 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.datastream_v1.DatastreamClient.GetRoute",
+                    extra={
+                        "serviceName": "google.cloud.datastream.v1.Datastream",
+                        "rpcName": "GetRoute",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DatastreamRestTransport._GetRoute._get_response(
@@ -2384,7 +3114,29 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             pb_resp = datastream_resources.Route.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_route(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = datastream_resources.Route.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.datastream_v1.DatastreamClient.get_route",
+                    extra={
+                        "serviceName": "google.cloud.datastream.v1.Datastream",
+                        "rpcName": "GetRoute",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetStream(_BaseDatastreamRestTransport._BaseGetStream, DatastreamRestStub):
@@ -2419,7 +3171,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> datastream_resources.Stream:
             r"""Call the get stream method over HTTP.
 
@@ -2429,8 +3181,10 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.datastream_resources.Stream:
@@ -2442,6 +3196,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             http_options = (
                 _BaseDatastreamRestTransport._BaseGetStream._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_stream(request, metadata)
             transcoded_request = (
                 _BaseDatastreamRestTransport._BaseGetStream._get_transcoded_request(
@@ -2455,6 +3210,33 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.datastream_v1.DatastreamClient.GetStream",
+                    extra={
+                        "serviceName": "google.cloud.datastream.v1.Datastream",
+                        "rpcName": "GetStream",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DatastreamRestTransport._GetStream._get_response(
@@ -2476,7 +3258,29 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             pb_resp = datastream_resources.Stream.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_stream(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = datastream_resources.Stream.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.datastream_v1.DatastreamClient.get_stream",
+                    extra={
+                        "serviceName": "google.cloud.datastream.v1.Datastream",
+                        "rpcName": "GetStream",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetStreamObject(
@@ -2513,7 +3317,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> datastream_resources.StreamObject:
             r"""Call the get stream object method over HTTP.
 
@@ -2524,8 +3328,10 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.datastream_resources.StreamObject:
@@ -2537,6 +3343,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             http_options = (
                 _BaseDatastreamRestTransport._BaseGetStreamObject._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_stream_object(
                 request, metadata
             )
@@ -2548,6 +3355,33 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             query_params = _BaseDatastreamRestTransport._BaseGetStreamObject._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.datastream_v1.DatastreamClient.GetStreamObject",
+                    extra={
+                        "serviceName": "google.cloud.datastream.v1.Datastream",
+                        "rpcName": "GetStreamObject",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DatastreamRestTransport._GetStreamObject._get_response(
@@ -2569,7 +3403,31 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             pb_resp = datastream_resources.StreamObject.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_stream_object(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = datastream_resources.StreamObject.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.datastream_v1.DatastreamClient.get_stream_object",
+                    extra={
+                        "serviceName": "google.cloud.datastream.v1.Datastream",
+                        "rpcName": "GetStreamObject",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListConnectionProfiles(
@@ -2606,7 +3464,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> datastream.ListConnectionProfilesResponse:
             r"""Call the list connection profiles method over HTTP.
 
@@ -2617,8 +3475,10 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.datastream.ListConnectionProfilesResponse:
@@ -2630,6 +3490,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             http_options = (
                 _BaseDatastreamRestTransport._BaseListConnectionProfiles._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_connection_profiles(
                 request, metadata
             )
@@ -2641,6 +3502,33 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             query_params = _BaseDatastreamRestTransport._BaseListConnectionProfiles._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.datastream_v1.DatastreamClient.ListConnectionProfiles",
+                    extra={
+                        "serviceName": "google.cloud.datastream.v1.Datastream",
+                        "rpcName": "ListConnectionProfiles",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DatastreamRestTransport._ListConnectionProfiles._get_response(
@@ -2662,7 +3550,31 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             pb_resp = datastream.ListConnectionProfilesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_connection_profiles(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        datastream.ListConnectionProfilesResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.datastream_v1.DatastreamClient.list_connection_profiles",
+                    extra={
+                        "serviceName": "google.cloud.datastream.v1.Datastream",
+                        "rpcName": "ListConnectionProfiles",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListPrivateConnections(
@@ -2699,7 +3611,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> datastream.ListPrivateConnectionsResponse:
             r"""Call the list private connections method over HTTP.
 
@@ -2710,8 +3622,10 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.datastream.ListPrivateConnectionsResponse:
@@ -2723,6 +3637,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             http_options = (
                 _BaseDatastreamRestTransport._BaseListPrivateConnections._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_private_connections(
                 request, metadata
             )
@@ -2734,6 +3649,33 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             query_params = _BaseDatastreamRestTransport._BaseListPrivateConnections._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.datastream_v1.DatastreamClient.ListPrivateConnections",
+                    extra={
+                        "serviceName": "google.cloud.datastream.v1.Datastream",
+                        "rpcName": "ListPrivateConnections",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DatastreamRestTransport._ListPrivateConnections._get_response(
@@ -2755,7 +3697,31 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             pb_resp = datastream.ListPrivateConnectionsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_private_connections(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        datastream.ListPrivateConnectionsResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.datastream_v1.DatastreamClient.list_private_connections",
+                    extra={
+                        "serviceName": "google.cloud.datastream.v1.Datastream",
+                        "rpcName": "ListPrivateConnections",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListRoutes(_BaseDatastreamRestTransport._BaseListRoutes, DatastreamRestStub):
@@ -2790,7 +3756,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> datastream.ListRoutesResponse:
             r"""Call the list routes method over HTTP.
 
@@ -2800,8 +3766,10 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.datastream.ListRoutesResponse:
@@ -2811,6 +3779,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             http_options = (
                 _BaseDatastreamRestTransport._BaseListRoutes._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_routes(request, metadata)
             transcoded_request = (
                 _BaseDatastreamRestTransport._BaseListRoutes._get_transcoded_request(
@@ -2824,6 +3793,33 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.datastream_v1.DatastreamClient.ListRoutes",
+                    extra={
+                        "serviceName": "google.cloud.datastream.v1.Datastream",
+                        "rpcName": "ListRoutes",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DatastreamRestTransport._ListRoutes._get_response(
@@ -2845,7 +3841,29 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             pb_resp = datastream.ListRoutesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_routes(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = datastream.ListRoutesResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.datastream_v1.DatastreamClient.list_routes",
+                    extra={
+                        "serviceName": "google.cloud.datastream.v1.Datastream",
+                        "rpcName": "ListRoutes",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListStreamObjects(
@@ -2882,7 +3900,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> datastream.ListStreamObjectsResponse:
             r"""Call the list stream objects method over HTTP.
 
@@ -2893,8 +3911,10 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.datastream.ListStreamObjectsResponse:
@@ -2906,6 +3926,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             http_options = (
                 _BaseDatastreamRestTransport._BaseListStreamObjects._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_stream_objects(
                 request, metadata
             )
@@ -2917,6 +3938,33 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             query_params = _BaseDatastreamRestTransport._BaseListStreamObjects._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.datastream_v1.DatastreamClient.ListStreamObjects",
+                    extra={
+                        "serviceName": "google.cloud.datastream.v1.Datastream",
+                        "rpcName": "ListStreamObjects",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DatastreamRestTransport._ListStreamObjects._get_response(
@@ -2938,7 +3986,31 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             pb_resp = datastream.ListStreamObjectsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_stream_objects(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = datastream.ListStreamObjectsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.datastream_v1.DatastreamClient.list_stream_objects",
+                    extra={
+                        "serviceName": "google.cloud.datastream.v1.Datastream",
+                        "rpcName": "ListStreamObjects",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListStreams(
@@ -2975,7 +4047,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> datastream.ListStreamsResponse:
             r"""Call the list streams method over HTTP.
 
@@ -2985,8 +4057,10 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.datastream.ListStreamsResponse:
@@ -2996,6 +4070,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             http_options = (
                 _BaseDatastreamRestTransport._BaseListStreams._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_streams(request, metadata)
             transcoded_request = (
                 _BaseDatastreamRestTransport._BaseListStreams._get_transcoded_request(
@@ -3009,6 +4084,33 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.datastream_v1.DatastreamClient.ListStreams",
+                    extra={
+                        "serviceName": "google.cloud.datastream.v1.Datastream",
+                        "rpcName": "ListStreams",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DatastreamRestTransport._ListStreams._get_response(
@@ -3030,7 +4132,29 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             pb_resp = datastream.ListStreamsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_streams(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = datastream.ListStreamsResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.datastream_v1.DatastreamClient.list_streams",
+                    extra={
+                        "serviceName": "google.cloud.datastream.v1.Datastream",
+                        "rpcName": "ListStreams",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _LookupStreamObject(
@@ -3068,7 +4192,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> datastream_resources.StreamObject:
             r"""Call the lookup stream object method over HTTP.
 
@@ -3080,8 +4204,10 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.datastream_resources.StreamObject:
@@ -3093,6 +4219,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             http_options = (
                 _BaseDatastreamRestTransport._BaseLookupStreamObject._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_lookup_stream_object(
                 request, metadata
             )
@@ -3108,6 +4235,33 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             query_params = _BaseDatastreamRestTransport._BaseLookupStreamObject._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.datastream_v1.DatastreamClient.LookupStreamObject",
+                    extra={
+                        "serviceName": "google.cloud.datastream.v1.Datastream",
+                        "rpcName": "LookupStreamObject",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DatastreamRestTransport._LookupStreamObject._get_response(
@@ -3130,7 +4284,31 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             pb_resp = datastream_resources.StreamObject.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_lookup_stream_object(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = datastream_resources.StreamObject.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.datastream_v1.DatastreamClient.lookup_stream_object",
+                    extra={
+                        "serviceName": "google.cloud.datastream.v1.Datastream",
+                        "rpcName": "LookupStreamObject",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _RunStream(_BaseDatastreamRestTransport._BaseRunStream, DatastreamRestStub):
@@ -3166,7 +4344,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the run stream method over HTTP.
 
@@ -3176,8 +4354,10 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -3190,6 +4370,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             http_options = (
                 _BaseDatastreamRestTransport._BaseRunStream._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_run_stream(request, metadata)
             transcoded_request = (
                 _BaseDatastreamRestTransport._BaseRunStream._get_transcoded_request(
@@ -3207,6 +4388,33 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.datastream_v1.DatastreamClient.RunStream",
+                    extra={
+                        "serviceName": "google.cloud.datastream.v1.Datastream",
+                        "rpcName": "RunStream",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DatastreamRestTransport._RunStream._get_response(
@@ -3227,7 +4435,29 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_run_stream(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.datastream_v1.DatastreamClient.run_stream",
+                    extra={
+                        "serviceName": "google.cloud.datastream.v1.Datastream",
+                        "rpcName": "RunStream",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _StartBackfillJob(
@@ -3265,7 +4495,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> datastream.StartBackfillJobResponse:
             r"""Call the start backfill job method over HTTP.
 
@@ -3277,8 +4507,10 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.datastream.StartBackfillJobResponse:
@@ -3291,6 +4523,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             http_options = (
                 _BaseDatastreamRestTransport._BaseStartBackfillJob._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_start_backfill_job(
                 request, metadata
             )
@@ -3306,6 +4539,33 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             query_params = _BaseDatastreamRestTransport._BaseStartBackfillJob._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.datastream_v1.DatastreamClient.StartBackfillJob",
+                    extra={
+                        "serviceName": "google.cloud.datastream.v1.Datastream",
+                        "rpcName": "StartBackfillJob",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DatastreamRestTransport._StartBackfillJob._get_response(
@@ -3328,7 +4588,31 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             pb_resp = datastream.StartBackfillJobResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_start_backfill_job(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = datastream.StartBackfillJobResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.datastream_v1.DatastreamClient.start_backfill_job",
+                    extra={
+                        "serviceName": "google.cloud.datastream.v1.Datastream",
+                        "rpcName": "StartBackfillJob",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _StopBackfillJob(
@@ -3366,7 +4650,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> datastream.StopBackfillJobResponse:
             r"""Call the stop backfill job method over HTTP.
 
@@ -3378,8 +4662,10 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.datastream.StopBackfillJobResponse:
@@ -3391,6 +4677,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             http_options = (
                 _BaseDatastreamRestTransport._BaseStopBackfillJob._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_stop_backfill_job(
                 request, metadata
             )
@@ -3406,6 +4693,33 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             query_params = _BaseDatastreamRestTransport._BaseStopBackfillJob._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.datastream_v1.DatastreamClient.StopBackfillJob",
+                    extra={
+                        "serviceName": "google.cloud.datastream.v1.Datastream",
+                        "rpcName": "StopBackfillJob",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DatastreamRestTransport._StopBackfillJob._get_response(
@@ -3428,7 +4742,31 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             pb_resp = datastream.StopBackfillJobResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_stop_backfill_job(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = datastream.StopBackfillJobResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.datastream_v1.DatastreamClient.stop_backfill_job",
+                    extra={
+                        "serviceName": "google.cloud.datastream.v1.Datastream",
+                        "rpcName": "StopBackfillJob",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateConnectionProfile(
@@ -3466,7 +4804,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update connection profile method over HTTP.
 
@@ -3476,8 +4814,10 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -3490,6 +4830,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             http_options = (
                 _BaseDatastreamRestTransport._BaseUpdateConnectionProfile._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_connection_profile(
                 request, metadata
             )
@@ -3505,6 +4846,33 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             query_params = _BaseDatastreamRestTransport._BaseUpdateConnectionProfile._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.datastream_v1.DatastreamClient.UpdateConnectionProfile",
+                    extra={
+                        "serviceName": "google.cloud.datastream.v1.Datastream",
+                        "rpcName": "UpdateConnectionProfile",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DatastreamRestTransport._UpdateConnectionProfile._get_response(
@@ -3525,7 +4893,29 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_connection_profile(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.datastream_v1.DatastreamClient.update_connection_profile",
+                    extra={
+                        "serviceName": "google.cloud.datastream.v1.Datastream",
+                        "rpcName": "UpdateConnectionProfile",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateStream(
@@ -3563,7 +4953,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update stream method over HTTP.
 
@@ -3574,8 +4964,10 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -3588,6 +4980,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             http_options = (
                 _BaseDatastreamRestTransport._BaseUpdateStream._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_stream(request, metadata)
             transcoded_request = (
                 _BaseDatastreamRestTransport._BaseUpdateStream._get_transcoded_request(
@@ -3608,6 +5001,33 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
                 )
             )
 
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.datastream_v1.DatastreamClient.UpdateStream",
+                    extra={
+                        "serviceName": "google.cloud.datastream.v1.Datastream",
+                        "rpcName": "UpdateStream",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
             # Send the request
             response = DatastreamRestTransport._UpdateStream._get_response(
                 self._host,
@@ -3627,7 +5047,29 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_stream(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.datastream_v1.DatastreamClient.update_stream",
+                    extra={
+                        "serviceName": "google.cloud.datastream.v1.Datastream",
+                        "rpcName": "UpdateStream",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -3911,7 +5353,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.Location:
             r"""Call the get location method over HTTP.
 
@@ -3921,8 +5363,10 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.Location: Response from GetLocation method.
@@ -3931,6 +5375,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             http_options = (
                 _BaseDatastreamRestTransport._BaseGetLocation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_location(request, metadata)
             transcoded_request = (
                 _BaseDatastreamRestTransport._BaseGetLocation._get_transcoded_request(
@@ -3944,6 +5389,33 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.datastream_v1.DatastreamClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.datastream.v1.Datastream",
+                        "rpcName": "GetLocation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DatastreamRestTransport._GetLocation._get_response(
@@ -3964,6 +5436,27 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.datastream_v1.DatastreamAsyncClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.datastream.v1.Datastream",
+                        "rpcName": "GetLocation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -4004,7 +5497,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.ListLocationsResponse:
             r"""Call the list locations method over HTTP.
 
@@ -4014,8 +5507,10 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
@@ -4024,6 +5519,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             http_options = (
                 _BaseDatastreamRestTransport._BaseListLocations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
             transcoded_request = (
                 _BaseDatastreamRestTransport._BaseListLocations._get_transcoded_request(
@@ -4037,6 +5533,33 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.datastream_v1.DatastreamClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.datastream.v1.Datastream",
+                        "rpcName": "ListLocations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DatastreamRestTransport._ListLocations._get_response(
@@ -4057,6 +5580,27 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.datastream_v1.DatastreamAsyncClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.datastream.v1.Datastream",
+                        "rpcName": "ListLocations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -4098,7 +5642,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the cancel operation method over HTTP.
 
@@ -4108,13 +5652,16 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseDatastreamRestTransport._BaseCancelOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
@@ -4130,6 +5677,33 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             query_params = _BaseDatastreamRestTransport._BaseCancelOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.datastream_v1.DatastreamClient.CancelOperation",
+                    extra={
+                        "serviceName": "google.cloud.datastream.v1.Datastream",
+                        "rpcName": "CancelOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DatastreamRestTransport._CancelOperation._get_response(
@@ -4187,7 +5761,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the delete operation method over HTTP.
 
@@ -4197,13 +5771,16 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseDatastreamRestTransport._BaseDeleteOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
             )
@@ -4215,6 +5792,33 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             query_params = _BaseDatastreamRestTransport._BaseDeleteOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.datastream_v1.DatastreamClient.DeleteOperation",
+                    extra={
+                        "serviceName": "google.cloud.datastream.v1.Datastream",
+                        "rpcName": "DeleteOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DatastreamRestTransport._DeleteOperation._get_response(
@@ -4271,7 +5875,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the get operation method over HTTP.
 
@@ -4281,8 +5885,10 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.
@@ -4291,6 +5897,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             http_options = (
                 _BaseDatastreamRestTransport._BaseGetOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = (
                 _BaseDatastreamRestTransport._BaseGetOperation._get_transcoded_request(
@@ -4304,6 +5911,33 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.datastream_v1.DatastreamClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.datastream.v1.Datastream",
+                        "rpcName": "GetOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DatastreamRestTransport._GetOperation._get_response(
@@ -4324,6 +5958,27 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.datastream_v1.DatastreamAsyncClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.datastream.v1.Datastream",
+                        "rpcName": "GetOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -4364,7 +6019,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.ListOperationsResponse:
             r"""Call the list operations method over HTTP.
 
@@ -4374,8 +6029,10 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
@@ -4384,6 +6041,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             http_options = (
                 _BaseDatastreamRestTransport._BaseListOperations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseDatastreamRestTransport._BaseListOperations._get_transcoded_request(
                 http_options, request
@@ -4395,6 +6053,33 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.datastream_v1.DatastreamClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.datastream.v1.Datastream",
+                        "rpcName": "ListOperations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DatastreamRestTransport._ListOperations._get_response(
@@ -4415,6 +6100,27 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.datastream_v1.DatastreamAsyncClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.datastream.v1.Datastream",
+                        "rpcName": "ListOperations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property

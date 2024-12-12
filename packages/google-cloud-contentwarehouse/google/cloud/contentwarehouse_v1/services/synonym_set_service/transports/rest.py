@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -42,6 +42,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -110,9 +118,10 @@ class SynonymSetServiceRestInterceptor:
     def pre_create_synonym_set(
         self,
         request: synonymset_service_request.CreateSynonymSetRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        synonymset_service_request.CreateSynonymSetRequest, Sequence[Tuple[str, str]]
+        synonymset_service_request.CreateSynonymSetRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for create_synonym_set
 
@@ -135,9 +144,10 @@ class SynonymSetServiceRestInterceptor:
     def pre_delete_synonym_set(
         self,
         request: synonymset_service_request.DeleteSynonymSetRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        synonymset_service_request.DeleteSynonymSetRequest, Sequence[Tuple[str, str]]
+        synonymset_service_request.DeleteSynonymSetRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for delete_synonym_set
 
@@ -149,9 +159,10 @@ class SynonymSetServiceRestInterceptor:
     def pre_get_synonym_set(
         self,
         request: synonymset_service_request.GetSynonymSetRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        synonymset_service_request.GetSynonymSetRequest, Sequence[Tuple[str, str]]
+        synonymset_service_request.GetSynonymSetRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for get_synonym_set
 
@@ -174,9 +185,10 @@ class SynonymSetServiceRestInterceptor:
     def pre_list_synonym_sets(
         self,
         request: synonymset_service_request.ListSynonymSetsRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        synonymset_service_request.ListSynonymSetsRequest, Sequence[Tuple[str, str]]
+        synonymset_service_request.ListSynonymSetsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for list_synonym_sets
 
@@ -199,9 +211,10 @@ class SynonymSetServiceRestInterceptor:
     def pre_update_synonym_set(
         self,
         request: synonymset_service_request.UpdateSynonymSetRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        synonymset_service_request.UpdateSynonymSetRequest, Sequence[Tuple[str, str]]
+        synonymset_service_request.UpdateSynonymSetRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for update_synonym_set
 
@@ -224,8 +237,10 @@ class SynonymSetServiceRestInterceptor:
     def pre_get_operation(
         self,
         request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -367,7 +382,7 @@ class SynonymSetServiceRestTransport(_BaseSynonymSetServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> synonymset.SynonymSet:
             r"""Call the create synonym set method over HTTP.
 
@@ -378,8 +393,10 @@ class SynonymSetServiceRestTransport(_BaseSynonymSetServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.synonymset.SynonymSet:
@@ -398,6 +415,7 @@ class SynonymSetServiceRestTransport(_BaseSynonymSetServiceRestTransport):
             http_options = (
                 _BaseSynonymSetServiceRestTransport._BaseCreateSynonymSet._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_synonym_set(
                 request, metadata
             )
@@ -413,6 +431,33 @@ class SynonymSetServiceRestTransport(_BaseSynonymSetServiceRestTransport):
             query_params = _BaseSynonymSetServiceRestTransport._BaseCreateSynonymSet._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.contentwarehouse_v1.SynonymSetServiceClient.CreateSynonymSet",
+                    extra={
+                        "serviceName": "google.cloud.contentwarehouse.v1.SynonymSetService",
+                        "rpcName": "CreateSynonymSet",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SynonymSetServiceRestTransport._CreateSynonymSet._get_response(
@@ -435,7 +480,29 @@ class SynonymSetServiceRestTransport(_BaseSynonymSetServiceRestTransport):
             pb_resp = synonymset.SynonymSet.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_synonym_set(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = synonymset.SynonymSet.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.contentwarehouse_v1.SynonymSetServiceClient.create_synonym_set",
+                    extra={
+                        "serviceName": "google.cloud.contentwarehouse.v1.SynonymSetService",
+                        "rpcName": "CreateSynonymSet",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteSynonymSet(
@@ -473,7 +540,7 @@ class SynonymSetServiceRestTransport(_BaseSynonymSetServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete synonym set method over HTTP.
 
@@ -484,13 +551,16 @@ class SynonymSetServiceRestTransport(_BaseSynonymSetServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseSynonymSetServiceRestTransport._BaseDeleteSynonymSet._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_synonym_set(
                 request, metadata
             )
@@ -502,6 +572,33 @@ class SynonymSetServiceRestTransport(_BaseSynonymSetServiceRestTransport):
             query_params = _BaseSynonymSetServiceRestTransport._BaseDeleteSynonymSet._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.contentwarehouse_v1.SynonymSetServiceClient.DeleteSynonymSet",
+                    extra={
+                        "serviceName": "google.cloud.contentwarehouse.v1.SynonymSetService",
+                        "rpcName": "DeleteSynonymSet",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SynonymSetServiceRestTransport._DeleteSynonymSet._get_response(
@@ -553,7 +650,7 @@ class SynonymSetServiceRestTransport(_BaseSynonymSetServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> synonymset.SynonymSet:
             r"""Call the get synonym set method over HTTP.
 
@@ -565,8 +662,10 @@ class SynonymSetServiceRestTransport(_BaseSynonymSetServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.synonymset.SynonymSet:
@@ -585,6 +684,7 @@ class SynonymSetServiceRestTransport(_BaseSynonymSetServiceRestTransport):
             http_options = (
                 _BaseSynonymSetServiceRestTransport._BaseGetSynonymSet._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_synonym_set(request, metadata)
             transcoded_request = _BaseSynonymSetServiceRestTransport._BaseGetSynonymSet._get_transcoded_request(
                 http_options, request
@@ -594,6 +694,33 @@ class SynonymSetServiceRestTransport(_BaseSynonymSetServiceRestTransport):
             query_params = _BaseSynonymSetServiceRestTransport._BaseGetSynonymSet._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.contentwarehouse_v1.SynonymSetServiceClient.GetSynonymSet",
+                    extra={
+                        "serviceName": "google.cloud.contentwarehouse.v1.SynonymSetService",
+                        "rpcName": "GetSynonymSet",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SynonymSetServiceRestTransport._GetSynonymSet._get_response(
@@ -615,7 +742,29 @@ class SynonymSetServiceRestTransport(_BaseSynonymSetServiceRestTransport):
             pb_resp = synonymset.SynonymSet.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_synonym_set(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = synonymset.SynonymSet.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.contentwarehouse_v1.SynonymSetServiceClient.get_synonym_set",
+                    extra={
+                        "serviceName": "google.cloud.contentwarehouse.v1.SynonymSetService",
+                        "rpcName": "GetSynonymSet",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListSynonymSets(
@@ -653,7 +802,7 @@ class SynonymSetServiceRestTransport(_BaseSynonymSetServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> synonymset_service_request.ListSynonymSetsResponse:
             r"""Call the list synonym sets method over HTTP.
 
@@ -666,8 +815,10 @@ class SynonymSetServiceRestTransport(_BaseSynonymSetServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.synonymset_service_request.ListSynonymSetsResponse:
@@ -679,6 +830,7 @@ class SynonymSetServiceRestTransport(_BaseSynonymSetServiceRestTransport):
             http_options = (
                 _BaseSynonymSetServiceRestTransport._BaseListSynonymSets._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_synonym_sets(
                 request, metadata
             )
@@ -690,6 +842,33 @@ class SynonymSetServiceRestTransport(_BaseSynonymSetServiceRestTransport):
             query_params = _BaseSynonymSetServiceRestTransport._BaseListSynonymSets._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.contentwarehouse_v1.SynonymSetServiceClient.ListSynonymSets",
+                    extra={
+                        "serviceName": "google.cloud.contentwarehouse.v1.SynonymSetService",
+                        "rpcName": "ListSynonymSets",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SynonymSetServiceRestTransport._ListSynonymSets._get_response(
@@ -711,7 +890,33 @@ class SynonymSetServiceRestTransport(_BaseSynonymSetServiceRestTransport):
             pb_resp = synonymset_service_request.ListSynonymSetsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_synonym_sets(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        synonymset_service_request.ListSynonymSetsResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.contentwarehouse_v1.SynonymSetServiceClient.list_synonym_sets",
+                    extra={
+                        "serviceName": "google.cloud.contentwarehouse.v1.SynonymSetService",
+                        "rpcName": "ListSynonymSets",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateSynonymSet(
@@ -750,7 +955,7 @@ class SynonymSetServiceRestTransport(_BaseSynonymSetServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> synonymset.SynonymSet:
             r"""Call the update synonym set method over HTTP.
 
@@ -764,8 +969,10 @@ class SynonymSetServiceRestTransport(_BaseSynonymSetServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.synonymset.SynonymSet:
@@ -784,6 +991,7 @@ class SynonymSetServiceRestTransport(_BaseSynonymSetServiceRestTransport):
             http_options = (
                 _BaseSynonymSetServiceRestTransport._BaseUpdateSynonymSet._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_synonym_set(
                 request, metadata
             )
@@ -799,6 +1007,33 @@ class SynonymSetServiceRestTransport(_BaseSynonymSetServiceRestTransport):
             query_params = _BaseSynonymSetServiceRestTransport._BaseUpdateSynonymSet._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.contentwarehouse_v1.SynonymSetServiceClient.UpdateSynonymSet",
+                    extra={
+                        "serviceName": "google.cloud.contentwarehouse.v1.SynonymSetService",
+                        "rpcName": "UpdateSynonymSet",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SynonymSetServiceRestTransport._UpdateSynonymSet._get_response(
@@ -821,7 +1056,29 @@ class SynonymSetServiceRestTransport(_BaseSynonymSetServiceRestTransport):
             pb_resp = synonymset.SynonymSet.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_synonym_set(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = synonymset.SynonymSet.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.contentwarehouse_v1.SynonymSetServiceClient.update_synonym_set",
+                    extra={
+                        "serviceName": "google.cloud.contentwarehouse.v1.SynonymSetService",
+                        "rpcName": "UpdateSynonymSet",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -913,7 +1170,7 @@ class SynonymSetServiceRestTransport(_BaseSynonymSetServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the get operation method over HTTP.
 
@@ -923,8 +1180,10 @@ class SynonymSetServiceRestTransport(_BaseSynonymSetServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.
@@ -933,6 +1192,7 @@ class SynonymSetServiceRestTransport(_BaseSynonymSetServiceRestTransport):
             http_options = (
                 _BaseSynonymSetServiceRestTransport._BaseGetOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseSynonymSetServiceRestTransport._BaseGetOperation._get_transcoded_request(
                 http_options, request
@@ -942,6 +1202,33 @@ class SynonymSetServiceRestTransport(_BaseSynonymSetServiceRestTransport):
             query_params = _BaseSynonymSetServiceRestTransport._BaseGetOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.contentwarehouse_v1.SynonymSetServiceClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.contentwarehouse.v1.SynonymSetService",
+                        "rpcName": "GetOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SynonymSetServiceRestTransport._GetOperation._get_response(
@@ -962,6 +1249,27 @@ class SynonymSetServiceRestTransport(_BaseSynonymSetServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.contentwarehouse_v1.SynonymSetServiceAsyncClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.contentwarehouse.v1.SynonymSetService",
+                        "rpcName": "GetOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property

@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -38,6 +38,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -86,8 +94,8 @@ class ConfidentialComputingRestInterceptor:
     def pre_create_challenge(
         self,
         request: service.CreateChallengeRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[service.CreateChallengeRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.CreateChallengeRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_challenge
 
         Override in a subclass to manipulate the request or metadata
@@ -107,8 +115,10 @@ class ConfidentialComputingRestInterceptor:
     def pre_verify_attestation(
         self,
         request: service.VerifyAttestationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[service.VerifyAttestationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.VerifyAttestationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for verify_attestation
 
         Override in a subclass to manipulate the request or metadata
@@ -130,8 +140,10 @@ class ConfidentialComputingRestInterceptor:
     def pre_get_location(
         self,
         request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -153,8 +165,10 @@ class ConfidentialComputingRestInterceptor:
     def pre_list_locations(
         self,
         request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -296,7 +310,7 @@ class ConfidentialComputingRestTransport(_BaseConfidentialComputingRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> service.Challenge:
             r"""Call the create challenge method over HTTP.
 
@@ -306,8 +320,10 @@ class ConfidentialComputingRestTransport(_BaseConfidentialComputingRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.service.Challenge:
@@ -319,6 +335,7 @@ class ConfidentialComputingRestTransport(_BaseConfidentialComputingRestTransport
             http_options = (
                 _BaseConfidentialComputingRestTransport._BaseCreateChallenge._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_challenge(
                 request, metadata
             )
@@ -334,6 +351,33 @@ class ConfidentialComputingRestTransport(_BaseConfidentialComputingRestTransport
             query_params = _BaseConfidentialComputingRestTransport._BaseCreateChallenge._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.confidentialcomputing_v1.ConfidentialComputingClient.CreateChallenge",
+                    extra={
+                        "serviceName": "google.cloud.confidentialcomputing.v1.ConfidentialComputing",
+                        "rpcName": "CreateChallenge",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -358,7 +402,29 @@ class ConfidentialComputingRestTransport(_BaseConfidentialComputingRestTransport
             pb_resp = service.Challenge.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_challenge(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = service.Challenge.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.confidentialcomputing_v1.ConfidentialComputingClient.create_challenge",
+                    extra={
+                        "serviceName": "google.cloud.confidentialcomputing.v1.ConfidentialComputing",
+                        "rpcName": "CreateChallenge",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _VerifyAttestation(
@@ -397,7 +463,7 @@ class ConfidentialComputingRestTransport(_BaseConfidentialComputingRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> service.VerifyAttestationResponse:
             r"""Call the verify attestation method over HTTP.
 
@@ -410,8 +476,10 @@ class ConfidentialComputingRestTransport(_BaseConfidentialComputingRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.service.VerifyAttestationResponse:
@@ -424,6 +492,7 @@ class ConfidentialComputingRestTransport(_BaseConfidentialComputingRestTransport
             http_options = (
                 _BaseConfidentialComputingRestTransport._BaseVerifyAttestation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_verify_attestation(
                 request, metadata
             )
@@ -439,6 +508,33 @@ class ConfidentialComputingRestTransport(_BaseConfidentialComputingRestTransport
             query_params = _BaseConfidentialComputingRestTransport._BaseVerifyAttestation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.confidentialcomputing_v1.ConfidentialComputingClient.VerifyAttestation",
+                    extra={
+                        "serviceName": "google.cloud.confidentialcomputing.v1.ConfidentialComputing",
+                        "rpcName": "VerifyAttestation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -463,7 +559,31 @@ class ConfidentialComputingRestTransport(_BaseConfidentialComputingRestTransport
             pb_resp = service.VerifyAttestationResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_verify_attestation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = service.VerifyAttestationResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.confidentialcomputing_v1.ConfidentialComputingClient.verify_attestation",
+                    extra={
+                        "serviceName": "google.cloud.confidentialcomputing.v1.ConfidentialComputing",
+                        "rpcName": "VerifyAttestation",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -523,7 +643,7 @@ class ConfidentialComputingRestTransport(_BaseConfidentialComputingRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.Location:
             r"""Call the get location method over HTTP.
 
@@ -533,8 +653,10 @@ class ConfidentialComputingRestTransport(_BaseConfidentialComputingRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.Location: Response from GetLocation method.
@@ -543,6 +665,7 @@ class ConfidentialComputingRestTransport(_BaseConfidentialComputingRestTransport
             http_options = (
                 _BaseConfidentialComputingRestTransport._BaseGetLocation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_location(request, metadata)
             transcoded_request = _BaseConfidentialComputingRestTransport._BaseGetLocation._get_transcoded_request(
                 http_options, request
@@ -552,6 +675,33 @@ class ConfidentialComputingRestTransport(_BaseConfidentialComputingRestTransport
             query_params = _BaseConfidentialComputingRestTransport._BaseGetLocation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.confidentialcomputing_v1.ConfidentialComputingClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.confidentialcomputing.v1.ConfidentialComputing",
+                        "rpcName": "GetLocation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ConfidentialComputingRestTransport._GetLocation._get_response(
@@ -572,6 +722,27 @@ class ConfidentialComputingRestTransport(_BaseConfidentialComputingRestTransport
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.confidentialcomputing_v1.ConfidentialComputingAsyncClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.confidentialcomputing.v1.ConfidentialComputing",
+                        "rpcName": "GetLocation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -613,7 +784,7 @@ class ConfidentialComputingRestTransport(_BaseConfidentialComputingRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.ListLocationsResponse:
             r"""Call the list locations method over HTTP.
 
@@ -623,8 +794,10 @@ class ConfidentialComputingRestTransport(_BaseConfidentialComputingRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
@@ -633,6 +806,7 @@ class ConfidentialComputingRestTransport(_BaseConfidentialComputingRestTransport
             http_options = (
                 _BaseConfidentialComputingRestTransport._BaseListLocations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
             transcoded_request = _BaseConfidentialComputingRestTransport._BaseListLocations._get_transcoded_request(
                 http_options, request
@@ -642,6 +816,33 @@ class ConfidentialComputingRestTransport(_BaseConfidentialComputingRestTransport
             query_params = _BaseConfidentialComputingRestTransport._BaseListLocations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.confidentialcomputing_v1.ConfidentialComputingClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.confidentialcomputing.v1.ConfidentialComputing",
+                        "rpcName": "ListLocations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ConfidentialComputingRestTransport._ListLocations._get_response(
@@ -662,6 +863,27 @@ class ConfidentialComputingRestTransport(_BaseConfidentialComputingRestTransport
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.confidentialcomputing_v1.ConfidentialComputingAsyncClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.confidentialcomputing.v1.ConfidentialComputing",
+                        "rpcName": "ListLocations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property

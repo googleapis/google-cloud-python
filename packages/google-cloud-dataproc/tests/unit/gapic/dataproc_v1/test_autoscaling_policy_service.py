@@ -3174,6 +3174,7 @@ def test_create_autoscaling_policy_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_autoscaling_policy(request)
 
@@ -3228,6 +3229,7 @@ def test_create_autoscaling_policy_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_autoscaling_policy(**mock_args)
 
@@ -3361,6 +3363,7 @@ def test_update_autoscaling_policy_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_autoscaling_policy(request)
 
@@ -3410,6 +3413,7 @@ def test_update_autoscaling_policy_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_autoscaling_policy(**mock_args)
 
@@ -3546,6 +3550,7 @@ def test_get_autoscaling_policy_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_autoscaling_policy(request)
 
@@ -3593,6 +3598,7 @@ def test_get_autoscaling_policy_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_autoscaling_policy(**mock_args)
 
@@ -3738,6 +3744,7 @@ def test_list_autoscaling_policies_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_autoscaling_policies(request)
 
@@ -3793,6 +3800,7 @@ def test_list_autoscaling_policies_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_autoscaling_policies(**mock_args)
 
@@ -3992,6 +4000,7 @@ def test_delete_autoscaling_policy_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_autoscaling_policy(request)
 
@@ -4037,6 +4046,7 @@ def test_delete_autoscaling_policy_rest_flattened():
         json_return_value = ""
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_autoscaling_policy(**mock_args)
 
@@ -4473,6 +4483,7 @@ def test_create_autoscaling_policy_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_autoscaling_policy(request)
 
 
@@ -4595,6 +4606,7 @@ def test_create_autoscaling_policy_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_autoscaling_policy(request)
 
     # Establish that the response is the type that we expect.
@@ -4638,6 +4650,7 @@ def test_create_autoscaling_policy_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = autoscaling_policies.AutoscalingPolicy.to_json(
             autoscaling_policies.AutoscalingPolicy()
         )
@@ -4688,6 +4701,7 @@ def test_update_autoscaling_policy_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_autoscaling_policy(request)
 
 
@@ -4814,6 +4828,7 @@ def test_update_autoscaling_policy_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_autoscaling_policy(request)
 
     # Establish that the response is the type that we expect.
@@ -4857,6 +4872,7 @@ def test_update_autoscaling_policy_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = autoscaling_policies.AutoscalingPolicy.to_json(
             autoscaling_policies.AutoscalingPolicy()
         )
@@ -4905,6 +4921,7 @@ def test_get_autoscaling_policy_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_autoscaling_policy(request)
 
 
@@ -4943,6 +4960,7 @@ def test_get_autoscaling_policy_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_autoscaling_policy(request)
 
     # Establish that the response is the type that we expect.
@@ -4985,6 +5003,7 @@ def test_get_autoscaling_policy_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = autoscaling_policies.AutoscalingPolicy.to_json(
             autoscaling_policies.AutoscalingPolicy()
         )
@@ -5031,6 +5050,7 @@ def test_list_autoscaling_policies_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_autoscaling_policies(request)
 
 
@@ -5068,6 +5088,7 @@ def test_list_autoscaling_policies_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_autoscaling_policies(request)
 
     # Establish that the response is the type that we expect.
@@ -5110,6 +5131,7 @@ def test_list_autoscaling_policies_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = autoscaling_policies.ListAutoscalingPoliciesResponse.to_json(
             autoscaling_policies.ListAutoscalingPoliciesResponse()
         )
@@ -5158,6 +5180,7 @@ def test_delete_autoscaling_policy_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_autoscaling_policy(request)
 
 
@@ -5190,6 +5213,7 @@ def test_delete_autoscaling_policy_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_autoscaling_policy(request)
 
     # Establish that the response is the type that we expect.
@@ -5227,6 +5251,7 @@ def test_delete_autoscaling_policy_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = autoscaling_policies.DeleteAutoscalingPolicyRequest()
         metadata = [
@@ -5269,6 +5294,7 @@ def test_get_iam_policy_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_iam_policy(request)
 
 
@@ -5299,6 +5325,7 @@ def test_get_iam_policy_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.get_iam_policy(request)
 
@@ -5329,6 +5356,7 @@ def test_set_iam_policy_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.set_iam_policy(request)
 
 
@@ -5359,6 +5387,7 @@ def test_set_iam_policy_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.set_iam_policy(request)
 
@@ -5389,6 +5418,7 @@ def test_test_iam_permissions_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.test_iam_permissions(request)
 
 
@@ -5419,6 +5449,7 @@ def test_test_iam_permissions_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.test_iam_permissions(request)
 
@@ -5449,6 +5480,7 @@ def test_cancel_operation_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.cancel_operation(request)
 
 
@@ -5479,6 +5511,7 @@ def test_cancel_operation_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.cancel_operation(request)
 
@@ -5509,6 +5542,7 @@ def test_delete_operation_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_operation(request)
 
 
@@ -5539,6 +5573,7 @@ def test_delete_operation_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.delete_operation(request)
 
@@ -5569,6 +5604,7 @@ def test_get_operation_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_operation(request)
 
 
@@ -5599,6 +5635,7 @@ def test_get_operation_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.get_operation(request)
 
@@ -5629,6 +5666,7 @@ def test_list_operations_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_operations(request)
 
 
@@ -5659,6 +5697,7 @@ def test_list_operations_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.list_operations(request)
 
