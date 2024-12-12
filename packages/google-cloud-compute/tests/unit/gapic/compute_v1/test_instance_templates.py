@@ -1044,6 +1044,7 @@ def test_aggregated_list_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.aggregated_list(request)
 
@@ -1102,6 +1103,7 @@ def test_aggregated_list_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.aggregated_list(**mock_args)
 
@@ -1318,6 +1320,7 @@ def test_delete_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete(request)
 
@@ -1372,6 +1375,7 @@ def test_delete_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete(**mock_args)
 
@@ -1514,6 +1518,7 @@ def test_delete_unary_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_unary(request)
 
@@ -1568,6 +1573,7 @@ def test_delete_unary_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_unary(**mock_args)
 
@@ -1702,6 +1708,7 @@ def test_get_rest_required_fields(request_type=compute.GetInstanceTemplateReques
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get(request)
 
@@ -1756,6 +1763,7 @@ def test_get_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get(**mock_args)
 
@@ -1894,6 +1902,7 @@ def test_get_iam_policy_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_iam_policy(request)
 
@@ -1948,6 +1957,7 @@ def test_get_iam_policy_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_iam_policy(**mock_args)
 
@@ -2087,6 +2097,7 @@ def test_insert_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.insert(request)
 
@@ -2143,6 +2154,7 @@ def test_insert_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.insert(**mock_args)
 
@@ -2284,6 +2296,7 @@ def test_insert_unary_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.insert_unary(request)
 
@@ -2340,6 +2353,7 @@ def test_insert_unary_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.insert_unary(**mock_args)
 
@@ -2482,6 +2496,7 @@ def test_list_rest_required_fields(request_type=compute.ListInstanceTemplatesReq
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list(request)
 
@@ -2538,6 +2553,7 @@ def test_list_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list(**mock_args)
 
@@ -2735,6 +2751,7 @@ def test_set_iam_policy_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.set_iam_policy(request)
 
@@ -2793,6 +2810,7 @@ def test_set_iam_policy_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.set_iam_policy(**mock_args)
 
@@ -2937,6 +2955,7 @@ def test_test_iam_permissions_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.test_iam_permissions(request)
 
@@ -2995,6 +3014,7 @@ def test_test_iam_permissions_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.test_iam_permissions(**mock_args)
 
@@ -3131,6 +3151,7 @@ def test_aggregated_list_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.aggregated_list(request)
 
 
@@ -3169,6 +3190,7 @@ def test_aggregated_list_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.aggregated_list(request)
 
     # Establish that the response is the type that we expect.
@@ -3212,6 +3234,7 @@ def test_aggregated_list_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = compute.InstanceTemplateAggregatedList.to_json(
             compute.InstanceTemplateAggregatedList()
         )
@@ -3256,6 +3279,7 @@ def test_delete_rest_bad_request(request_type=compute.DeleteInstanceTemplateRequ
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete(request)
 
 
@@ -3312,6 +3336,7 @@ def test_delete_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete(request)
 
     # Establish that the response is the type that we expect.
@@ -3373,6 +3398,7 @@ def test_delete_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = compute.Operation.to_json(compute.Operation())
         req.return_value.content = return_value
 
@@ -3415,6 +3441,7 @@ def test_get_rest_bad_request(request_type=compute.GetInstanceTemplateRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get(request)
 
 
@@ -3457,6 +3484,7 @@ def test_get_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get(request)
 
     # Establish that the response is the type that we expect.
@@ -3504,6 +3532,7 @@ def test_get_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = compute.InstanceTemplate.to_json(compute.InstanceTemplate())
         req.return_value.content = return_value
 
@@ -3548,6 +3577,7 @@ def test_get_iam_policy_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_iam_policy(request)
 
 
@@ -3585,6 +3615,7 @@ def test_get_iam_policy_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_iam_policy(request)
 
     # Establish that the response is the type that we expect.
@@ -3627,6 +3658,7 @@ def test_get_iam_policy_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = compute.Policy.to_json(compute.Policy())
         req.return_value.content = return_value
 
@@ -3669,6 +3701,7 @@ def test_insert_rest_bad_request(request_type=compute.InsertInstanceTemplateRequ
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.insert(request)
 
 
@@ -3995,6 +4028,7 @@ def test_insert_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.insert(request)
 
     # Establish that the response is the type that we expect.
@@ -4056,6 +4090,7 @@ def test_insert_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = compute.Operation.to_json(compute.Operation())
         req.return_value.content = return_value
 
@@ -4098,6 +4133,7 @@ def test_list_rest_bad_request(request_type=compute.ListInstanceTemplatesRequest
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list(request)
 
 
@@ -4136,6 +4172,7 @@ def test_list_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list(request)
 
     # Establish that the response is the type that we expect.
@@ -4179,6 +4216,7 @@ def test_list_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = compute.InstanceTemplateList.to_json(
             compute.InstanceTemplateList()
         )
@@ -4225,6 +4263,7 @@ def test_set_iam_policy_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.set_iam_policy(request)
 
 
@@ -4378,6 +4417,7 @@ def test_set_iam_policy_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.set_iam_policy(request)
 
     # Establish that the response is the type that we expect.
@@ -4420,6 +4460,7 @@ def test_set_iam_policy_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = compute.Policy.to_json(compute.Policy())
         req.return_value.content = return_value
 
@@ -4464,6 +4505,7 @@ def test_test_iam_permissions_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.test_iam_permissions(request)
 
 
@@ -4577,6 +4619,7 @@ def test_test_iam_permissions_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.test_iam_permissions(request)
 
     # Establish that the response is the type that we expect.
@@ -4617,6 +4660,7 @@ def test_test_iam_permissions_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = compute.TestPermissionsResponse.to_json(
             compute.TestPermissionsResponse()
         )

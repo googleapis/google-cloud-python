@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -39,6 +39,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -127,8 +135,10 @@ class ParallelstoreRestInterceptor:
     def pre_create_instance(
         self,
         request: parallelstore.CreateInstanceRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[parallelstore.CreateInstanceRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        parallelstore.CreateInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_instance
 
         Override in a subclass to manipulate the request or metadata
@@ -150,8 +160,10 @@ class ParallelstoreRestInterceptor:
     def pre_delete_instance(
         self,
         request: parallelstore.DeleteInstanceRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[parallelstore.DeleteInstanceRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        parallelstore.DeleteInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_instance
 
         Override in a subclass to manipulate the request or metadata
@@ -173,8 +185,10 @@ class ParallelstoreRestInterceptor:
     def pre_export_data(
         self,
         request: parallelstore.ExportDataRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[parallelstore.ExportDataRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        parallelstore.ExportDataRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for export_data
 
         Override in a subclass to manipulate the request or metadata
@@ -196,8 +210,10 @@ class ParallelstoreRestInterceptor:
     def pre_get_instance(
         self,
         request: parallelstore.GetInstanceRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[parallelstore.GetInstanceRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        parallelstore.GetInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_instance
 
         Override in a subclass to manipulate the request or metadata
@@ -219,8 +235,10 @@ class ParallelstoreRestInterceptor:
     def pre_import_data(
         self,
         request: parallelstore.ImportDataRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[parallelstore.ImportDataRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        parallelstore.ImportDataRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for import_data
 
         Override in a subclass to manipulate the request or metadata
@@ -242,8 +260,10 @@ class ParallelstoreRestInterceptor:
     def pre_list_instances(
         self,
         request: parallelstore.ListInstancesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[parallelstore.ListInstancesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        parallelstore.ListInstancesRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_instances
 
         Override in a subclass to manipulate the request or metadata
@@ -265,8 +285,10 @@ class ParallelstoreRestInterceptor:
     def pre_update_instance(
         self,
         request: parallelstore.UpdateInstanceRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[parallelstore.UpdateInstanceRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        parallelstore.UpdateInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_instance
 
         Override in a subclass to manipulate the request or metadata
@@ -288,8 +310,10 @@ class ParallelstoreRestInterceptor:
     def pre_get_location(
         self,
         request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -311,8 +335,10 @@ class ParallelstoreRestInterceptor:
     def pre_list_locations(
         self,
         request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -334,8 +360,10 @@ class ParallelstoreRestInterceptor:
     def pre_cancel_operation(
         self,
         request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -355,8 +383,10 @@ class ParallelstoreRestInterceptor:
     def pre_delete_operation(
         self,
         request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -376,8 +406,10 @@ class ParallelstoreRestInterceptor:
     def pre_get_operation(
         self,
         request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -399,8 +431,10 @@ class ParallelstoreRestInterceptor:
     def pre_list_operations(
         self,
         request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -615,7 +649,7 @@ class ParallelstoreRestTransport(_BaseParallelstoreRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create instance method over HTTP.
 
@@ -625,8 +659,10 @@ class ParallelstoreRestTransport(_BaseParallelstoreRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -639,6 +675,7 @@ class ParallelstoreRestTransport(_BaseParallelstoreRestTransport):
             http_options = (
                 _BaseParallelstoreRestTransport._BaseCreateInstance._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_instance(request, metadata)
             transcoded_request = _BaseParallelstoreRestTransport._BaseCreateInstance._get_transcoded_request(
                 http_options, request
@@ -652,6 +689,33 @@ class ParallelstoreRestTransport(_BaseParallelstoreRestTransport):
             query_params = _BaseParallelstoreRestTransport._BaseCreateInstance._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.parallelstore_v1.ParallelstoreClient.CreateInstance",
+                    extra={
+                        "serviceName": "google.cloud.parallelstore.v1.Parallelstore",
+                        "rpcName": "CreateInstance",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ParallelstoreRestTransport._CreateInstance._get_response(
@@ -672,7 +736,29 @@ class ParallelstoreRestTransport(_BaseParallelstoreRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_instance(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.parallelstore_v1.ParallelstoreClient.create_instance",
+                    extra={
+                        "serviceName": "google.cloud.parallelstore.v1.Parallelstore",
+                        "rpcName": "CreateInstance",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteInstance(
@@ -709,7 +795,7 @@ class ParallelstoreRestTransport(_BaseParallelstoreRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete instance method over HTTP.
 
@@ -719,8 +805,10 @@ class ParallelstoreRestTransport(_BaseParallelstoreRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -733,6 +821,7 @@ class ParallelstoreRestTransport(_BaseParallelstoreRestTransport):
             http_options = (
                 _BaseParallelstoreRestTransport._BaseDeleteInstance._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_instance(request, metadata)
             transcoded_request = _BaseParallelstoreRestTransport._BaseDeleteInstance._get_transcoded_request(
                 http_options, request
@@ -742,6 +831,33 @@ class ParallelstoreRestTransport(_BaseParallelstoreRestTransport):
             query_params = _BaseParallelstoreRestTransport._BaseDeleteInstance._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.parallelstore_v1.ParallelstoreClient.DeleteInstance",
+                    extra={
+                        "serviceName": "google.cloud.parallelstore.v1.Parallelstore",
+                        "rpcName": "DeleteInstance",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ParallelstoreRestTransport._DeleteInstance._get_response(
@@ -761,7 +877,29 @@ class ParallelstoreRestTransport(_BaseParallelstoreRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_instance(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.parallelstore_v1.ParallelstoreClient.delete_instance",
+                    extra={
+                        "serviceName": "google.cloud.parallelstore.v1.Parallelstore",
+                        "rpcName": "DeleteInstance",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ExportData(
@@ -799,7 +937,7 @@ class ParallelstoreRestTransport(_BaseParallelstoreRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the export data method over HTTP.
 
@@ -810,8 +948,10 @@ class ParallelstoreRestTransport(_BaseParallelstoreRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -824,6 +964,7 @@ class ParallelstoreRestTransport(_BaseParallelstoreRestTransport):
             http_options = (
                 _BaseParallelstoreRestTransport._BaseExportData._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_export_data(request, metadata)
             transcoded_request = (
                 _BaseParallelstoreRestTransport._BaseExportData._get_transcoded_request(
@@ -844,6 +985,33 @@ class ParallelstoreRestTransport(_BaseParallelstoreRestTransport):
                 )
             )
 
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.parallelstore_v1.ParallelstoreClient.ExportData",
+                    extra={
+                        "serviceName": "google.cloud.parallelstore.v1.Parallelstore",
+                        "rpcName": "ExportData",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
             # Send the request
             response = ParallelstoreRestTransport._ExportData._get_response(
                 self._host,
@@ -863,7 +1031,29 @@ class ParallelstoreRestTransport(_BaseParallelstoreRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_export_data(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.parallelstore_v1.ParallelstoreClient.export_data",
+                    extra={
+                        "serviceName": "google.cloud.parallelstore.v1.Parallelstore",
+                        "rpcName": "ExportData",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetInstance(
@@ -900,7 +1090,7 @@ class ParallelstoreRestTransport(_BaseParallelstoreRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> parallelstore.Instance:
             r"""Call the get instance method over HTTP.
 
@@ -910,8 +1100,10 @@ class ParallelstoreRestTransport(_BaseParallelstoreRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.parallelstore.Instance:
@@ -921,6 +1113,7 @@ class ParallelstoreRestTransport(_BaseParallelstoreRestTransport):
             http_options = (
                 _BaseParallelstoreRestTransport._BaseGetInstance._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_instance(request, metadata)
             transcoded_request = _BaseParallelstoreRestTransport._BaseGetInstance._get_transcoded_request(
                 http_options, request
@@ -932,6 +1125,33 @@ class ParallelstoreRestTransport(_BaseParallelstoreRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.parallelstore_v1.ParallelstoreClient.GetInstance",
+                    extra={
+                        "serviceName": "google.cloud.parallelstore.v1.Parallelstore",
+                        "rpcName": "GetInstance",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ParallelstoreRestTransport._GetInstance._get_response(
@@ -953,7 +1173,29 @@ class ParallelstoreRestTransport(_BaseParallelstoreRestTransport):
             pb_resp = parallelstore.Instance.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_instance(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = parallelstore.Instance.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.parallelstore_v1.ParallelstoreClient.get_instance",
+                    extra={
+                        "serviceName": "google.cloud.parallelstore.v1.Parallelstore",
+                        "rpcName": "GetInstance",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ImportData(
@@ -991,7 +1233,7 @@ class ParallelstoreRestTransport(_BaseParallelstoreRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the import data method over HTTP.
 
@@ -1002,8 +1244,10 @@ class ParallelstoreRestTransport(_BaseParallelstoreRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1016,6 +1260,7 @@ class ParallelstoreRestTransport(_BaseParallelstoreRestTransport):
             http_options = (
                 _BaseParallelstoreRestTransport._BaseImportData._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_import_data(request, metadata)
             transcoded_request = (
                 _BaseParallelstoreRestTransport._BaseImportData._get_transcoded_request(
@@ -1036,6 +1281,33 @@ class ParallelstoreRestTransport(_BaseParallelstoreRestTransport):
                 )
             )
 
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.parallelstore_v1.ParallelstoreClient.ImportData",
+                    extra={
+                        "serviceName": "google.cloud.parallelstore.v1.Parallelstore",
+                        "rpcName": "ImportData",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
             # Send the request
             response = ParallelstoreRestTransport._ImportData._get_response(
                 self._host,
@@ -1055,7 +1327,29 @@ class ParallelstoreRestTransport(_BaseParallelstoreRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_import_data(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.parallelstore_v1.ParallelstoreClient.import_data",
+                    extra={
+                        "serviceName": "google.cloud.parallelstore.v1.Parallelstore",
+                        "rpcName": "ImportData",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListInstances(
@@ -1092,7 +1386,7 @@ class ParallelstoreRestTransport(_BaseParallelstoreRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> parallelstore.ListInstancesResponse:
             r"""Call the list instances method over HTTP.
 
@@ -1102,8 +1396,10 @@ class ParallelstoreRestTransport(_BaseParallelstoreRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.parallelstore.ListInstancesResponse:
@@ -1115,6 +1411,7 @@ class ParallelstoreRestTransport(_BaseParallelstoreRestTransport):
             http_options = (
                 _BaseParallelstoreRestTransport._BaseListInstances._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_instances(request, metadata)
             transcoded_request = _BaseParallelstoreRestTransport._BaseListInstances._get_transcoded_request(
                 http_options, request
@@ -1124,6 +1421,33 @@ class ParallelstoreRestTransport(_BaseParallelstoreRestTransport):
             query_params = _BaseParallelstoreRestTransport._BaseListInstances._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.parallelstore_v1.ParallelstoreClient.ListInstances",
+                    extra={
+                        "serviceName": "google.cloud.parallelstore.v1.Parallelstore",
+                        "rpcName": "ListInstances",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ParallelstoreRestTransport._ListInstances._get_response(
@@ -1145,7 +1469,31 @@ class ParallelstoreRestTransport(_BaseParallelstoreRestTransport):
             pb_resp = parallelstore.ListInstancesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_instances(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = parallelstore.ListInstancesResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.parallelstore_v1.ParallelstoreClient.list_instances",
+                    extra={
+                        "serviceName": "google.cloud.parallelstore.v1.Parallelstore",
+                        "rpcName": "ListInstances",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateInstance(
@@ -1183,7 +1531,7 @@ class ParallelstoreRestTransport(_BaseParallelstoreRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update instance method over HTTP.
 
@@ -1193,8 +1541,10 @@ class ParallelstoreRestTransport(_BaseParallelstoreRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1207,6 +1557,7 @@ class ParallelstoreRestTransport(_BaseParallelstoreRestTransport):
             http_options = (
                 _BaseParallelstoreRestTransport._BaseUpdateInstance._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_instance(request, metadata)
             transcoded_request = _BaseParallelstoreRestTransport._BaseUpdateInstance._get_transcoded_request(
                 http_options, request
@@ -1220,6 +1571,33 @@ class ParallelstoreRestTransport(_BaseParallelstoreRestTransport):
             query_params = _BaseParallelstoreRestTransport._BaseUpdateInstance._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.parallelstore_v1.ParallelstoreClient.UpdateInstance",
+                    extra={
+                        "serviceName": "google.cloud.parallelstore.v1.Parallelstore",
+                        "rpcName": "UpdateInstance",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ParallelstoreRestTransport._UpdateInstance._get_response(
@@ -1240,7 +1618,29 @@ class ParallelstoreRestTransport(_BaseParallelstoreRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_instance(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.parallelstore_v1.ParallelstoreClient.update_instance",
+                    extra={
+                        "serviceName": "google.cloud.parallelstore.v1.Parallelstore",
+                        "rpcName": "UpdateInstance",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -1339,7 +1739,7 @@ class ParallelstoreRestTransport(_BaseParallelstoreRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.Location:
             r"""Call the get location method over HTTP.
 
@@ -1349,8 +1749,10 @@ class ParallelstoreRestTransport(_BaseParallelstoreRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.Location: Response from GetLocation method.
@@ -1359,6 +1761,7 @@ class ParallelstoreRestTransport(_BaseParallelstoreRestTransport):
             http_options = (
                 _BaseParallelstoreRestTransport._BaseGetLocation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_location(request, metadata)
             transcoded_request = _BaseParallelstoreRestTransport._BaseGetLocation._get_transcoded_request(
                 http_options, request
@@ -1370,6 +1773,33 @@ class ParallelstoreRestTransport(_BaseParallelstoreRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.parallelstore_v1.ParallelstoreClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.parallelstore.v1.Parallelstore",
+                        "rpcName": "GetLocation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ParallelstoreRestTransport._GetLocation._get_response(
@@ -1390,6 +1820,27 @@ class ParallelstoreRestTransport(_BaseParallelstoreRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.parallelstore_v1.ParallelstoreAsyncClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.parallelstore.v1.Parallelstore",
+                        "rpcName": "GetLocation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -1430,7 +1881,7 @@ class ParallelstoreRestTransport(_BaseParallelstoreRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.ListLocationsResponse:
             r"""Call the list locations method over HTTP.
 
@@ -1440,8 +1891,10 @@ class ParallelstoreRestTransport(_BaseParallelstoreRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
@@ -1450,6 +1903,7 @@ class ParallelstoreRestTransport(_BaseParallelstoreRestTransport):
             http_options = (
                 _BaseParallelstoreRestTransport._BaseListLocations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
             transcoded_request = _BaseParallelstoreRestTransport._BaseListLocations._get_transcoded_request(
                 http_options, request
@@ -1459,6 +1913,33 @@ class ParallelstoreRestTransport(_BaseParallelstoreRestTransport):
             query_params = _BaseParallelstoreRestTransport._BaseListLocations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.parallelstore_v1.ParallelstoreClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.parallelstore.v1.Parallelstore",
+                        "rpcName": "ListLocations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ParallelstoreRestTransport._ListLocations._get_response(
@@ -1479,6 +1960,27 @@ class ParallelstoreRestTransport(_BaseParallelstoreRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.parallelstore_v1.ParallelstoreAsyncClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.parallelstore.v1.Parallelstore",
+                        "rpcName": "ListLocations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -1520,7 +2022,7 @@ class ParallelstoreRestTransport(_BaseParallelstoreRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the cancel operation method over HTTP.
 
@@ -1530,13 +2032,16 @@ class ParallelstoreRestTransport(_BaseParallelstoreRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseParallelstoreRestTransport._BaseCancelOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
@@ -1552,6 +2057,33 @@ class ParallelstoreRestTransport(_BaseParallelstoreRestTransport):
             query_params = _BaseParallelstoreRestTransport._BaseCancelOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.parallelstore_v1.ParallelstoreClient.CancelOperation",
+                    extra={
+                        "serviceName": "google.cloud.parallelstore.v1.Parallelstore",
+                        "rpcName": "CancelOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ParallelstoreRestTransport._CancelOperation._get_response(
@@ -1609,7 +2141,7 @@ class ParallelstoreRestTransport(_BaseParallelstoreRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the delete operation method over HTTP.
 
@@ -1619,13 +2151,16 @@ class ParallelstoreRestTransport(_BaseParallelstoreRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseParallelstoreRestTransport._BaseDeleteOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
             )
@@ -1637,6 +2172,33 @@ class ParallelstoreRestTransport(_BaseParallelstoreRestTransport):
             query_params = _BaseParallelstoreRestTransport._BaseDeleteOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.parallelstore_v1.ParallelstoreClient.DeleteOperation",
+                    extra={
+                        "serviceName": "google.cloud.parallelstore.v1.Parallelstore",
+                        "rpcName": "DeleteOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ParallelstoreRestTransport._DeleteOperation._get_response(
@@ -1693,7 +2255,7 @@ class ParallelstoreRestTransport(_BaseParallelstoreRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the get operation method over HTTP.
 
@@ -1703,8 +2265,10 @@ class ParallelstoreRestTransport(_BaseParallelstoreRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.
@@ -1713,6 +2277,7 @@ class ParallelstoreRestTransport(_BaseParallelstoreRestTransport):
             http_options = (
                 _BaseParallelstoreRestTransport._BaseGetOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseParallelstoreRestTransport._BaseGetOperation._get_transcoded_request(
                 http_options, request
@@ -1722,6 +2287,33 @@ class ParallelstoreRestTransport(_BaseParallelstoreRestTransport):
             query_params = _BaseParallelstoreRestTransport._BaseGetOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.parallelstore_v1.ParallelstoreClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.parallelstore.v1.Parallelstore",
+                        "rpcName": "GetOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ParallelstoreRestTransport._GetOperation._get_response(
@@ -1742,6 +2334,27 @@ class ParallelstoreRestTransport(_BaseParallelstoreRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.parallelstore_v1.ParallelstoreAsyncClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.parallelstore.v1.Parallelstore",
+                        "rpcName": "GetOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -1782,7 +2395,7 @@ class ParallelstoreRestTransport(_BaseParallelstoreRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.ListOperationsResponse:
             r"""Call the list operations method over HTTP.
 
@@ -1792,8 +2405,10 @@ class ParallelstoreRestTransport(_BaseParallelstoreRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
@@ -1802,6 +2417,7 @@ class ParallelstoreRestTransport(_BaseParallelstoreRestTransport):
             http_options = (
                 _BaseParallelstoreRestTransport._BaseListOperations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseParallelstoreRestTransport._BaseListOperations._get_transcoded_request(
                 http_options, request
@@ -1811,6 +2427,33 @@ class ParallelstoreRestTransport(_BaseParallelstoreRestTransport):
             query_params = _BaseParallelstoreRestTransport._BaseListOperations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.parallelstore_v1.ParallelstoreClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.parallelstore.v1.Parallelstore",
+                        "rpcName": "ListOperations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ParallelstoreRestTransport._ListOperations._get_response(
@@ -1831,6 +2474,27 @@ class ParallelstoreRestTransport(_BaseParallelstoreRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.parallelstore_v1.ParallelstoreAsyncClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.parallelstore.v1.Parallelstore",
+                        "rpcName": "ListOperations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property

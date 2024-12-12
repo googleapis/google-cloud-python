@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -39,6 +39,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -263,8 +271,10 @@ class EnvironmentsRestInterceptor:
     def pre_check_upgrade(
         self,
         request: environments.CheckUpgradeRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[environments.CheckUpgradeRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        environments.CheckUpgradeRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for check_upgrade
 
         Override in a subclass to manipulate the request or metadata
@@ -286,8 +296,10 @@ class EnvironmentsRestInterceptor:
     def pre_create_environment(
         self,
         request: environments.CreateEnvironmentRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[environments.CreateEnvironmentRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        environments.CreateEnvironmentRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_environment
 
         Override in a subclass to manipulate the request or metadata
@@ -309,9 +321,10 @@ class EnvironmentsRestInterceptor:
     def pre_create_user_workloads_config_map(
         self,
         request: environments.CreateUserWorkloadsConfigMapRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        environments.CreateUserWorkloadsConfigMapRequest, Sequence[Tuple[str, str]]
+        environments.CreateUserWorkloadsConfigMapRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for create_user_workloads_config_map
 
@@ -334,9 +347,10 @@ class EnvironmentsRestInterceptor:
     def pre_create_user_workloads_secret(
         self,
         request: environments.CreateUserWorkloadsSecretRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        environments.CreateUserWorkloadsSecretRequest, Sequence[Tuple[str, str]]
+        environments.CreateUserWorkloadsSecretRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for create_user_workloads_secret
 
@@ -359,8 +373,10 @@ class EnvironmentsRestInterceptor:
     def pre_database_failover(
         self,
         request: environments.DatabaseFailoverRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[environments.DatabaseFailoverRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        environments.DatabaseFailoverRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for database_failover
 
         Override in a subclass to manipulate the request or metadata
@@ -382,8 +398,10 @@ class EnvironmentsRestInterceptor:
     def pre_delete_environment(
         self,
         request: environments.DeleteEnvironmentRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[environments.DeleteEnvironmentRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        environments.DeleteEnvironmentRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_environment
 
         Override in a subclass to manipulate the request or metadata
@@ -405,9 +423,10 @@ class EnvironmentsRestInterceptor:
     def pre_delete_user_workloads_config_map(
         self,
         request: environments.DeleteUserWorkloadsConfigMapRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        environments.DeleteUserWorkloadsConfigMapRequest, Sequence[Tuple[str, str]]
+        environments.DeleteUserWorkloadsConfigMapRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for delete_user_workloads_config_map
 
@@ -419,9 +438,10 @@ class EnvironmentsRestInterceptor:
     def pre_delete_user_workloads_secret(
         self,
         request: environments.DeleteUserWorkloadsSecretRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        environments.DeleteUserWorkloadsSecretRequest, Sequence[Tuple[str, str]]
+        environments.DeleteUserWorkloadsSecretRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for delete_user_workloads_secret
 
@@ -433,8 +453,11 @@ class EnvironmentsRestInterceptor:
     def pre_execute_airflow_command(
         self,
         request: environments.ExecuteAirflowCommandRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[environments.ExecuteAirflowCommandRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        environments.ExecuteAirflowCommandRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for execute_airflow_command
 
         Override in a subclass to manipulate the request or metadata
@@ -456,8 +479,11 @@ class EnvironmentsRestInterceptor:
     def pre_fetch_database_properties(
         self,
         request: environments.FetchDatabasePropertiesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[environments.FetchDatabasePropertiesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        environments.FetchDatabasePropertiesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for fetch_database_properties
 
         Override in a subclass to manipulate the request or metadata
@@ -479,8 +505,10 @@ class EnvironmentsRestInterceptor:
     def pre_get_environment(
         self,
         request: environments.GetEnvironmentRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[environments.GetEnvironmentRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        environments.GetEnvironmentRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_environment
 
         Override in a subclass to manipulate the request or metadata
@@ -502,9 +530,10 @@ class EnvironmentsRestInterceptor:
     def pre_get_user_workloads_config_map(
         self,
         request: environments.GetUserWorkloadsConfigMapRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        environments.GetUserWorkloadsConfigMapRequest, Sequence[Tuple[str, str]]
+        environments.GetUserWorkloadsConfigMapRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for get_user_workloads_config_map
 
@@ -527,8 +556,11 @@ class EnvironmentsRestInterceptor:
     def pre_get_user_workloads_secret(
         self,
         request: environments.GetUserWorkloadsSecretRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[environments.GetUserWorkloadsSecretRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        environments.GetUserWorkloadsSecretRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for get_user_workloads_secret
 
         Override in a subclass to manipulate the request or metadata
@@ -550,8 +582,10 @@ class EnvironmentsRestInterceptor:
     def pre_list_environments(
         self,
         request: environments.ListEnvironmentsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[environments.ListEnvironmentsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        environments.ListEnvironmentsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_environments
 
         Override in a subclass to manipulate the request or metadata
@@ -573,9 +607,10 @@ class EnvironmentsRestInterceptor:
     def pre_list_user_workloads_config_maps(
         self,
         request: environments.ListUserWorkloadsConfigMapsRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        environments.ListUserWorkloadsConfigMapsRequest, Sequence[Tuple[str, str]]
+        environments.ListUserWorkloadsConfigMapsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for list_user_workloads_config_maps
 
@@ -598,8 +633,11 @@ class EnvironmentsRestInterceptor:
     def pre_list_user_workloads_secrets(
         self,
         request: environments.ListUserWorkloadsSecretsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[environments.ListUserWorkloadsSecretsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        environments.ListUserWorkloadsSecretsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for list_user_workloads_secrets
 
         Override in a subclass to manipulate the request or metadata
@@ -621,8 +659,10 @@ class EnvironmentsRestInterceptor:
     def pre_list_workloads(
         self,
         request: environments.ListWorkloadsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[environments.ListWorkloadsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        environments.ListWorkloadsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_workloads
 
         Override in a subclass to manipulate the request or metadata
@@ -644,8 +684,10 @@ class EnvironmentsRestInterceptor:
     def pre_load_snapshot(
         self,
         request: environments.LoadSnapshotRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[environments.LoadSnapshotRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        environments.LoadSnapshotRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for load_snapshot
 
         Override in a subclass to manipulate the request or metadata
@@ -667,8 +709,10 @@ class EnvironmentsRestInterceptor:
     def pre_poll_airflow_command(
         self,
         request: environments.PollAirflowCommandRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[environments.PollAirflowCommandRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        environments.PollAirflowCommandRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for poll_airflow_command
 
         Override in a subclass to manipulate the request or metadata
@@ -690,8 +734,10 @@ class EnvironmentsRestInterceptor:
     def pre_restart_web_server(
         self,
         request: environments.RestartWebServerRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[environments.RestartWebServerRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        environments.RestartWebServerRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for restart_web_server
 
         Override in a subclass to manipulate the request or metadata
@@ -713,8 +759,10 @@ class EnvironmentsRestInterceptor:
     def pre_save_snapshot(
         self,
         request: environments.SaveSnapshotRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[environments.SaveSnapshotRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        environments.SaveSnapshotRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for save_snapshot
 
         Override in a subclass to manipulate the request or metadata
@@ -736,8 +784,10 @@ class EnvironmentsRestInterceptor:
     def pre_stop_airflow_command(
         self,
         request: environments.StopAirflowCommandRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[environments.StopAirflowCommandRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        environments.StopAirflowCommandRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for stop_airflow_command
 
         Override in a subclass to manipulate the request or metadata
@@ -759,8 +809,10 @@ class EnvironmentsRestInterceptor:
     def pre_update_environment(
         self,
         request: environments.UpdateEnvironmentRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[environments.UpdateEnvironmentRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        environments.UpdateEnvironmentRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_environment
 
         Override in a subclass to manipulate the request or metadata
@@ -782,9 +834,10 @@ class EnvironmentsRestInterceptor:
     def pre_update_user_workloads_config_map(
         self,
         request: environments.UpdateUserWorkloadsConfigMapRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        environments.UpdateUserWorkloadsConfigMapRequest, Sequence[Tuple[str, str]]
+        environments.UpdateUserWorkloadsConfigMapRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for update_user_workloads_config_map
 
@@ -807,9 +860,10 @@ class EnvironmentsRestInterceptor:
     def pre_update_user_workloads_secret(
         self,
         request: environments.UpdateUserWorkloadsSecretRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        environments.UpdateUserWorkloadsSecretRequest, Sequence[Tuple[str, str]]
+        environments.UpdateUserWorkloadsSecretRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for update_user_workloads_secret
 
@@ -832,8 +886,10 @@ class EnvironmentsRestInterceptor:
     def pre_delete_operation(
         self,
         request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -853,8 +909,10 @@ class EnvironmentsRestInterceptor:
     def pre_get_operation(
         self,
         request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -876,8 +934,10 @@ class EnvironmentsRestInterceptor:
     def pre_list_operations(
         self,
         request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -1065,7 +1125,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the check upgrade method over HTTP.
 
@@ -1076,8 +1136,10 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1090,6 +1152,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             http_options = (
                 _BaseEnvironmentsRestTransport._BaseCheckUpgrade._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_check_upgrade(request, metadata)
             transcoded_request = _BaseEnvironmentsRestTransport._BaseCheckUpgrade._get_transcoded_request(
                 http_options, request
@@ -1107,6 +1170,33 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.orchestration.airflow.service_v1beta1.EnvironmentsClient.CheckUpgrade",
+                    extra={
+                        "serviceName": "google.cloud.orchestration.airflow.service.v1beta1.Environments",
+                        "rpcName": "CheckUpgrade",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EnvironmentsRestTransport._CheckUpgrade._get_response(
@@ -1127,7 +1217,29 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_check_upgrade(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.orchestration.airflow.service_v1beta1.EnvironmentsClient.check_upgrade",
+                    extra={
+                        "serviceName": "google.cloud.orchestration.airflow.service.v1beta1.Environments",
+                        "rpcName": "CheckUpgrade",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateEnvironment(
@@ -1165,7 +1277,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create environment method over HTTP.
 
@@ -1175,8 +1287,10 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1189,6 +1303,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             http_options = (
                 _BaseEnvironmentsRestTransport._BaseCreateEnvironment._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_environment(
                 request, metadata
             )
@@ -1204,6 +1319,33 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             query_params = _BaseEnvironmentsRestTransport._BaseCreateEnvironment._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.orchestration.airflow.service_v1beta1.EnvironmentsClient.CreateEnvironment",
+                    extra={
+                        "serviceName": "google.cloud.orchestration.airflow.service.v1beta1.Environments",
+                        "rpcName": "CreateEnvironment",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EnvironmentsRestTransport._CreateEnvironment._get_response(
@@ -1224,7 +1366,29 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_environment(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.orchestration.airflow.service_v1beta1.EnvironmentsClient.create_environment",
+                    extra={
+                        "serviceName": "google.cloud.orchestration.airflow.service.v1beta1.Environments",
+                        "rpcName": "CreateEnvironment",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateUserWorkloadsConfigMap(
@@ -1263,7 +1427,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> environments.UserWorkloadsConfigMap:
             r"""Call the create user workloads
             config map method over HTTP.
@@ -1275,8 +1439,10 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.environments.UserWorkloadsConfigMap:
@@ -1289,6 +1455,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             http_options = (
                 _BaseEnvironmentsRestTransport._BaseCreateUserWorkloadsConfigMap._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_user_workloads_config_map(
                 request, metadata
             )
@@ -1304,6 +1471,33 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             query_params = _BaseEnvironmentsRestTransport._BaseCreateUserWorkloadsConfigMap._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.orchestration.airflow.service_v1beta1.EnvironmentsClient.CreateUserWorkloadsConfigMap",
+                    extra={
+                        "serviceName": "google.cloud.orchestration.airflow.service.v1beta1.Environments",
+                        "rpcName": "CreateUserWorkloadsConfigMap",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1328,7 +1522,31 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             pb_resp = environments.UserWorkloadsConfigMap.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_user_workloads_config_map(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = environments.UserWorkloadsConfigMap.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.orchestration.airflow.service_v1beta1.EnvironmentsClient.create_user_workloads_config_map",
+                    extra={
+                        "serviceName": "google.cloud.orchestration.airflow.service.v1beta1.Environments",
+                        "rpcName": "CreateUserWorkloadsConfigMap",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateUserWorkloadsSecret(
@@ -1367,7 +1585,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> environments.UserWorkloadsSecret:
             r"""Call the create user workloads
             secret method over HTTP.
@@ -1378,8 +1596,10 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.environments.UserWorkloadsSecret:
@@ -1392,6 +1612,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             http_options = (
                 _BaseEnvironmentsRestTransport._BaseCreateUserWorkloadsSecret._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_user_workloads_secret(
                 request, metadata
             )
@@ -1407,6 +1628,33 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             query_params = _BaseEnvironmentsRestTransport._BaseCreateUserWorkloadsSecret._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.orchestration.airflow.service_v1beta1.EnvironmentsClient.CreateUserWorkloadsSecret",
+                    extra={
+                        "serviceName": "google.cloud.orchestration.airflow.service.v1beta1.Environments",
+                        "rpcName": "CreateUserWorkloadsSecret",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1431,7 +1679,31 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             pb_resp = environments.UserWorkloadsSecret.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_user_workloads_secret(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = environments.UserWorkloadsSecret.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.orchestration.airflow.service_v1beta1.EnvironmentsClient.create_user_workloads_secret",
+                    extra={
+                        "serviceName": "google.cloud.orchestration.airflow.service.v1beta1.Environments",
+                        "rpcName": "CreateUserWorkloadsSecret",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DatabaseFailover(
@@ -1469,7 +1741,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the database failover method over HTTP.
 
@@ -1481,8 +1753,10 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1495,6 +1769,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             http_options = (
                 _BaseEnvironmentsRestTransport._BaseDatabaseFailover._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_database_failover(
                 request, metadata
             )
@@ -1510,6 +1785,33 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             query_params = _BaseEnvironmentsRestTransport._BaseDatabaseFailover._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.orchestration.airflow.service_v1beta1.EnvironmentsClient.DatabaseFailover",
+                    extra={
+                        "serviceName": "google.cloud.orchestration.airflow.service.v1beta1.Environments",
+                        "rpcName": "DatabaseFailover",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EnvironmentsRestTransport._DatabaseFailover._get_response(
@@ -1530,7 +1832,29 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_database_failover(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.orchestration.airflow.service_v1beta1.EnvironmentsClient.database_failover",
+                    extra={
+                        "serviceName": "google.cloud.orchestration.airflow.service.v1beta1.Environments",
+                        "rpcName": "DatabaseFailover",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteEnvironment(
@@ -1567,7 +1891,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete environment method over HTTP.
 
@@ -1577,8 +1901,10 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1591,6 +1917,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             http_options = (
                 _BaseEnvironmentsRestTransport._BaseDeleteEnvironment._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_environment(
                 request, metadata
             )
@@ -1602,6 +1929,33 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             query_params = _BaseEnvironmentsRestTransport._BaseDeleteEnvironment._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.orchestration.airflow.service_v1beta1.EnvironmentsClient.DeleteEnvironment",
+                    extra={
+                        "serviceName": "google.cloud.orchestration.airflow.service.v1beta1.Environments",
+                        "rpcName": "DeleteEnvironment",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EnvironmentsRestTransport._DeleteEnvironment._get_response(
@@ -1621,7 +1975,29 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_environment(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.orchestration.airflow.service_v1beta1.EnvironmentsClient.delete_environment",
+                    extra={
+                        "serviceName": "google.cloud.orchestration.airflow.service.v1beta1.Environments",
+                        "rpcName": "DeleteEnvironment",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteUserWorkloadsConfigMap(
@@ -1659,7 +2035,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete user workloads
             config map method over HTTP.
@@ -1671,13 +2047,16 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
             """
 
             http_options = (
                 _BaseEnvironmentsRestTransport._BaseDeleteUserWorkloadsConfigMap._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_user_workloads_config_map(
                 request, metadata
             )
@@ -1689,6 +2068,33 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             query_params = _BaseEnvironmentsRestTransport._BaseDeleteUserWorkloadsConfigMap._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.orchestration.airflow.service_v1beta1.EnvironmentsClient.DeleteUserWorkloadsConfigMap",
+                    extra={
+                        "serviceName": "google.cloud.orchestration.airflow.service.v1beta1.Environments",
+                        "rpcName": "DeleteUserWorkloadsConfigMap",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1742,7 +2148,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete user workloads
             secret method over HTTP.
@@ -1753,13 +2159,16 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
             """
 
             http_options = (
                 _BaseEnvironmentsRestTransport._BaseDeleteUserWorkloadsSecret._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_user_workloads_secret(
                 request, metadata
             )
@@ -1771,6 +2180,33 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             query_params = _BaseEnvironmentsRestTransport._BaseDeleteUserWorkloadsSecret._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.orchestration.airflow.service_v1beta1.EnvironmentsClient.DeleteUserWorkloadsSecret",
+                    extra={
+                        "serviceName": "google.cloud.orchestration.airflow.service.v1beta1.Environments",
+                        "rpcName": "DeleteUserWorkloadsSecret",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1824,7 +2260,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> environments.ExecuteAirflowCommandResponse:
             r"""Call the execute airflow command method over HTTP.
 
@@ -1834,8 +2270,10 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.environments.ExecuteAirflowCommandResponse:
@@ -1847,6 +2285,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             http_options = (
                 _BaseEnvironmentsRestTransport._BaseExecuteAirflowCommand._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_execute_airflow_command(
                 request, metadata
             )
@@ -1862,6 +2301,33 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             query_params = _BaseEnvironmentsRestTransport._BaseExecuteAirflowCommand._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.orchestration.airflow.service_v1beta1.EnvironmentsClient.ExecuteAirflowCommand",
+                    extra={
+                        "serviceName": "google.cloud.orchestration.airflow.service.v1beta1.Environments",
+                        "rpcName": "ExecuteAirflowCommand",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EnvironmentsRestTransport._ExecuteAirflowCommand._get_response(
@@ -1884,7 +2350,31 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             pb_resp = environments.ExecuteAirflowCommandResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_execute_airflow_command(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        environments.ExecuteAirflowCommandResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.orchestration.airflow.service_v1beta1.EnvironmentsClient.execute_airflow_command",
+                    extra={
+                        "serviceName": "google.cloud.orchestration.airflow.service.v1beta1.Environments",
+                        "rpcName": "ExecuteAirflowCommand",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _FetchDatabaseProperties(
@@ -1922,7 +2412,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> environments.FetchDatabasePropertiesResponse:
             r"""Call the fetch database properties method over HTTP.
 
@@ -1933,8 +2423,10 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.environments.FetchDatabasePropertiesResponse:
@@ -1946,6 +2438,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             http_options = (
                 _BaseEnvironmentsRestTransport._BaseFetchDatabaseProperties._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_fetch_database_properties(
                 request, metadata
             )
@@ -1957,6 +2450,33 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             query_params = _BaseEnvironmentsRestTransport._BaseFetchDatabaseProperties._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.orchestration.airflow.service_v1beta1.EnvironmentsClient.FetchDatabaseProperties",
+                    extra={
+                        "serviceName": "google.cloud.orchestration.airflow.service.v1beta1.Environments",
+                        "rpcName": "FetchDatabaseProperties",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EnvironmentsRestTransport._FetchDatabaseProperties._get_response(
@@ -1978,7 +2498,31 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             pb_resp = environments.FetchDatabasePropertiesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_fetch_database_properties(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        environments.FetchDatabasePropertiesResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.orchestration.airflow.service_v1beta1.EnvironmentsClient.fetch_database_properties",
+                    extra={
+                        "serviceName": "google.cloud.orchestration.airflow.service.v1beta1.Environments",
+                        "rpcName": "FetchDatabaseProperties",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetEnvironment(
@@ -2015,7 +2559,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> environments.Environment:
             r"""Call the get environment method over HTTP.
 
@@ -2025,8 +2569,10 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.environments.Environment:
@@ -2038,6 +2584,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             http_options = (
                 _BaseEnvironmentsRestTransport._BaseGetEnvironment._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_environment(request, metadata)
             transcoded_request = _BaseEnvironmentsRestTransport._BaseGetEnvironment._get_transcoded_request(
                 http_options, request
@@ -2047,6 +2594,33 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             query_params = _BaseEnvironmentsRestTransport._BaseGetEnvironment._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.orchestration.airflow.service_v1beta1.EnvironmentsClient.GetEnvironment",
+                    extra={
+                        "serviceName": "google.cloud.orchestration.airflow.service.v1beta1.Environments",
+                        "rpcName": "GetEnvironment",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EnvironmentsRestTransport._GetEnvironment._get_response(
@@ -2068,7 +2642,29 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             pb_resp = environments.Environment.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_environment(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = environments.Environment.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.orchestration.airflow.service_v1beta1.EnvironmentsClient.get_environment",
+                    extra={
+                        "serviceName": "google.cloud.orchestration.airflow.service.v1beta1.Environments",
+                        "rpcName": "GetEnvironment",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetUserWorkloadsConfigMap(
@@ -2106,7 +2702,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> environments.UserWorkloadsConfigMap:
             r"""Call the get user workloads config
             map method over HTTP.
@@ -2117,8 +2713,10 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.environments.UserWorkloadsConfigMap:
@@ -2131,6 +2729,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             http_options = (
                 _BaseEnvironmentsRestTransport._BaseGetUserWorkloadsConfigMap._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_user_workloads_config_map(
                 request, metadata
             )
@@ -2142,6 +2741,33 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             query_params = _BaseEnvironmentsRestTransport._BaseGetUserWorkloadsConfigMap._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.orchestration.airflow.service_v1beta1.EnvironmentsClient.GetUserWorkloadsConfigMap",
+                    extra={
+                        "serviceName": "google.cloud.orchestration.airflow.service.v1beta1.Environments",
+                        "rpcName": "GetUserWorkloadsConfigMap",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -2165,7 +2791,31 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             pb_resp = environments.UserWorkloadsConfigMap.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_user_workloads_config_map(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = environments.UserWorkloadsConfigMap.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.orchestration.airflow.service_v1beta1.EnvironmentsClient.get_user_workloads_config_map",
+                    extra={
+                        "serviceName": "google.cloud.orchestration.airflow.service.v1beta1.Environments",
+                        "rpcName": "GetUserWorkloadsConfigMap",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetUserWorkloadsSecret(
@@ -2202,7 +2852,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> environments.UserWorkloadsSecret:
             r"""Call the get user workloads secret method over HTTP.
 
@@ -2212,8 +2862,10 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.environments.UserWorkloadsSecret:
@@ -2226,6 +2878,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             http_options = (
                 _BaseEnvironmentsRestTransport._BaseGetUserWorkloadsSecret._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_user_workloads_secret(
                 request, metadata
             )
@@ -2237,6 +2890,33 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             query_params = _BaseEnvironmentsRestTransport._BaseGetUserWorkloadsSecret._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.orchestration.airflow.service_v1beta1.EnvironmentsClient.GetUserWorkloadsSecret",
+                    extra={
+                        "serviceName": "google.cloud.orchestration.airflow.service.v1beta1.Environments",
+                        "rpcName": "GetUserWorkloadsSecret",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EnvironmentsRestTransport._GetUserWorkloadsSecret._get_response(
@@ -2258,7 +2938,31 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             pb_resp = environments.UserWorkloadsSecret.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_user_workloads_secret(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = environments.UserWorkloadsSecret.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.orchestration.airflow.service_v1beta1.EnvironmentsClient.get_user_workloads_secret",
+                    extra={
+                        "serviceName": "google.cloud.orchestration.airflow.service.v1beta1.Environments",
+                        "rpcName": "GetUserWorkloadsSecret",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListEnvironments(
@@ -2295,7 +2999,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> environments.ListEnvironmentsResponse:
             r"""Call the list environments method over HTTP.
 
@@ -2306,8 +3010,10 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.environments.ListEnvironmentsResponse:
@@ -2319,6 +3025,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             http_options = (
                 _BaseEnvironmentsRestTransport._BaseListEnvironments._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_environments(
                 request, metadata
             )
@@ -2330,6 +3037,33 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             query_params = _BaseEnvironmentsRestTransport._BaseListEnvironments._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.orchestration.airflow.service_v1beta1.EnvironmentsClient.ListEnvironments",
+                    extra={
+                        "serviceName": "google.cloud.orchestration.airflow.service.v1beta1.Environments",
+                        "rpcName": "ListEnvironments",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EnvironmentsRestTransport._ListEnvironments._get_response(
@@ -2351,7 +3085,31 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             pb_resp = environments.ListEnvironmentsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_environments(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = environments.ListEnvironmentsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.orchestration.airflow.service_v1beta1.EnvironmentsClient.list_environments",
+                    extra={
+                        "serviceName": "google.cloud.orchestration.airflow.service.v1beta1.Environments",
+                        "rpcName": "ListEnvironments",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListUserWorkloadsConfigMaps(
@@ -2389,7 +3147,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> environments.ListUserWorkloadsConfigMapsResponse:
             r"""Call the list user workloads
             config maps method over HTTP.
@@ -2401,8 +3159,10 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.environments.ListUserWorkloadsConfigMapsResponse:
@@ -2414,6 +3174,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             http_options = (
                 _BaseEnvironmentsRestTransport._BaseListUserWorkloadsConfigMaps._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_user_workloads_config_maps(
                 request, metadata
             )
@@ -2425,6 +3186,33 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             query_params = _BaseEnvironmentsRestTransport._BaseListUserWorkloadsConfigMaps._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.orchestration.airflow.service_v1beta1.EnvironmentsClient.ListUserWorkloadsConfigMaps",
+                    extra={
+                        "serviceName": "google.cloud.orchestration.airflow.service.v1beta1.Environments",
+                        "rpcName": "ListUserWorkloadsConfigMaps",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -2448,7 +3236,33 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             pb_resp = environments.ListUserWorkloadsConfigMapsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_user_workloads_config_maps(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        environments.ListUserWorkloadsConfigMapsResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.orchestration.airflow.service_v1beta1.EnvironmentsClient.list_user_workloads_config_maps",
+                    extra={
+                        "serviceName": "google.cloud.orchestration.airflow.service.v1beta1.Environments",
+                        "rpcName": "ListUserWorkloadsConfigMaps",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListUserWorkloadsSecrets(
@@ -2486,7 +3300,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> environments.ListUserWorkloadsSecretsResponse:
             r"""Call the list user workloads
             secrets method over HTTP.
@@ -2497,8 +3311,10 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.environments.ListUserWorkloadsSecretsResponse:
@@ -2510,6 +3326,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             http_options = (
                 _BaseEnvironmentsRestTransport._BaseListUserWorkloadsSecrets._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_user_workloads_secrets(
                 request, metadata
             )
@@ -2521,6 +3338,33 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             query_params = _BaseEnvironmentsRestTransport._BaseListUserWorkloadsSecrets._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.orchestration.airflow.service_v1beta1.EnvironmentsClient.ListUserWorkloadsSecrets",
+                    extra={
+                        "serviceName": "google.cloud.orchestration.airflow.service.v1beta1.Environments",
+                        "rpcName": "ListUserWorkloadsSecrets",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -2544,7 +3388,31 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             pb_resp = environments.ListUserWorkloadsSecretsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_user_workloads_secrets(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        environments.ListUserWorkloadsSecretsResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.orchestration.airflow.service_v1beta1.EnvironmentsClient.list_user_workloads_secrets",
+                    extra={
+                        "serviceName": "google.cloud.orchestration.airflow.service.v1beta1.Environments",
+                        "rpcName": "ListUserWorkloadsSecrets",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListWorkloads(
@@ -2581,7 +3449,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> environments.ListWorkloadsResponse:
             r"""Call the list workloads method over HTTP.
 
@@ -2592,8 +3460,10 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.environments.ListWorkloadsResponse:
@@ -2603,6 +3473,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             http_options = (
                 _BaseEnvironmentsRestTransport._BaseListWorkloads._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_workloads(request, metadata)
             transcoded_request = _BaseEnvironmentsRestTransport._BaseListWorkloads._get_transcoded_request(
                 http_options, request
@@ -2612,6 +3483,33 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             query_params = _BaseEnvironmentsRestTransport._BaseListWorkloads._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.orchestration.airflow.service_v1beta1.EnvironmentsClient.ListWorkloads",
+                    extra={
+                        "serviceName": "google.cloud.orchestration.airflow.service.v1beta1.Environments",
+                        "rpcName": "ListWorkloads",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EnvironmentsRestTransport._ListWorkloads._get_response(
@@ -2633,7 +3531,31 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             pb_resp = environments.ListWorkloadsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_workloads(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = environments.ListWorkloadsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.orchestration.airflow.service_v1beta1.EnvironmentsClient.list_workloads",
+                    extra={
+                        "serviceName": "google.cloud.orchestration.airflow.service.v1beta1.Environments",
+                        "rpcName": "ListWorkloads",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _LoadSnapshot(
@@ -2671,7 +3593,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the load snapshot method over HTTP.
 
@@ -2682,8 +3604,10 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2696,6 +3620,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             http_options = (
                 _BaseEnvironmentsRestTransport._BaseLoadSnapshot._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_load_snapshot(request, metadata)
             transcoded_request = _BaseEnvironmentsRestTransport._BaseLoadSnapshot._get_transcoded_request(
                 http_options, request
@@ -2713,6 +3638,33 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.orchestration.airflow.service_v1beta1.EnvironmentsClient.LoadSnapshot",
+                    extra={
+                        "serviceName": "google.cloud.orchestration.airflow.service.v1beta1.Environments",
+                        "rpcName": "LoadSnapshot",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EnvironmentsRestTransport._LoadSnapshot._get_response(
@@ -2733,7 +3685,29 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_load_snapshot(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.orchestration.airflow.service_v1beta1.EnvironmentsClient.load_snapshot",
+                    extra={
+                        "serviceName": "google.cloud.orchestration.airflow.service.v1beta1.Environments",
+                        "rpcName": "LoadSnapshot",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _PollAirflowCommand(
@@ -2771,7 +3745,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> environments.PollAirflowCommandResponse:
             r"""Call the poll airflow command method over HTTP.
 
@@ -2781,8 +3755,10 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.environments.PollAirflowCommandResponse:
@@ -2794,6 +3770,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             http_options = (
                 _BaseEnvironmentsRestTransport._BasePollAirflowCommand._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_poll_airflow_command(
                 request, metadata
             )
@@ -2809,6 +3786,33 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             query_params = _BaseEnvironmentsRestTransport._BasePollAirflowCommand._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.orchestration.airflow.service_v1beta1.EnvironmentsClient.PollAirflowCommand",
+                    extra={
+                        "serviceName": "google.cloud.orchestration.airflow.service.v1beta1.Environments",
+                        "rpcName": "PollAirflowCommand",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EnvironmentsRestTransport._PollAirflowCommand._get_response(
@@ -2831,7 +3835,31 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             pb_resp = environments.PollAirflowCommandResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_poll_airflow_command(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = environments.PollAirflowCommandResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.orchestration.airflow.service_v1beta1.EnvironmentsClient.poll_airflow_command",
+                    extra={
+                        "serviceName": "google.cloud.orchestration.airflow.service.v1beta1.Environments",
+                        "rpcName": "PollAirflowCommand",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _RestartWebServer(
@@ -2869,7 +3897,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the restart web server method over HTTP.
 
@@ -2879,8 +3907,10 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2893,6 +3923,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             http_options = (
                 _BaseEnvironmentsRestTransport._BaseRestartWebServer._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_restart_web_server(
                 request, metadata
             )
@@ -2908,6 +3939,33 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             query_params = _BaseEnvironmentsRestTransport._BaseRestartWebServer._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.orchestration.airflow.service_v1beta1.EnvironmentsClient.RestartWebServer",
+                    extra={
+                        "serviceName": "google.cloud.orchestration.airflow.service.v1beta1.Environments",
+                        "rpcName": "RestartWebServer",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EnvironmentsRestTransport._RestartWebServer._get_response(
@@ -2928,7 +3986,29 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_restart_web_server(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.orchestration.airflow.service_v1beta1.EnvironmentsClient.restart_web_server",
+                    extra={
+                        "serviceName": "google.cloud.orchestration.airflow.service.v1beta1.Environments",
+                        "rpcName": "RestartWebServer",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _SaveSnapshot(
@@ -2966,7 +4046,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the save snapshot method over HTTP.
 
@@ -2977,8 +4057,10 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2991,6 +4073,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             http_options = (
                 _BaseEnvironmentsRestTransport._BaseSaveSnapshot._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_save_snapshot(request, metadata)
             transcoded_request = _BaseEnvironmentsRestTransport._BaseSaveSnapshot._get_transcoded_request(
                 http_options, request
@@ -3008,6 +4091,33 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.orchestration.airflow.service_v1beta1.EnvironmentsClient.SaveSnapshot",
+                    extra={
+                        "serviceName": "google.cloud.orchestration.airflow.service.v1beta1.Environments",
+                        "rpcName": "SaveSnapshot",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EnvironmentsRestTransport._SaveSnapshot._get_response(
@@ -3028,7 +4138,29 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_save_snapshot(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.orchestration.airflow.service_v1beta1.EnvironmentsClient.save_snapshot",
+                    extra={
+                        "serviceName": "google.cloud.orchestration.airflow.service.v1beta1.Environments",
+                        "rpcName": "SaveSnapshot",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _StopAirflowCommand(
@@ -3066,7 +4198,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> environments.StopAirflowCommandResponse:
             r"""Call the stop airflow command method over HTTP.
 
@@ -3076,8 +4208,10 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.environments.StopAirflowCommandResponse:
@@ -3089,6 +4223,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             http_options = (
                 _BaseEnvironmentsRestTransport._BaseStopAirflowCommand._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_stop_airflow_command(
                 request, metadata
             )
@@ -3104,6 +4239,33 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             query_params = _BaseEnvironmentsRestTransport._BaseStopAirflowCommand._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.orchestration.airflow.service_v1beta1.EnvironmentsClient.StopAirflowCommand",
+                    extra={
+                        "serviceName": "google.cloud.orchestration.airflow.service.v1beta1.Environments",
+                        "rpcName": "StopAirflowCommand",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EnvironmentsRestTransport._StopAirflowCommand._get_response(
@@ -3126,7 +4288,31 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             pb_resp = environments.StopAirflowCommandResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_stop_airflow_command(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = environments.StopAirflowCommandResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.orchestration.airflow.service_v1beta1.EnvironmentsClient.stop_airflow_command",
+                    extra={
+                        "serviceName": "google.cloud.orchestration.airflow.service.v1beta1.Environments",
+                        "rpcName": "StopAirflowCommand",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateEnvironment(
@@ -3164,7 +4350,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update environment method over HTTP.
 
@@ -3174,8 +4360,10 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -3188,6 +4376,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             http_options = (
                 _BaseEnvironmentsRestTransport._BaseUpdateEnvironment._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_environment(
                 request, metadata
             )
@@ -3203,6 +4392,33 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             query_params = _BaseEnvironmentsRestTransport._BaseUpdateEnvironment._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.orchestration.airflow.service_v1beta1.EnvironmentsClient.UpdateEnvironment",
+                    extra={
+                        "serviceName": "google.cloud.orchestration.airflow.service.v1beta1.Environments",
+                        "rpcName": "UpdateEnvironment",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EnvironmentsRestTransport._UpdateEnvironment._get_response(
@@ -3223,7 +4439,29 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_environment(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.orchestration.airflow.service_v1beta1.EnvironmentsClient.update_environment",
+                    extra={
+                        "serviceName": "google.cloud.orchestration.airflow.service.v1beta1.Environments",
+                        "rpcName": "UpdateEnvironment",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateUserWorkloadsConfigMap(
@@ -3262,7 +4500,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> environments.UserWorkloadsConfigMap:
             r"""Call the update user workloads
             config map method over HTTP.
@@ -3274,8 +4512,10 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.environments.UserWorkloadsConfigMap:
@@ -3288,6 +4528,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             http_options = (
                 _BaseEnvironmentsRestTransport._BaseUpdateUserWorkloadsConfigMap._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_user_workloads_config_map(
                 request, metadata
             )
@@ -3303,6 +4544,33 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             query_params = _BaseEnvironmentsRestTransport._BaseUpdateUserWorkloadsConfigMap._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.orchestration.airflow.service_v1beta1.EnvironmentsClient.UpdateUserWorkloadsConfigMap",
+                    extra={
+                        "serviceName": "google.cloud.orchestration.airflow.service.v1beta1.Environments",
+                        "rpcName": "UpdateUserWorkloadsConfigMap",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -3327,7 +4595,31 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             pb_resp = environments.UserWorkloadsConfigMap.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_user_workloads_config_map(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = environments.UserWorkloadsConfigMap.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.orchestration.airflow.service_v1beta1.EnvironmentsClient.update_user_workloads_config_map",
+                    extra={
+                        "serviceName": "google.cloud.orchestration.airflow.service.v1beta1.Environments",
+                        "rpcName": "UpdateUserWorkloadsConfigMap",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateUserWorkloadsSecret(
@@ -3366,7 +4658,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> environments.UserWorkloadsSecret:
             r"""Call the update user workloads
             secret method over HTTP.
@@ -3377,8 +4669,10 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.environments.UserWorkloadsSecret:
@@ -3391,6 +4685,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             http_options = (
                 _BaseEnvironmentsRestTransport._BaseUpdateUserWorkloadsSecret._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_user_workloads_secret(
                 request, metadata
             )
@@ -3406,6 +4701,33 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             query_params = _BaseEnvironmentsRestTransport._BaseUpdateUserWorkloadsSecret._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.orchestration.airflow.service_v1beta1.EnvironmentsClient.UpdateUserWorkloadsSecret",
+                    extra={
+                        "serviceName": "google.cloud.orchestration.airflow.service.v1beta1.Environments",
+                        "rpcName": "UpdateUserWorkloadsSecret",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -3430,7 +4752,31 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             pb_resp = environments.UserWorkloadsSecret.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_user_workloads_secret(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = environments.UserWorkloadsSecret.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.orchestration.airflow.service_v1beta1.EnvironmentsClient.update_user_workloads_secret",
+                    extra={
+                        "serviceName": "google.cloud.orchestration.airflow.service.v1beta1.Environments",
+                        "rpcName": "UpdateUserWorkloadsSecret",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -3710,7 +5056,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the delete operation method over HTTP.
 
@@ -3720,13 +5066,16 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseEnvironmentsRestTransport._BaseDeleteOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
             )
@@ -3738,6 +5087,33 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             query_params = _BaseEnvironmentsRestTransport._BaseDeleteOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.orchestration.airflow.service_v1beta1.EnvironmentsClient.DeleteOperation",
+                    extra={
+                        "serviceName": "google.cloud.orchestration.airflow.service.v1beta1.Environments",
+                        "rpcName": "DeleteOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EnvironmentsRestTransport._DeleteOperation._get_response(
@@ -3794,7 +5170,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the get operation method over HTTP.
 
@@ -3804,8 +5180,10 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.
@@ -3814,6 +5192,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             http_options = (
                 _BaseEnvironmentsRestTransport._BaseGetOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseEnvironmentsRestTransport._BaseGetOperation._get_transcoded_request(
                 http_options, request
@@ -3825,6 +5204,33 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.orchestration.airflow.service_v1beta1.EnvironmentsClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.orchestration.airflow.service.v1beta1.Environments",
+                        "rpcName": "GetOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EnvironmentsRestTransport._GetOperation._get_response(
@@ -3845,6 +5251,27 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.orchestration.airflow.service_v1beta1.EnvironmentsAsyncClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.orchestration.airflow.service.v1beta1.Environments",
+                        "rpcName": "GetOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -3885,7 +5312,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.ListOperationsResponse:
             r"""Call the list operations method over HTTP.
 
@@ -3895,8 +5322,10 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
@@ -3905,6 +5334,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             http_options = (
                 _BaseEnvironmentsRestTransport._BaseListOperations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseEnvironmentsRestTransport._BaseListOperations._get_transcoded_request(
                 http_options, request
@@ -3914,6 +5344,33 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             query_params = _BaseEnvironmentsRestTransport._BaseListOperations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.orchestration.airflow.service_v1beta1.EnvironmentsClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.orchestration.airflow.service.v1beta1.Environments",
+                        "rpcName": "ListOperations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = EnvironmentsRestTransport._ListOperations._get_response(
@@ -3934,6 +5391,27 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.orchestration.airflow.service_v1beta1.EnvironmentsAsyncClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.orchestration.airflow.service.v1beta1.Environments",
+                        "rpcName": "ListOperations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property

@@ -41,7 +41,7 @@ class Reaction(proto.Message):
 
     Attributes:
         name (str):
-            The resource name of the reaction.
+            Identifier. The resource name of the reaction.
 
             Format:
             ``spaces/{space}/messages/{message}/reactions/{reaction}``
@@ -49,7 +49,7 @@ class Reaction(proto.Message):
             Output only. The user who created the
             reaction.
         emoji (google.apps.chat_v1.types.Emoji):
-            The emoji used in the reaction.
+            Required. The emoji used in the reaction.
     """
 
     name: str = proto.Field(
@@ -80,8 +80,8 @@ class Emoji(proto.Message):
 
     Attributes:
         unicode (str):
-            A basic emoji represented by a unicode
-            string.
+            Optional. A basic emoji represented by a
+            unicode string.
 
             This field is a member of `oneof`_ ``content``.
         custom_emoji (google.apps.chat_v1.types.CustomEmoji):
@@ -127,10 +127,11 @@ class EmojiReactionSummary(proto.Message):
 
     Attributes:
         emoji (google.apps.chat_v1.types.Emoji):
-            Emoji associated with the reactions.
+            Output only. Emoji associated with the
+            reactions.
         reaction_count (int):
-            The total number of reactions using the
-            associated emoji.
+            Output only. The total number of reactions
+            using the associated emoji.
 
             This field is a member of `oneof`_ ``_reaction_count``.
     """

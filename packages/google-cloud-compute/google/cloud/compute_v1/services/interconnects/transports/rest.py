@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -37,6 +37,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -133,8 +141,10 @@ class InterconnectsRestInterceptor:
     def pre_delete(
         self,
         request: compute.DeleteInterconnectRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.DeleteInterconnectRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.DeleteInterconnectRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete
 
         Override in a subclass to manipulate the request or metadata
@@ -154,8 +164,8 @@ class InterconnectsRestInterceptor:
     def pre_get(
         self,
         request: compute.GetInterconnectRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.GetInterconnectRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[compute.GetInterconnectRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get
 
         Override in a subclass to manipulate the request or metadata
@@ -175,8 +185,11 @@ class InterconnectsRestInterceptor:
     def pre_get_diagnostics(
         self,
         request: compute.GetDiagnosticsInterconnectRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.GetDiagnosticsInterconnectRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.GetDiagnosticsInterconnectRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for get_diagnostics
 
         Override in a subclass to manipulate the request or metadata
@@ -198,8 +211,11 @@ class InterconnectsRestInterceptor:
     def pre_get_macsec_config(
         self,
         request: compute.GetMacsecConfigInterconnectRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.GetMacsecConfigInterconnectRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.GetMacsecConfigInterconnectRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for get_macsec_config
 
         Override in a subclass to manipulate the request or metadata
@@ -221,8 +237,10 @@ class InterconnectsRestInterceptor:
     def pre_insert(
         self,
         request: compute.InsertInterconnectRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.InsertInterconnectRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.InsertInterconnectRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for insert
 
         Override in a subclass to manipulate the request or metadata
@@ -242,8 +260,10 @@ class InterconnectsRestInterceptor:
     def pre_list(
         self,
         request: compute.ListInterconnectsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.ListInterconnectsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.ListInterconnectsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list
 
         Override in a subclass to manipulate the request or metadata
@@ -263,8 +283,10 @@ class InterconnectsRestInterceptor:
     def pre_patch(
         self,
         request: compute.PatchInterconnectRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.PatchInterconnectRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.PatchInterconnectRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for patch
 
         Override in a subclass to manipulate the request or metadata
@@ -284,8 +306,10 @@ class InterconnectsRestInterceptor:
     def pre_set_labels(
         self,
         request: compute.SetLabelsInterconnectRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.SetLabelsInterconnectRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.SetLabelsInterconnectRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for set_labels
 
         Override in a subclass to manipulate the request or metadata
@@ -425,7 +449,7 @@ class InterconnectsRestTransport(_BaseInterconnectsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the delete method over HTTP.
 
@@ -437,8 +461,10 @@ class InterconnectsRestTransport(_BaseInterconnectsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -465,6 +491,7 @@ class InterconnectsRestTransport(_BaseInterconnectsRestTransport):
             http_options = (
                 _BaseInterconnectsRestTransport._BaseDelete._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete(request, metadata)
             transcoded_request = (
                 _BaseInterconnectsRestTransport._BaseDelete._get_transcoded_request(
@@ -478,6 +505,33 @@ class InterconnectsRestTransport(_BaseInterconnectsRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.InterconnectsClient.Delete",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.Interconnects",
+                        "rpcName": "Delete",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = InterconnectsRestTransport._Delete._get_response(
@@ -499,7 +553,29 @@ class InterconnectsRestTransport(_BaseInterconnectsRestTransport):
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.InterconnectsClient.delete",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.Interconnects",
+                        "rpcName": "Delete",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _Get(_BaseInterconnectsRestTransport._BaseGet, InterconnectsRestStub):
@@ -534,7 +610,7 @@ class InterconnectsRestTransport(_BaseInterconnectsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Interconnect:
             r"""Call the get method over HTTP.
 
@@ -546,8 +622,10 @@ class InterconnectsRestTransport(_BaseInterconnectsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Interconnect:
@@ -561,6 +639,7 @@ class InterconnectsRestTransport(_BaseInterconnectsRestTransport):
             """
 
             http_options = _BaseInterconnectsRestTransport._BaseGet._get_http_options()
+
             request, metadata = self._interceptor.pre_get(request, metadata)
             transcoded_request = (
                 _BaseInterconnectsRestTransport._BaseGet._get_transcoded_request(
@@ -574,6 +653,33 @@ class InterconnectsRestTransport(_BaseInterconnectsRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.InterconnectsClient.Get",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.Interconnects",
+                        "rpcName": "Get",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = InterconnectsRestTransport._Get._get_response(
@@ -595,7 +701,29 @@ class InterconnectsRestTransport(_BaseInterconnectsRestTransport):
             pb_resp = compute.Interconnect.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Interconnect.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.InterconnectsClient.get",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.Interconnects",
+                        "rpcName": "Get",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetDiagnostics(
@@ -632,7 +760,7 @@ class InterconnectsRestTransport(_BaseInterconnectsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.InterconnectsGetDiagnosticsResponse:
             r"""Call the get diagnostics method over HTTP.
 
@@ -644,8 +772,10 @@ class InterconnectsRestTransport(_BaseInterconnectsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.InterconnectsGetDiagnosticsResponse:
@@ -657,6 +787,7 @@ class InterconnectsRestTransport(_BaseInterconnectsRestTransport):
             http_options = (
                 _BaseInterconnectsRestTransport._BaseGetDiagnostics._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_diagnostics(request, metadata)
             transcoded_request = _BaseInterconnectsRestTransport._BaseGetDiagnostics._get_transcoded_request(
                 http_options, request
@@ -666,6 +797,33 @@ class InterconnectsRestTransport(_BaseInterconnectsRestTransport):
             query_params = _BaseInterconnectsRestTransport._BaseGetDiagnostics._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.InterconnectsClient.GetDiagnostics",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.Interconnects",
+                        "rpcName": "GetDiagnostics",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = InterconnectsRestTransport._GetDiagnostics._get_response(
@@ -687,7 +845,31 @@ class InterconnectsRestTransport(_BaseInterconnectsRestTransport):
             pb_resp = compute.InterconnectsGetDiagnosticsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_diagnostics(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        compute.InterconnectsGetDiagnosticsResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.InterconnectsClient.get_diagnostics",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.Interconnects",
+                        "rpcName": "GetDiagnostics",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetMacsecConfig(
@@ -724,7 +906,7 @@ class InterconnectsRestTransport(_BaseInterconnectsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.InterconnectsGetMacsecConfigResponse:
             r"""Call the get macsec config method over HTTP.
 
@@ -736,8 +918,10 @@ class InterconnectsRestTransport(_BaseInterconnectsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.InterconnectsGetMacsecConfigResponse:
@@ -749,6 +933,7 @@ class InterconnectsRestTransport(_BaseInterconnectsRestTransport):
             http_options = (
                 _BaseInterconnectsRestTransport._BaseGetMacsecConfig._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_macsec_config(
                 request, metadata
             )
@@ -760,6 +945,33 @@ class InterconnectsRestTransport(_BaseInterconnectsRestTransport):
             query_params = _BaseInterconnectsRestTransport._BaseGetMacsecConfig._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.InterconnectsClient.GetMacsecConfig",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.Interconnects",
+                        "rpcName": "GetMacsecConfig",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = InterconnectsRestTransport._GetMacsecConfig._get_response(
@@ -781,7 +993,31 @@ class InterconnectsRestTransport(_BaseInterconnectsRestTransport):
             pb_resp = compute.InterconnectsGetMacsecConfigResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_macsec_config(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        compute.InterconnectsGetMacsecConfigResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.InterconnectsClient.get_macsec_config",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.Interconnects",
+                        "rpcName": "GetMacsecConfig",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _Insert(_BaseInterconnectsRestTransport._BaseInsert, InterconnectsRestStub):
@@ -817,7 +1053,7 @@ class InterconnectsRestTransport(_BaseInterconnectsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the insert method over HTTP.
 
@@ -829,8 +1065,10 @@ class InterconnectsRestTransport(_BaseInterconnectsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -857,6 +1095,7 @@ class InterconnectsRestTransport(_BaseInterconnectsRestTransport):
             http_options = (
                 _BaseInterconnectsRestTransport._BaseInsert._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_insert(request, metadata)
             transcoded_request = (
                 _BaseInterconnectsRestTransport._BaseInsert._get_transcoded_request(
@@ -874,6 +1113,33 @@ class InterconnectsRestTransport(_BaseInterconnectsRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.InterconnectsClient.Insert",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.Interconnects",
+                        "rpcName": "Insert",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = InterconnectsRestTransport._Insert._get_response(
@@ -896,7 +1162,29 @@ class InterconnectsRestTransport(_BaseInterconnectsRestTransport):
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_insert(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.InterconnectsClient.insert",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.Interconnects",
+                        "rpcName": "Insert",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _List(_BaseInterconnectsRestTransport._BaseList, InterconnectsRestStub):
@@ -931,7 +1219,7 @@ class InterconnectsRestTransport(_BaseInterconnectsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.InterconnectList:
             r"""Call the list method over HTTP.
 
@@ -943,8 +1231,10 @@ class InterconnectsRestTransport(_BaseInterconnectsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.InterconnectList:
@@ -954,6 +1244,7 @@ class InterconnectsRestTransport(_BaseInterconnectsRestTransport):
             """
 
             http_options = _BaseInterconnectsRestTransport._BaseList._get_http_options()
+
             request, metadata = self._interceptor.pre_list(request, metadata)
             transcoded_request = (
                 _BaseInterconnectsRestTransport._BaseList._get_transcoded_request(
@@ -967,6 +1258,33 @@ class InterconnectsRestTransport(_BaseInterconnectsRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.InterconnectsClient.List",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.Interconnects",
+                        "rpcName": "List",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = InterconnectsRestTransport._List._get_response(
@@ -988,7 +1306,29 @@ class InterconnectsRestTransport(_BaseInterconnectsRestTransport):
             pb_resp = compute.InterconnectList.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.InterconnectList.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.InterconnectsClient.list",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.Interconnects",
+                        "rpcName": "List",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _Patch(_BaseInterconnectsRestTransport._BasePatch, InterconnectsRestStub):
@@ -1024,7 +1364,7 @@ class InterconnectsRestTransport(_BaseInterconnectsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the patch method over HTTP.
 
@@ -1036,8 +1376,10 @@ class InterconnectsRestTransport(_BaseInterconnectsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -1064,6 +1406,7 @@ class InterconnectsRestTransport(_BaseInterconnectsRestTransport):
             http_options = (
                 _BaseInterconnectsRestTransport._BasePatch._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_patch(request, metadata)
             transcoded_request = (
                 _BaseInterconnectsRestTransport._BasePatch._get_transcoded_request(
@@ -1081,6 +1424,33 @@ class InterconnectsRestTransport(_BaseInterconnectsRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.InterconnectsClient.Patch",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.Interconnects",
+                        "rpcName": "Patch",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = InterconnectsRestTransport._Patch._get_response(
@@ -1103,7 +1473,29 @@ class InterconnectsRestTransport(_BaseInterconnectsRestTransport):
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_patch(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.InterconnectsClient.patch",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.Interconnects",
+                        "rpcName": "Patch",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _SetLabels(
@@ -1141,7 +1533,7 @@ class InterconnectsRestTransport(_BaseInterconnectsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the set labels method over HTTP.
 
@@ -1153,8 +1545,10 @@ class InterconnectsRestTransport(_BaseInterconnectsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -1181,6 +1575,7 @@ class InterconnectsRestTransport(_BaseInterconnectsRestTransport):
             http_options = (
                 _BaseInterconnectsRestTransport._BaseSetLabels._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_set_labels(request, metadata)
             transcoded_request = (
                 _BaseInterconnectsRestTransport._BaseSetLabels._get_transcoded_request(
@@ -1200,6 +1595,33 @@ class InterconnectsRestTransport(_BaseInterconnectsRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.InterconnectsClient.SetLabels",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.Interconnects",
+                        "rpcName": "SetLabels",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = InterconnectsRestTransport._SetLabels._get_response(
@@ -1222,7 +1644,29 @@ class InterconnectsRestTransport(_BaseInterconnectsRestTransport):
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_set_labels(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.InterconnectsClient.set_labels",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.Interconnects",
+                        "rpcName": "SetLabels",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
