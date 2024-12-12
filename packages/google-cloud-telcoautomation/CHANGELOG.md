@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.2.8](https://github.com/googleapis/google-cloud-python/compare/google-cloud-telcoautomation-v0.2.7...google-cloud-telcoautomation-v0.2.8) (2024-12-12)
+
+
+### Features
+
+* Add support for opt-in debug logging ([856e0f0](https://github.com/googleapis/google-cloud-python/commit/856e0f07bd5212d60ad64be4c16ac8fafd07850b))
+
+
+### Bug Fixes
+
+* Fix typing issue with gRPC metadata when key ends in -bin ([856e0f0](https://github.com/googleapis/google-cloud-python/commit/856e0f07bd5212d60ad64be4c16ac8fafd07850b))
+
 ## [0.2.7](https://github.com/googleapis/google-cloud-python/compare/google-cloud-telcoautomation-v0.2.6...google-cloud-telcoautomation-v0.2.7) (2024-11-11)
 
 

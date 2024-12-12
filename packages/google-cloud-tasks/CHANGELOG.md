@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-tasks/#history
 
+## [2.18.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-tasks-v2.17.1...google-cloud-tasks-v2.18.0) (2024-12-12)
+
+
+### Features
+
+* Add support for opt-in debug logging ([9b674de](https://github.com/googleapis/google-cloud-python/commit/9b674de1429a4fca4d31d2ae9f354dcb026cd316))
+
+
+### Bug Fixes
+
+* Fix typing issue with gRPC metadata when key ends in -bin ([9b674de](https://github.com/googleapis/google-cloud-python/commit/9b674de1429a4fca4d31d2ae9f354dcb026cd316))
+
 ## [2.17.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-tasks-v2.17.0...google-cloud-tasks-v2.17.1) (2024-11-11)
 
 

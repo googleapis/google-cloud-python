@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-texttospeech/#history
 
+## [2.22.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-texttospeech-v2.21.1...google-cloud-texttospeech-v2.22.0) (2024-12-12)
+
+
+### Features
+
+* Add support for opt-in debug logging ([856e0f0](https://github.com/googleapis/google-cloud-python/commit/856e0f07bd5212d60ad64be4c16ac8fafd07850b))
+
+
+### Bug Fixes
+
+* Fix typing issue with gRPC metadata when key ends in -bin ([856e0f0](https://github.com/googleapis/google-cloud-python/commit/856e0f07bd5212d60ad64be4c16ac8fafd07850b))
+
 ## [2.21.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-texttospeech-v2.21.0...google-cloud-texttospeech-v2.21.1) (2024-11-11)
 
 
