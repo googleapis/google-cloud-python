@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -39,6 +39,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -207,8 +215,11 @@ class CloudFilestoreManagerRestInterceptor:
     def pre_create_backup(
         self,
         request: cloud_filestore_service.CreateBackupRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloud_filestore_service.CreateBackupRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_filestore_service.CreateBackupRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for create_backup
 
         Override in a subclass to manipulate the request or metadata
@@ -230,9 +241,10 @@ class CloudFilestoreManagerRestInterceptor:
     def pre_create_instance(
         self,
         request: cloud_filestore_service.CreateInstanceRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        cloud_filestore_service.CreateInstanceRequest, Sequence[Tuple[str, str]]
+        cloud_filestore_service.CreateInstanceRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for create_instance
 
@@ -255,9 +267,10 @@ class CloudFilestoreManagerRestInterceptor:
     def pre_create_snapshot(
         self,
         request: cloud_filestore_service.CreateSnapshotRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        cloud_filestore_service.CreateSnapshotRequest, Sequence[Tuple[str, str]]
+        cloud_filestore_service.CreateSnapshotRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for create_snapshot
 
@@ -280,8 +293,11 @@ class CloudFilestoreManagerRestInterceptor:
     def pre_delete_backup(
         self,
         request: cloud_filestore_service.DeleteBackupRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloud_filestore_service.DeleteBackupRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_filestore_service.DeleteBackupRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for delete_backup
 
         Override in a subclass to manipulate the request or metadata
@@ -303,9 +319,10 @@ class CloudFilestoreManagerRestInterceptor:
     def pre_delete_instance(
         self,
         request: cloud_filestore_service.DeleteInstanceRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        cloud_filestore_service.DeleteInstanceRequest, Sequence[Tuple[str, str]]
+        cloud_filestore_service.DeleteInstanceRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for delete_instance
 
@@ -328,9 +345,10 @@ class CloudFilestoreManagerRestInterceptor:
     def pre_delete_snapshot(
         self,
         request: cloud_filestore_service.DeleteSnapshotRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        cloud_filestore_service.DeleteSnapshotRequest, Sequence[Tuple[str, str]]
+        cloud_filestore_service.DeleteSnapshotRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for delete_snapshot
 
@@ -353,8 +371,11 @@ class CloudFilestoreManagerRestInterceptor:
     def pre_get_backup(
         self,
         request: cloud_filestore_service.GetBackupRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloud_filestore_service.GetBackupRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_filestore_service.GetBackupRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for get_backup
 
         Override in a subclass to manipulate the request or metadata
@@ -376,8 +397,11 @@ class CloudFilestoreManagerRestInterceptor:
     def pre_get_instance(
         self,
         request: cloud_filestore_service.GetInstanceRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloud_filestore_service.GetInstanceRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_filestore_service.GetInstanceRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for get_instance
 
         Override in a subclass to manipulate the request or metadata
@@ -399,8 +423,11 @@ class CloudFilestoreManagerRestInterceptor:
     def pre_get_snapshot(
         self,
         request: cloud_filestore_service.GetSnapshotRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloud_filestore_service.GetSnapshotRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_filestore_service.GetSnapshotRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for get_snapshot
 
         Override in a subclass to manipulate the request or metadata
@@ -422,8 +449,11 @@ class CloudFilestoreManagerRestInterceptor:
     def pre_list_backups(
         self,
         request: cloud_filestore_service.ListBackupsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloud_filestore_service.ListBackupsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_filestore_service.ListBackupsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for list_backups
 
         Override in a subclass to manipulate the request or metadata
@@ -445,8 +475,11 @@ class CloudFilestoreManagerRestInterceptor:
     def pre_list_instances(
         self,
         request: cloud_filestore_service.ListInstancesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloud_filestore_service.ListInstancesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_filestore_service.ListInstancesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for list_instances
 
         Override in a subclass to manipulate the request or metadata
@@ -468,8 +501,11 @@ class CloudFilestoreManagerRestInterceptor:
     def pre_list_snapshots(
         self,
         request: cloud_filestore_service.ListSnapshotsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloud_filestore_service.ListSnapshotsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_filestore_service.ListSnapshotsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for list_snapshots
 
         Override in a subclass to manipulate the request or metadata
@@ -491,9 +527,10 @@ class CloudFilestoreManagerRestInterceptor:
     def pre_restore_instance(
         self,
         request: cloud_filestore_service.RestoreInstanceRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        cloud_filestore_service.RestoreInstanceRequest, Sequence[Tuple[str, str]]
+        cloud_filestore_service.RestoreInstanceRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for restore_instance
 
@@ -516,9 +553,10 @@ class CloudFilestoreManagerRestInterceptor:
     def pre_revert_instance(
         self,
         request: cloud_filestore_service.RevertInstanceRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        cloud_filestore_service.RevertInstanceRequest, Sequence[Tuple[str, str]]
+        cloud_filestore_service.RevertInstanceRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for revert_instance
 
@@ -541,8 +579,11 @@ class CloudFilestoreManagerRestInterceptor:
     def pre_update_backup(
         self,
         request: cloud_filestore_service.UpdateBackupRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloud_filestore_service.UpdateBackupRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloud_filestore_service.UpdateBackupRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for update_backup
 
         Override in a subclass to manipulate the request or metadata
@@ -564,9 +605,10 @@ class CloudFilestoreManagerRestInterceptor:
     def pre_update_instance(
         self,
         request: cloud_filestore_service.UpdateInstanceRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        cloud_filestore_service.UpdateInstanceRequest, Sequence[Tuple[str, str]]
+        cloud_filestore_service.UpdateInstanceRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for update_instance
 
@@ -589,9 +631,10 @@ class CloudFilestoreManagerRestInterceptor:
     def pre_update_snapshot(
         self,
         request: cloud_filestore_service.UpdateSnapshotRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        cloud_filestore_service.UpdateSnapshotRequest, Sequence[Tuple[str, str]]
+        cloud_filestore_service.UpdateSnapshotRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for update_snapshot
 
@@ -614,8 +657,10 @@ class CloudFilestoreManagerRestInterceptor:
     def pre_get_location(
         self,
         request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -637,8 +682,10 @@ class CloudFilestoreManagerRestInterceptor:
     def pre_list_locations(
         self,
         request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -660,8 +707,10 @@ class CloudFilestoreManagerRestInterceptor:
     def pre_cancel_operation(
         self,
         request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -681,8 +730,10 @@ class CloudFilestoreManagerRestInterceptor:
     def pre_delete_operation(
         self,
         request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -702,8 +753,10 @@ class CloudFilestoreManagerRestInterceptor:
     def pre_get_operation(
         self,
         request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -725,8 +778,10 @@ class CloudFilestoreManagerRestInterceptor:
     def pre_list_operations(
         self,
         request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -944,7 +999,7 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create backup method over HTTP.
 
@@ -954,8 +1009,10 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -968,6 +1025,7 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             http_options = (
                 _BaseCloudFilestoreManagerRestTransport._BaseCreateBackup._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_backup(request, metadata)
             transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseCreateBackup._get_transcoded_request(
                 http_options, request
@@ -981,6 +1039,33 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             query_params = _BaseCloudFilestoreManagerRestTransport._BaseCreateBackup._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.filestore_v1.CloudFilestoreManagerClient.CreateBackup",
+                    extra={
+                        "serviceName": "google.cloud.filestore.v1.CloudFilestoreManager",
+                        "rpcName": "CreateBackup",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudFilestoreManagerRestTransport._CreateBackup._get_response(
@@ -1001,7 +1086,29 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_backup(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.filestore_v1.CloudFilestoreManagerClient.create_backup",
+                    extra={
+                        "serviceName": "google.cloud.filestore.v1.CloudFilestoreManager",
+                        "rpcName": "CreateBackup",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateInstance(
@@ -1040,7 +1147,7 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create instance method over HTTP.
 
@@ -1051,8 +1158,10 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1065,6 +1174,7 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             http_options = (
                 _BaseCloudFilestoreManagerRestTransport._BaseCreateInstance._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_instance(request, metadata)
             transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseCreateInstance._get_transcoded_request(
                 http_options, request
@@ -1078,6 +1188,33 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             query_params = _BaseCloudFilestoreManagerRestTransport._BaseCreateInstance._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.filestore_v1.CloudFilestoreManagerClient.CreateInstance",
+                    extra={
+                        "serviceName": "google.cloud.filestore.v1.CloudFilestoreManager",
+                        "rpcName": "CreateInstance",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudFilestoreManagerRestTransport._CreateInstance._get_response(
@@ -1098,7 +1235,29 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_instance(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.filestore_v1.CloudFilestoreManagerClient.create_instance",
+                    extra={
+                        "serviceName": "google.cloud.filestore.v1.CloudFilestoreManager",
+                        "rpcName": "CreateInstance",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateSnapshot(
@@ -1137,7 +1296,7 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create snapshot method over HTTP.
 
@@ -1148,8 +1307,10 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1162,6 +1323,7 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             http_options = (
                 _BaseCloudFilestoreManagerRestTransport._BaseCreateSnapshot._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_snapshot(request, metadata)
             transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseCreateSnapshot._get_transcoded_request(
                 http_options, request
@@ -1175,6 +1337,33 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             query_params = _BaseCloudFilestoreManagerRestTransport._BaseCreateSnapshot._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.filestore_v1.CloudFilestoreManagerClient.CreateSnapshot",
+                    extra={
+                        "serviceName": "google.cloud.filestore.v1.CloudFilestoreManager",
+                        "rpcName": "CreateSnapshot",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudFilestoreManagerRestTransport._CreateSnapshot._get_response(
@@ -1195,7 +1384,29 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_snapshot(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.filestore_v1.CloudFilestoreManagerClient.create_snapshot",
+                    extra={
+                        "serviceName": "google.cloud.filestore.v1.CloudFilestoreManager",
+                        "rpcName": "CreateSnapshot",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteBackup(
@@ -1233,7 +1444,7 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete backup method over HTTP.
 
@@ -1243,8 +1454,10 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1257,6 +1470,7 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             http_options = (
                 _BaseCloudFilestoreManagerRestTransport._BaseDeleteBackup._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_backup(request, metadata)
             transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseDeleteBackup._get_transcoded_request(
                 http_options, request
@@ -1266,6 +1480,33 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             query_params = _BaseCloudFilestoreManagerRestTransport._BaseDeleteBackup._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.filestore_v1.CloudFilestoreManagerClient.DeleteBackup",
+                    extra={
+                        "serviceName": "google.cloud.filestore.v1.CloudFilestoreManager",
+                        "rpcName": "DeleteBackup",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudFilestoreManagerRestTransport._DeleteBackup._get_response(
@@ -1285,7 +1526,29 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_backup(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.filestore_v1.CloudFilestoreManagerClient.delete_backup",
+                    extra={
+                        "serviceName": "google.cloud.filestore.v1.CloudFilestoreManager",
+                        "rpcName": "DeleteBackup",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteInstance(
@@ -1323,7 +1586,7 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete instance method over HTTP.
 
@@ -1334,8 +1597,10 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1348,6 +1613,7 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             http_options = (
                 _BaseCloudFilestoreManagerRestTransport._BaseDeleteInstance._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_instance(request, metadata)
             transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseDeleteInstance._get_transcoded_request(
                 http_options, request
@@ -1357,6 +1623,33 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             query_params = _BaseCloudFilestoreManagerRestTransport._BaseDeleteInstance._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.filestore_v1.CloudFilestoreManagerClient.DeleteInstance",
+                    extra={
+                        "serviceName": "google.cloud.filestore.v1.CloudFilestoreManager",
+                        "rpcName": "DeleteInstance",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudFilestoreManagerRestTransport._DeleteInstance._get_response(
@@ -1376,7 +1669,29 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_instance(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.filestore_v1.CloudFilestoreManagerClient.delete_instance",
+                    extra={
+                        "serviceName": "google.cloud.filestore.v1.CloudFilestoreManager",
+                        "rpcName": "DeleteInstance",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteSnapshot(
@@ -1414,7 +1729,7 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete snapshot method over HTTP.
 
@@ -1425,8 +1740,10 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1439,6 +1756,7 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             http_options = (
                 _BaseCloudFilestoreManagerRestTransport._BaseDeleteSnapshot._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_snapshot(request, metadata)
             transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseDeleteSnapshot._get_transcoded_request(
                 http_options, request
@@ -1448,6 +1766,33 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             query_params = _BaseCloudFilestoreManagerRestTransport._BaseDeleteSnapshot._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.filestore_v1.CloudFilestoreManagerClient.DeleteSnapshot",
+                    extra={
+                        "serviceName": "google.cloud.filestore.v1.CloudFilestoreManager",
+                        "rpcName": "DeleteSnapshot",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudFilestoreManagerRestTransport._DeleteSnapshot._get_response(
@@ -1467,7 +1812,29 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_snapshot(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.filestore_v1.CloudFilestoreManagerClient.delete_snapshot",
+                    extra={
+                        "serviceName": "google.cloud.filestore.v1.CloudFilestoreManager",
+                        "rpcName": "DeleteSnapshot",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetBackup(
@@ -1505,7 +1872,7 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> cloud_filestore_service.Backup:
             r"""Call the get backup method over HTTP.
 
@@ -1516,8 +1883,10 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.cloud_filestore_service.Backup:
@@ -1527,6 +1896,7 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             http_options = (
                 _BaseCloudFilestoreManagerRestTransport._BaseGetBackup._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_backup(request, metadata)
             transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseGetBackup._get_transcoded_request(
                 http_options, request
@@ -1536,6 +1906,33 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             query_params = _BaseCloudFilestoreManagerRestTransport._BaseGetBackup._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.filestore_v1.CloudFilestoreManagerClient.GetBackup",
+                    extra={
+                        "serviceName": "google.cloud.filestore.v1.CloudFilestoreManager",
+                        "rpcName": "GetBackup",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudFilestoreManagerRestTransport._GetBackup._get_response(
@@ -1557,7 +1954,29 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             pb_resp = cloud_filestore_service.Backup.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_backup(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = cloud_filestore_service.Backup.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.filestore_v1.CloudFilestoreManagerClient.get_backup",
+                    extra={
+                        "serviceName": "google.cloud.filestore.v1.CloudFilestoreManager",
+                        "rpcName": "GetBackup",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetInstance(
@@ -1595,7 +2014,7 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> cloud_filestore_service.Instance:
             r"""Call the get instance method over HTTP.
 
@@ -1606,8 +2025,10 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.cloud_filestore_service.Instance:
@@ -1617,6 +2038,7 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             http_options = (
                 _BaseCloudFilestoreManagerRestTransport._BaseGetInstance._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_instance(request, metadata)
             transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseGetInstance._get_transcoded_request(
                 http_options, request
@@ -1626,6 +2048,33 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             query_params = _BaseCloudFilestoreManagerRestTransport._BaseGetInstance._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.filestore_v1.CloudFilestoreManagerClient.GetInstance",
+                    extra={
+                        "serviceName": "google.cloud.filestore.v1.CloudFilestoreManager",
+                        "rpcName": "GetInstance",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudFilestoreManagerRestTransport._GetInstance._get_response(
@@ -1647,7 +2096,31 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             pb_resp = cloud_filestore_service.Instance.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_instance(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = cloud_filestore_service.Instance.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.filestore_v1.CloudFilestoreManagerClient.get_instance",
+                    extra={
+                        "serviceName": "google.cloud.filestore.v1.CloudFilestoreManager",
+                        "rpcName": "GetInstance",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetSnapshot(
@@ -1685,7 +2158,7 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> cloud_filestore_service.Snapshot:
             r"""Call the get snapshot method over HTTP.
 
@@ -1696,8 +2169,10 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.cloud_filestore_service.Snapshot:
@@ -1707,6 +2182,7 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             http_options = (
                 _BaseCloudFilestoreManagerRestTransport._BaseGetSnapshot._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_snapshot(request, metadata)
             transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseGetSnapshot._get_transcoded_request(
                 http_options, request
@@ -1716,6 +2192,33 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             query_params = _BaseCloudFilestoreManagerRestTransport._BaseGetSnapshot._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.filestore_v1.CloudFilestoreManagerClient.GetSnapshot",
+                    extra={
+                        "serviceName": "google.cloud.filestore.v1.CloudFilestoreManager",
+                        "rpcName": "GetSnapshot",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudFilestoreManagerRestTransport._GetSnapshot._get_response(
@@ -1737,7 +2240,31 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             pb_resp = cloud_filestore_service.Snapshot.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_snapshot(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = cloud_filestore_service.Snapshot.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.filestore_v1.CloudFilestoreManagerClient.get_snapshot",
+                    extra={
+                        "serviceName": "google.cloud.filestore.v1.CloudFilestoreManager",
+                        "rpcName": "GetSnapshot",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListBackups(
@@ -1775,7 +2302,7 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> cloud_filestore_service.ListBackupsResponse:
             r"""Call the list backups method over HTTP.
 
@@ -1785,8 +2312,10 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.cloud_filestore_service.ListBackupsResponse:
@@ -1798,6 +2327,7 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             http_options = (
                 _BaseCloudFilestoreManagerRestTransport._BaseListBackups._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_backups(request, metadata)
             transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseListBackups._get_transcoded_request(
                 http_options, request
@@ -1807,6 +2337,33 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             query_params = _BaseCloudFilestoreManagerRestTransport._BaseListBackups._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.filestore_v1.CloudFilestoreManagerClient.ListBackups",
+                    extra={
+                        "serviceName": "google.cloud.filestore.v1.CloudFilestoreManager",
+                        "rpcName": "ListBackups",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudFilestoreManagerRestTransport._ListBackups._get_response(
@@ -1828,7 +2385,31 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             pb_resp = cloud_filestore_service.ListBackupsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_backups(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        cloud_filestore_service.ListBackupsResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.filestore_v1.CloudFilestoreManagerClient.list_backups",
+                    extra={
+                        "serviceName": "google.cloud.filestore.v1.CloudFilestoreManager",
+                        "rpcName": "ListBackups",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListInstances(
@@ -1866,7 +2447,7 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> cloud_filestore_service.ListInstancesResponse:
             r"""Call the list instances method over HTTP.
 
@@ -1876,8 +2457,10 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.cloud_filestore_service.ListInstancesResponse:
@@ -1889,6 +2472,7 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             http_options = (
                 _BaseCloudFilestoreManagerRestTransport._BaseListInstances._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_instances(request, metadata)
             transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseListInstances._get_transcoded_request(
                 http_options, request
@@ -1898,6 +2482,33 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             query_params = _BaseCloudFilestoreManagerRestTransport._BaseListInstances._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.filestore_v1.CloudFilestoreManagerClient.ListInstances",
+                    extra={
+                        "serviceName": "google.cloud.filestore.v1.CloudFilestoreManager",
+                        "rpcName": "ListInstances",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudFilestoreManagerRestTransport._ListInstances._get_response(
@@ -1919,7 +2530,31 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             pb_resp = cloud_filestore_service.ListInstancesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_instances(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        cloud_filestore_service.ListInstancesResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.filestore_v1.CloudFilestoreManagerClient.list_instances",
+                    extra={
+                        "serviceName": "google.cloud.filestore.v1.CloudFilestoreManager",
+                        "rpcName": "ListInstances",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListSnapshots(
@@ -1957,7 +2592,7 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> cloud_filestore_service.ListSnapshotsResponse:
             r"""Call the list snapshots method over HTTP.
 
@@ -1967,8 +2602,10 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.cloud_filestore_service.ListSnapshotsResponse:
@@ -1980,6 +2617,7 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             http_options = (
                 _BaseCloudFilestoreManagerRestTransport._BaseListSnapshots._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_snapshots(request, metadata)
             transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseListSnapshots._get_transcoded_request(
                 http_options, request
@@ -1989,6 +2627,33 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             query_params = _BaseCloudFilestoreManagerRestTransport._BaseListSnapshots._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.filestore_v1.CloudFilestoreManagerClient.ListSnapshots",
+                    extra={
+                        "serviceName": "google.cloud.filestore.v1.CloudFilestoreManager",
+                        "rpcName": "ListSnapshots",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudFilestoreManagerRestTransport._ListSnapshots._get_response(
@@ -2010,7 +2675,31 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             pb_resp = cloud_filestore_service.ListSnapshotsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_snapshots(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        cloud_filestore_service.ListSnapshotsResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.filestore_v1.CloudFilestoreManagerClient.list_snapshots",
+                    extra={
+                        "serviceName": "google.cloud.filestore.v1.CloudFilestoreManager",
+                        "rpcName": "ListSnapshots",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _RestoreInstance(
@@ -2049,7 +2738,7 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the restore instance method over HTTP.
 
@@ -2061,8 +2750,10 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2075,6 +2766,7 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             http_options = (
                 _BaseCloudFilestoreManagerRestTransport._BaseRestoreInstance._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_restore_instance(
                 request, metadata
             )
@@ -2090,6 +2782,33 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             query_params = _BaseCloudFilestoreManagerRestTransport._BaseRestoreInstance._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.filestore_v1.CloudFilestoreManagerClient.RestoreInstance",
+                    extra={
+                        "serviceName": "google.cloud.filestore.v1.CloudFilestoreManager",
+                        "rpcName": "RestoreInstance",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -2112,7 +2831,29 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_restore_instance(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.filestore_v1.CloudFilestoreManagerClient.restore_instance",
+                    extra={
+                        "serviceName": "google.cloud.filestore.v1.CloudFilestoreManager",
+                        "rpcName": "RestoreInstance",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _RevertInstance(
@@ -2151,7 +2892,7 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the revert instance method over HTTP.
 
@@ -2163,8 +2904,10 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2177,6 +2920,7 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             http_options = (
                 _BaseCloudFilestoreManagerRestTransport._BaseRevertInstance._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_revert_instance(request, metadata)
             transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseRevertInstance._get_transcoded_request(
                 http_options, request
@@ -2190,6 +2934,33 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             query_params = _BaseCloudFilestoreManagerRestTransport._BaseRevertInstance._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.filestore_v1.CloudFilestoreManagerClient.RevertInstance",
+                    extra={
+                        "serviceName": "google.cloud.filestore.v1.CloudFilestoreManager",
+                        "rpcName": "RevertInstance",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudFilestoreManagerRestTransport._RevertInstance._get_response(
@@ -2210,7 +2981,29 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_revert_instance(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.filestore_v1.CloudFilestoreManagerClient.revert_instance",
+                    extra={
+                        "serviceName": "google.cloud.filestore.v1.CloudFilestoreManager",
+                        "rpcName": "RevertInstance",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateBackup(
@@ -2249,7 +3042,7 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update backup method over HTTP.
 
@@ -2260,8 +3053,10 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2274,6 +3069,7 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             http_options = (
                 _BaseCloudFilestoreManagerRestTransport._BaseUpdateBackup._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_backup(request, metadata)
             transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseUpdateBackup._get_transcoded_request(
                 http_options, request
@@ -2287,6 +3083,33 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             query_params = _BaseCloudFilestoreManagerRestTransport._BaseUpdateBackup._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.filestore_v1.CloudFilestoreManagerClient.UpdateBackup",
+                    extra={
+                        "serviceName": "google.cloud.filestore.v1.CloudFilestoreManager",
+                        "rpcName": "UpdateBackup",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudFilestoreManagerRestTransport._UpdateBackup._get_response(
@@ -2307,7 +3130,29 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_backup(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.filestore_v1.CloudFilestoreManagerClient.update_backup",
+                    extra={
+                        "serviceName": "google.cloud.filestore.v1.CloudFilestoreManager",
+                        "rpcName": "UpdateBackup",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateInstance(
@@ -2346,7 +3191,7 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update instance method over HTTP.
 
@@ -2357,8 +3202,10 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2371,6 +3218,7 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             http_options = (
                 _BaseCloudFilestoreManagerRestTransport._BaseUpdateInstance._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_instance(request, metadata)
             transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseUpdateInstance._get_transcoded_request(
                 http_options, request
@@ -2384,6 +3232,33 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             query_params = _BaseCloudFilestoreManagerRestTransport._BaseUpdateInstance._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.filestore_v1.CloudFilestoreManagerClient.UpdateInstance",
+                    extra={
+                        "serviceName": "google.cloud.filestore.v1.CloudFilestoreManager",
+                        "rpcName": "UpdateInstance",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudFilestoreManagerRestTransport._UpdateInstance._get_response(
@@ -2404,7 +3279,29 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_instance(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.filestore_v1.CloudFilestoreManagerClient.update_instance",
+                    extra={
+                        "serviceName": "google.cloud.filestore.v1.CloudFilestoreManager",
+                        "rpcName": "UpdateInstance",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateSnapshot(
@@ -2443,7 +3340,7 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update snapshot method over HTTP.
 
@@ -2455,8 +3352,10 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2469,6 +3368,7 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             http_options = (
                 _BaseCloudFilestoreManagerRestTransport._BaseUpdateSnapshot._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_snapshot(request, metadata)
             transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseUpdateSnapshot._get_transcoded_request(
                 http_options, request
@@ -2482,6 +3382,33 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             query_params = _BaseCloudFilestoreManagerRestTransport._BaseUpdateSnapshot._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.filestore_v1.CloudFilestoreManagerClient.UpdateSnapshot",
+                    extra={
+                        "serviceName": "google.cloud.filestore.v1.CloudFilestoreManager",
+                        "rpcName": "UpdateSnapshot",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudFilestoreManagerRestTransport._UpdateSnapshot._get_response(
@@ -2502,7 +3429,29 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_snapshot(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.filestore_v1.CloudFilestoreManagerClient.update_snapshot",
+                    extra={
+                        "serviceName": "google.cloud.filestore.v1.CloudFilestoreManager",
+                        "rpcName": "UpdateSnapshot",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -2717,7 +3666,7 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.Location:
             r"""Call the get location method over HTTP.
 
@@ -2727,8 +3676,10 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.Location: Response from GetLocation method.
@@ -2737,6 +3688,7 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             http_options = (
                 _BaseCloudFilestoreManagerRestTransport._BaseGetLocation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_location(request, metadata)
             transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseGetLocation._get_transcoded_request(
                 http_options, request
@@ -2746,6 +3698,33 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             query_params = _BaseCloudFilestoreManagerRestTransport._BaseGetLocation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.filestore_v1.CloudFilestoreManagerClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.filestore.v1.CloudFilestoreManager",
+                        "rpcName": "GetLocation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudFilestoreManagerRestTransport._GetLocation._get_response(
@@ -2766,6 +3745,27 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.filestore_v1.CloudFilestoreManagerAsyncClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.filestore.v1.CloudFilestoreManager",
+                        "rpcName": "GetLocation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -2807,7 +3807,7 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.ListLocationsResponse:
             r"""Call the list locations method over HTTP.
 
@@ -2817,8 +3817,10 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
@@ -2827,6 +3829,7 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             http_options = (
                 _BaseCloudFilestoreManagerRestTransport._BaseListLocations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
             transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseListLocations._get_transcoded_request(
                 http_options, request
@@ -2836,6 +3839,33 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             query_params = _BaseCloudFilestoreManagerRestTransport._BaseListLocations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.filestore_v1.CloudFilestoreManagerClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.filestore.v1.CloudFilestoreManager",
+                        "rpcName": "ListLocations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudFilestoreManagerRestTransport._ListLocations._get_response(
@@ -2856,6 +3886,27 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.filestore_v1.CloudFilestoreManagerAsyncClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.filestore.v1.CloudFilestoreManager",
+                        "rpcName": "ListLocations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -2898,7 +3949,7 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the cancel operation method over HTTP.
 
@@ -2908,13 +3959,16 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseCloudFilestoreManagerRestTransport._BaseCancelOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
@@ -2930,6 +3984,33 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             query_params = _BaseCloudFilestoreManagerRestTransport._BaseCancelOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.filestore_v1.CloudFilestoreManagerClient.CancelOperation",
+                    extra={
+                        "serviceName": "google.cloud.filestore.v1.CloudFilestoreManager",
+                        "rpcName": "CancelOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -2990,7 +4071,7 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the delete operation method over HTTP.
 
@@ -3000,13 +4081,16 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseCloudFilestoreManagerRestTransport._BaseDeleteOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
             )
@@ -3018,6 +4102,33 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             query_params = _BaseCloudFilestoreManagerRestTransport._BaseDeleteOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.filestore_v1.CloudFilestoreManagerClient.DeleteOperation",
+                    extra={
+                        "serviceName": "google.cloud.filestore.v1.CloudFilestoreManager",
+                        "rpcName": "DeleteOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -3077,7 +4188,7 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the get operation method over HTTP.
 
@@ -3087,8 +4198,10 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.
@@ -3097,6 +4210,7 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             http_options = (
                 _BaseCloudFilestoreManagerRestTransport._BaseGetOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseGetOperation._get_transcoded_request(
                 http_options, request
@@ -3106,6 +4220,33 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             query_params = _BaseCloudFilestoreManagerRestTransport._BaseGetOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.filestore_v1.CloudFilestoreManagerClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.filestore.v1.CloudFilestoreManager",
+                        "rpcName": "GetOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudFilestoreManagerRestTransport._GetOperation._get_response(
@@ -3126,6 +4267,27 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.filestore_v1.CloudFilestoreManagerAsyncClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.filestore.v1.CloudFilestoreManager",
+                        "rpcName": "GetOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -3167,7 +4329,7 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.ListOperationsResponse:
             r"""Call the list operations method over HTTP.
 
@@ -3177,8 +4339,10 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
@@ -3187,6 +4351,7 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             http_options = (
                 _BaseCloudFilestoreManagerRestTransport._BaseListOperations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseListOperations._get_transcoded_request(
                 http_options, request
@@ -3196,6 +4361,33 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             query_params = _BaseCloudFilestoreManagerRestTransport._BaseListOperations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.filestore_v1.CloudFilestoreManagerClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.filestore.v1.CloudFilestoreManager",
+                        "rpcName": "ListOperations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudFilestoreManagerRestTransport._ListOperations._get_response(
@@ -3216,6 +4408,27 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.filestore_v1.CloudFilestoreManagerAsyncClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.filestore.v1.CloudFilestoreManager",
+                        "rpcName": "ListOperations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property

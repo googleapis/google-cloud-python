@@ -4396,6 +4396,7 @@ def test_get_authorization_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_authorization(request)
 
@@ -4441,6 +4442,7 @@ def test_get_authorization_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_authorization(**mock_args)
 
@@ -4582,6 +4584,7 @@ def test_create_deployment_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_deployment(request)
 
@@ -4644,6 +4647,7 @@ def test_create_deployment_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_deployment(**mock_args)
 
@@ -4775,6 +4779,7 @@ def test_replace_deployment_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.replace_deployment(request)
 
@@ -4822,6 +4827,7 @@ def test_replace_deployment_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.replace_deployment(**mock_args)
 
@@ -4952,6 +4958,7 @@ def test_get_deployment_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_deployment(request)
 
@@ -4997,6 +5004,7 @@ def test_get_deployment_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_deployment(**mock_args)
 
@@ -5135,6 +5143,7 @@ def test_list_deployments_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_deployments(request)
 
@@ -5188,6 +5197,7 @@ def test_list_deployments_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_deployments(**mock_args)
 
@@ -5381,6 +5391,7 @@ def test_delete_deployment_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_deployment(request)
 
@@ -5424,6 +5435,7 @@ def test_delete_deployment_rest_flattened():
         json_return_value = ""
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_deployment(**mock_args)
 
@@ -5555,6 +5567,7 @@ def test_install_deployment_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.install_deployment(request)
 
@@ -5598,6 +5611,7 @@ def test_install_deployment_rest_flattened():
         json_return_value = ""
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.install_deployment(**mock_args)
 
@@ -5730,6 +5744,7 @@ def test_uninstall_deployment_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.uninstall_deployment(request)
 
@@ -5773,6 +5788,7 @@ def test_uninstall_deployment_rest_flattened():
         json_return_value = ""
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.uninstall_deployment(**mock_args)
 
@@ -5907,6 +5923,7 @@ def test_get_install_status_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_install_status(request)
 
@@ -5952,6 +5969,7 @@ def test_get_install_status_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_install_status(**mock_args)
 
@@ -6585,6 +6603,7 @@ def test_get_authorization_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_authorization(request)
 
 
@@ -6622,6 +6641,7 @@ def test_get_authorization_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_authorization(request)
 
     # Establish that the response is the type that we expect.
@@ -6664,6 +6684,7 @@ def test_get_authorization_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = gsuiteaddons.Authorization.to_json(gsuiteaddons.Authorization())
         req.return_value.content = return_value
 
@@ -6708,6 +6729,7 @@ def test_create_deployment_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_deployment(request)
 
 
@@ -6911,6 +6933,7 @@ def test_create_deployment_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_deployment(request)
 
     # Establish that the response is the type that we expect.
@@ -6953,6 +6976,7 @@ def test_create_deployment_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = gsuiteaddons.Deployment.to_json(gsuiteaddons.Deployment())
         req.return_value.content = return_value
 
@@ -6997,6 +7021,7 @@ def test_replace_deployment_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.replace_deployment(request)
 
 
@@ -7200,6 +7225,7 @@ def test_replace_deployment_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.replace_deployment(request)
 
     # Establish that the response is the type that we expect.
@@ -7242,6 +7268,7 @@ def test_replace_deployment_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = gsuiteaddons.Deployment.to_json(gsuiteaddons.Deployment())
         req.return_value.content = return_value
 
@@ -7286,6 +7313,7 @@ def test_get_deployment_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_deployment(request)
 
 
@@ -7323,6 +7351,7 @@ def test_get_deployment_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_deployment(request)
 
     # Establish that the response is the type that we expect.
@@ -7365,6 +7394,7 @@ def test_get_deployment_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = gsuiteaddons.Deployment.to_json(gsuiteaddons.Deployment())
         req.return_value.content = return_value
 
@@ -7409,6 +7439,7 @@ def test_list_deployments_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_deployments(request)
 
 
@@ -7444,6 +7475,7 @@ def test_list_deployments_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_deployments(request)
 
     # Establish that the response is the type that we expect.
@@ -7484,6 +7516,7 @@ def test_list_deployments_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = gsuiteaddons.ListDeploymentsResponse.to_json(
             gsuiteaddons.ListDeploymentsResponse()
         )
@@ -7530,6 +7563,7 @@ def test_delete_deployment_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_deployment(request)
 
 
@@ -7560,6 +7594,7 @@ def test_delete_deployment_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_deployment(request)
 
     # Establish that the response is the type that we expect.
@@ -7596,6 +7631,7 @@ def test_delete_deployment_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = gsuiteaddons.DeleteDeploymentRequest()
         metadata = [
@@ -7636,6 +7672,7 @@ def test_install_deployment_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.install_deployment(request)
 
 
@@ -7666,6 +7703,7 @@ def test_install_deployment_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.install_deployment(request)
 
     # Establish that the response is the type that we expect.
@@ -7702,6 +7740,7 @@ def test_install_deployment_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = gsuiteaddons.InstallDeploymentRequest()
         metadata = [
@@ -7742,6 +7781,7 @@ def test_uninstall_deployment_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.uninstall_deployment(request)
 
 
@@ -7772,6 +7812,7 @@ def test_uninstall_deployment_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.uninstall_deployment(request)
 
     # Establish that the response is the type that we expect.
@@ -7808,6 +7849,7 @@ def test_uninstall_deployment_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = gsuiteaddons.UninstallDeploymentRequest()
         metadata = [
@@ -7848,6 +7890,7 @@ def test_get_install_status_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_install_status(request)
 
 
@@ -7883,6 +7926,7 @@ def test_get_install_status_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_install_status(request)
 
     # Establish that the response is the type that we expect.
@@ -7923,6 +7967,7 @@ def test_get_install_status_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = gsuiteaddons.InstallStatus.to_json(gsuiteaddons.InstallStatus())
         req.return_value.content = return_value
 

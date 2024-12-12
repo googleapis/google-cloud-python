@@ -4674,6 +4674,7 @@ def test_translate_text_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.translate_text(request)
 
@@ -4803,6 +4804,7 @@ def test_detect_language_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.detect_language(request)
 
@@ -4850,6 +4852,7 @@ def test_detect_language_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.detect_language(**mock_args)
 
@@ -4995,6 +4998,7 @@ def test_get_supported_languages_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_supported_languages(request)
 
@@ -5050,6 +5054,7 @@ def test_get_supported_languages_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_supported_languages(**mock_args)
 
@@ -5194,6 +5199,7 @@ def test_translate_document_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.translate_document(request)
 
@@ -5336,6 +5342,7 @@ def test_batch_translate_text_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.batch_translate_text(request)
 
@@ -5481,6 +5488,7 @@ def test_batch_translate_document_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.batch_translate_document(request)
 
@@ -5549,6 +5557,7 @@ def test_batch_translate_document_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.batch_translate_document(**mock_args)
 
@@ -5696,6 +5705,7 @@ def test_create_glossary_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_glossary(request)
 
@@ -5748,6 +5758,7 @@ def test_create_glossary_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_glossary(**mock_args)
 
@@ -5888,6 +5899,7 @@ def test_list_glossaries_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_glossaries(request)
 
@@ -5943,6 +5955,7 @@ def test_list_glossaries_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_glossaries(**mock_args)
 
@@ -6138,6 +6151,7 @@ def test_get_glossary_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_glossary(request)
 
@@ -6185,6 +6199,7 @@ def test_get_glossary_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_glossary(**mock_args)
 
@@ -6317,6 +6332,7 @@ def test_delete_glossary_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_glossary(request)
 
@@ -6362,6 +6378,7 @@ def test_delete_glossary_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_glossary(**mock_args)
 
@@ -7022,6 +7039,7 @@ def test_translate_text_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.translate_text(request)
 
 
@@ -7055,6 +7073,7 @@ def test_translate_text_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.translate_text(request)
 
     # Establish that the response is the type that we expect.
@@ -7094,6 +7113,7 @@ def test_translate_text_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = translation_service.TranslateTextResponse.to_json(
             translation_service.TranslateTextResponse()
         )
@@ -7140,6 +7160,7 @@ def test_detect_language_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.detect_language(request)
 
 
@@ -7173,6 +7194,7 @@ def test_detect_language_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.detect_language(request)
 
     # Establish that the response is the type that we expect.
@@ -7212,6 +7234,7 @@ def test_detect_language_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = translation_service.DetectLanguageResponse.to_json(
             translation_service.DetectLanguageResponse()
         )
@@ -7258,6 +7281,7 @@ def test_get_supported_languages_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_supported_languages(request)
 
 
@@ -7291,6 +7315,7 @@ def test_get_supported_languages_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_supported_languages(request)
 
     # Establish that the response is the type that we expect.
@@ -7330,6 +7355,7 @@ def test_get_supported_languages_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = translation_service.SupportedLanguages.to_json(
             translation_service.SupportedLanguages()
         )
@@ -7376,6 +7402,7 @@ def test_translate_document_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.translate_document(request)
 
 
@@ -7411,6 +7438,7 @@ def test_translate_document_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.translate_document(request)
 
     # Establish that the response is the type that we expect.
@@ -7451,6 +7479,7 @@ def test_translate_document_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = translation_service.TranslateDocumentResponse.to_json(
             translation_service.TranslateDocumentResponse()
         )
@@ -7497,6 +7526,7 @@ def test_batch_translate_text_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.batch_translate_text(request)
 
 
@@ -7527,6 +7557,7 @@ def test_batch_translate_text_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.batch_translate_text(request)
 
     # Establish that the response is the type that we expect.
@@ -7568,6 +7599,7 @@ def test_batch_translate_text_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -7612,6 +7644,7 @@ def test_batch_translate_document_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.batch_translate_document(request)
 
 
@@ -7642,6 +7675,7 @@ def test_batch_translate_document_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.batch_translate_document(request)
 
     # Establish that the response is the type that we expect.
@@ -7683,6 +7717,7 @@ def test_batch_translate_document_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -7727,6 +7762,7 @@ def test_create_glossary_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_glossary(request)
 
 
@@ -7838,6 +7874,7 @@ def test_create_glossary_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_glossary(request)
 
     # Establish that the response is the type that we expect.
@@ -7879,6 +7916,7 @@ def test_create_glossary_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -7923,6 +7961,7 @@ def test_list_glossaries_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_glossaries(request)
 
 
@@ -7958,6 +7997,7 @@ def test_list_glossaries_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_glossaries(request)
 
     # Establish that the response is the type that we expect.
@@ -7998,6 +8038,7 @@ def test_list_glossaries_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = translation_service.ListGlossariesResponse.to_json(
             translation_service.ListGlossariesResponse()
         )
@@ -8044,6 +8085,7 @@ def test_get_glossary_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_glossary(request)
 
 
@@ -8080,6 +8122,7 @@ def test_get_glossary_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_glossary(request)
 
     # Establish that the response is the type that we expect.
@@ -8121,6 +8164,7 @@ def test_get_glossary_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = translation_service.Glossary.to_json(
             translation_service.Glossary()
         )
@@ -8167,6 +8211,7 @@ def test_delete_glossary_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_glossary(request)
 
 
@@ -8197,6 +8242,7 @@ def test_delete_glossary_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_glossary(request)
 
     # Establish that the response is the type that we expect.
@@ -8238,6 +8284,7 @@ def test_delete_glossary_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 

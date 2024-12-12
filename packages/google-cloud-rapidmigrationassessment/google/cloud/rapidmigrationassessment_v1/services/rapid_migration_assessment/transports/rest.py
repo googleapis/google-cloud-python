@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -42,6 +42,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -154,9 +162,10 @@ class RapidMigrationAssessmentRestInterceptor:
     def pre_create_annotation(
         self,
         request: rapidmigrationassessment.CreateAnnotationRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        rapidmigrationassessment.CreateAnnotationRequest, Sequence[Tuple[str, str]]
+        rapidmigrationassessment.CreateAnnotationRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for create_annotation
 
@@ -179,9 +188,10 @@ class RapidMigrationAssessmentRestInterceptor:
     def pre_create_collector(
         self,
         request: rapidmigrationassessment.CreateCollectorRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        rapidmigrationassessment.CreateCollectorRequest, Sequence[Tuple[str, str]]
+        rapidmigrationassessment.CreateCollectorRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for create_collector
 
@@ -204,9 +214,10 @@ class RapidMigrationAssessmentRestInterceptor:
     def pre_delete_collector(
         self,
         request: rapidmigrationassessment.DeleteCollectorRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        rapidmigrationassessment.DeleteCollectorRequest, Sequence[Tuple[str, str]]
+        rapidmigrationassessment.DeleteCollectorRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for delete_collector
 
@@ -229,9 +240,10 @@ class RapidMigrationAssessmentRestInterceptor:
     def pre_get_annotation(
         self,
         request: rapidmigrationassessment.GetAnnotationRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        rapidmigrationassessment.GetAnnotationRequest, Sequence[Tuple[str, str]]
+        rapidmigrationassessment.GetAnnotationRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for get_annotation
 
@@ -254,8 +266,11 @@ class RapidMigrationAssessmentRestInterceptor:
     def pre_get_collector(
         self,
         request: rapidmigrationassessment.GetCollectorRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[rapidmigrationassessment.GetCollectorRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        rapidmigrationassessment.GetCollectorRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for get_collector
 
         Override in a subclass to manipulate the request or metadata
@@ -277,9 +292,10 @@ class RapidMigrationAssessmentRestInterceptor:
     def pre_list_collectors(
         self,
         request: rapidmigrationassessment.ListCollectorsRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        rapidmigrationassessment.ListCollectorsRequest, Sequence[Tuple[str, str]]
+        rapidmigrationassessment.ListCollectorsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for list_collectors
 
@@ -302,9 +318,10 @@ class RapidMigrationAssessmentRestInterceptor:
     def pre_pause_collector(
         self,
         request: rapidmigrationassessment.PauseCollectorRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        rapidmigrationassessment.PauseCollectorRequest, Sequence[Tuple[str, str]]
+        rapidmigrationassessment.PauseCollectorRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for pause_collector
 
@@ -327,9 +344,10 @@ class RapidMigrationAssessmentRestInterceptor:
     def pre_register_collector(
         self,
         request: rapidmigrationassessment.RegisterCollectorRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        rapidmigrationassessment.RegisterCollectorRequest, Sequence[Tuple[str, str]]
+        rapidmigrationassessment.RegisterCollectorRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for register_collector
 
@@ -352,9 +370,10 @@ class RapidMigrationAssessmentRestInterceptor:
     def pre_resume_collector(
         self,
         request: rapidmigrationassessment.ResumeCollectorRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        rapidmigrationassessment.ResumeCollectorRequest, Sequence[Tuple[str, str]]
+        rapidmigrationassessment.ResumeCollectorRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for resume_collector
 
@@ -377,9 +396,10 @@ class RapidMigrationAssessmentRestInterceptor:
     def pre_update_collector(
         self,
         request: rapidmigrationassessment.UpdateCollectorRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        rapidmigrationassessment.UpdateCollectorRequest, Sequence[Tuple[str, str]]
+        rapidmigrationassessment.UpdateCollectorRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for update_collector
 
@@ -402,8 +422,10 @@ class RapidMigrationAssessmentRestInterceptor:
     def pre_get_location(
         self,
         request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -425,8 +447,10 @@ class RapidMigrationAssessmentRestInterceptor:
     def pre_list_locations(
         self,
         request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -448,8 +472,10 @@ class RapidMigrationAssessmentRestInterceptor:
     def pre_cancel_operation(
         self,
         request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -469,8 +495,10 @@ class RapidMigrationAssessmentRestInterceptor:
     def pre_delete_operation(
         self,
         request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -490,8 +518,10 @@ class RapidMigrationAssessmentRestInterceptor:
     def pre_get_operation(
         self,
         request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -513,8 +543,10 @@ class RapidMigrationAssessmentRestInterceptor:
     def pre_list_operations(
         self,
         request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -710,7 +742,7 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create annotation method over HTTP.
 
@@ -720,8 +752,10 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -734,6 +768,7 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
             http_options = (
                 _BaseRapidMigrationAssessmentRestTransport._BaseCreateAnnotation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_annotation(
                 request, metadata
             )
@@ -749,6 +784,33 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
             query_params = _BaseRapidMigrationAssessmentRestTransport._BaseCreateAnnotation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.rapidmigrationassessment_v1.RapidMigrationAssessmentClient.CreateAnnotation",
+                    extra={
+                        "serviceName": "google.cloud.rapidmigrationassessment.v1.RapidMigrationAssessment",
+                        "rpcName": "CreateAnnotation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -771,7 +833,29 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_annotation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.rapidmigrationassessment_v1.RapidMigrationAssessmentClient.create_annotation",
+                    extra={
+                        "serviceName": "google.cloud.rapidmigrationassessment.v1.RapidMigrationAssessment",
+                        "rpcName": "CreateAnnotation",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateCollector(
@@ -810,7 +894,7 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create collector method over HTTP.
 
@@ -820,8 +904,10 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -834,6 +920,7 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
             http_options = (
                 _BaseRapidMigrationAssessmentRestTransport._BaseCreateCollector._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_collector(
                 request, metadata
             )
@@ -849,6 +936,33 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
             query_params = _BaseRapidMigrationAssessmentRestTransport._BaseCreateCollector._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.rapidmigrationassessment_v1.RapidMigrationAssessmentClient.CreateCollector",
+                    extra={
+                        "serviceName": "google.cloud.rapidmigrationassessment.v1.RapidMigrationAssessment",
+                        "rpcName": "CreateCollector",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -871,7 +985,29 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_collector(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.rapidmigrationassessment_v1.RapidMigrationAssessmentClient.create_collector",
+                    extra={
+                        "serviceName": "google.cloud.rapidmigrationassessment.v1.RapidMigrationAssessment",
+                        "rpcName": "CreateCollector",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteCollector(
@@ -909,7 +1045,7 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete collector method over HTTP.
 
@@ -919,8 +1055,10 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -933,6 +1071,7 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
             http_options = (
                 _BaseRapidMigrationAssessmentRestTransport._BaseDeleteCollector._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_collector(
                 request, metadata
             )
@@ -944,6 +1083,33 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
             query_params = _BaseRapidMigrationAssessmentRestTransport._BaseDeleteCollector._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.rapidmigrationassessment_v1.RapidMigrationAssessmentClient.DeleteCollector",
+                    extra={
+                        "serviceName": "google.cloud.rapidmigrationassessment.v1.RapidMigrationAssessment",
+                        "rpcName": "DeleteCollector",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -965,7 +1131,29 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_collector(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.rapidmigrationassessment_v1.RapidMigrationAssessmentClient.delete_collector",
+                    extra={
+                        "serviceName": "google.cloud.rapidmigrationassessment.v1.RapidMigrationAssessment",
+                        "rpcName": "DeleteCollector",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetAnnotation(
@@ -1003,7 +1191,7 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> api_entities.Annotation:
             r"""Call the get annotation method over HTTP.
 
@@ -1014,8 +1202,10 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.api_entities.Annotation:
@@ -1025,6 +1215,7 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
             http_options = (
                 _BaseRapidMigrationAssessmentRestTransport._BaseGetAnnotation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_annotation(request, metadata)
             transcoded_request = _BaseRapidMigrationAssessmentRestTransport._BaseGetAnnotation._get_transcoded_request(
                 http_options, request
@@ -1034,6 +1225,33 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
             query_params = _BaseRapidMigrationAssessmentRestTransport._BaseGetAnnotation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.rapidmigrationassessment_v1.RapidMigrationAssessmentClient.GetAnnotation",
+                    extra={
+                        "serviceName": "google.cloud.rapidmigrationassessment.v1.RapidMigrationAssessment",
+                        "rpcName": "GetAnnotation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1057,7 +1275,29 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
             pb_resp = api_entities.Annotation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_annotation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = api_entities.Annotation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.rapidmigrationassessment_v1.RapidMigrationAssessmentClient.get_annotation",
+                    extra={
+                        "serviceName": "google.cloud.rapidmigrationassessment.v1.RapidMigrationAssessment",
+                        "rpcName": "GetAnnotation",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetCollector(
@@ -1095,7 +1335,7 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> api_entities.Collector:
             r"""Call the get collector method over HTTP.
 
@@ -1106,8 +1346,10 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.api_entities.Collector:
@@ -1117,6 +1359,7 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
             http_options = (
                 _BaseRapidMigrationAssessmentRestTransport._BaseGetCollector._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_collector(request, metadata)
             transcoded_request = _BaseRapidMigrationAssessmentRestTransport._BaseGetCollector._get_transcoded_request(
                 http_options, request
@@ -1126,6 +1369,33 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
             query_params = _BaseRapidMigrationAssessmentRestTransport._BaseGetCollector._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.rapidmigrationassessment_v1.RapidMigrationAssessmentClient.GetCollector",
+                    extra={
+                        "serviceName": "google.cloud.rapidmigrationassessment.v1.RapidMigrationAssessment",
+                        "rpcName": "GetCollector",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1149,7 +1419,29 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
             pb_resp = api_entities.Collector.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_collector(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = api_entities.Collector.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.rapidmigrationassessment_v1.RapidMigrationAssessmentClient.get_collector",
+                    extra={
+                        "serviceName": "google.cloud.rapidmigrationassessment.v1.RapidMigrationAssessment",
+                        "rpcName": "GetCollector",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListCollectors(
@@ -1187,7 +1479,7 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> rapidmigrationassessment.ListCollectorsResponse:
             r"""Call the list collectors method over HTTP.
 
@@ -1198,8 +1490,10 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.rapidmigrationassessment.ListCollectorsResponse:
@@ -1211,6 +1505,7 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
             http_options = (
                 _BaseRapidMigrationAssessmentRestTransport._BaseListCollectors._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_collectors(request, metadata)
             transcoded_request = _BaseRapidMigrationAssessmentRestTransport._BaseListCollectors._get_transcoded_request(
                 http_options, request
@@ -1220,6 +1515,33 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
             query_params = _BaseRapidMigrationAssessmentRestTransport._BaseListCollectors._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.rapidmigrationassessment_v1.RapidMigrationAssessmentClient.ListCollectors",
+                    extra={
+                        "serviceName": "google.cloud.rapidmigrationassessment.v1.RapidMigrationAssessment",
+                        "rpcName": "ListCollectors",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1243,7 +1565,33 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
             pb_resp = rapidmigrationassessment.ListCollectorsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_collectors(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        rapidmigrationassessment.ListCollectorsResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.rapidmigrationassessment_v1.RapidMigrationAssessmentClient.list_collectors",
+                    extra={
+                        "serviceName": "google.cloud.rapidmigrationassessment.v1.RapidMigrationAssessment",
+                        "rpcName": "ListCollectors",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _PauseCollector(
@@ -1282,7 +1630,7 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the pause collector method over HTTP.
 
@@ -1292,8 +1640,10 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1306,6 +1656,7 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
             http_options = (
                 _BaseRapidMigrationAssessmentRestTransport._BasePauseCollector._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_pause_collector(request, metadata)
             transcoded_request = _BaseRapidMigrationAssessmentRestTransport._BasePauseCollector._get_transcoded_request(
                 http_options, request
@@ -1319,6 +1670,33 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
             query_params = _BaseRapidMigrationAssessmentRestTransport._BasePauseCollector._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.rapidmigrationassessment_v1.RapidMigrationAssessmentClient.PauseCollector",
+                    extra={
+                        "serviceName": "google.cloud.rapidmigrationassessment.v1.RapidMigrationAssessment",
+                        "rpcName": "PauseCollector",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1341,7 +1719,29 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_pause_collector(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.rapidmigrationassessment_v1.RapidMigrationAssessmentClient.pause_collector",
+                    extra={
+                        "serviceName": "google.cloud.rapidmigrationassessment.v1.RapidMigrationAssessment",
+                        "rpcName": "PauseCollector",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _RegisterCollector(
@@ -1380,7 +1780,7 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the register collector method over HTTP.
 
@@ -1390,8 +1790,10 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1404,6 +1806,7 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
             http_options = (
                 _BaseRapidMigrationAssessmentRestTransport._BaseRegisterCollector._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_register_collector(
                 request, metadata
             )
@@ -1419,6 +1822,33 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
             query_params = _BaseRapidMigrationAssessmentRestTransport._BaseRegisterCollector._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.rapidmigrationassessment_v1.RapidMigrationAssessmentClient.RegisterCollector",
+                    extra={
+                        "serviceName": "google.cloud.rapidmigrationassessment.v1.RapidMigrationAssessment",
+                        "rpcName": "RegisterCollector",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1441,7 +1871,29 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_register_collector(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.rapidmigrationassessment_v1.RapidMigrationAssessmentClient.register_collector",
+                    extra={
+                        "serviceName": "google.cloud.rapidmigrationassessment.v1.RapidMigrationAssessment",
+                        "rpcName": "RegisterCollector",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ResumeCollector(
@@ -1480,7 +1932,7 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the resume collector method over HTTP.
 
@@ -1490,8 +1942,10 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1504,6 +1958,7 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
             http_options = (
                 _BaseRapidMigrationAssessmentRestTransport._BaseResumeCollector._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_resume_collector(
                 request, metadata
             )
@@ -1519,6 +1974,33 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
             query_params = _BaseRapidMigrationAssessmentRestTransport._BaseResumeCollector._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.rapidmigrationassessment_v1.RapidMigrationAssessmentClient.ResumeCollector",
+                    extra={
+                        "serviceName": "google.cloud.rapidmigrationassessment.v1.RapidMigrationAssessment",
+                        "rpcName": "ResumeCollector",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1541,7 +2023,29 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_resume_collector(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.rapidmigrationassessment_v1.RapidMigrationAssessmentClient.resume_collector",
+                    extra={
+                        "serviceName": "google.cloud.rapidmigrationassessment.v1.RapidMigrationAssessment",
+                        "rpcName": "ResumeCollector",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateCollector(
@@ -1580,7 +2084,7 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update collector method over HTTP.
 
@@ -1590,8 +2094,10 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1604,6 +2110,7 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
             http_options = (
                 _BaseRapidMigrationAssessmentRestTransport._BaseUpdateCollector._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_collector(
                 request, metadata
             )
@@ -1619,6 +2126,33 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
             query_params = _BaseRapidMigrationAssessmentRestTransport._BaseUpdateCollector._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.rapidmigrationassessment_v1.RapidMigrationAssessmentClient.UpdateCollector",
+                    extra={
+                        "serviceName": "google.cloud.rapidmigrationassessment.v1.RapidMigrationAssessment",
+                        "rpcName": "UpdateCollector",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1641,7 +2175,29 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_collector(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.rapidmigrationassessment_v1.RapidMigrationAssessmentClient.update_collector",
+                    extra={
+                        "serviceName": "google.cloud.rapidmigrationassessment.v1.RapidMigrationAssessment",
+                        "rpcName": "UpdateCollector",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -1784,7 +2340,7 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.Location:
             r"""Call the get location method over HTTP.
 
@@ -1794,8 +2350,10 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.Location: Response from GetLocation method.
@@ -1804,6 +2362,7 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
             http_options = (
                 _BaseRapidMigrationAssessmentRestTransport._BaseGetLocation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_location(request, metadata)
             transcoded_request = _BaseRapidMigrationAssessmentRestTransport._BaseGetLocation._get_transcoded_request(
                 http_options, request
@@ -1813,6 +2372,33 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
             query_params = _BaseRapidMigrationAssessmentRestTransport._BaseGetLocation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.rapidmigrationassessment_v1.RapidMigrationAssessmentClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.rapidmigrationassessment.v1.RapidMigrationAssessment",
+                        "rpcName": "GetLocation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RapidMigrationAssessmentRestTransport._GetLocation._get_response(
@@ -1833,6 +2419,27 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.rapidmigrationassessment_v1.RapidMigrationAssessmentAsyncClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.rapidmigrationassessment.v1.RapidMigrationAssessment",
+                        "rpcName": "GetLocation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -1874,7 +2481,7 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.ListLocationsResponse:
             r"""Call the list locations method over HTTP.
 
@@ -1884,8 +2491,10 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
@@ -1894,6 +2503,7 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
             http_options = (
                 _BaseRapidMigrationAssessmentRestTransport._BaseListLocations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
             transcoded_request = _BaseRapidMigrationAssessmentRestTransport._BaseListLocations._get_transcoded_request(
                 http_options, request
@@ -1903,6 +2513,33 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
             query_params = _BaseRapidMigrationAssessmentRestTransport._BaseListLocations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.rapidmigrationassessment_v1.RapidMigrationAssessmentClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.rapidmigrationassessment.v1.RapidMigrationAssessment",
+                        "rpcName": "ListLocations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1925,6 +2562,27 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.rapidmigrationassessment_v1.RapidMigrationAssessmentAsyncClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.rapidmigrationassessment.v1.RapidMigrationAssessment",
+                        "rpcName": "ListLocations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -1967,7 +2625,7 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the cancel operation method over HTTP.
 
@@ -1977,13 +2635,16 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseRapidMigrationAssessmentRestTransport._BaseCancelOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
@@ -1999,6 +2660,33 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
             query_params = _BaseRapidMigrationAssessmentRestTransport._BaseCancelOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.rapidmigrationassessment_v1.RapidMigrationAssessmentClient.CancelOperation",
+                    extra={
+                        "serviceName": "google.cloud.rapidmigrationassessment.v1.RapidMigrationAssessment",
+                        "rpcName": "CancelOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -2059,7 +2747,7 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the delete operation method over HTTP.
 
@@ -2069,13 +2757,16 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseRapidMigrationAssessmentRestTransport._BaseDeleteOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
             )
@@ -2087,6 +2778,33 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
             query_params = _BaseRapidMigrationAssessmentRestTransport._BaseDeleteOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.rapidmigrationassessment_v1.RapidMigrationAssessmentClient.DeleteOperation",
+                    extra={
+                        "serviceName": "google.cloud.rapidmigrationassessment.v1.RapidMigrationAssessment",
+                        "rpcName": "DeleteOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -2146,7 +2864,7 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the get operation method over HTTP.
 
@@ -2156,8 +2874,10 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.
@@ -2166,6 +2886,7 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
             http_options = (
                 _BaseRapidMigrationAssessmentRestTransport._BaseGetOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseRapidMigrationAssessmentRestTransport._BaseGetOperation._get_transcoded_request(
                 http_options, request
@@ -2175,6 +2896,33 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
             query_params = _BaseRapidMigrationAssessmentRestTransport._BaseGetOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.rapidmigrationassessment_v1.RapidMigrationAssessmentClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.rapidmigrationassessment.v1.RapidMigrationAssessment",
+                        "rpcName": "GetOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -2197,6 +2945,27 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.rapidmigrationassessment_v1.RapidMigrationAssessmentAsyncClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.rapidmigrationassessment.v1.RapidMigrationAssessment",
+                        "rpcName": "GetOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -2238,7 +3007,7 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.ListOperationsResponse:
             r"""Call the list operations method over HTTP.
 
@@ -2248,8 +3017,10 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
@@ -2258,6 +3029,7 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
             http_options = (
                 _BaseRapidMigrationAssessmentRestTransport._BaseListOperations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseRapidMigrationAssessmentRestTransport._BaseListOperations._get_transcoded_request(
                 http_options, request
@@ -2267,6 +3039,33 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
             query_params = _BaseRapidMigrationAssessmentRestTransport._BaseListOperations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.rapidmigrationassessment_v1.RapidMigrationAssessmentClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.rapidmigrationassessment.v1.RapidMigrationAssessment",
+                        "rpcName": "ListOperations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -2289,6 +3088,27 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.rapidmigrationassessment_v1.RapidMigrationAssessmentAsyncClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.rapidmigrationassessment.v1.RapidMigrationAssessment",
+                        "rpcName": "ListOperations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property

@@ -14,6 +14,9 @@
 # limitations under the License.
 #
 import inspect
+import json
+import logging as std_logging
+import pickle
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -26,8 +29,11 @@ from google.cloud.location import locations_pb2  # type: ignore
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf.json_format import MessageToJson
+import google.protobuf.message
 import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
+import proto  # type: ignore
 
 from google.cloud.network_services_v1.types import (
     endpoint_policy as gcn_endpoint_policy,
@@ -52,6 +58,82 @@ from google.cloud.network_services_v1.types import tls_route as gcn_tls_route
 
 from .base import DEFAULT_CLIENT_INFO, NetworkServicesTransport
 from .grpc import NetworkServicesGrpcTransport
+
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = std_logging.getLogger(__name__)
+
+
+class _LoggingClientAIOInterceptor(
+    grpc.aio.UnaryUnaryClientInterceptor
+):  # pragma: NO COVER
+    async def intercept_unary_unary(self, continuation, client_call_details, request):
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+            std_logging.DEBUG
+        )
+        if logging_enabled:  # pragma: NO COVER
+            request_metadata = client_call_details.metadata
+            if isinstance(request, proto.Message):
+                request_payload = type(request).to_json(request)
+            elif isinstance(request, google.protobuf.message.Message):
+                request_payload = MessageToJson(request)
+            else:
+                request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
+
+            request_metadata = {
+                key: value.decode("utf-8") if isinstance(value, bytes) else value
+                for key, value in request_metadata
+            }
+            grpc_request = {
+                "payload": request_payload,
+                "requestMethod": "grpc",
+                "metadata": dict(request_metadata),
+            }
+            _LOGGER.debug(
+                f"Sending request for {client_call_details.method}",
+                extra={
+                    "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                    "rpcName": str(client_call_details.method),
+                    "request": grpc_request,
+                    "metadata": grpc_request["metadata"],
+                },
+            )
+        response = await continuation(client_call_details, request)
+        if logging_enabled:  # pragma: NO COVER
+            response_metadata = await response.trailing_metadata()
+            # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
+            metadata = (
+                dict([(k, str(v)) for k, v in response_metadata])
+                if response_metadata
+                else None
+            )
+            result = await response
+            if isinstance(result, proto.Message):
+                response_payload = type(result).to_json(result)
+            elif isinstance(result, google.protobuf.message.Message):
+                response_payload = MessageToJson(result)
+            else:
+                response_payload = f"{type(result).__name__}: {pickle.dumps(result)}"
+            grpc_response = {
+                "payload": response_payload,
+                "metadata": metadata,
+                "status": "OK",
+            }
+            _LOGGER.debug(
+                f"Received response to rpc {client_call_details.method}.",
+                extra={
+                    "serviceName": "google.cloud.networkservices.v1.NetworkServices",
+                    "rpcName": str(client_call_details.method),
+                    "response": grpc_response,
+                    "metadata": grpc_response["metadata"],
+                },
+            )
+        return response
 
 
 class NetworkServicesGrpcAsyncIOTransport(NetworkServicesTransport):
@@ -250,10 +332,13 @@ class NetworkServicesGrpcAsyncIOTransport(NetworkServicesTransport):
                 ],
             )
 
-        # Wrap messages. This must be done after self._grpc_channel exists
+        self._interceptor = _LoggingClientAIOInterceptor()
+        self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
+        self._logged_channel = self._grpc_channel
         self._wrap_with_kind = (
             "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         )
+        # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -276,7 +361,7 @@ class NetworkServicesGrpcAsyncIOTransport(NetworkServicesTransport):
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
             self._operations_client = operations_v1.OperationsAsyncClient(
-                self.grpc_channel
+                self._logged_channel
             )
 
         # Return the client from cache.
@@ -305,7 +390,7 @@ class NetworkServicesGrpcAsyncIOTransport(NetworkServicesTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_endpoint_policies" not in self._stubs:
-            self._stubs["list_endpoint_policies"] = self.grpc_channel.unary_unary(
+            self._stubs["list_endpoint_policies"] = self._logged_channel.unary_unary(
                 "/google.cloud.networkservices.v1.NetworkServices/ListEndpointPolicies",
                 request_serializer=endpoint_policy.ListEndpointPoliciesRequest.serialize,
                 response_deserializer=endpoint_policy.ListEndpointPoliciesResponse.deserialize,
@@ -334,7 +419,7 @@ class NetworkServicesGrpcAsyncIOTransport(NetworkServicesTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_endpoint_policy" not in self._stubs:
-            self._stubs["get_endpoint_policy"] = self.grpc_channel.unary_unary(
+            self._stubs["get_endpoint_policy"] = self._logged_channel.unary_unary(
                 "/google.cloud.networkservices.v1.NetworkServices/GetEndpointPolicy",
                 request_serializer=endpoint_policy.GetEndpointPolicyRequest.serialize,
                 response_deserializer=endpoint_policy.EndpointPolicy.deserialize,
@@ -364,7 +449,7 @@ class NetworkServicesGrpcAsyncIOTransport(NetworkServicesTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_endpoint_policy" not in self._stubs:
-            self._stubs["create_endpoint_policy"] = self.grpc_channel.unary_unary(
+            self._stubs["create_endpoint_policy"] = self._logged_channel.unary_unary(
                 "/google.cloud.networkservices.v1.NetworkServices/CreateEndpointPolicy",
                 request_serializer=gcn_endpoint_policy.CreateEndpointPolicyRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -393,7 +478,7 @@ class NetworkServicesGrpcAsyncIOTransport(NetworkServicesTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_endpoint_policy" not in self._stubs:
-            self._stubs["update_endpoint_policy"] = self.grpc_channel.unary_unary(
+            self._stubs["update_endpoint_policy"] = self._logged_channel.unary_unary(
                 "/google.cloud.networkservices.v1.NetworkServices/UpdateEndpointPolicy",
                 request_serializer=gcn_endpoint_policy.UpdateEndpointPolicyRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -422,7 +507,7 @@ class NetworkServicesGrpcAsyncIOTransport(NetworkServicesTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_endpoint_policy" not in self._stubs:
-            self._stubs["delete_endpoint_policy"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_endpoint_policy"] = self._logged_channel.unary_unary(
                 "/google.cloud.networkservices.v1.NetworkServices/DeleteEndpointPolicy",
                 request_serializer=endpoint_policy.DeleteEndpointPolicyRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -450,7 +535,7 @@ class NetworkServicesGrpcAsyncIOTransport(NetworkServicesTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_gateways" not in self._stubs:
-            self._stubs["list_gateways"] = self.grpc_channel.unary_unary(
+            self._stubs["list_gateways"] = self._logged_channel.unary_unary(
                 "/google.cloud.networkservices.v1.NetworkServices/ListGateways",
                 request_serializer=gateway.ListGatewaysRequest.serialize,
                 response_deserializer=gateway.ListGatewaysResponse.deserialize,
@@ -476,7 +561,7 @@ class NetworkServicesGrpcAsyncIOTransport(NetworkServicesTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_gateway" not in self._stubs:
-            self._stubs["get_gateway"] = self.grpc_channel.unary_unary(
+            self._stubs["get_gateway"] = self._logged_channel.unary_unary(
                 "/google.cloud.networkservices.v1.NetworkServices/GetGateway",
                 request_serializer=gateway.GetGatewayRequest.serialize,
                 response_deserializer=gateway.Gateway.deserialize,
@@ -505,7 +590,7 @@ class NetworkServicesGrpcAsyncIOTransport(NetworkServicesTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_gateway" not in self._stubs:
-            self._stubs["create_gateway"] = self.grpc_channel.unary_unary(
+            self._stubs["create_gateway"] = self._logged_channel.unary_unary(
                 "/google.cloud.networkservices.v1.NetworkServices/CreateGateway",
                 request_serializer=gcn_gateway.CreateGatewayRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -533,7 +618,7 @@ class NetworkServicesGrpcAsyncIOTransport(NetworkServicesTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_gateway" not in self._stubs:
-            self._stubs["update_gateway"] = self.grpc_channel.unary_unary(
+            self._stubs["update_gateway"] = self._logged_channel.unary_unary(
                 "/google.cloud.networkservices.v1.NetworkServices/UpdateGateway",
                 request_serializer=gcn_gateway.UpdateGatewayRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -559,7 +644,7 @@ class NetworkServicesGrpcAsyncIOTransport(NetworkServicesTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_gateway" not in self._stubs:
-            self._stubs["delete_gateway"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_gateway"] = self._logged_channel.unary_unary(
                 "/google.cloud.networkservices.v1.NetworkServices/DeleteGateway",
                 request_serializer=gateway.DeleteGatewayRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -587,7 +672,7 @@ class NetworkServicesGrpcAsyncIOTransport(NetworkServicesTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_grpc_routes" not in self._stubs:
-            self._stubs["list_grpc_routes"] = self.grpc_channel.unary_unary(
+            self._stubs["list_grpc_routes"] = self._logged_channel.unary_unary(
                 "/google.cloud.networkservices.v1.NetworkServices/ListGrpcRoutes",
                 request_serializer=grpc_route.ListGrpcRoutesRequest.serialize,
                 response_deserializer=grpc_route.ListGrpcRoutesResponse.deserialize,
@@ -613,7 +698,7 @@ class NetworkServicesGrpcAsyncIOTransport(NetworkServicesTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_grpc_route" not in self._stubs:
-            self._stubs["get_grpc_route"] = self.grpc_channel.unary_unary(
+            self._stubs["get_grpc_route"] = self._logged_channel.unary_unary(
                 "/google.cloud.networkservices.v1.NetworkServices/GetGrpcRoute",
                 request_serializer=grpc_route.GetGrpcRouteRequest.serialize,
                 response_deserializer=grpc_route.GrpcRoute.deserialize,
@@ -642,7 +727,7 @@ class NetworkServicesGrpcAsyncIOTransport(NetworkServicesTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_grpc_route" not in self._stubs:
-            self._stubs["create_grpc_route"] = self.grpc_channel.unary_unary(
+            self._stubs["create_grpc_route"] = self._logged_channel.unary_unary(
                 "/google.cloud.networkservices.v1.NetworkServices/CreateGrpcRoute",
                 request_serializer=gcn_grpc_route.CreateGrpcRouteRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -670,7 +755,7 @@ class NetworkServicesGrpcAsyncIOTransport(NetworkServicesTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_grpc_route" not in self._stubs:
-            self._stubs["update_grpc_route"] = self.grpc_channel.unary_unary(
+            self._stubs["update_grpc_route"] = self._logged_channel.unary_unary(
                 "/google.cloud.networkservices.v1.NetworkServices/UpdateGrpcRoute",
                 request_serializer=gcn_grpc_route.UpdateGrpcRouteRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -698,7 +783,7 @@ class NetworkServicesGrpcAsyncIOTransport(NetworkServicesTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_grpc_route" not in self._stubs:
-            self._stubs["delete_grpc_route"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_grpc_route"] = self._logged_channel.unary_unary(
                 "/google.cloud.networkservices.v1.NetworkServices/DeleteGrpcRoute",
                 request_serializer=grpc_route.DeleteGrpcRouteRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -726,7 +811,7 @@ class NetworkServicesGrpcAsyncIOTransport(NetworkServicesTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_http_routes" not in self._stubs:
-            self._stubs["list_http_routes"] = self.grpc_channel.unary_unary(
+            self._stubs["list_http_routes"] = self._logged_channel.unary_unary(
                 "/google.cloud.networkservices.v1.NetworkServices/ListHttpRoutes",
                 request_serializer=http_route.ListHttpRoutesRequest.serialize,
                 response_deserializer=http_route.ListHttpRoutesResponse.deserialize,
@@ -752,7 +837,7 @@ class NetworkServicesGrpcAsyncIOTransport(NetworkServicesTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_http_route" not in self._stubs:
-            self._stubs["get_http_route"] = self.grpc_channel.unary_unary(
+            self._stubs["get_http_route"] = self._logged_channel.unary_unary(
                 "/google.cloud.networkservices.v1.NetworkServices/GetHttpRoute",
                 request_serializer=http_route.GetHttpRouteRequest.serialize,
                 response_deserializer=http_route.HttpRoute.deserialize,
@@ -781,7 +866,7 @@ class NetworkServicesGrpcAsyncIOTransport(NetworkServicesTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_http_route" not in self._stubs:
-            self._stubs["create_http_route"] = self.grpc_channel.unary_unary(
+            self._stubs["create_http_route"] = self._logged_channel.unary_unary(
                 "/google.cloud.networkservices.v1.NetworkServices/CreateHttpRoute",
                 request_serializer=gcn_http_route.CreateHttpRouteRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -809,7 +894,7 @@ class NetworkServicesGrpcAsyncIOTransport(NetworkServicesTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_http_route" not in self._stubs:
-            self._stubs["update_http_route"] = self.grpc_channel.unary_unary(
+            self._stubs["update_http_route"] = self._logged_channel.unary_unary(
                 "/google.cloud.networkservices.v1.NetworkServices/UpdateHttpRoute",
                 request_serializer=gcn_http_route.UpdateHttpRouteRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -837,7 +922,7 @@ class NetworkServicesGrpcAsyncIOTransport(NetworkServicesTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_http_route" not in self._stubs:
-            self._stubs["delete_http_route"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_http_route"] = self._logged_channel.unary_unary(
                 "/google.cloud.networkservices.v1.NetworkServices/DeleteHttpRoute",
                 request_serializer=http_route.DeleteHttpRouteRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -865,7 +950,7 @@ class NetworkServicesGrpcAsyncIOTransport(NetworkServicesTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_tcp_routes" not in self._stubs:
-            self._stubs["list_tcp_routes"] = self.grpc_channel.unary_unary(
+            self._stubs["list_tcp_routes"] = self._logged_channel.unary_unary(
                 "/google.cloud.networkservices.v1.NetworkServices/ListTcpRoutes",
                 request_serializer=tcp_route.ListTcpRoutesRequest.serialize,
                 response_deserializer=tcp_route.ListTcpRoutesResponse.deserialize,
@@ -891,7 +976,7 @@ class NetworkServicesGrpcAsyncIOTransport(NetworkServicesTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_tcp_route" not in self._stubs:
-            self._stubs["get_tcp_route"] = self.grpc_channel.unary_unary(
+            self._stubs["get_tcp_route"] = self._logged_channel.unary_unary(
                 "/google.cloud.networkservices.v1.NetworkServices/GetTcpRoute",
                 request_serializer=tcp_route.GetTcpRouteRequest.serialize,
                 response_deserializer=tcp_route.TcpRoute.deserialize,
@@ -920,7 +1005,7 @@ class NetworkServicesGrpcAsyncIOTransport(NetworkServicesTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_tcp_route" not in self._stubs:
-            self._stubs["create_tcp_route"] = self.grpc_channel.unary_unary(
+            self._stubs["create_tcp_route"] = self._logged_channel.unary_unary(
                 "/google.cloud.networkservices.v1.NetworkServices/CreateTcpRoute",
                 request_serializer=gcn_tcp_route.CreateTcpRouteRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -948,7 +1033,7 @@ class NetworkServicesGrpcAsyncIOTransport(NetworkServicesTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_tcp_route" not in self._stubs:
-            self._stubs["update_tcp_route"] = self.grpc_channel.unary_unary(
+            self._stubs["update_tcp_route"] = self._logged_channel.unary_unary(
                 "/google.cloud.networkservices.v1.NetworkServices/UpdateTcpRoute",
                 request_serializer=gcn_tcp_route.UpdateTcpRouteRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -976,7 +1061,7 @@ class NetworkServicesGrpcAsyncIOTransport(NetworkServicesTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_tcp_route" not in self._stubs:
-            self._stubs["delete_tcp_route"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_tcp_route"] = self._logged_channel.unary_unary(
                 "/google.cloud.networkservices.v1.NetworkServices/DeleteTcpRoute",
                 request_serializer=tcp_route.DeleteTcpRouteRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1004,7 +1089,7 @@ class NetworkServicesGrpcAsyncIOTransport(NetworkServicesTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_tls_routes" not in self._stubs:
-            self._stubs["list_tls_routes"] = self.grpc_channel.unary_unary(
+            self._stubs["list_tls_routes"] = self._logged_channel.unary_unary(
                 "/google.cloud.networkservices.v1.NetworkServices/ListTlsRoutes",
                 request_serializer=tls_route.ListTlsRoutesRequest.serialize,
                 response_deserializer=tls_route.ListTlsRoutesResponse.deserialize,
@@ -1030,7 +1115,7 @@ class NetworkServicesGrpcAsyncIOTransport(NetworkServicesTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_tls_route" not in self._stubs:
-            self._stubs["get_tls_route"] = self.grpc_channel.unary_unary(
+            self._stubs["get_tls_route"] = self._logged_channel.unary_unary(
                 "/google.cloud.networkservices.v1.NetworkServices/GetTlsRoute",
                 request_serializer=tls_route.GetTlsRouteRequest.serialize,
                 response_deserializer=tls_route.TlsRoute.deserialize,
@@ -1059,7 +1144,7 @@ class NetworkServicesGrpcAsyncIOTransport(NetworkServicesTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_tls_route" not in self._stubs:
-            self._stubs["create_tls_route"] = self.grpc_channel.unary_unary(
+            self._stubs["create_tls_route"] = self._logged_channel.unary_unary(
                 "/google.cloud.networkservices.v1.NetworkServices/CreateTlsRoute",
                 request_serializer=gcn_tls_route.CreateTlsRouteRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1087,7 +1172,7 @@ class NetworkServicesGrpcAsyncIOTransport(NetworkServicesTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_tls_route" not in self._stubs:
-            self._stubs["update_tls_route"] = self.grpc_channel.unary_unary(
+            self._stubs["update_tls_route"] = self._logged_channel.unary_unary(
                 "/google.cloud.networkservices.v1.NetworkServices/UpdateTlsRoute",
                 request_serializer=gcn_tls_route.UpdateTlsRouteRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1115,7 +1200,7 @@ class NetworkServicesGrpcAsyncIOTransport(NetworkServicesTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_tls_route" not in self._stubs:
-            self._stubs["delete_tls_route"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_tls_route"] = self._logged_channel.unary_unary(
                 "/google.cloud.networkservices.v1.NetworkServices/DeleteTlsRoute",
                 request_serializer=tls_route.DeleteTlsRouteRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1144,7 +1229,7 @@ class NetworkServicesGrpcAsyncIOTransport(NetworkServicesTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_service_bindings" not in self._stubs:
-            self._stubs["list_service_bindings"] = self.grpc_channel.unary_unary(
+            self._stubs["list_service_bindings"] = self._logged_channel.unary_unary(
                 "/google.cloud.networkservices.v1.NetworkServices/ListServiceBindings",
                 request_serializer=service_binding.ListServiceBindingsRequest.serialize,
                 response_deserializer=service_binding.ListServiceBindingsResponse.deserialize,
@@ -1173,7 +1258,7 @@ class NetworkServicesGrpcAsyncIOTransport(NetworkServicesTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_service_binding" not in self._stubs:
-            self._stubs["get_service_binding"] = self.grpc_channel.unary_unary(
+            self._stubs["get_service_binding"] = self._logged_channel.unary_unary(
                 "/google.cloud.networkservices.v1.NetworkServices/GetServiceBinding",
                 request_serializer=service_binding.GetServiceBindingRequest.serialize,
                 response_deserializer=service_binding.ServiceBinding.deserialize,
@@ -1203,7 +1288,7 @@ class NetworkServicesGrpcAsyncIOTransport(NetworkServicesTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_service_binding" not in self._stubs:
-            self._stubs["create_service_binding"] = self.grpc_channel.unary_unary(
+            self._stubs["create_service_binding"] = self._logged_channel.unary_unary(
                 "/google.cloud.networkservices.v1.NetworkServices/CreateServiceBinding",
                 request_serializer=gcn_service_binding.CreateServiceBindingRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1232,7 +1317,7 @@ class NetworkServicesGrpcAsyncIOTransport(NetworkServicesTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_service_binding" not in self._stubs:
-            self._stubs["delete_service_binding"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_service_binding"] = self._logged_channel.unary_unary(
                 "/google.cloud.networkservices.v1.NetworkServices/DeleteServiceBinding",
                 request_serializer=service_binding.DeleteServiceBindingRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1258,7 +1343,7 @@ class NetworkServicesGrpcAsyncIOTransport(NetworkServicesTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_meshes" not in self._stubs:
-            self._stubs["list_meshes"] = self.grpc_channel.unary_unary(
+            self._stubs["list_meshes"] = self._logged_channel.unary_unary(
                 "/google.cloud.networkservices.v1.NetworkServices/ListMeshes",
                 request_serializer=mesh.ListMeshesRequest.serialize,
                 response_deserializer=mesh.ListMeshesResponse.deserialize,
@@ -1282,7 +1367,7 @@ class NetworkServicesGrpcAsyncIOTransport(NetworkServicesTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_mesh" not in self._stubs:
-            self._stubs["get_mesh"] = self.grpc_channel.unary_unary(
+            self._stubs["get_mesh"] = self._logged_channel.unary_unary(
                 "/google.cloud.networkservices.v1.NetworkServices/GetMesh",
                 request_serializer=mesh.GetMeshRequest.serialize,
                 response_deserializer=mesh.Mesh.deserialize,
@@ -1308,7 +1393,7 @@ class NetworkServicesGrpcAsyncIOTransport(NetworkServicesTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_mesh" not in self._stubs:
-            self._stubs["create_mesh"] = self.grpc_channel.unary_unary(
+            self._stubs["create_mesh"] = self._logged_channel.unary_unary(
                 "/google.cloud.networkservices.v1.NetworkServices/CreateMesh",
                 request_serializer=gcn_mesh.CreateMeshRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1334,7 +1419,7 @@ class NetworkServicesGrpcAsyncIOTransport(NetworkServicesTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_mesh" not in self._stubs:
-            self._stubs["update_mesh"] = self.grpc_channel.unary_unary(
+            self._stubs["update_mesh"] = self._logged_channel.unary_unary(
                 "/google.cloud.networkservices.v1.NetworkServices/UpdateMesh",
                 request_serializer=gcn_mesh.UpdateMeshRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1360,7 +1445,7 @@ class NetworkServicesGrpcAsyncIOTransport(NetworkServicesTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_mesh" not in self._stubs:
-            self._stubs["delete_mesh"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_mesh"] = self._logged_channel.unary_unary(
                 "/google.cloud.networkservices.v1.NetworkServices/DeleteMesh",
                 request_serializer=mesh.DeleteMeshRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1618,7 +1703,7 @@ class NetworkServicesGrpcAsyncIOTransport(NetworkServicesTransport):
         return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
 
     def close(self):
-        return self.grpc_channel.close()
+        return self._logged_channel.close()
 
     @property
     def kind(self) -> str:
@@ -1634,7 +1719,7 @@ class NetworkServicesGrpcAsyncIOTransport(NetworkServicesTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_operation" not in self._stubs:
-            self._stubs["delete_operation"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_operation"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/DeleteOperation",
                 request_serializer=operations_pb2.DeleteOperationRequest.SerializeToString,
                 response_deserializer=None,
@@ -1651,7 +1736,7 @@ class NetworkServicesGrpcAsyncIOTransport(NetworkServicesTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "cancel_operation" not in self._stubs:
-            self._stubs["cancel_operation"] = self.grpc_channel.unary_unary(
+            self._stubs["cancel_operation"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/CancelOperation",
                 request_serializer=operations_pb2.CancelOperationRequest.SerializeToString,
                 response_deserializer=None,
@@ -1668,7 +1753,7 @@ class NetworkServicesGrpcAsyncIOTransport(NetworkServicesTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_operation" not in self._stubs:
-            self._stubs["get_operation"] = self.grpc_channel.unary_unary(
+            self._stubs["get_operation"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/GetOperation",
                 request_serializer=operations_pb2.GetOperationRequest.SerializeToString,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1687,7 +1772,7 @@ class NetworkServicesGrpcAsyncIOTransport(NetworkServicesTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_operations" not in self._stubs:
-            self._stubs["list_operations"] = self.grpc_channel.unary_unary(
+            self._stubs["list_operations"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/ListOperations",
                 request_serializer=operations_pb2.ListOperationsRequest.SerializeToString,
                 response_deserializer=operations_pb2.ListOperationsResponse.FromString,
@@ -1706,7 +1791,7 @@ class NetworkServicesGrpcAsyncIOTransport(NetworkServicesTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_locations" not in self._stubs:
-            self._stubs["list_locations"] = self.grpc_channel.unary_unary(
+            self._stubs["list_locations"] = self._logged_channel.unary_unary(
                 "/google.cloud.location.Locations/ListLocations",
                 request_serializer=locations_pb2.ListLocationsRequest.SerializeToString,
                 response_deserializer=locations_pb2.ListLocationsResponse.FromString,
@@ -1723,7 +1808,7 @@ class NetworkServicesGrpcAsyncIOTransport(NetworkServicesTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_location" not in self._stubs:
-            self._stubs["get_location"] = self.grpc_channel.unary_unary(
+            self._stubs["get_location"] = self._logged_channel.unary_unary(
                 "/google.cloud.location.Locations/GetLocation",
                 request_serializer=locations_pb2.GetLocationRequest.SerializeToString,
                 response_deserializer=locations_pb2.Location.FromString,
@@ -1748,7 +1833,7 @@ class NetworkServicesGrpcAsyncIOTransport(NetworkServicesTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "set_iam_policy" not in self._stubs:
-            self._stubs["set_iam_policy"] = self.grpc_channel.unary_unary(
+            self._stubs["set_iam_policy"] = self._logged_channel.unary_unary(
                 "/google.iam.v1.IAMPolicy/SetIamPolicy",
                 request_serializer=iam_policy_pb2.SetIamPolicyRequest.SerializeToString,
                 response_deserializer=policy_pb2.Policy.FromString,
@@ -1774,7 +1859,7 @@ class NetworkServicesGrpcAsyncIOTransport(NetworkServicesTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_iam_policy" not in self._stubs:
-            self._stubs["get_iam_policy"] = self.grpc_channel.unary_unary(
+            self._stubs["get_iam_policy"] = self._logged_channel.unary_unary(
                 "/google.iam.v1.IAMPolicy/GetIamPolicy",
                 request_serializer=iam_policy_pb2.GetIamPolicyRequest.SerializeToString,
                 response_deserializer=policy_pb2.Policy.FromString,
@@ -1803,7 +1888,7 @@ class NetworkServicesGrpcAsyncIOTransport(NetworkServicesTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "test_iam_permissions" not in self._stubs:
-            self._stubs["test_iam_permissions"] = self.grpc_channel.unary_unary(
+            self._stubs["test_iam_permissions"] = self._logged_channel.unary_unary(
                 "/google.iam.v1.IAMPolicy/TestIamPermissions",
                 request_serializer=iam_policy_pb2.TestIamPermissionsRequest.SerializeToString,
                 response_deserializer=iam_policy_pb2.TestIamPermissionsResponse.FromString,

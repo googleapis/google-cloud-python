@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -40,6 +40,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -140,8 +148,10 @@ class DataPolicyServiceRestInterceptor:
     def pre_create_data_policy(
         self,
         request: datapolicy.CreateDataPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[datapolicy.CreateDataPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        datapolicy.CreateDataPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_data_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -163,8 +173,10 @@ class DataPolicyServiceRestInterceptor:
     def pre_delete_data_policy(
         self,
         request: datapolicy.DeleteDataPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[datapolicy.DeleteDataPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        datapolicy.DeleteDataPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_data_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -175,8 +187,10 @@ class DataPolicyServiceRestInterceptor:
     def pre_get_data_policy(
         self,
         request: datapolicy.GetDataPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[datapolicy.GetDataPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        datapolicy.GetDataPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_data_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -198,8 +212,10 @@ class DataPolicyServiceRestInterceptor:
     def pre_get_iam_policy(
         self,
         request: iam_policy_pb2.GetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -219,8 +235,10 @@ class DataPolicyServiceRestInterceptor:
     def pre_list_data_policies(
         self,
         request: datapolicy.ListDataPoliciesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[datapolicy.ListDataPoliciesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        datapolicy.ListDataPoliciesRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_data_policies
 
         Override in a subclass to manipulate the request or metadata
@@ -242,8 +260,10 @@ class DataPolicyServiceRestInterceptor:
     def pre_rename_data_policy(
         self,
         request: datapolicy.RenameDataPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[datapolicy.RenameDataPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        datapolicy.RenameDataPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for rename_data_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -265,8 +285,10 @@ class DataPolicyServiceRestInterceptor:
     def pre_set_iam_policy(
         self,
         request: iam_policy_pb2.SetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -286,8 +308,11 @@ class DataPolicyServiceRestInterceptor:
     def pre_test_iam_permissions(
         self,
         request: iam_policy_pb2.TestIamPermissionsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.TestIamPermissionsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -309,8 +334,10 @@ class DataPolicyServiceRestInterceptor:
     def pre_update_data_policy(
         self,
         request: datapolicy.UpdateDataPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[datapolicy.UpdateDataPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        datapolicy.UpdateDataPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_data_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -453,7 +480,7 @@ class DataPolicyServiceRestTransport(_BaseDataPolicyServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> datapolicy.DataPolicy:
             r"""Call the create data policy method over HTTP.
 
@@ -464,8 +491,10 @@ class DataPolicyServiceRestTransport(_BaseDataPolicyServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.datapolicy.DataPolicy:
@@ -475,6 +504,7 @@ class DataPolicyServiceRestTransport(_BaseDataPolicyServiceRestTransport):
             http_options = (
                 _BaseDataPolicyServiceRestTransport._BaseCreateDataPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_data_policy(
                 request, metadata
             )
@@ -490,6 +520,33 @@ class DataPolicyServiceRestTransport(_BaseDataPolicyServiceRestTransport):
             query_params = _BaseDataPolicyServiceRestTransport._BaseCreateDataPolicy._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.bigquery.datapolicies_v1.DataPolicyServiceClient.CreateDataPolicy",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.datapolicies.v1.DataPolicyService",
+                        "rpcName": "CreateDataPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DataPolicyServiceRestTransport._CreateDataPolicy._get_response(
@@ -512,7 +569,29 @@ class DataPolicyServiceRestTransport(_BaseDataPolicyServiceRestTransport):
             pb_resp = datapolicy.DataPolicy.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_data_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = datapolicy.DataPolicy.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.bigquery.datapolicies_v1.DataPolicyServiceClient.create_data_policy",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.datapolicies.v1.DataPolicyService",
+                        "rpcName": "CreateDataPolicy",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteDataPolicy(
@@ -550,7 +629,7 @@ class DataPolicyServiceRestTransport(_BaseDataPolicyServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete data policy method over HTTP.
 
@@ -561,13 +640,16 @@ class DataPolicyServiceRestTransport(_BaseDataPolicyServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseDataPolicyServiceRestTransport._BaseDeleteDataPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_data_policy(
                 request, metadata
             )
@@ -579,6 +661,33 @@ class DataPolicyServiceRestTransport(_BaseDataPolicyServiceRestTransport):
             query_params = _BaseDataPolicyServiceRestTransport._BaseDeleteDataPolicy._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.bigquery.datapolicies_v1.DataPolicyServiceClient.DeleteDataPolicy",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.datapolicies.v1.DataPolicyService",
+                        "rpcName": "DeleteDataPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DataPolicyServiceRestTransport._DeleteDataPolicy._get_response(
@@ -630,7 +739,7 @@ class DataPolicyServiceRestTransport(_BaseDataPolicyServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> datapolicy.DataPolicy:
             r"""Call the get data policy method over HTTP.
 
@@ -641,8 +750,10 @@ class DataPolicyServiceRestTransport(_BaseDataPolicyServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.datapolicy.DataPolicy:
@@ -652,6 +763,7 @@ class DataPolicyServiceRestTransport(_BaseDataPolicyServiceRestTransport):
             http_options = (
                 _BaseDataPolicyServiceRestTransport._BaseGetDataPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_data_policy(request, metadata)
             transcoded_request = _BaseDataPolicyServiceRestTransport._BaseGetDataPolicy._get_transcoded_request(
                 http_options, request
@@ -661,6 +773,33 @@ class DataPolicyServiceRestTransport(_BaseDataPolicyServiceRestTransport):
             query_params = _BaseDataPolicyServiceRestTransport._BaseGetDataPolicy._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.bigquery.datapolicies_v1.DataPolicyServiceClient.GetDataPolicy",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.datapolicies.v1.DataPolicyService",
+                        "rpcName": "GetDataPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DataPolicyServiceRestTransport._GetDataPolicy._get_response(
@@ -682,7 +821,29 @@ class DataPolicyServiceRestTransport(_BaseDataPolicyServiceRestTransport):
             pb_resp = datapolicy.DataPolicy.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_data_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = datapolicy.DataPolicy.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.bigquery.datapolicies_v1.DataPolicyServiceClient.get_data_policy",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.datapolicies.v1.DataPolicyService",
+                        "rpcName": "GetDataPolicy",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetIamPolicy(
@@ -720,7 +881,7 @@ class DataPolicyServiceRestTransport(_BaseDataPolicyServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> policy_pb2.Policy:
             r"""Call the get iam policy method over HTTP.
 
@@ -730,8 +891,10 @@ class DataPolicyServiceRestTransport(_BaseDataPolicyServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.policy_pb2.Policy:
@@ -816,6 +979,7 @@ class DataPolicyServiceRestTransport(_BaseDataPolicyServiceRestTransport):
             http_options = (
                 _BaseDataPolicyServiceRestTransport._BaseGetIamPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
             transcoded_request = _BaseDataPolicyServiceRestTransport._BaseGetIamPolicy._get_transcoded_request(
                 http_options, request
@@ -829,6 +993,33 @@ class DataPolicyServiceRestTransport(_BaseDataPolicyServiceRestTransport):
             query_params = _BaseDataPolicyServiceRestTransport._BaseGetIamPolicy._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.bigquery.datapolicies_v1.DataPolicyServiceClient.GetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.datapolicies.v1.DataPolicyService",
+                        "rpcName": "GetIamPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DataPolicyServiceRestTransport._GetIamPolicy._get_response(
@@ -851,7 +1042,29 @@ class DataPolicyServiceRestTransport(_BaseDataPolicyServiceRestTransport):
             pb_resp = resp
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_iam_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.bigquery.datapolicies_v1.DataPolicyServiceClient.get_iam_policy",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.datapolicies.v1.DataPolicyService",
+                        "rpcName": "GetIamPolicy",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListDataPolicies(
@@ -889,7 +1102,7 @@ class DataPolicyServiceRestTransport(_BaseDataPolicyServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> datapolicy.ListDataPoliciesResponse:
             r"""Call the list data policies method over HTTP.
 
@@ -900,8 +1113,10 @@ class DataPolicyServiceRestTransport(_BaseDataPolicyServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.datapolicy.ListDataPoliciesResponse:
@@ -913,6 +1128,7 @@ class DataPolicyServiceRestTransport(_BaseDataPolicyServiceRestTransport):
             http_options = (
                 _BaseDataPolicyServiceRestTransport._BaseListDataPolicies._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_data_policies(
                 request, metadata
             )
@@ -924,6 +1140,33 @@ class DataPolicyServiceRestTransport(_BaseDataPolicyServiceRestTransport):
             query_params = _BaseDataPolicyServiceRestTransport._BaseListDataPolicies._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.bigquery.datapolicies_v1.DataPolicyServiceClient.ListDataPolicies",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.datapolicies.v1.DataPolicyService",
+                        "rpcName": "ListDataPolicies",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DataPolicyServiceRestTransport._ListDataPolicies._get_response(
@@ -945,7 +1188,31 @@ class DataPolicyServiceRestTransport(_BaseDataPolicyServiceRestTransport):
             pb_resp = datapolicy.ListDataPoliciesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_data_policies(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = datapolicy.ListDataPoliciesResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.bigquery.datapolicies_v1.DataPolicyServiceClient.list_data_policies",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.datapolicies.v1.DataPolicyService",
+                        "rpcName": "ListDataPolicies",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _RenameDataPolicy(
@@ -984,7 +1251,7 @@ class DataPolicyServiceRestTransport(_BaseDataPolicyServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> datapolicy.DataPolicy:
             r"""Call the rename data policy method over HTTP.
 
@@ -995,8 +1262,10 @@ class DataPolicyServiceRestTransport(_BaseDataPolicyServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.datapolicy.DataPolicy:
@@ -1006,6 +1275,7 @@ class DataPolicyServiceRestTransport(_BaseDataPolicyServiceRestTransport):
             http_options = (
                 _BaseDataPolicyServiceRestTransport._BaseRenameDataPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_rename_data_policy(
                 request, metadata
             )
@@ -1021,6 +1291,33 @@ class DataPolicyServiceRestTransport(_BaseDataPolicyServiceRestTransport):
             query_params = _BaseDataPolicyServiceRestTransport._BaseRenameDataPolicy._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.bigquery.datapolicies_v1.DataPolicyServiceClient.RenameDataPolicy",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.datapolicies.v1.DataPolicyService",
+                        "rpcName": "RenameDataPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DataPolicyServiceRestTransport._RenameDataPolicy._get_response(
@@ -1043,7 +1340,29 @@ class DataPolicyServiceRestTransport(_BaseDataPolicyServiceRestTransport):
             pb_resp = datapolicy.DataPolicy.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_rename_data_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = datapolicy.DataPolicy.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.bigquery.datapolicies_v1.DataPolicyServiceClient.rename_data_policy",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.datapolicies.v1.DataPolicyService",
+                        "rpcName": "RenameDataPolicy",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _SetIamPolicy(
@@ -1081,7 +1400,7 @@ class DataPolicyServiceRestTransport(_BaseDataPolicyServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> policy_pb2.Policy:
             r"""Call the set iam policy method over HTTP.
 
@@ -1091,8 +1410,10 @@ class DataPolicyServiceRestTransport(_BaseDataPolicyServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.policy_pb2.Policy:
@@ -1177,6 +1498,7 @@ class DataPolicyServiceRestTransport(_BaseDataPolicyServiceRestTransport):
             http_options = (
                 _BaseDataPolicyServiceRestTransport._BaseSetIamPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
             transcoded_request = _BaseDataPolicyServiceRestTransport._BaseSetIamPolicy._get_transcoded_request(
                 http_options, request
@@ -1190,6 +1512,33 @@ class DataPolicyServiceRestTransport(_BaseDataPolicyServiceRestTransport):
             query_params = _BaseDataPolicyServiceRestTransport._BaseSetIamPolicy._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.bigquery.datapolicies_v1.DataPolicyServiceClient.SetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.datapolicies.v1.DataPolicyService",
+                        "rpcName": "SetIamPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DataPolicyServiceRestTransport._SetIamPolicy._get_response(
@@ -1212,7 +1561,29 @@ class DataPolicyServiceRestTransport(_BaseDataPolicyServiceRestTransport):
             pb_resp = resp
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_set_iam_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.bigquery.datapolicies_v1.DataPolicyServiceClient.set_iam_policy",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.datapolicies.v1.DataPolicyService",
+                        "rpcName": "SetIamPolicy",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _TestIamPermissions(
@@ -1251,7 +1622,7 @@ class DataPolicyServiceRestTransport(_BaseDataPolicyServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> iam_policy_pb2.TestIamPermissionsResponse:
             r"""Call the test iam permissions method over HTTP.
 
@@ -1261,8 +1632,10 @@ class DataPolicyServiceRestTransport(_BaseDataPolicyServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.iam_policy_pb2.TestIamPermissionsResponse:
@@ -1272,6 +1645,7 @@ class DataPolicyServiceRestTransport(_BaseDataPolicyServiceRestTransport):
             http_options = (
                 _BaseDataPolicyServiceRestTransport._BaseTestIamPermissions._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata
             )
@@ -1287,6 +1661,33 @@ class DataPolicyServiceRestTransport(_BaseDataPolicyServiceRestTransport):
             query_params = _BaseDataPolicyServiceRestTransport._BaseTestIamPermissions._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.bigquery.datapolicies_v1.DataPolicyServiceClient.TestIamPermissions",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.datapolicies.v1.DataPolicyService",
+                        "rpcName": "TestIamPermissions",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DataPolicyServiceRestTransport._TestIamPermissions._get_response(
@@ -1309,7 +1710,29 @@ class DataPolicyServiceRestTransport(_BaseDataPolicyServiceRestTransport):
             pb_resp = resp
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_test_iam_permissions(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.bigquery.datapolicies_v1.DataPolicyServiceClient.test_iam_permissions",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.datapolicies.v1.DataPolicyService",
+                        "rpcName": "TestIamPermissions",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateDataPolicy(
@@ -1348,7 +1771,7 @@ class DataPolicyServiceRestTransport(_BaseDataPolicyServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> datapolicy.DataPolicy:
             r"""Call the update data policy method over HTTP.
 
@@ -1359,8 +1782,10 @@ class DataPolicyServiceRestTransport(_BaseDataPolicyServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.datapolicy.DataPolicy:
@@ -1370,6 +1795,7 @@ class DataPolicyServiceRestTransport(_BaseDataPolicyServiceRestTransport):
             http_options = (
                 _BaseDataPolicyServiceRestTransport._BaseUpdateDataPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_data_policy(
                 request, metadata
             )
@@ -1385,6 +1811,33 @@ class DataPolicyServiceRestTransport(_BaseDataPolicyServiceRestTransport):
             query_params = _BaseDataPolicyServiceRestTransport._BaseUpdateDataPolicy._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.bigquery.datapolicies_v1.DataPolicyServiceClient.UpdateDataPolicy",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.datapolicies.v1.DataPolicyService",
+                        "rpcName": "UpdateDataPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DataPolicyServiceRestTransport._UpdateDataPolicy._get_response(
@@ -1407,7 +1860,29 @@ class DataPolicyServiceRestTransport(_BaseDataPolicyServiceRestTransport):
             pb_resp = datapolicy.DataPolicy.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_data_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = datapolicy.DataPolicy.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.bigquery.datapolicies_v1.DataPolicyServiceClient.update_data_policy",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.datapolicies.v1.DataPolicyService",
+                        "rpcName": "UpdateDataPolicy",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property

@@ -1006,6 +1006,7 @@ def test_get_report_rest_required_fields(request_type=report_service.GetReportRe
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_report(request)
 
@@ -1051,6 +1052,7 @@ def test_get_report_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_report(**mock_args)
 
@@ -1190,6 +1192,7 @@ def test_list_reports_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_reports(request)
 
@@ -1246,6 +1249,7 @@ def test_list_reports_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_reports(**mock_args)
 
@@ -1439,6 +1443,7 @@ def test_create_report_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_report(request)
 
@@ -1493,6 +1498,7 @@ def test_create_report_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_report(**mock_args)
 
@@ -1621,6 +1627,7 @@ def test_update_report_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_report(request)
 
@@ -1675,6 +1682,7 @@ def test_update_report_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_report(**mock_args)
 
@@ -1805,6 +1813,7 @@ def test_run_report_rest_required_fields(request_type=report_service.RunReportRe
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.run_report(request)
 
@@ -1848,6 +1857,7 @@ def test_run_report_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.run_report(**mock_args)
 
@@ -1944,6 +1954,7 @@ def test_fetch_report_result_rows_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.fetch_report_result_rows(**mock_args)
 
@@ -2137,6 +2148,7 @@ def test_get_report_rest_bad_request(request_type=report_service.GetReportReques
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_report(request)
 
 
@@ -2176,6 +2188,7 @@ def test_get_report_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_report(request)
 
     # Establish that the response is the type that we expect.
@@ -2220,6 +2233,7 @@ def test_get_report_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = report_service.Report.to_json(report_service.Report())
         req.return_value.content = return_value
 
@@ -2262,6 +2276,7 @@ def test_list_reports_rest_bad_request(request_type=report_service.ListReportsRe
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_reports(request)
 
 
@@ -2298,6 +2313,7 @@ def test_list_reports_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_reports(request)
 
     # Establish that the response is the type that we expect.
@@ -2339,6 +2355,7 @@ def test_list_reports_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = report_service.ListReportsResponse.to_json(
             report_service.ListReportsResponse()
         )
@@ -2385,6 +2402,7 @@ def test_create_report_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_report(request)
 
 
@@ -2574,6 +2592,7 @@ def test_create_report_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_report(request)
 
     # Establish that the response is the type that we expect.
@@ -2618,6 +2637,7 @@ def test_create_report_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = report_service.Report.to_json(report_service.Report())
         req.return_value.content = return_value
 
@@ -2662,6 +2682,7 @@ def test_update_report_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_report(request)
 
 
@@ -2851,6 +2872,7 @@ def test_update_report_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_report(request)
 
     # Establish that the response is the type that we expect.
@@ -2895,6 +2917,7 @@ def test_update_report_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = report_service.Report.to_json(report_service.Report())
         req.return_value.content = return_value
 
@@ -2937,6 +2960,7 @@ def test_run_report_rest_bad_request(request_type=report_service.RunReportReques
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.run_report(request)
 
 
@@ -2967,6 +2991,7 @@ def test_run_report_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.run_report(request)
 
     # Establish that the response is the type that we expect.
@@ -3008,6 +3033,7 @@ def test_run_report_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -3052,6 +3078,7 @@ def test_fetch_report_result_rows_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.fetch_report_result_rows(request)
 
 
@@ -3088,6 +3115,7 @@ def test_fetch_report_result_rows_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.fetch_report_result_rows(request)
 
     # Establish that the response is the type that we expect.
@@ -3129,6 +3157,7 @@ def test_fetch_report_result_rows_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = report_service.FetchReportResultRowsResponse.to_json(
             report_service.FetchReportResultRowsResponse()
         )
@@ -3177,6 +3206,7 @@ def test_get_operation_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_operation(request)
 
 
@@ -3207,6 +3237,7 @@ def test_get_operation_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.get_operation(request)
 

@@ -3711,6 +3711,7 @@ def test_list_quota_infos_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_quota_infos(request)
 
@@ -3766,6 +3767,7 @@ def test_list_quota_infos_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_quota_infos(**mock_args)
 
@@ -3962,6 +3964,7 @@ def test_get_quota_info_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_quota_info(request)
 
@@ -4009,6 +4012,7 @@ def test_get_quota_info_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_quota_info(**mock_args)
 
@@ -4154,6 +4158,7 @@ def test_list_quota_preferences_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_quota_preferences(request)
 
@@ -4209,6 +4214,7 @@ def test_list_quota_preferences_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_quota_preferences(**mock_args)
 
@@ -4407,6 +4413,7 @@ def test_get_quota_preference_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_quota_preference(request)
 
@@ -4454,6 +4461,7 @@ def test_get_quota_preference_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_quota_preference(**mock_args)
 
@@ -4598,6 +4606,7 @@ def test_create_quota_preference_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_quota_preference(request)
 
@@ -4658,6 +4667,7 @@ def test_create_quota_preference_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_quota_preference(**mock_args)
 
@@ -4801,6 +4811,7 @@ def test_update_quota_preference_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_quota_preference(request)
 
@@ -4861,6 +4872,7 @@ def test_update_quota_preference_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_quota_preference(**mock_args)
 
@@ -5375,6 +5387,7 @@ def test_list_quota_infos_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_quota_infos(request)
 
 
@@ -5410,6 +5423,7 @@ def test_list_quota_infos_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_quota_infos(request)
 
     # Establish that the response is the type that we expect.
@@ -5450,6 +5464,7 @@ def test_list_quota_infos_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = cloudquotas.ListQuotaInfosResponse.to_json(
             cloudquotas.ListQuotaInfosResponse()
         )
@@ -5496,6 +5511,7 @@ def test_get_quota_info_rest_bad_request(request_type=cloudquotas.GetQuotaInfoRe
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_quota_info(request)
 
 
@@ -5546,6 +5562,7 @@ def test_get_quota_info_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_quota_info(request)
 
     # Establish that the response is the type that we expect.
@@ -5599,6 +5616,7 @@ def test_get_quota_info_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = resources.QuotaInfo.to_json(resources.QuotaInfo())
         req.return_value.content = return_value
 
@@ -5643,6 +5661,7 @@ def test_list_quota_preferences_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_quota_preferences(request)
 
 
@@ -5679,6 +5698,7 @@ def test_list_quota_preferences_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_quota_preferences(request)
 
     # Establish that the response is the type that we expect.
@@ -5720,6 +5740,7 @@ def test_list_quota_preferences_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = cloudquotas.ListQuotaPreferencesResponse.to_json(
             cloudquotas.ListQuotaPreferencesResponse()
         )
@@ -5768,6 +5789,7 @@ def test_get_quota_preference_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_quota_preference(request)
 
 
@@ -5811,6 +5833,7 @@ def test_get_quota_preference_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_quota_preference(request)
 
     # Establish that the response is the type that we expect.
@@ -5857,6 +5880,7 @@ def test_get_quota_preference_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = resources.QuotaPreference.to_json(resources.QuotaPreference())
         req.return_value.content = return_value
 
@@ -5901,6 +5925,7 @@ def test_create_quota_preference_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_quota_preference(request)
 
 
@@ -6031,6 +6056,7 @@ def test_create_quota_preference_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_quota_preference(request)
 
     # Establish that the response is the type that we expect.
@@ -6077,6 +6103,7 @@ def test_create_quota_preference_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = resources.QuotaPreference.to_json(resources.QuotaPreference())
         req.return_value.content = return_value
 
@@ -6125,6 +6152,7 @@ def test_update_quota_preference_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_quota_preference(request)
 
 
@@ -6259,6 +6287,7 @@ def test_update_quota_preference_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_quota_preference(request)
 
     # Establish that the response is the type that we expect.
@@ -6305,6 +6334,7 @@ def test_update_quota_preference_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = resources.QuotaPreference.to_json(resources.QuotaPreference())
         req.return_value.content = return_value
 

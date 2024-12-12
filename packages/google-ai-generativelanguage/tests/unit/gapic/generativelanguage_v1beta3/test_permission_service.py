@@ -3365,6 +3365,7 @@ def test_create_permission_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_permission(request)
 
@@ -3419,6 +3420,7 @@ def test_create_permission_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_permission(**mock_args)
 
@@ -3550,6 +3552,7 @@ def test_get_permission_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_permission(request)
 
@@ -3595,6 +3598,7 @@ def test_get_permission_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_permission(**mock_args)
 
@@ -3734,6 +3738,7 @@ def test_list_permissions_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_permissions(request)
 
@@ -3787,6 +3792,7 @@ def test_list_permissions_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_permissions(**mock_args)
 
@@ -3980,6 +3986,7 @@ def test_update_permission_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_permission(request)
 
@@ -4036,6 +4043,7 @@ def test_update_permission_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_permission(**mock_args)
 
@@ -4167,6 +4175,7 @@ def test_delete_permission_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_permission(request)
 
@@ -4210,6 +4219,7 @@ def test_delete_permission_rest_flattened():
         json_return_value = ""
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_permission(**mock_args)
 
@@ -4349,6 +4359,7 @@ def test_transfer_ownership_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.transfer_ownership(request)
 
@@ -4829,6 +4840,7 @@ def test_create_permission_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_permission(request)
 
 
@@ -4940,6 +4952,7 @@ def test_create_permission_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_permission(request)
 
     # Establish that the response is the type that we expect.
@@ -4983,6 +4996,7 @@ def test_create_permission_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = gag_permission.Permission.to_json(gag_permission.Permission())
         req.return_value.content = return_value
 
@@ -5027,6 +5041,7 @@ def test_get_permission_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_permission(request)
 
 
@@ -5065,6 +5080,7 @@ def test_get_permission_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_permission(request)
 
     # Establish that the response is the type that we expect.
@@ -5108,6 +5124,7 @@ def test_get_permission_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = permission.Permission.to_json(permission.Permission())
         req.return_value.content = return_value
 
@@ -5152,6 +5169,7 @@ def test_list_permissions_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_permissions(request)
 
 
@@ -5187,6 +5205,7 @@ def test_list_permissions_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_permissions(request)
 
     # Establish that the response is the type that we expect.
@@ -5227,6 +5246,7 @@ def test_list_permissions_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = permission_service.ListPermissionsResponse.to_json(
             permission_service.ListPermissionsResponse()
         )
@@ -5273,6 +5293,7 @@ def test_update_permission_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_permission(request)
 
 
@@ -5384,6 +5405,7 @@ def test_update_permission_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_permission(request)
 
     # Establish that the response is the type that we expect.
@@ -5427,6 +5449,7 @@ def test_update_permission_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = gag_permission.Permission.to_json(gag_permission.Permission())
         req.return_value.content = return_value
 
@@ -5471,6 +5494,7 @@ def test_delete_permission_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_permission(request)
 
 
@@ -5501,6 +5525,7 @@ def test_delete_permission_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_permission(request)
 
     # Establish that the response is the type that we expect.
@@ -5537,6 +5562,7 @@ def test_delete_permission_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = permission_service.DeletePermissionRequest()
         metadata = [
@@ -5577,6 +5603,7 @@ def test_transfer_ownership_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.transfer_ownership(request)
 
 
@@ -5610,6 +5637,7 @@ def test_transfer_ownership_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.transfer_ownership(request)
 
     # Establish that the response is the type that we expect.
@@ -5649,6 +5677,7 @@ def test_transfer_ownership_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = permission_service.TransferOwnershipResponse.to_json(
             permission_service.TransferOwnershipResponse()
         )

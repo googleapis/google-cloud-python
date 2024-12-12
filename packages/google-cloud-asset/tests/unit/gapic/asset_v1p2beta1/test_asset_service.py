@@ -2758,6 +2758,7 @@ def test_create_feed_rest_required_fields(request_type=asset_service.CreateFeedR
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_feed(request)
 
@@ -2812,6 +2813,7 @@ def test_create_feed_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_feed(**mock_args)
 
@@ -2939,6 +2941,7 @@ def test_get_feed_rest_required_fields(request_type=asset_service.GetFeedRequest
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_feed(request)
 
@@ -2984,6 +2987,7 @@ def test_get_feed_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_feed(**mock_args)
 
@@ -3111,6 +3115,7 @@ def test_list_feeds_rest_required_fields(request_type=asset_service.ListFeedsReq
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_feeds(request)
 
@@ -3156,6 +3161,7 @@ def test_list_feeds_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_feeds(**mock_args)
 
@@ -3279,6 +3285,7 @@ def test_update_feed_rest_required_fields(request_type=asset_service.UpdateFeedR
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_feed(request)
 
@@ -3332,6 +3339,7 @@ def test_update_feed_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_feed(**mock_args)
 
@@ -3456,6 +3464,7 @@ def test_delete_feed_rest_required_fields(request_type=asset_service.DeleteFeedR
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_feed(request)
 
@@ -3499,6 +3508,7 @@ def test_delete_feed_rest_flattened():
         json_return_value = ""
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_feed(**mock_args)
 
@@ -3915,6 +3925,7 @@ def test_create_feed_rest_bad_request(request_type=asset_service.CreateFeedReque
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_feed(request)
 
 
@@ -3953,6 +3964,7 @@ def test_create_feed_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_feed(request)
 
     # Establish that the response is the type that we expect.
@@ -3996,6 +4008,7 @@ def test_create_feed_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = asset_service.Feed.to_json(asset_service.Feed())
         req.return_value.content = return_value
 
@@ -4038,6 +4051,7 @@ def test_get_feed_rest_bad_request(request_type=asset_service.GetFeedRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_feed(request)
 
 
@@ -4076,6 +4090,7 @@ def test_get_feed_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_feed(request)
 
     # Establish that the response is the type that we expect.
@@ -4117,6 +4132,7 @@ def test_get_feed_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = asset_service.Feed.to_json(asset_service.Feed())
         req.return_value.content = return_value
 
@@ -4159,6 +4175,7 @@ def test_list_feeds_rest_bad_request(request_type=asset_service.ListFeedsRequest
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_feeds(request)
 
 
@@ -4192,6 +4209,7 @@ def test_list_feeds_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_feeds(request)
 
     # Establish that the response is the type that we expect.
@@ -4229,6 +4247,7 @@ def test_list_feeds_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = asset_service.ListFeedsResponse.to_json(
             asset_service.ListFeedsResponse()
         )
@@ -4273,6 +4292,7 @@ def test_update_feed_rest_bad_request(request_type=asset_service.UpdateFeedReque
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_feed(request)
 
 
@@ -4311,6 +4331,7 @@ def test_update_feed_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_feed(request)
 
     # Establish that the response is the type that we expect.
@@ -4354,6 +4375,7 @@ def test_update_feed_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = asset_service.Feed.to_json(asset_service.Feed())
         req.return_value.content = return_value
 
@@ -4396,6 +4418,7 @@ def test_delete_feed_rest_bad_request(request_type=asset_service.DeleteFeedReque
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_feed(request)
 
 
@@ -4426,6 +4449,7 @@ def test_delete_feed_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_feed(request)
 
     # Establish that the response is the type that we expect.
@@ -4462,6 +4486,7 @@ def test_delete_feed_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = asset_service.DeleteFeedRequest()
         metadata = [
@@ -4504,6 +4529,7 @@ def test_get_operation_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_operation(request)
 
 
@@ -4534,6 +4560,7 @@ def test_get_operation_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.get_operation(request)
 

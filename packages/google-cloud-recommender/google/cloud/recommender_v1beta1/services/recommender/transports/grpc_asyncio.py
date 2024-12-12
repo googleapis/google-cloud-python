@@ -14,6 +14,9 @@
 # limitations under the License.
 #
 import inspect
+import json
+import logging as std_logging
+import pickle
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -22,8 +25,11 @@ from google.api_core import gapic_v1, grpc_helpers_async
 from google.api_core import retry_async as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.protobuf.json_format import MessageToJson
+import google.protobuf.message
 import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
+import proto  # type: ignore
 
 from google.cloud.recommender_v1beta1.types import (
     insight_type_config as gcr_insight_type_config,
@@ -39,6 +45,82 @@ from google.cloud.recommender_v1beta1.types import recommender_service
 
 from .base import DEFAULT_CLIENT_INFO, RecommenderTransport
 from .grpc import RecommenderGrpcTransport
+
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = std_logging.getLogger(__name__)
+
+
+class _LoggingClientAIOInterceptor(
+    grpc.aio.UnaryUnaryClientInterceptor
+):  # pragma: NO COVER
+    async def intercept_unary_unary(self, continuation, client_call_details, request):
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+            std_logging.DEBUG
+        )
+        if logging_enabled:  # pragma: NO COVER
+            request_metadata = client_call_details.metadata
+            if isinstance(request, proto.Message):
+                request_payload = type(request).to_json(request)
+            elif isinstance(request, google.protobuf.message.Message):
+                request_payload = MessageToJson(request)
+            else:
+                request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
+
+            request_metadata = {
+                key: value.decode("utf-8") if isinstance(value, bytes) else value
+                for key, value in request_metadata
+            }
+            grpc_request = {
+                "payload": request_payload,
+                "requestMethod": "grpc",
+                "metadata": dict(request_metadata),
+            }
+            _LOGGER.debug(
+                f"Sending request for {client_call_details.method}",
+                extra={
+                    "serviceName": "google.cloud.recommender.v1beta1.Recommender",
+                    "rpcName": str(client_call_details.method),
+                    "request": grpc_request,
+                    "metadata": grpc_request["metadata"],
+                },
+            )
+        response = await continuation(client_call_details, request)
+        if logging_enabled:  # pragma: NO COVER
+            response_metadata = await response.trailing_metadata()
+            # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
+            metadata = (
+                dict([(k, str(v)) for k, v in response_metadata])
+                if response_metadata
+                else None
+            )
+            result = await response
+            if isinstance(result, proto.Message):
+                response_payload = type(result).to_json(result)
+            elif isinstance(result, google.protobuf.message.Message):
+                response_payload = MessageToJson(result)
+            else:
+                response_payload = f"{type(result).__name__}: {pickle.dumps(result)}"
+            grpc_response = {
+                "payload": response_payload,
+                "metadata": metadata,
+                "status": "OK",
+            }
+            _LOGGER.debug(
+                f"Received response to rpc {client_call_details.method}.",
+                extra={
+                    "serviceName": "google.cloud.recommender.v1beta1.Recommender",
+                    "rpcName": str(client_call_details.method),
+                    "response": grpc_response,
+                    "metadata": grpc_response["metadata"],
+                },
+            )
+        return response
 
 
 class RecommenderGrpcAsyncIOTransport(RecommenderTransport):
@@ -240,10 +322,13 @@ class RecommenderGrpcAsyncIOTransport(RecommenderTransport):
                 ],
             )
 
-        # Wrap messages. This must be done after self._grpc_channel exists
+        self._interceptor = _LoggingClientAIOInterceptor()
+        self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
+        self._logged_channel = self._grpc_channel
         self._wrap_with_kind = (
             "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         )
+        # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -280,7 +365,7 @@ class RecommenderGrpcAsyncIOTransport(RecommenderTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_insights" not in self._stubs:
-            self._stubs["list_insights"] = self.grpc_channel.unary_unary(
+            self._stubs["list_insights"] = self._logged_channel.unary_unary(
                 "/google.cloud.recommender.v1beta1.Recommender/ListInsights",
                 request_serializer=recommender_service.ListInsightsRequest.serialize,
                 response_deserializer=recommender_service.ListInsightsResponse.deserialize,
@@ -307,7 +392,7 @@ class RecommenderGrpcAsyncIOTransport(RecommenderTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_insight" not in self._stubs:
-            self._stubs["get_insight"] = self.grpc_channel.unary_unary(
+            self._stubs["get_insight"] = self._logged_channel.unary_unary(
                 "/google.cloud.recommender.v1beta1.Recommender/GetInsight",
                 request_serializer=recommender_service.GetInsightRequest.serialize,
                 response_deserializer=insight.Insight.deserialize,
@@ -342,7 +427,7 @@ class RecommenderGrpcAsyncIOTransport(RecommenderTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "mark_insight_accepted" not in self._stubs:
-            self._stubs["mark_insight_accepted"] = self.grpc_channel.unary_unary(
+            self._stubs["mark_insight_accepted"] = self._logged_channel.unary_unary(
                 "/google.cloud.recommender.v1beta1.Recommender/MarkInsightAccepted",
                 request_serializer=recommender_service.MarkInsightAcceptedRequest.serialize,
                 response_deserializer=insight.Insight.deserialize,
@@ -373,7 +458,7 @@ class RecommenderGrpcAsyncIOTransport(RecommenderTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_recommendations" not in self._stubs:
-            self._stubs["list_recommendations"] = self.grpc_channel.unary_unary(
+            self._stubs["list_recommendations"] = self._logged_channel.unary_unary(
                 "/google.cloud.recommender.v1beta1.Recommender/ListRecommendations",
                 request_serializer=recommender_service.ListRecommendationsRequest.serialize,
                 response_deserializer=recommender_service.ListRecommendationsResponse.deserialize,
@@ -403,7 +488,7 @@ class RecommenderGrpcAsyncIOTransport(RecommenderTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_recommendation" not in self._stubs:
-            self._stubs["get_recommendation"] = self.grpc_channel.unary_unary(
+            self._stubs["get_recommendation"] = self._logged_channel.unary_unary(
                 "/google.cloud.recommender.v1beta1.Recommender/GetRecommendation",
                 request_serializer=recommender_service.GetRecommendationRequest.serialize,
                 response_deserializer=recommendation.Recommendation.deserialize,
@@ -442,7 +527,9 @@ class RecommenderGrpcAsyncIOTransport(RecommenderTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "mark_recommendation_claimed" not in self._stubs:
-            self._stubs["mark_recommendation_claimed"] = self.grpc_channel.unary_unary(
+            self._stubs[
+                "mark_recommendation_claimed"
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.recommender.v1beta1.Recommender/MarkRecommendationClaimed",
                 request_serializer=recommender_service.MarkRecommendationClaimedRequest.serialize,
                 response_deserializer=recommendation.Recommendation.deserialize,
@@ -483,7 +570,7 @@ class RecommenderGrpcAsyncIOTransport(RecommenderTransport):
         if "mark_recommendation_succeeded" not in self._stubs:
             self._stubs[
                 "mark_recommendation_succeeded"
-            ] = self.grpc_channel.unary_unary(
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.recommender.v1beta1.Recommender/MarkRecommendationSucceeded",
                 request_serializer=recommender_service.MarkRecommendationSucceededRequest.serialize,
                 response_deserializer=recommendation.Recommendation.deserialize,
@@ -522,7 +609,9 @@ class RecommenderGrpcAsyncIOTransport(RecommenderTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "mark_recommendation_failed" not in self._stubs:
-            self._stubs["mark_recommendation_failed"] = self.grpc_channel.unary_unary(
+            self._stubs[
+                "mark_recommendation_failed"
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.recommender.v1beta1.Recommender/MarkRecommendationFailed",
                 request_serializer=recommender_service.MarkRecommendationFailedRequest.serialize,
                 response_deserializer=recommendation.Recommendation.deserialize,
@@ -552,7 +641,7 @@ class RecommenderGrpcAsyncIOTransport(RecommenderTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_recommender_config" not in self._stubs:
-            self._stubs["get_recommender_config"] = self.grpc_channel.unary_unary(
+            self._stubs["get_recommender_config"] = self._logged_channel.unary_unary(
                 "/google.cloud.recommender.v1beta1.Recommender/GetRecommenderConfig",
                 request_serializer=recommender_service.GetRecommenderConfigRequest.serialize,
                 response_deserializer=recommender_config.RecommenderConfig.deserialize,
@@ -582,7 +671,7 @@ class RecommenderGrpcAsyncIOTransport(RecommenderTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_recommender_config" not in self._stubs:
-            self._stubs["update_recommender_config"] = self.grpc_channel.unary_unary(
+            self._stubs["update_recommender_config"] = self._logged_channel.unary_unary(
                 "/google.cloud.recommender.v1beta1.Recommender/UpdateRecommenderConfig",
                 request_serializer=recommender_service.UpdateRecommenderConfigRequest.serialize,
                 response_deserializer=gcr_recommender_config.RecommenderConfig.deserialize,
@@ -612,7 +701,7 @@ class RecommenderGrpcAsyncIOTransport(RecommenderTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_insight_type_config" not in self._stubs:
-            self._stubs["get_insight_type_config"] = self.grpc_channel.unary_unary(
+            self._stubs["get_insight_type_config"] = self._logged_channel.unary_unary(
                 "/google.cloud.recommender.v1beta1.Recommender/GetInsightTypeConfig",
                 request_serializer=recommender_service.GetInsightTypeConfigRequest.serialize,
                 response_deserializer=insight_type_config.InsightTypeConfig.deserialize,
@@ -642,7 +731,9 @@ class RecommenderGrpcAsyncIOTransport(RecommenderTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_insight_type_config" not in self._stubs:
-            self._stubs["update_insight_type_config"] = self.grpc_channel.unary_unary(
+            self._stubs[
+                "update_insight_type_config"
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.recommender.v1beta1.Recommender/UpdateInsightTypeConfig",
                 request_serializer=recommender_service.UpdateInsightTypeConfigRequest.serialize,
                 response_deserializer=gcr_insight_type_config.InsightTypeConfig.deserialize,
@@ -672,7 +763,7 @@ class RecommenderGrpcAsyncIOTransport(RecommenderTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_recommenders" not in self._stubs:
-            self._stubs["list_recommenders"] = self.grpc_channel.unary_unary(
+            self._stubs["list_recommenders"] = self._logged_channel.unary_unary(
                 "/google.cloud.recommender.v1beta1.Recommender/ListRecommenders",
                 request_serializer=recommender_service.ListRecommendersRequest.serialize,
                 response_deserializer=recommender_service.ListRecommendersResponse.deserialize,
@@ -702,7 +793,7 @@ class RecommenderGrpcAsyncIOTransport(RecommenderTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_insight_types" not in self._stubs:
-            self._stubs["list_insight_types"] = self.grpc_channel.unary_unary(
+            self._stubs["list_insight_types"] = self._logged_channel.unary_unary(
                 "/google.cloud.recommender.v1beta1.Recommender/ListInsightTypes",
                 request_serializer=recommender_service.ListInsightTypesRequest.serialize,
                 response_deserializer=recommender_service.ListInsightTypesResponse.deserialize,
@@ -830,7 +921,7 @@ class RecommenderGrpcAsyncIOTransport(RecommenderTransport):
         return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
 
     def close(self):
-        return self.grpc_channel.close()
+        return self._logged_channel.close()
 
     @property
     def kind(self) -> str:

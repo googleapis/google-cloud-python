@@ -6502,6 +6502,7 @@ def test_create_os_policy_assignment_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_os_policy_assignment(request)
 
@@ -6564,6 +6565,7 @@ def test_create_os_policy_assignment_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_os_policy_assignment(**mock_args)
 
@@ -6703,6 +6705,7 @@ def test_update_os_policy_assignment_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_os_policy_assignment(request)
 
@@ -6753,6 +6756,7 @@ def test_update_os_policy_assignment_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_os_policy_assignment(**mock_args)
 
@@ -6892,6 +6896,7 @@ def test_get_os_policy_assignment_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_os_policy_assignment(request)
 
@@ -6939,6 +6944,7 @@ def test_get_os_policy_assignment_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_os_policy_assignment(**mock_args)
 
@@ -7084,6 +7090,7 @@ def test_list_os_policy_assignments_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_os_policy_assignments(request)
 
@@ -7139,6 +7146,7 @@ def test_list_os_policy_assignments_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_os_policy_assignments(**mock_args)
 
@@ -7352,6 +7360,7 @@ def test_list_os_policy_assignment_revisions_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_os_policy_assignment_revisions(request)
 
@@ -7411,6 +7420,7 @@ def test_list_os_policy_assignment_revisions_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_os_policy_assignment_revisions(**mock_args)
 
@@ -7620,6 +7630,7 @@ def test_delete_os_policy_assignment_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_os_policy_assignment(request)
 
@@ -7665,6 +7676,7 @@ def test_delete_os_policy_assignment_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_os_policy_assignment(**mock_args)
 
@@ -7803,6 +7815,7 @@ def test_get_os_policy_assignment_report_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_os_policy_assignment_report(request)
 
@@ -7854,6 +7867,7 @@ def test_get_os_policy_assignment_report_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_os_policy_assignment_report(**mock_args)
 
@@ -8002,6 +8016,7 @@ def test_list_os_policy_assignment_reports_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_os_policy_assignment_reports(request)
 
@@ -8066,6 +8081,7 @@ def test_list_os_policy_assignment_reports_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_os_policy_assignment_reports(**mock_args)
 
@@ -8272,6 +8288,7 @@ def test_get_inventory_rest_required_fields(request_type=inventory.GetInventoryR
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_inventory(request)
 
@@ -8319,6 +8336,7 @@ def test_get_inventory_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_inventory(**mock_args)
 
@@ -8461,6 +8479,7 @@ def test_list_inventories_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_inventories(request)
 
@@ -8518,6 +8537,7 @@ def test_list_inventories_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_inventories(**mock_args)
 
@@ -8717,6 +8737,7 @@ def test_get_vulnerability_report_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_vulnerability_report(request)
 
@@ -8764,6 +8785,7 @@ def test_get_vulnerability_report_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_vulnerability_report(**mock_args)
 
@@ -8910,6 +8932,7 @@ def test_list_vulnerability_reports_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_vulnerability_reports(request)
 
@@ -8966,6 +8989,7 @@ def test_list_vulnerability_reports_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_vulnerability_reports(**mock_args)
 
@@ -9837,6 +9861,7 @@ def test_create_os_policy_assignment_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_os_policy_assignment(request)
 
 
@@ -10067,6 +10092,7 @@ def test_create_os_policy_assignment_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_os_policy_assignment(request)
 
     # Establish that the response is the type that we expect.
@@ -10110,6 +10136,7 @@ def test_create_os_policy_assignment_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -10158,6 +10185,7 @@ def test_update_os_policy_assignment_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_os_policy_assignment(request)
 
 
@@ -10392,6 +10420,7 @@ def test_update_os_policy_assignment_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_os_policy_assignment(request)
 
     # Establish that the response is the type that we expect.
@@ -10435,6 +10464,7 @@ def test_update_os_policy_assignment_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -10481,6 +10511,7 @@ def test_get_os_policy_assignment_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_os_policy_assignment(request)
 
 
@@ -10526,6 +10557,7 @@ def test_get_os_policy_assignment_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_os_policy_assignment(request)
 
     # Establish that the response is the type that we expect.
@@ -10577,6 +10609,7 @@ def test_get_os_policy_assignment_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = os_policy_assignments.OSPolicyAssignment.to_json(
             os_policy_assignments.OSPolicyAssignment()
         )
@@ -10623,6 +10656,7 @@ def test_list_os_policy_assignments_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_os_policy_assignments(request)
 
 
@@ -10660,6 +10694,7 @@ def test_list_os_policy_assignments_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_os_policy_assignments(request)
 
     # Establish that the response is the type that we expect.
@@ -10701,6 +10736,7 @@ def test_list_os_policy_assignments_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = os_policy_assignments.ListOSPolicyAssignmentsResponse.to_json(
             os_policy_assignments.ListOSPolicyAssignmentsResponse()
         )
@@ -10749,6 +10785,7 @@ def test_list_os_policy_assignment_revisions_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_os_policy_assignment_revisions(request)
 
 
@@ -10788,6 +10825,7 @@ def test_list_os_policy_assignment_revisions_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_os_policy_assignment_revisions(request)
 
     # Establish that the response is the type that we expect.
@@ -10830,6 +10868,7 @@ def test_list_os_policy_assignment_revisions_rest_interceptors(null_interceptor)
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = (
             os_policy_assignments.ListOSPolicyAssignmentRevisionsResponse.to_json(
                 os_policy_assignments.ListOSPolicyAssignmentRevisionsResponse()
@@ -10882,6 +10921,7 @@ def test_delete_os_policy_assignment_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_os_policy_assignment(request)
 
 
@@ -10914,6 +10954,7 @@ def test_delete_os_policy_assignment_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_os_policy_assignment(request)
 
     # Establish that the response is the type that we expect.
@@ -10957,6 +10998,7 @@ def test_delete_os_policy_assignment_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -11003,6 +11045,7 @@ def test_get_os_policy_assignment_report_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_os_policy_assignment_report(request)
 
 
@@ -11045,6 +11088,7 @@ def test_get_os_policy_assignment_report_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_os_policy_assignment_report(request)
 
     # Establish that the response is the type that we expect.
@@ -11090,6 +11134,7 @@ def test_get_os_policy_assignment_report_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = os_policy_assignment_reports.OSPolicyAssignmentReport.to_json(
             os_policy_assignment_reports.OSPolicyAssignmentReport()
         )
@@ -11138,6 +11183,7 @@ def test_list_os_policy_assignment_reports_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_os_policy_assignment_reports(request)
 
 
@@ -11181,6 +11227,7 @@ def test_list_os_policy_assignment_reports_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_os_policy_assignment_reports(request)
 
     # Establish that the response is the type that we expect.
@@ -11225,6 +11272,7 @@ def test_list_os_policy_assignment_reports_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = (
             os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse.to_json(
                 os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse()
@@ -11275,6 +11323,7 @@ def test_get_inventory_rest_bad_request(request_type=inventory.GetInventoryReque
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_inventory(request)
 
 
@@ -11312,6 +11361,7 @@ def test_get_inventory_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_inventory(request)
 
     # Establish that the response is the type that we expect.
@@ -11350,6 +11400,7 @@ def test_get_inventory_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = inventory.Inventory.to_json(inventory.Inventory())
         req.return_value.content = return_value
 
@@ -11394,6 +11445,7 @@ def test_list_inventories_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_inventories(request)
 
 
@@ -11429,6 +11481,7 @@ def test_list_inventories_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_inventories(request)
 
     # Establish that the response is the type that we expect.
@@ -11469,6 +11522,7 @@ def test_list_inventories_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = inventory.ListInventoriesResponse.to_json(
             inventory.ListInventoriesResponse()
         )
@@ -11517,6 +11571,7 @@ def test_get_vulnerability_report_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_vulnerability_report(request)
 
 
@@ -11554,6 +11609,7 @@ def test_get_vulnerability_report_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_vulnerability_report(request)
 
     # Establish that the response is the type that we expect.
@@ -11594,6 +11650,7 @@ def test_get_vulnerability_report_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = vulnerability.VulnerabilityReport.to_json(
             vulnerability.VulnerabilityReport()
         )
@@ -11640,6 +11697,7 @@ def test_list_vulnerability_reports_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_vulnerability_reports(request)
 
 
@@ -11675,6 +11733,7 @@ def test_list_vulnerability_reports_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_vulnerability_reports(request)
 
     # Establish that the response is the type that we expect.
@@ -11716,6 +11775,7 @@ def test_list_vulnerability_reports_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = vulnerability.ListVulnerabilityReportsResponse.to_json(
             vulnerability.ListVulnerabilityReportsResponse()
         )

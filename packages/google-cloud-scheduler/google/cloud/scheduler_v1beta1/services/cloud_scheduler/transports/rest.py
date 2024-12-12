@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -41,6 +41,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -133,8 +141,10 @@ class CloudSchedulerRestInterceptor:
     def pre_create_job(
         self,
         request: cloudscheduler.CreateJobRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloudscheduler.CreateJobRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloudscheduler.CreateJobRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_job
 
         Override in a subclass to manipulate the request or metadata
@@ -154,8 +164,10 @@ class CloudSchedulerRestInterceptor:
     def pre_delete_job(
         self,
         request: cloudscheduler.DeleteJobRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloudscheduler.DeleteJobRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloudscheduler.DeleteJobRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_job
 
         Override in a subclass to manipulate the request or metadata
@@ -164,8 +176,10 @@ class CloudSchedulerRestInterceptor:
         return request, metadata
 
     def pre_get_job(
-        self, request: cloudscheduler.GetJobRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[cloudscheduler.GetJobRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: cloudscheduler.GetJobRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[cloudscheduler.GetJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_job
 
         Override in a subclass to manipulate the request or metadata
@@ -185,8 +199,8 @@ class CloudSchedulerRestInterceptor:
     def pre_list_jobs(
         self,
         request: cloudscheduler.ListJobsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloudscheduler.ListJobsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[cloudscheduler.ListJobsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_jobs
 
         Override in a subclass to manipulate the request or metadata
@@ -208,8 +222,8 @@ class CloudSchedulerRestInterceptor:
     def pre_pause_job(
         self,
         request: cloudscheduler.PauseJobRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloudscheduler.PauseJobRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[cloudscheduler.PauseJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for pause_job
 
         Override in a subclass to manipulate the request or metadata
@@ -229,8 +243,10 @@ class CloudSchedulerRestInterceptor:
     def pre_resume_job(
         self,
         request: cloudscheduler.ResumeJobRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloudscheduler.ResumeJobRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloudscheduler.ResumeJobRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for resume_job
 
         Override in a subclass to manipulate the request or metadata
@@ -248,8 +264,10 @@ class CloudSchedulerRestInterceptor:
         return response
 
     def pre_run_job(
-        self, request: cloudscheduler.RunJobRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[cloudscheduler.RunJobRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: cloudscheduler.RunJobRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[cloudscheduler.RunJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for run_job
 
         Override in a subclass to manipulate the request or metadata
@@ -269,8 +287,10 @@ class CloudSchedulerRestInterceptor:
     def pre_update_job(
         self,
         request: cloudscheduler.UpdateJobRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloudscheduler.UpdateJobRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloudscheduler.UpdateJobRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_job
 
         Override in a subclass to manipulate the request or metadata
@@ -290,8 +310,10 @@ class CloudSchedulerRestInterceptor:
     def pre_get_location(
         self,
         request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -313,8 +335,10 @@ class CloudSchedulerRestInterceptor:
     def pre_list_locations(
         self,
         request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -456,7 +480,7 @@ class CloudSchedulerRestTransport(_BaseCloudSchedulerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gcs_job.Job:
             r"""Call the create job method over HTTP.
 
@@ -467,8 +491,10 @@ class CloudSchedulerRestTransport(_BaseCloudSchedulerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.gcs_job.Job:
@@ -481,6 +507,7 @@ class CloudSchedulerRestTransport(_BaseCloudSchedulerRestTransport):
             http_options = (
                 _BaseCloudSchedulerRestTransport._BaseCreateJob._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_job(request, metadata)
             transcoded_request = (
                 _BaseCloudSchedulerRestTransport._BaseCreateJob._get_transcoded_request(
@@ -500,6 +527,33 @@ class CloudSchedulerRestTransport(_BaseCloudSchedulerRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.scheduler_v1beta1.CloudSchedulerClient.CreateJob",
+                    extra={
+                        "serviceName": "google.cloud.scheduler.v1beta1.CloudScheduler",
+                        "rpcName": "CreateJob",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudSchedulerRestTransport._CreateJob._get_response(
@@ -522,7 +576,29 @@ class CloudSchedulerRestTransport(_BaseCloudSchedulerRestTransport):
             pb_resp = gcs_job.Job.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_job(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gcs_job.Job.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.scheduler_v1beta1.CloudSchedulerClient.create_job",
+                    extra={
+                        "serviceName": "google.cloud.scheduler.v1beta1.CloudScheduler",
+                        "rpcName": "CreateJob",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteJob(
@@ -559,7 +635,7 @@ class CloudSchedulerRestTransport(_BaseCloudSchedulerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete job method over HTTP.
 
@@ -570,13 +646,16 @@ class CloudSchedulerRestTransport(_BaseCloudSchedulerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseCloudSchedulerRestTransport._BaseDeleteJob._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_job(request, metadata)
             transcoded_request = (
                 _BaseCloudSchedulerRestTransport._BaseDeleteJob._get_transcoded_request(
@@ -590,6 +669,33 @@ class CloudSchedulerRestTransport(_BaseCloudSchedulerRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.scheduler_v1beta1.CloudSchedulerClient.DeleteJob",
+                    extra={
+                        "serviceName": "google.cloud.scheduler.v1beta1.CloudScheduler",
+                        "rpcName": "DeleteJob",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudSchedulerRestTransport._DeleteJob._get_response(
@@ -638,7 +744,7 @@ class CloudSchedulerRestTransport(_BaseCloudSchedulerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> job.Job:
             r"""Call the get job method over HTTP.
 
@@ -649,8 +755,10 @@ class CloudSchedulerRestTransport(_BaseCloudSchedulerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.job.Job:
@@ -663,6 +771,7 @@ class CloudSchedulerRestTransport(_BaseCloudSchedulerRestTransport):
             http_options = (
                 _BaseCloudSchedulerRestTransport._BaseGetJob._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_job(request, metadata)
             transcoded_request = (
                 _BaseCloudSchedulerRestTransport._BaseGetJob._get_transcoded_request(
@@ -676,6 +785,33 @@ class CloudSchedulerRestTransport(_BaseCloudSchedulerRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.scheduler_v1beta1.CloudSchedulerClient.GetJob",
+                    extra={
+                        "serviceName": "google.cloud.scheduler.v1beta1.CloudScheduler",
+                        "rpcName": "GetJob",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudSchedulerRestTransport._GetJob._get_response(
@@ -697,7 +833,29 @@ class CloudSchedulerRestTransport(_BaseCloudSchedulerRestTransport):
             pb_resp = job.Job.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_job(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = job.Job.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.scheduler_v1beta1.CloudSchedulerClient.get_job",
+                    extra={
+                        "serviceName": "google.cloud.scheduler.v1beta1.CloudScheduler",
+                        "rpcName": "GetJob",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListJobs(
@@ -734,7 +892,7 @@ class CloudSchedulerRestTransport(_BaseCloudSchedulerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> cloudscheduler.ListJobsResponse:
             r"""Call the list jobs method over HTTP.
 
@@ -745,8 +903,10 @@ class CloudSchedulerRestTransport(_BaseCloudSchedulerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.cloudscheduler.ListJobsResponse:
@@ -758,6 +918,7 @@ class CloudSchedulerRestTransport(_BaseCloudSchedulerRestTransport):
             http_options = (
                 _BaseCloudSchedulerRestTransport._BaseListJobs._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_jobs(request, metadata)
             transcoded_request = (
                 _BaseCloudSchedulerRestTransport._BaseListJobs._get_transcoded_request(
@@ -771,6 +932,33 @@ class CloudSchedulerRestTransport(_BaseCloudSchedulerRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.scheduler_v1beta1.CloudSchedulerClient.ListJobs",
+                    extra={
+                        "serviceName": "google.cloud.scheduler.v1beta1.CloudScheduler",
+                        "rpcName": "ListJobs",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudSchedulerRestTransport._ListJobs._get_response(
@@ -792,7 +980,29 @@ class CloudSchedulerRestTransport(_BaseCloudSchedulerRestTransport):
             pb_resp = cloudscheduler.ListJobsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_jobs(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = cloudscheduler.ListJobsResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.scheduler_v1beta1.CloudSchedulerClient.list_jobs",
+                    extra={
+                        "serviceName": "google.cloud.scheduler.v1beta1.CloudScheduler",
+                        "rpcName": "ListJobs",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _PauseJob(
@@ -830,7 +1040,7 @@ class CloudSchedulerRestTransport(_BaseCloudSchedulerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> job.Job:
             r"""Call the pause job method over HTTP.
 
@@ -841,8 +1051,10 @@ class CloudSchedulerRestTransport(_BaseCloudSchedulerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.job.Job:
@@ -855,6 +1067,7 @@ class CloudSchedulerRestTransport(_BaseCloudSchedulerRestTransport):
             http_options = (
                 _BaseCloudSchedulerRestTransport._BasePauseJob._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_pause_job(request, metadata)
             transcoded_request = (
                 _BaseCloudSchedulerRestTransport._BasePauseJob._get_transcoded_request(
@@ -874,6 +1087,33 @@ class CloudSchedulerRestTransport(_BaseCloudSchedulerRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.scheduler_v1beta1.CloudSchedulerClient.PauseJob",
+                    extra={
+                        "serviceName": "google.cloud.scheduler.v1beta1.CloudScheduler",
+                        "rpcName": "PauseJob",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudSchedulerRestTransport._PauseJob._get_response(
@@ -896,7 +1136,29 @@ class CloudSchedulerRestTransport(_BaseCloudSchedulerRestTransport):
             pb_resp = job.Job.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_pause_job(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = job.Job.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.scheduler_v1beta1.CloudSchedulerClient.pause_job",
+                    extra={
+                        "serviceName": "google.cloud.scheduler.v1beta1.CloudScheduler",
+                        "rpcName": "PauseJob",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ResumeJob(
@@ -934,7 +1196,7 @@ class CloudSchedulerRestTransport(_BaseCloudSchedulerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> job.Job:
             r"""Call the resume job method over HTTP.
 
@@ -945,8 +1207,10 @@ class CloudSchedulerRestTransport(_BaseCloudSchedulerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.job.Job:
@@ -959,6 +1223,7 @@ class CloudSchedulerRestTransport(_BaseCloudSchedulerRestTransport):
             http_options = (
                 _BaseCloudSchedulerRestTransport._BaseResumeJob._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_resume_job(request, metadata)
             transcoded_request = (
                 _BaseCloudSchedulerRestTransport._BaseResumeJob._get_transcoded_request(
@@ -978,6 +1243,33 @@ class CloudSchedulerRestTransport(_BaseCloudSchedulerRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.scheduler_v1beta1.CloudSchedulerClient.ResumeJob",
+                    extra={
+                        "serviceName": "google.cloud.scheduler.v1beta1.CloudScheduler",
+                        "rpcName": "ResumeJob",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudSchedulerRestTransport._ResumeJob._get_response(
@@ -1000,7 +1292,29 @@ class CloudSchedulerRestTransport(_BaseCloudSchedulerRestTransport):
             pb_resp = job.Job.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_resume_job(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = job.Job.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.scheduler_v1beta1.CloudSchedulerClient.resume_job",
+                    extra={
+                        "serviceName": "google.cloud.scheduler.v1beta1.CloudScheduler",
+                        "rpcName": "ResumeJob",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _RunJob(_BaseCloudSchedulerRestTransport._BaseRunJob, CloudSchedulerRestStub):
@@ -1036,7 +1350,7 @@ class CloudSchedulerRestTransport(_BaseCloudSchedulerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> job.Job:
             r"""Call the run job method over HTTP.
 
@@ -1047,8 +1361,10 @@ class CloudSchedulerRestTransport(_BaseCloudSchedulerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.job.Job:
@@ -1061,6 +1377,7 @@ class CloudSchedulerRestTransport(_BaseCloudSchedulerRestTransport):
             http_options = (
                 _BaseCloudSchedulerRestTransport._BaseRunJob._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_run_job(request, metadata)
             transcoded_request = (
                 _BaseCloudSchedulerRestTransport._BaseRunJob._get_transcoded_request(
@@ -1078,6 +1395,33 @@ class CloudSchedulerRestTransport(_BaseCloudSchedulerRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.scheduler_v1beta1.CloudSchedulerClient.RunJob",
+                    extra={
+                        "serviceName": "google.cloud.scheduler.v1beta1.CloudScheduler",
+                        "rpcName": "RunJob",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudSchedulerRestTransport._RunJob._get_response(
@@ -1100,7 +1444,29 @@ class CloudSchedulerRestTransport(_BaseCloudSchedulerRestTransport):
             pb_resp = job.Job.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_run_job(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = job.Job.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.scheduler_v1beta1.CloudSchedulerClient.run_job",
+                    extra={
+                        "serviceName": "google.cloud.scheduler.v1beta1.CloudScheduler",
+                        "rpcName": "RunJob",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateJob(
@@ -1138,7 +1504,7 @@ class CloudSchedulerRestTransport(_BaseCloudSchedulerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gcs_job.Job:
             r"""Call the update job method over HTTP.
 
@@ -1149,8 +1515,10 @@ class CloudSchedulerRestTransport(_BaseCloudSchedulerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.gcs_job.Job:
@@ -1163,6 +1531,7 @@ class CloudSchedulerRestTransport(_BaseCloudSchedulerRestTransport):
             http_options = (
                 _BaseCloudSchedulerRestTransport._BaseUpdateJob._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_job(request, metadata)
             transcoded_request = (
                 _BaseCloudSchedulerRestTransport._BaseUpdateJob._get_transcoded_request(
@@ -1182,6 +1551,33 @@ class CloudSchedulerRestTransport(_BaseCloudSchedulerRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.scheduler_v1beta1.CloudSchedulerClient.UpdateJob",
+                    extra={
+                        "serviceName": "google.cloud.scheduler.v1beta1.CloudScheduler",
+                        "rpcName": "UpdateJob",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudSchedulerRestTransport._UpdateJob._get_response(
@@ -1204,7 +1600,29 @@ class CloudSchedulerRestTransport(_BaseCloudSchedulerRestTransport):
             pb_resp = gcs_job.Job.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_job(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gcs_job.Job.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.scheduler_v1beta1.CloudSchedulerClient.update_job",
+                    extra={
+                        "serviceName": "google.cloud.scheduler.v1beta1.CloudScheduler",
+                        "rpcName": "UpdateJob",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -1297,7 +1715,7 @@ class CloudSchedulerRestTransport(_BaseCloudSchedulerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.Location:
             r"""Call the get location method over HTTP.
 
@@ -1307,8 +1725,10 @@ class CloudSchedulerRestTransport(_BaseCloudSchedulerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.Location: Response from GetLocation method.
@@ -1317,6 +1737,7 @@ class CloudSchedulerRestTransport(_BaseCloudSchedulerRestTransport):
             http_options = (
                 _BaseCloudSchedulerRestTransport._BaseGetLocation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_location(request, metadata)
             transcoded_request = _BaseCloudSchedulerRestTransport._BaseGetLocation._get_transcoded_request(
                 http_options, request
@@ -1326,6 +1747,33 @@ class CloudSchedulerRestTransport(_BaseCloudSchedulerRestTransport):
             query_params = _BaseCloudSchedulerRestTransport._BaseGetLocation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.scheduler_v1beta1.CloudSchedulerClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.scheduler.v1beta1.CloudScheduler",
+                        "rpcName": "GetLocation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudSchedulerRestTransport._GetLocation._get_response(
@@ -1346,6 +1794,27 @@ class CloudSchedulerRestTransport(_BaseCloudSchedulerRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.scheduler_v1beta1.CloudSchedulerAsyncClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.scheduler.v1beta1.CloudScheduler",
+                        "rpcName": "GetLocation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -1386,7 +1855,7 @@ class CloudSchedulerRestTransport(_BaseCloudSchedulerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.ListLocationsResponse:
             r"""Call the list locations method over HTTP.
 
@@ -1396,8 +1865,10 @@ class CloudSchedulerRestTransport(_BaseCloudSchedulerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
@@ -1406,6 +1877,7 @@ class CloudSchedulerRestTransport(_BaseCloudSchedulerRestTransport):
             http_options = (
                 _BaseCloudSchedulerRestTransport._BaseListLocations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
             transcoded_request = _BaseCloudSchedulerRestTransport._BaseListLocations._get_transcoded_request(
                 http_options, request
@@ -1415,6 +1887,33 @@ class CloudSchedulerRestTransport(_BaseCloudSchedulerRestTransport):
             query_params = _BaseCloudSchedulerRestTransport._BaseListLocations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.scheduler_v1beta1.CloudSchedulerClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.scheduler.v1beta1.CloudScheduler",
+                        "rpcName": "ListLocations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudSchedulerRestTransport._ListLocations._get_response(
@@ -1435,6 +1934,27 @@ class CloudSchedulerRestTransport(_BaseCloudSchedulerRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.scheduler_v1beta1.CloudSchedulerAsyncClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.scheduler.v1beta1.CloudScheduler",
+                        "rpcName": "ListLocations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property

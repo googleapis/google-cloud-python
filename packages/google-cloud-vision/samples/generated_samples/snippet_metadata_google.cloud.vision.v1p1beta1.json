@@ -8,7 +8,7 @@
     ],
     "language": "PYTHON",
     "name": "google-cloud-vision",
-    "version": "3.8.1"
+    "version": "0.1.0"
   },
   "snippets": [
     {
@@ -47,7 +47,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.vision_v1p1beta1.types.BatchAnnotateImagesResponse",
@@ -127,7 +127,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.vision_v1p1beta1.types.BatchAnnotateImagesResponse",

@@ -3518,6 +3518,21 @@
             ],
             "release-type": "python"
         },
+        "packages/google-shopping-merchant-reviews": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
+            "component": "google-shopping-merchant-reviews",
+            "extra-files": [
+                "google/shopping/merchant_reviews/gapic_version.py",
+                "google/shopping/merchant_reviews_v1beta/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.shopping.merchant.reviews.v1beta.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-shopping-type": {
             "bump-minor-pre-major": true,
             "bump-patch-for-minor-pre-major": true,

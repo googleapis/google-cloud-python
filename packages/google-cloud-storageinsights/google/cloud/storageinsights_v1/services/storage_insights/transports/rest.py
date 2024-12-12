@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -40,6 +40,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -124,8 +132,11 @@ class StorageInsightsRestInterceptor:
     def pre_create_report_config(
         self,
         request: storageinsights.CreateReportConfigRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[storageinsights.CreateReportConfigRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        storageinsights.CreateReportConfigRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for create_report_config
 
         Override in a subclass to manipulate the request or metadata
@@ -147,8 +158,11 @@ class StorageInsightsRestInterceptor:
     def pre_delete_report_config(
         self,
         request: storageinsights.DeleteReportConfigRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[storageinsights.DeleteReportConfigRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        storageinsights.DeleteReportConfigRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for delete_report_config
 
         Override in a subclass to manipulate the request or metadata
@@ -159,8 +173,10 @@ class StorageInsightsRestInterceptor:
     def pre_get_report_config(
         self,
         request: storageinsights.GetReportConfigRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[storageinsights.GetReportConfigRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        storageinsights.GetReportConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_report_config
 
         Override in a subclass to manipulate the request or metadata
@@ -182,8 +198,10 @@ class StorageInsightsRestInterceptor:
     def pre_get_report_detail(
         self,
         request: storageinsights.GetReportDetailRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[storageinsights.GetReportDetailRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        storageinsights.GetReportDetailRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_report_detail
 
         Override in a subclass to manipulate the request or metadata
@@ -205,8 +223,11 @@ class StorageInsightsRestInterceptor:
     def pre_list_report_configs(
         self,
         request: storageinsights.ListReportConfigsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[storageinsights.ListReportConfigsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        storageinsights.ListReportConfigsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for list_report_configs
 
         Override in a subclass to manipulate the request or metadata
@@ -228,8 +249,11 @@ class StorageInsightsRestInterceptor:
     def pre_list_report_details(
         self,
         request: storageinsights.ListReportDetailsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[storageinsights.ListReportDetailsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        storageinsights.ListReportDetailsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for list_report_details
 
         Override in a subclass to manipulate the request or metadata
@@ -251,8 +275,11 @@ class StorageInsightsRestInterceptor:
     def pre_update_report_config(
         self,
         request: storageinsights.UpdateReportConfigRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[storageinsights.UpdateReportConfigRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        storageinsights.UpdateReportConfigRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for update_report_config
 
         Override in a subclass to manipulate the request or metadata
@@ -274,8 +301,10 @@ class StorageInsightsRestInterceptor:
     def pre_get_location(
         self,
         request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -297,8 +326,10 @@ class StorageInsightsRestInterceptor:
     def pre_list_locations(
         self,
         request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -320,8 +351,10 @@ class StorageInsightsRestInterceptor:
     def pre_cancel_operation(
         self,
         request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -341,8 +374,10 @@ class StorageInsightsRestInterceptor:
     def pre_delete_operation(
         self,
         request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -362,8 +397,10 @@ class StorageInsightsRestInterceptor:
     def pre_get_operation(
         self,
         request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -385,8 +422,10 @@ class StorageInsightsRestInterceptor:
     def pre_list_operations(
         self,
         request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -528,7 +567,7 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> storageinsights.ReportConfig:
             r"""Call the create report config method over HTTP.
 
@@ -538,8 +577,10 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.storageinsights.ReportConfig:
@@ -555,6 +596,7 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
             http_options = (
                 _BaseStorageInsightsRestTransport._BaseCreateReportConfig._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_report_config(
                 request, metadata
             )
@@ -570,6 +612,33 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
             query_params = _BaseStorageInsightsRestTransport._BaseCreateReportConfig._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.storageinsights_v1.StorageInsightsClient.CreateReportConfig",
+                    extra={
+                        "serviceName": "google.cloud.storageinsights.v1.StorageInsights",
+                        "rpcName": "CreateReportConfig",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = StorageInsightsRestTransport._CreateReportConfig._get_response(
@@ -592,7 +661,29 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
             pb_resp = storageinsights.ReportConfig.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_report_config(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = storageinsights.ReportConfig.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.storageinsights_v1.StorageInsightsClient.create_report_config",
+                    extra={
+                        "serviceName": "google.cloud.storageinsights.v1.StorageInsights",
+                        "rpcName": "CreateReportConfig",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteReportConfig(
@@ -630,7 +721,7 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete report config method over HTTP.
 
@@ -640,13 +731,16 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseStorageInsightsRestTransport._BaseDeleteReportConfig._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_report_config(
                 request, metadata
             )
@@ -658,6 +752,33 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
             query_params = _BaseStorageInsightsRestTransport._BaseDeleteReportConfig._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.storageinsights_v1.StorageInsightsClient.DeleteReportConfig",
+                    extra={
+                        "serviceName": "google.cloud.storageinsights.v1.StorageInsights",
+                        "rpcName": "DeleteReportConfig",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = StorageInsightsRestTransport._DeleteReportConfig._get_response(
@@ -708,7 +829,7 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> storageinsights.ReportConfig:
             r"""Call the get report config method over HTTP.
 
@@ -718,8 +839,10 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.storageinsights.ReportConfig:
@@ -735,6 +858,7 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
             http_options = (
                 _BaseStorageInsightsRestTransport._BaseGetReportConfig._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_report_config(
                 request, metadata
             )
@@ -746,6 +870,33 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
             query_params = _BaseStorageInsightsRestTransport._BaseGetReportConfig._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.storageinsights_v1.StorageInsightsClient.GetReportConfig",
+                    extra={
+                        "serviceName": "google.cloud.storageinsights.v1.StorageInsights",
+                        "rpcName": "GetReportConfig",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = StorageInsightsRestTransport._GetReportConfig._get_response(
@@ -767,7 +918,29 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
             pb_resp = storageinsights.ReportConfig.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_report_config(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = storageinsights.ReportConfig.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.storageinsights_v1.StorageInsightsClient.get_report_config",
+                    extra={
+                        "serviceName": "google.cloud.storageinsights.v1.StorageInsights",
+                        "rpcName": "GetReportConfig",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetReportDetail(
@@ -804,7 +977,7 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> storageinsights.ReportDetail:
             r"""Call the get report detail method over HTTP.
 
@@ -814,8 +987,10 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.storageinsights.ReportDetail:
@@ -829,6 +1004,7 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
             http_options = (
                 _BaseStorageInsightsRestTransport._BaseGetReportDetail._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_report_detail(
                 request, metadata
             )
@@ -840,6 +1016,33 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
             query_params = _BaseStorageInsightsRestTransport._BaseGetReportDetail._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.storageinsights_v1.StorageInsightsClient.GetReportDetail",
+                    extra={
+                        "serviceName": "google.cloud.storageinsights.v1.StorageInsights",
+                        "rpcName": "GetReportDetail",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = StorageInsightsRestTransport._GetReportDetail._get_response(
@@ -861,7 +1064,29 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
             pb_resp = storageinsights.ReportDetail.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_report_detail(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = storageinsights.ReportDetail.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.storageinsights_v1.StorageInsightsClient.get_report_detail",
+                    extra={
+                        "serviceName": "google.cloud.storageinsights.v1.StorageInsights",
+                        "rpcName": "GetReportDetail",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListReportConfigs(
@@ -899,7 +1124,7 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> storageinsights.ListReportConfigsResponse:
             r"""Call the list report configs method over HTTP.
 
@@ -910,8 +1135,10 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.storageinsights.ListReportConfigsResponse:
@@ -923,6 +1150,7 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
             http_options = (
                 _BaseStorageInsightsRestTransport._BaseListReportConfigs._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_report_configs(
                 request, metadata
             )
@@ -934,6 +1162,33 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
             query_params = _BaseStorageInsightsRestTransport._BaseListReportConfigs._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.storageinsights_v1.StorageInsightsClient.ListReportConfigs",
+                    extra={
+                        "serviceName": "google.cloud.storageinsights.v1.StorageInsights",
+                        "rpcName": "ListReportConfigs",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = StorageInsightsRestTransport._ListReportConfigs._get_response(
@@ -955,7 +1210,31 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
             pb_resp = storageinsights.ListReportConfigsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_report_configs(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        storageinsights.ListReportConfigsResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.storageinsights_v1.StorageInsightsClient.list_report_configs",
+                    extra={
+                        "serviceName": "google.cloud.storageinsights.v1.StorageInsights",
+                        "rpcName": "ListReportConfigs",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListReportDetails(
@@ -993,7 +1272,7 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> storageinsights.ListReportDetailsResponse:
             r"""Call the list report details method over HTTP.
 
@@ -1004,8 +1283,10 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.storageinsights.ListReportDetailsResponse:
@@ -1017,6 +1298,7 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
             http_options = (
                 _BaseStorageInsightsRestTransport._BaseListReportDetails._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_report_details(
                 request, metadata
             )
@@ -1028,6 +1310,33 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
             query_params = _BaseStorageInsightsRestTransport._BaseListReportDetails._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.storageinsights_v1.StorageInsightsClient.ListReportDetails",
+                    extra={
+                        "serviceName": "google.cloud.storageinsights.v1.StorageInsights",
+                        "rpcName": "ListReportDetails",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = StorageInsightsRestTransport._ListReportDetails._get_response(
@@ -1049,7 +1358,31 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
             pb_resp = storageinsights.ListReportDetailsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_report_details(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        storageinsights.ListReportDetailsResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.storageinsights_v1.StorageInsightsClient.list_report_details",
+                    extra={
+                        "serviceName": "google.cloud.storageinsights.v1.StorageInsights",
+                        "rpcName": "ListReportDetails",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateReportConfig(
@@ -1088,7 +1421,7 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> storageinsights.ReportConfig:
             r"""Call the update report config method over HTTP.
 
@@ -1098,8 +1431,10 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.storageinsights.ReportConfig:
@@ -1115,6 +1450,7 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
             http_options = (
                 _BaseStorageInsightsRestTransport._BaseUpdateReportConfig._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_report_config(
                 request, metadata
             )
@@ -1130,6 +1466,33 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
             query_params = _BaseStorageInsightsRestTransport._BaseUpdateReportConfig._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.storageinsights_v1.StorageInsightsClient.UpdateReportConfig",
+                    extra={
+                        "serviceName": "google.cloud.storageinsights.v1.StorageInsights",
+                        "rpcName": "UpdateReportConfig",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = StorageInsightsRestTransport._UpdateReportConfig._get_response(
@@ -1152,7 +1515,29 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
             pb_resp = storageinsights.ReportConfig.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_report_config(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = storageinsights.ReportConfig.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.storageinsights_v1.StorageInsightsClient.update_report_config",
+                    extra={
+                        "serviceName": "google.cloud.storageinsights.v1.StorageInsights",
+                        "rpcName": "UpdateReportConfig",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -1263,7 +1648,7 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.Location:
             r"""Call the get location method over HTTP.
 
@@ -1273,8 +1658,10 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.Location: Response from GetLocation method.
@@ -1283,6 +1670,7 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
             http_options = (
                 _BaseStorageInsightsRestTransport._BaseGetLocation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_location(request, metadata)
             transcoded_request = _BaseStorageInsightsRestTransport._BaseGetLocation._get_transcoded_request(
                 http_options, request
@@ -1292,6 +1680,33 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
             query_params = _BaseStorageInsightsRestTransport._BaseGetLocation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.storageinsights_v1.StorageInsightsClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.storageinsights.v1.StorageInsights",
+                        "rpcName": "GetLocation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = StorageInsightsRestTransport._GetLocation._get_response(
@@ -1312,6 +1727,27 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.storageinsights_v1.StorageInsightsAsyncClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.storageinsights.v1.StorageInsights",
+                        "rpcName": "GetLocation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -1352,7 +1788,7 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.ListLocationsResponse:
             r"""Call the list locations method over HTTP.
 
@@ -1362,8 +1798,10 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
@@ -1372,6 +1810,7 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
             http_options = (
                 _BaseStorageInsightsRestTransport._BaseListLocations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
             transcoded_request = _BaseStorageInsightsRestTransport._BaseListLocations._get_transcoded_request(
                 http_options, request
@@ -1381,6 +1820,33 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
             query_params = _BaseStorageInsightsRestTransport._BaseListLocations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.storageinsights_v1.StorageInsightsClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.storageinsights.v1.StorageInsights",
+                        "rpcName": "ListLocations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = StorageInsightsRestTransport._ListLocations._get_response(
@@ -1401,6 +1867,27 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.storageinsights_v1.StorageInsightsAsyncClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.storageinsights.v1.StorageInsights",
+                        "rpcName": "ListLocations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -1442,7 +1929,7 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the cancel operation method over HTTP.
 
@@ -1452,13 +1939,16 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseStorageInsightsRestTransport._BaseCancelOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
@@ -1474,6 +1964,33 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
             query_params = _BaseStorageInsightsRestTransport._BaseCancelOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.storageinsights_v1.StorageInsightsClient.CancelOperation",
+                    extra={
+                        "serviceName": "google.cloud.storageinsights.v1.StorageInsights",
+                        "rpcName": "CancelOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = StorageInsightsRestTransport._CancelOperation._get_response(
@@ -1531,7 +2048,7 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the delete operation method over HTTP.
 
@@ -1541,13 +2058,16 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseStorageInsightsRestTransport._BaseDeleteOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
             )
@@ -1559,6 +2079,33 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
             query_params = _BaseStorageInsightsRestTransport._BaseDeleteOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.storageinsights_v1.StorageInsightsClient.DeleteOperation",
+                    extra={
+                        "serviceName": "google.cloud.storageinsights.v1.StorageInsights",
+                        "rpcName": "DeleteOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = StorageInsightsRestTransport._DeleteOperation._get_response(
@@ -1615,7 +2162,7 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the get operation method over HTTP.
 
@@ -1625,8 +2172,10 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.
@@ -1635,6 +2184,7 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
             http_options = (
                 _BaseStorageInsightsRestTransport._BaseGetOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseStorageInsightsRestTransport._BaseGetOperation._get_transcoded_request(
                 http_options, request
@@ -1644,6 +2194,33 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
             query_params = _BaseStorageInsightsRestTransport._BaseGetOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.storageinsights_v1.StorageInsightsClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.storageinsights.v1.StorageInsights",
+                        "rpcName": "GetOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = StorageInsightsRestTransport._GetOperation._get_response(
@@ -1664,6 +2241,27 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.storageinsights_v1.StorageInsightsAsyncClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.storageinsights.v1.StorageInsights",
+                        "rpcName": "GetOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -1704,7 +2302,7 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.ListOperationsResponse:
             r"""Call the list operations method over HTTP.
 
@@ -1714,8 +2312,10 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
@@ -1724,6 +2324,7 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
             http_options = (
                 _BaseStorageInsightsRestTransport._BaseListOperations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseStorageInsightsRestTransport._BaseListOperations._get_transcoded_request(
                 http_options, request
@@ -1733,6 +2334,33 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
             query_params = _BaseStorageInsightsRestTransport._BaseListOperations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.storageinsights_v1.StorageInsightsClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.storageinsights.v1.StorageInsights",
+                        "rpcName": "ListOperations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = StorageInsightsRestTransport._ListOperations._get_response(
@@ -1753,6 +2381,27 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.storageinsights_v1.StorageInsightsAsyncClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.storageinsights.v1.StorageInsights",
+                        "rpcName": "ListOperations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property

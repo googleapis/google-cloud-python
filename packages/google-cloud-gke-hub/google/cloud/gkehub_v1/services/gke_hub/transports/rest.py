@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -38,6 +38,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -156,8 +164,10 @@ class GkeHubRestInterceptor:
     """
 
     def pre_create_feature(
-        self, request: service.CreateFeatureRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.CreateFeatureRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.CreateFeatureRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.CreateFeatureRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_feature
 
         Override in a subclass to manipulate the request or metadata
@@ -179,8 +189,10 @@ class GkeHubRestInterceptor:
     def pre_create_membership(
         self,
         request: service.CreateMembershipRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[service.CreateMembershipRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.CreateMembershipRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_membership
 
         Override in a subclass to manipulate the request or metadata
@@ -200,8 +212,10 @@ class GkeHubRestInterceptor:
         return response
 
     def pre_delete_feature(
-        self, request: service.DeleteFeatureRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.DeleteFeatureRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.DeleteFeatureRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.DeleteFeatureRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_feature
 
         Override in a subclass to manipulate the request or metadata
@@ -223,8 +237,10 @@ class GkeHubRestInterceptor:
     def pre_delete_membership(
         self,
         request: service.DeleteMembershipRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[service.DeleteMembershipRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.DeleteMembershipRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_membership
 
         Override in a subclass to manipulate the request or metadata
@@ -246,8 +262,10 @@ class GkeHubRestInterceptor:
     def pre_generate_connect_manifest(
         self,
         request: service.GenerateConnectManifestRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[service.GenerateConnectManifestRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.GenerateConnectManifestRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for generate_connect_manifest
 
         Override in a subclass to manipulate the request or metadata
@@ -267,8 +285,10 @@ class GkeHubRestInterceptor:
         return response
 
     def pre_get_feature(
-        self, request: service.GetFeatureRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.GetFeatureRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.GetFeatureRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.GetFeatureRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_feature
 
         Override in a subclass to manipulate the request or metadata
@@ -286,8 +306,10 @@ class GkeHubRestInterceptor:
         return response
 
     def pre_get_membership(
-        self, request: service.GetMembershipRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.GetMembershipRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.GetMembershipRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.GetMembershipRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_membership
 
         Override in a subclass to manipulate the request or metadata
@@ -307,8 +329,10 @@ class GkeHubRestInterceptor:
         return response
 
     def pre_list_features(
-        self, request: service.ListFeaturesRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.ListFeaturesRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.ListFeaturesRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.ListFeaturesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_features
 
         Override in a subclass to manipulate the request or metadata
@@ -330,8 +354,8 @@ class GkeHubRestInterceptor:
     def pre_list_memberships(
         self,
         request: service.ListMembershipsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[service.ListMembershipsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.ListMembershipsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_memberships
 
         Override in a subclass to manipulate the request or metadata
@@ -351,8 +375,10 @@ class GkeHubRestInterceptor:
         return response
 
     def pre_update_feature(
-        self, request: service.UpdateFeatureRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.UpdateFeatureRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.UpdateFeatureRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.UpdateFeatureRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_feature
 
         Override in a subclass to manipulate the request or metadata
@@ -374,8 +400,10 @@ class GkeHubRestInterceptor:
     def pre_update_membership(
         self,
         request: service.UpdateMembershipRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[service.UpdateMembershipRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.UpdateMembershipRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_membership
 
         Override in a subclass to manipulate the request or metadata
@@ -584,7 +612,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create feature method over HTTP.
 
@@ -594,8 +622,10 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -608,6 +638,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
             http_options = (
                 _BaseGkeHubRestTransport._BaseCreateFeature._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_feature(request, metadata)
             transcoded_request = (
                 _BaseGkeHubRestTransport._BaseCreateFeature._get_transcoded_request(
@@ -625,6 +656,33 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gkehub_v1.GkeHubClient.CreateFeature",
+                    extra={
+                        "serviceName": "google.cloud.gkehub.v1.GkeHub",
+                        "rpcName": "CreateFeature",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = GkeHubRestTransport._CreateFeature._get_response(
@@ -645,7 +703,29 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_feature(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gkehub_v1.GkeHubClient.create_feature",
+                    extra={
+                        "serviceName": "google.cloud.gkehub.v1.GkeHub",
+                        "rpcName": "CreateFeature",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateMembership(
@@ -683,7 +763,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create membership method over HTTP.
 
@@ -694,8 +774,10 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -708,6 +790,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
             http_options = (
                 _BaseGkeHubRestTransport._BaseCreateMembership._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_membership(
                 request, metadata
             )
@@ -730,6 +813,33 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
                 )
             )
 
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gkehub_v1.GkeHubClient.CreateMembership",
+                    extra={
+                        "serviceName": "google.cloud.gkehub.v1.GkeHub",
+                        "rpcName": "CreateMembership",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
             # Send the request
             response = GkeHubRestTransport._CreateMembership._get_response(
                 self._host,
@@ -749,7 +859,29 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_membership(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gkehub_v1.GkeHubClient.create_membership",
+                    extra={
+                        "serviceName": "google.cloud.gkehub.v1.GkeHub",
+                        "rpcName": "CreateMembership",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteFeature(_BaseGkeHubRestTransport._BaseDeleteFeature, GkeHubRestStub):
@@ -784,7 +916,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete feature method over HTTP.
 
@@ -794,8 +926,10 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -808,6 +942,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
             http_options = (
                 _BaseGkeHubRestTransport._BaseDeleteFeature._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_feature(request, metadata)
             transcoded_request = (
                 _BaseGkeHubRestTransport._BaseDeleteFeature._get_transcoded_request(
@@ -821,6 +956,33 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gkehub_v1.GkeHubClient.DeleteFeature",
+                    extra={
+                        "serviceName": "google.cloud.gkehub.v1.GkeHub",
+                        "rpcName": "DeleteFeature",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = GkeHubRestTransport._DeleteFeature._get_response(
@@ -840,7 +1002,29 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_feature(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gkehub_v1.GkeHubClient.delete_feature",
+                    extra={
+                        "serviceName": "google.cloud.gkehub.v1.GkeHub",
+                        "rpcName": "DeleteFeature",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteMembership(
@@ -877,7 +1061,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete membership method over HTTP.
 
@@ -887,8 +1071,10 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -901,6 +1087,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
             http_options = (
                 _BaseGkeHubRestTransport._BaseDeleteMembership._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_membership(
                 request, metadata
             )
@@ -916,6 +1103,33 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gkehub_v1.GkeHubClient.DeleteMembership",
+                    extra={
+                        "serviceName": "google.cloud.gkehub.v1.GkeHub",
+                        "rpcName": "DeleteMembership",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = GkeHubRestTransport._DeleteMembership._get_response(
@@ -935,7 +1149,29 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_membership(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gkehub_v1.GkeHubClient.delete_membership",
+                    extra={
+                        "serviceName": "google.cloud.gkehub.v1.GkeHub",
+                        "rpcName": "DeleteMembership",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GenerateConnectManifest(
@@ -972,7 +1208,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> service.GenerateConnectManifestResponse:
             r"""Call the generate connect manifest method over HTTP.
 
@@ -983,8 +1219,10 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.service.GenerateConnectManifestResponse:
@@ -997,6 +1235,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
             http_options = (
                 _BaseGkeHubRestTransport._BaseGenerateConnectManifest._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_generate_connect_manifest(
                 request, metadata
             )
@@ -1008,6 +1247,33 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
             query_params = _BaseGkeHubRestTransport._BaseGenerateConnectManifest._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gkehub_v1.GkeHubClient.GenerateConnectManifest",
+                    extra={
+                        "serviceName": "google.cloud.gkehub.v1.GkeHub",
+                        "rpcName": "GenerateConnectManifest",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = GkeHubRestTransport._GenerateConnectManifest._get_response(
@@ -1029,7 +1295,31 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
             pb_resp = service.GenerateConnectManifestResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_generate_connect_manifest(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = service.GenerateConnectManifestResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gkehub_v1.GkeHubClient.generate_connect_manifest",
+                    extra={
+                        "serviceName": "google.cloud.gkehub.v1.GkeHub",
+                        "rpcName": "GenerateConnectManifest",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetFeature(_BaseGkeHubRestTransport._BaseGetFeature, GkeHubRestStub):
@@ -1064,7 +1354,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> feature.Feature:
             r"""Call the get feature method over HTTP.
 
@@ -1074,8 +1364,10 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.feature.Feature:
@@ -1085,6 +1377,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
             """
 
             http_options = _BaseGkeHubRestTransport._BaseGetFeature._get_http_options()
+
             request, metadata = self._interceptor.pre_get_feature(request, metadata)
             transcoded_request = (
                 _BaseGkeHubRestTransport._BaseGetFeature._get_transcoded_request(
@@ -1098,6 +1391,33 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gkehub_v1.GkeHubClient.GetFeature",
+                    extra={
+                        "serviceName": "google.cloud.gkehub.v1.GkeHub",
+                        "rpcName": "GetFeature",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = GkeHubRestTransport._GetFeature._get_response(
@@ -1119,7 +1439,29 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
             pb_resp = feature.Feature.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_feature(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = feature.Feature.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gkehub_v1.GkeHubClient.get_feature",
+                    extra={
+                        "serviceName": "google.cloud.gkehub.v1.GkeHub",
+                        "rpcName": "GetFeature",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetMembership(_BaseGkeHubRestTransport._BaseGetMembership, GkeHubRestStub):
@@ -1154,7 +1496,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> membership.Membership:
             r"""Call the get membership method over HTTP.
 
@@ -1164,8 +1506,10 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.membership.Membership:
@@ -1177,6 +1521,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
             http_options = (
                 _BaseGkeHubRestTransport._BaseGetMembership._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_membership(request, metadata)
             transcoded_request = (
                 _BaseGkeHubRestTransport._BaseGetMembership._get_transcoded_request(
@@ -1190,6 +1535,33 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gkehub_v1.GkeHubClient.GetMembership",
+                    extra={
+                        "serviceName": "google.cloud.gkehub.v1.GkeHub",
+                        "rpcName": "GetMembership",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = GkeHubRestTransport._GetMembership._get_response(
@@ -1211,7 +1583,29 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
             pb_resp = membership.Membership.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_membership(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = membership.Membership.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gkehub_v1.GkeHubClient.get_membership",
+                    extra={
+                        "serviceName": "google.cloud.gkehub.v1.GkeHub",
+                        "rpcName": "GetMembership",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListFeatures(_BaseGkeHubRestTransport._BaseListFeatures, GkeHubRestStub):
@@ -1246,7 +1640,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> service.ListFeaturesResponse:
             r"""Call the list features method over HTTP.
 
@@ -1256,8 +1650,10 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.service.ListFeaturesResponse:
@@ -1267,6 +1663,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
             http_options = (
                 _BaseGkeHubRestTransport._BaseListFeatures._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_features(request, metadata)
             transcoded_request = (
                 _BaseGkeHubRestTransport._BaseListFeatures._get_transcoded_request(
@@ -1280,6 +1677,33 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gkehub_v1.GkeHubClient.ListFeatures",
+                    extra={
+                        "serviceName": "google.cloud.gkehub.v1.GkeHub",
+                        "rpcName": "ListFeatures",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = GkeHubRestTransport._ListFeatures._get_response(
@@ -1301,7 +1725,29 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
             pb_resp = service.ListFeaturesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_features(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = service.ListFeaturesResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gkehub_v1.GkeHubClient.list_features",
+                    extra={
+                        "serviceName": "google.cloud.gkehub.v1.GkeHub",
+                        "rpcName": "ListFeatures",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListMemberships(
@@ -1338,7 +1784,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> service.ListMembershipsResponse:
             r"""Call the list memberships method over HTTP.
 
@@ -1348,8 +1794,10 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.service.ListMembershipsResponse:
@@ -1361,6 +1809,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
             http_options = (
                 _BaseGkeHubRestTransport._BaseListMemberships._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_memberships(
                 request, metadata
             )
@@ -1376,6 +1825,33 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gkehub_v1.GkeHubClient.ListMemberships",
+                    extra={
+                        "serviceName": "google.cloud.gkehub.v1.GkeHub",
+                        "rpcName": "ListMemberships",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = GkeHubRestTransport._ListMemberships._get_response(
@@ -1397,7 +1873,29 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
             pb_resp = service.ListMembershipsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_memberships(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = service.ListMembershipsResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gkehub_v1.GkeHubClient.list_memberships",
+                    extra={
+                        "serviceName": "google.cloud.gkehub.v1.GkeHub",
+                        "rpcName": "ListMemberships",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateFeature(_BaseGkeHubRestTransport._BaseUpdateFeature, GkeHubRestStub):
@@ -1433,7 +1931,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update feature method over HTTP.
 
@@ -1443,8 +1941,10 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1457,6 +1957,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
             http_options = (
                 _BaseGkeHubRestTransport._BaseUpdateFeature._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_feature(request, metadata)
             transcoded_request = (
                 _BaseGkeHubRestTransport._BaseUpdateFeature._get_transcoded_request(
@@ -1474,6 +1975,33 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gkehub_v1.GkeHubClient.UpdateFeature",
+                    extra={
+                        "serviceName": "google.cloud.gkehub.v1.GkeHub",
+                        "rpcName": "UpdateFeature",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = GkeHubRestTransport._UpdateFeature._get_response(
@@ -1494,7 +2022,29 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_feature(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gkehub_v1.GkeHubClient.update_feature",
+                    extra={
+                        "serviceName": "google.cloud.gkehub.v1.GkeHub",
+                        "rpcName": "UpdateFeature",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateMembership(
@@ -1532,7 +2082,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update membership method over HTTP.
 
@@ -1542,8 +2092,10 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1556,6 +2108,7 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
             http_options = (
                 _BaseGkeHubRestTransport._BaseUpdateMembership._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_membership(
                 request, metadata
             )
@@ -1578,6 +2131,33 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
                 )
             )
 
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.gkehub_v1.GkeHubClient.UpdateMembership",
+                    extra={
+                        "serviceName": "google.cloud.gkehub.v1.GkeHub",
+                        "rpcName": "UpdateMembership",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
             # Send the request
             response = GkeHubRestTransport._UpdateMembership._get_response(
                 self._host,
@@ -1597,7 +2177,29 @@ class GkeHubRestTransport(_BaseGkeHubRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_membership(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.gkehub_v1.GkeHubClient.update_membership",
+                    extra={
+                        "serviceName": "google.cloud.gkehub.v1.GkeHub",
+                        "rpcName": "UpdateMembership",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property

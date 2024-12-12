@@ -8,7 +8,7 @@
     ],
     "language": "PYTHON",
     "name": "google-cloud-media-translation",
-    "version": "0.11.13"
+    "version": "0.1.0"
   },
   "snippets": [
     {
@@ -43,7 +43,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "Iterable[google.cloud.mediatranslation_v1beta1.types.StreamingTranslateSpeechResponse]",
@@ -119,7 +119,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "Iterable[google.cloud.mediatranslation_v1beta1.types.StreamingTranslateSpeechResponse]",

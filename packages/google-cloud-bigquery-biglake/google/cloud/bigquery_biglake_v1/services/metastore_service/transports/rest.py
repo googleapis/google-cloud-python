@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -37,6 +37,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -189,8 +197,8 @@ class MetastoreServiceRestInterceptor:
     def pre_create_catalog(
         self,
         request: metastore.CreateCatalogRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[metastore.CreateCatalogRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[metastore.CreateCatalogRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_catalog
 
         Override in a subclass to manipulate the request or metadata
@@ -210,8 +218,10 @@ class MetastoreServiceRestInterceptor:
     def pre_create_database(
         self,
         request: metastore.CreateDatabaseRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[metastore.CreateDatabaseRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        metastore.CreateDatabaseRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_database
 
         Override in a subclass to manipulate the request or metadata
@@ -229,8 +239,10 @@ class MetastoreServiceRestInterceptor:
         return response
 
     def pre_create_table(
-        self, request: metastore.CreateTableRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[metastore.CreateTableRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: metastore.CreateTableRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[metastore.CreateTableRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_table
 
         Override in a subclass to manipulate the request or metadata
@@ -250,8 +262,8 @@ class MetastoreServiceRestInterceptor:
     def pre_delete_catalog(
         self,
         request: metastore.DeleteCatalogRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[metastore.DeleteCatalogRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[metastore.DeleteCatalogRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_catalog
 
         Override in a subclass to manipulate the request or metadata
@@ -271,8 +283,10 @@ class MetastoreServiceRestInterceptor:
     def pre_delete_database(
         self,
         request: metastore.DeleteDatabaseRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[metastore.DeleteDatabaseRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        metastore.DeleteDatabaseRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_database
 
         Override in a subclass to manipulate the request or metadata
@@ -290,8 +304,10 @@ class MetastoreServiceRestInterceptor:
         return response
 
     def pre_delete_table(
-        self, request: metastore.DeleteTableRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[metastore.DeleteTableRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: metastore.DeleteTableRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[metastore.DeleteTableRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_table
 
         Override in a subclass to manipulate the request or metadata
@@ -309,8 +325,10 @@ class MetastoreServiceRestInterceptor:
         return response
 
     def pre_get_catalog(
-        self, request: metastore.GetCatalogRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[metastore.GetCatalogRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: metastore.GetCatalogRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[metastore.GetCatalogRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_catalog
 
         Override in a subclass to manipulate the request or metadata
@@ -328,8 +346,10 @@ class MetastoreServiceRestInterceptor:
         return response
 
     def pre_get_database(
-        self, request: metastore.GetDatabaseRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[metastore.GetDatabaseRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: metastore.GetDatabaseRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[metastore.GetDatabaseRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_database
 
         Override in a subclass to manipulate the request or metadata
@@ -347,8 +367,10 @@ class MetastoreServiceRestInterceptor:
         return response
 
     def pre_get_table(
-        self, request: metastore.GetTableRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[metastore.GetTableRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: metastore.GetTableRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[metastore.GetTableRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_table
 
         Override in a subclass to manipulate the request or metadata
@@ -368,8 +390,8 @@ class MetastoreServiceRestInterceptor:
     def pre_list_catalogs(
         self,
         request: metastore.ListCatalogsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[metastore.ListCatalogsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[metastore.ListCatalogsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_catalogs
 
         Override in a subclass to manipulate the request or metadata
@@ -391,8 +413,8 @@ class MetastoreServiceRestInterceptor:
     def pre_list_databases(
         self,
         request: metastore.ListDatabasesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[metastore.ListDatabasesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[metastore.ListDatabasesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_databases
 
         Override in a subclass to manipulate the request or metadata
@@ -412,8 +434,10 @@ class MetastoreServiceRestInterceptor:
         return response
 
     def pre_list_tables(
-        self, request: metastore.ListTablesRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[metastore.ListTablesRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: metastore.ListTablesRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[metastore.ListTablesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_tables
 
         Override in a subclass to manipulate the request or metadata
@@ -433,8 +457,10 @@ class MetastoreServiceRestInterceptor:
         return response
 
     def pre_rename_table(
-        self, request: metastore.RenameTableRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[metastore.RenameTableRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: metastore.RenameTableRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[metastore.RenameTableRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for rename_table
 
         Override in a subclass to manipulate the request or metadata
@@ -454,8 +480,10 @@ class MetastoreServiceRestInterceptor:
     def pre_update_database(
         self,
         request: metastore.UpdateDatabaseRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[metastore.UpdateDatabaseRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        metastore.UpdateDatabaseRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_database
 
         Override in a subclass to manipulate the request or metadata
@@ -473,8 +501,10 @@ class MetastoreServiceRestInterceptor:
         return response
 
     def pre_update_table(
-        self, request: metastore.UpdateTableRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[metastore.UpdateTableRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: metastore.UpdateTableRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[metastore.UpdateTableRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_table
 
         Override in a subclass to manipulate the request or metadata
@@ -623,7 +653,7 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> metastore.Catalog:
             r"""Call the create catalog method over HTTP.
 
@@ -634,8 +664,10 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.metastore.Catalog:
@@ -647,6 +679,7 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             http_options = (
                 _BaseMetastoreServiceRestTransport._BaseCreateCatalog._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_catalog(request, metadata)
             transcoded_request = _BaseMetastoreServiceRestTransport._BaseCreateCatalog._get_transcoded_request(
                 http_options, request
@@ -660,6 +693,33 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             query_params = _BaseMetastoreServiceRestTransport._BaseCreateCatalog._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.bigquery.biglake_v1.MetastoreServiceClient.CreateCatalog",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.biglake.v1.MetastoreService",
+                        "rpcName": "CreateCatalog",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = MetastoreServiceRestTransport._CreateCatalog._get_response(
@@ -682,7 +742,29 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             pb_resp = metastore.Catalog.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_catalog(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = metastore.Catalog.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.bigquery.biglake_v1.MetastoreServiceClient.create_catalog",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.biglake.v1.MetastoreService",
+                        "rpcName": "CreateCatalog",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateDatabase(
@@ -720,7 +802,7 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> metastore.Database:
             r"""Call the create database method over HTTP.
 
@@ -731,8 +813,10 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.metastore.Database:
@@ -742,6 +826,7 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             http_options = (
                 _BaseMetastoreServiceRestTransport._BaseCreateDatabase._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_database(request, metadata)
             transcoded_request = _BaseMetastoreServiceRestTransport._BaseCreateDatabase._get_transcoded_request(
                 http_options, request
@@ -755,6 +840,33 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             query_params = _BaseMetastoreServiceRestTransport._BaseCreateDatabase._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.bigquery.biglake_v1.MetastoreServiceClient.CreateDatabase",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.biglake.v1.MetastoreService",
+                        "rpcName": "CreateDatabase",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = MetastoreServiceRestTransport._CreateDatabase._get_response(
@@ -777,7 +889,29 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             pb_resp = metastore.Database.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_database(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = metastore.Database.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.bigquery.biglake_v1.MetastoreServiceClient.create_database",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.biglake.v1.MetastoreService",
+                        "rpcName": "CreateDatabase",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateTable(
@@ -815,7 +949,7 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> metastore.Table:
             r"""Call the create table method over HTTP.
 
@@ -826,8 +960,10 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.metastore.Table:
@@ -837,6 +973,7 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             http_options = (
                 _BaseMetastoreServiceRestTransport._BaseCreateTable._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_table(request, metadata)
             transcoded_request = _BaseMetastoreServiceRestTransport._BaseCreateTable._get_transcoded_request(
                 http_options, request
@@ -850,6 +987,33 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             query_params = _BaseMetastoreServiceRestTransport._BaseCreateTable._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.bigquery.biglake_v1.MetastoreServiceClient.CreateTable",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.biglake.v1.MetastoreService",
+                        "rpcName": "CreateTable",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = MetastoreServiceRestTransport._CreateTable._get_response(
@@ -872,7 +1036,29 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             pb_resp = metastore.Table.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_table(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = metastore.Table.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.bigquery.biglake_v1.MetastoreServiceClient.create_table",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.biglake.v1.MetastoreService",
+                        "rpcName": "CreateTable",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteCatalog(
@@ -909,7 +1095,7 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> metastore.Catalog:
             r"""Call the delete catalog method over HTTP.
 
@@ -920,8 +1106,10 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.metastore.Catalog:
@@ -933,6 +1121,7 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             http_options = (
                 _BaseMetastoreServiceRestTransport._BaseDeleteCatalog._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_catalog(request, metadata)
             transcoded_request = _BaseMetastoreServiceRestTransport._BaseDeleteCatalog._get_transcoded_request(
                 http_options, request
@@ -942,6 +1131,33 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             query_params = _BaseMetastoreServiceRestTransport._BaseDeleteCatalog._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.bigquery.biglake_v1.MetastoreServiceClient.DeleteCatalog",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.biglake.v1.MetastoreService",
+                        "rpcName": "DeleteCatalog",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = MetastoreServiceRestTransport._DeleteCatalog._get_response(
@@ -963,7 +1179,29 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             pb_resp = metastore.Catalog.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_catalog(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = metastore.Catalog.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.bigquery.biglake_v1.MetastoreServiceClient.delete_catalog",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.biglake.v1.MetastoreService",
+                        "rpcName": "DeleteCatalog",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteDatabase(
@@ -1000,7 +1238,7 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> metastore.Database:
             r"""Call the delete database method over HTTP.
 
@@ -1011,8 +1249,10 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.metastore.Database:
@@ -1022,6 +1262,7 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             http_options = (
                 _BaseMetastoreServiceRestTransport._BaseDeleteDatabase._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_database(request, metadata)
             transcoded_request = _BaseMetastoreServiceRestTransport._BaseDeleteDatabase._get_transcoded_request(
                 http_options, request
@@ -1031,6 +1272,33 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             query_params = _BaseMetastoreServiceRestTransport._BaseDeleteDatabase._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.bigquery.biglake_v1.MetastoreServiceClient.DeleteDatabase",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.biglake.v1.MetastoreService",
+                        "rpcName": "DeleteDatabase",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = MetastoreServiceRestTransport._DeleteDatabase._get_response(
@@ -1052,7 +1320,29 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             pb_resp = metastore.Database.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_database(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = metastore.Database.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.bigquery.biglake_v1.MetastoreServiceClient.delete_database",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.biglake.v1.MetastoreService",
+                        "rpcName": "DeleteDatabase",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteTable(
@@ -1089,7 +1379,7 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> metastore.Table:
             r"""Call the delete table method over HTTP.
 
@@ -1100,8 +1390,10 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.metastore.Table:
@@ -1111,6 +1403,7 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             http_options = (
                 _BaseMetastoreServiceRestTransport._BaseDeleteTable._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_table(request, metadata)
             transcoded_request = _BaseMetastoreServiceRestTransport._BaseDeleteTable._get_transcoded_request(
                 http_options, request
@@ -1120,6 +1413,33 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             query_params = _BaseMetastoreServiceRestTransport._BaseDeleteTable._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.bigquery.biglake_v1.MetastoreServiceClient.DeleteTable",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.biglake.v1.MetastoreService",
+                        "rpcName": "DeleteTable",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = MetastoreServiceRestTransport._DeleteTable._get_response(
@@ -1141,7 +1461,29 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             pb_resp = metastore.Table.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_table(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = metastore.Table.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.bigquery.biglake_v1.MetastoreServiceClient.delete_table",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.biglake.v1.MetastoreService",
+                        "rpcName": "DeleteTable",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetCatalog(
@@ -1178,7 +1520,7 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> metastore.Catalog:
             r"""Call the get catalog method over HTTP.
 
@@ -1189,8 +1531,10 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.metastore.Catalog:
@@ -1202,6 +1546,7 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             http_options = (
                 _BaseMetastoreServiceRestTransport._BaseGetCatalog._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_catalog(request, metadata)
             transcoded_request = _BaseMetastoreServiceRestTransport._BaseGetCatalog._get_transcoded_request(
                 http_options, request
@@ -1211,6 +1556,33 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             query_params = _BaseMetastoreServiceRestTransport._BaseGetCatalog._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.bigquery.biglake_v1.MetastoreServiceClient.GetCatalog",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.biglake.v1.MetastoreService",
+                        "rpcName": "GetCatalog",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = MetastoreServiceRestTransport._GetCatalog._get_response(
@@ -1232,7 +1604,29 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             pb_resp = metastore.Catalog.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_catalog(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = metastore.Catalog.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.bigquery.biglake_v1.MetastoreServiceClient.get_catalog",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.biglake.v1.MetastoreService",
+                        "rpcName": "GetCatalog",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetDatabase(
@@ -1269,7 +1663,7 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> metastore.Database:
             r"""Call the get database method over HTTP.
 
@@ -1280,8 +1674,10 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.metastore.Database:
@@ -1291,6 +1687,7 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             http_options = (
                 _BaseMetastoreServiceRestTransport._BaseGetDatabase._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_database(request, metadata)
             transcoded_request = _BaseMetastoreServiceRestTransport._BaseGetDatabase._get_transcoded_request(
                 http_options, request
@@ -1300,6 +1697,33 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             query_params = _BaseMetastoreServiceRestTransport._BaseGetDatabase._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.bigquery.biglake_v1.MetastoreServiceClient.GetDatabase",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.biglake.v1.MetastoreService",
+                        "rpcName": "GetDatabase",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = MetastoreServiceRestTransport._GetDatabase._get_response(
@@ -1321,7 +1745,29 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             pb_resp = metastore.Database.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_database(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = metastore.Database.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.bigquery.biglake_v1.MetastoreServiceClient.get_database",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.biglake.v1.MetastoreService",
+                        "rpcName": "GetDatabase",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetTable(
@@ -1358,7 +1804,7 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> metastore.Table:
             r"""Call the get table method over HTTP.
 
@@ -1369,8 +1815,10 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.metastore.Table:
@@ -1380,6 +1828,7 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             http_options = (
                 _BaseMetastoreServiceRestTransport._BaseGetTable._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_table(request, metadata)
             transcoded_request = _BaseMetastoreServiceRestTransport._BaseGetTable._get_transcoded_request(
                 http_options, request
@@ -1391,6 +1840,33 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.bigquery.biglake_v1.MetastoreServiceClient.GetTable",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.biglake.v1.MetastoreService",
+                        "rpcName": "GetTable",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = MetastoreServiceRestTransport._GetTable._get_response(
@@ -1412,7 +1888,29 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             pb_resp = metastore.Table.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_table(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = metastore.Table.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.bigquery.biglake_v1.MetastoreServiceClient.get_table",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.biglake.v1.MetastoreService",
+                        "rpcName": "GetTable",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListCatalogs(
@@ -1449,7 +1947,7 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> metastore.ListCatalogsResponse:
             r"""Call the list catalogs method over HTTP.
 
@@ -1460,8 +1958,10 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.metastore.ListCatalogsResponse:
@@ -1473,6 +1973,7 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             http_options = (
                 _BaseMetastoreServiceRestTransport._BaseListCatalogs._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_catalogs(request, metadata)
             transcoded_request = _BaseMetastoreServiceRestTransport._BaseListCatalogs._get_transcoded_request(
                 http_options, request
@@ -1482,6 +1983,33 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             query_params = _BaseMetastoreServiceRestTransport._BaseListCatalogs._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.bigquery.biglake_v1.MetastoreServiceClient.ListCatalogs",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.biglake.v1.MetastoreService",
+                        "rpcName": "ListCatalogs",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = MetastoreServiceRestTransport._ListCatalogs._get_response(
@@ -1503,7 +2031,29 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             pb_resp = metastore.ListCatalogsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_catalogs(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = metastore.ListCatalogsResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.bigquery.biglake_v1.MetastoreServiceClient.list_catalogs",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.biglake.v1.MetastoreService",
+                        "rpcName": "ListCatalogs",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListDatabases(
@@ -1540,7 +2090,7 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> metastore.ListDatabasesResponse:
             r"""Call the list databases method over HTTP.
 
@@ -1551,8 +2101,10 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.metastore.ListDatabasesResponse:
@@ -1564,6 +2116,7 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             http_options = (
                 _BaseMetastoreServiceRestTransport._BaseListDatabases._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_databases(request, metadata)
             transcoded_request = _BaseMetastoreServiceRestTransport._BaseListDatabases._get_transcoded_request(
                 http_options, request
@@ -1573,6 +2126,33 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             query_params = _BaseMetastoreServiceRestTransport._BaseListDatabases._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.bigquery.biglake_v1.MetastoreServiceClient.ListDatabases",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.biglake.v1.MetastoreService",
+                        "rpcName": "ListDatabases",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = MetastoreServiceRestTransport._ListDatabases._get_response(
@@ -1594,7 +2174,29 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             pb_resp = metastore.ListDatabasesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_databases(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = metastore.ListDatabasesResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.bigquery.biglake_v1.MetastoreServiceClient.list_databases",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.biglake.v1.MetastoreService",
+                        "rpcName": "ListDatabases",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListTables(
@@ -1631,7 +2233,7 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> metastore.ListTablesResponse:
             r"""Call the list tables method over HTTP.
 
@@ -1642,8 +2244,10 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.metastore.ListTablesResponse:
@@ -1655,6 +2259,7 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             http_options = (
                 _BaseMetastoreServiceRestTransport._BaseListTables._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_tables(request, metadata)
             transcoded_request = _BaseMetastoreServiceRestTransport._BaseListTables._get_transcoded_request(
                 http_options, request
@@ -1664,6 +2269,33 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             query_params = _BaseMetastoreServiceRestTransport._BaseListTables._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.bigquery.biglake_v1.MetastoreServiceClient.ListTables",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.biglake.v1.MetastoreService",
+                        "rpcName": "ListTables",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = MetastoreServiceRestTransport._ListTables._get_response(
@@ -1685,7 +2317,29 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             pb_resp = metastore.ListTablesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_tables(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = metastore.ListTablesResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.bigquery.biglake_v1.MetastoreServiceClient.list_tables",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.biglake.v1.MetastoreService",
+                        "rpcName": "ListTables",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _RenameTable(
@@ -1723,7 +2377,7 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> metastore.Table:
             r"""Call the rename table method over HTTP.
 
@@ -1734,8 +2388,10 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.metastore.Table:
@@ -1745,6 +2401,7 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             http_options = (
                 _BaseMetastoreServiceRestTransport._BaseRenameTable._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_rename_table(request, metadata)
             transcoded_request = _BaseMetastoreServiceRestTransport._BaseRenameTable._get_transcoded_request(
                 http_options, request
@@ -1758,6 +2415,33 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             query_params = _BaseMetastoreServiceRestTransport._BaseRenameTable._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.bigquery.biglake_v1.MetastoreServiceClient.RenameTable",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.biglake.v1.MetastoreService",
+                        "rpcName": "RenameTable",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = MetastoreServiceRestTransport._RenameTable._get_response(
@@ -1780,7 +2464,29 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             pb_resp = metastore.Table.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_rename_table(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = metastore.Table.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.bigquery.biglake_v1.MetastoreServiceClient.rename_table",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.biglake.v1.MetastoreService",
+                        "rpcName": "RenameTable",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateDatabase(
@@ -1818,7 +2524,7 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> metastore.Database:
             r"""Call the update database method over HTTP.
 
@@ -1829,8 +2535,10 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.metastore.Database:
@@ -1840,6 +2548,7 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             http_options = (
                 _BaseMetastoreServiceRestTransport._BaseUpdateDatabase._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_database(request, metadata)
             transcoded_request = _BaseMetastoreServiceRestTransport._BaseUpdateDatabase._get_transcoded_request(
                 http_options, request
@@ -1853,6 +2562,33 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             query_params = _BaseMetastoreServiceRestTransport._BaseUpdateDatabase._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.bigquery.biglake_v1.MetastoreServiceClient.UpdateDatabase",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.biglake.v1.MetastoreService",
+                        "rpcName": "UpdateDatabase",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = MetastoreServiceRestTransport._UpdateDatabase._get_response(
@@ -1875,7 +2611,29 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             pb_resp = metastore.Database.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_database(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = metastore.Database.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.bigquery.biglake_v1.MetastoreServiceClient.update_database",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.biglake.v1.MetastoreService",
+                        "rpcName": "UpdateDatabase",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateTable(
@@ -1913,7 +2671,7 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> metastore.Table:
             r"""Call the update table method over HTTP.
 
@@ -1924,8 +2682,10 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.metastore.Table:
@@ -1935,6 +2695,7 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             http_options = (
                 _BaseMetastoreServiceRestTransport._BaseUpdateTable._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_table(request, metadata)
             transcoded_request = _BaseMetastoreServiceRestTransport._BaseUpdateTable._get_transcoded_request(
                 http_options, request
@@ -1948,6 +2709,33 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             query_params = _BaseMetastoreServiceRestTransport._BaseUpdateTable._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.bigquery.biglake_v1.MetastoreServiceClient.UpdateTable",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.biglake.v1.MetastoreService",
+                        "rpcName": "UpdateTable",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = MetastoreServiceRestTransport._UpdateTable._get_response(
@@ -1970,7 +2758,29 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             pb_resp = metastore.Table.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_table(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = metastore.Table.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.bigquery.biglake_v1.MetastoreServiceClient.update_table",
+                    extra={
+                        "serviceName": "google.cloud.bigquery.biglake.v1.MetastoreService",
+                        "rpcName": "UpdateTable",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property

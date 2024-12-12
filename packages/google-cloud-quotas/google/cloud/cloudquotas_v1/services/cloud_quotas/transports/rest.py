@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -37,6 +37,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -117,8 +125,11 @@ class CloudQuotasRestInterceptor:
     def pre_create_quota_preference(
         self,
         request: cloudquotas.CreateQuotaPreferenceRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloudquotas.CreateQuotaPreferenceRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloudquotas.CreateQuotaPreferenceRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for create_quota_preference
 
         Override in a subclass to manipulate the request or metadata
@@ -140,8 +151,10 @@ class CloudQuotasRestInterceptor:
     def pre_get_quota_info(
         self,
         request: cloudquotas.GetQuotaInfoRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloudquotas.GetQuotaInfoRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloudquotas.GetQuotaInfoRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_quota_info
 
         Override in a subclass to manipulate the request or metadata
@@ -161,8 +174,10 @@ class CloudQuotasRestInterceptor:
     def pre_get_quota_preference(
         self,
         request: cloudquotas.GetQuotaPreferenceRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloudquotas.GetQuotaPreferenceRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloudquotas.GetQuotaPreferenceRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_quota_preference
 
         Override in a subclass to manipulate the request or metadata
@@ -184,8 +199,10 @@ class CloudQuotasRestInterceptor:
     def pre_list_quota_infos(
         self,
         request: cloudquotas.ListQuotaInfosRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloudquotas.ListQuotaInfosRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloudquotas.ListQuotaInfosRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_quota_infos
 
         Override in a subclass to manipulate the request or metadata
@@ -207,8 +224,10 @@ class CloudQuotasRestInterceptor:
     def pre_list_quota_preferences(
         self,
         request: cloudquotas.ListQuotaPreferencesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloudquotas.ListQuotaPreferencesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloudquotas.ListQuotaPreferencesRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_quota_preferences
 
         Override in a subclass to manipulate the request or metadata
@@ -230,8 +249,11 @@ class CloudQuotasRestInterceptor:
     def pre_update_quota_preference(
         self,
         request: cloudquotas.UpdateQuotaPreferenceRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[cloudquotas.UpdateQuotaPreferenceRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        cloudquotas.UpdateQuotaPreferenceRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for update_quota_preference
 
         Override in a subclass to manipulate the request or metadata
@@ -381,7 +403,7 @@ class CloudQuotasRestTransport(_BaseCloudQuotasRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.QuotaPreference:
             r"""Call the create quota preference method over HTTP.
 
@@ -392,8 +414,10 @@ class CloudQuotasRestTransport(_BaseCloudQuotasRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.QuotaPreference:
@@ -409,6 +433,7 @@ class CloudQuotasRestTransport(_BaseCloudQuotasRestTransport):
             http_options = (
                 _BaseCloudQuotasRestTransport._BaseCreateQuotaPreference._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_quota_preference(
                 request, metadata
             )
@@ -424,6 +449,33 @@ class CloudQuotasRestTransport(_BaseCloudQuotasRestTransport):
             query_params = _BaseCloudQuotasRestTransport._BaseCreateQuotaPreference._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.api.cloudquotas_v1.CloudQuotasClient.CreateQuotaPreference",
+                    extra={
+                        "serviceName": "google.api.cloudquotas.v1.CloudQuotas",
+                        "rpcName": "CreateQuotaPreference",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudQuotasRestTransport._CreateQuotaPreference._get_response(
@@ -446,7 +498,29 @@ class CloudQuotasRestTransport(_BaseCloudQuotasRestTransport):
             pb_resp = resources.QuotaPreference.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_quota_preference(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.QuotaPreference.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.api.cloudquotas_v1.CloudQuotasClient.create_quota_preference",
+                    extra={
+                        "serviceName": "google.api.cloudquotas.v1.CloudQuotas",
+                        "rpcName": "CreateQuotaPreference",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetQuotaInfo(
@@ -483,7 +557,7 @@ class CloudQuotasRestTransport(_BaseCloudQuotasRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.QuotaInfo:
             r"""Call the get quota info method over HTTP.
 
@@ -493,8 +567,10 @@ class CloudQuotasRestTransport(_BaseCloudQuotasRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.QuotaInfo:
@@ -507,6 +583,7 @@ class CloudQuotasRestTransport(_BaseCloudQuotasRestTransport):
             http_options = (
                 _BaseCloudQuotasRestTransport._BaseGetQuotaInfo._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_quota_info(request, metadata)
             transcoded_request = (
                 _BaseCloudQuotasRestTransport._BaseGetQuotaInfo._get_transcoded_request(
@@ -520,6 +597,33 @@ class CloudQuotasRestTransport(_BaseCloudQuotasRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.api.cloudquotas_v1.CloudQuotasClient.GetQuotaInfo",
+                    extra={
+                        "serviceName": "google.api.cloudquotas.v1.CloudQuotas",
+                        "rpcName": "GetQuotaInfo",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudQuotasRestTransport._GetQuotaInfo._get_response(
@@ -541,7 +645,29 @@ class CloudQuotasRestTransport(_BaseCloudQuotasRestTransport):
             pb_resp = resources.QuotaInfo.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_quota_info(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.QuotaInfo.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.api.cloudquotas_v1.CloudQuotasClient.get_quota_info",
+                    extra={
+                        "serviceName": "google.api.cloudquotas.v1.CloudQuotas",
+                        "rpcName": "GetQuotaInfo",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetQuotaPreference(
@@ -578,7 +704,7 @@ class CloudQuotasRestTransport(_BaseCloudQuotasRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.QuotaPreference:
             r"""Call the get quota preference method over HTTP.
 
@@ -588,8 +714,10 @@ class CloudQuotasRestTransport(_BaseCloudQuotasRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.QuotaPreference:
@@ -605,6 +733,7 @@ class CloudQuotasRestTransport(_BaseCloudQuotasRestTransport):
             http_options = (
                 _BaseCloudQuotasRestTransport._BaseGetQuotaPreference._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_quota_preference(
                 request, metadata
             )
@@ -616,6 +745,33 @@ class CloudQuotasRestTransport(_BaseCloudQuotasRestTransport):
             query_params = _BaseCloudQuotasRestTransport._BaseGetQuotaPreference._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.api.cloudquotas_v1.CloudQuotasClient.GetQuotaPreference",
+                    extra={
+                        "serviceName": "google.api.cloudquotas.v1.CloudQuotas",
+                        "rpcName": "GetQuotaPreference",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudQuotasRestTransport._GetQuotaPreference._get_response(
@@ -637,7 +793,29 @@ class CloudQuotasRestTransport(_BaseCloudQuotasRestTransport):
             pb_resp = resources.QuotaPreference.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_quota_preference(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.QuotaPreference.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.api.cloudquotas_v1.CloudQuotasClient.get_quota_preference",
+                    extra={
+                        "serviceName": "google.api.cloudquotas.v1.CloudQuotas",
+                        "rpcName": "GetQuotaPreference",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListQuotaInfos(
@@ -674,7 +852,7 @@ class CloudQuotasRestTransport(_BaseCloudQuotasRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> cloudquotas.ListQuotaInfosResponse:
             r"""Call the list quota infos method over HTTP.
 
@@ -685,8 +863,10 @@ class CloudQuotasRestTransport(_BaseCloudQuotasRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.cloudquotas.ListQuotaInfosResponse:
@@ -698,6 +878,7 @@ class CloudQuotasRestTransport(_BaseCloudQuotasRestTransport):
             http_options = (
                 _BaseCloudQuotasRestTransport._BaseListQuotaInfos._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_quota_infos(
                 request, metadata
             )
@@ -709,6 +890,33 @@ class CloudQuotasRestTransport(_BaseCloudQuotasRestTransport):
             query_params = _BaseCloudQuotasRestTransport._BaseListQuotaInfos._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.api.cloudquotas_v1.CloudQuotasClient.ListQuotaInfos",
+                    extra={
+                        "serviceName": "google.api.cloudquotas.v1.CloudQuotas",
+                        "rpcName": "ListQuotaInfos",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudQuotasRestTransport._ListQuotaInfos._get_response(
@@ -730,7 +938,31 @@ class CloudQuotasRestTransport(_BaseCloudQuotasRestTransport):
             pb_resp = cloudquotas.ListQuotaInfosResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_quota_infos(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = cloudquotas.ListQuotaInfosResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.api.cloudquotas_v1.CloudQuotasClient.list_quota_infos",
+                    extra={
+                        "serviceName": "google.api.cloudquotas.v1.CloudQuotas",
+                        "rpcName": "ListQuotaInfos",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListQuotaPreferences(
@@ -767,7 +999,7 @@ class CloudQuotasRestTransport(_BaseCloudQuotasRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> cloudquotas.ListQuotaPreferencesResponse:
             r"""Call the list quota preferences method over HTTP.
 
@@ -778,8 +1010,10 @@ class CloudQuotasRestTransport(_BaseCloudQuotasRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.cloudquotas.ListQuotaPreferencesResponse:
@@ -791,6 +1025,7 @@ class CloudQuotasRestTransport(_BaseCloudQuotasRestTransport):
             http_options = (
                 _BaseCloudQuotasRestTransport._BaseListQuotaPreferences._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_quota_preferences(
                 request, metadata
             )
@@ -802,6 +1037,33 @@ class CloudQuotasRestTransport(_BaseCloudQuotasRestTransport):
             query_params = _BaseCloudQuotasRestTransport._BaseListQuotaPreferences._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.api.cloudquotas_v1.CloudQuotasClient.ListQuotaPreferences",
+                    extra={
+                        "serviceName": "google.api.cloudquotas.v1.CloudQuotas",
+                        "rpcName": "ListQuotaPreferences",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudQuotasRestTransport._ListQuotaPreferences._get_response(
@@ -823,7 +1085,31 @@ class CloudQuotasRestTransport(_BaseCloudQuotasRestTransport):
             pb_resp = cloudquotas.ListQuotaPreferencesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_quota_preferences(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = cloudquotas.ListQuotaPreferencesResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.api.cloudquotas_v1.CloudQuotasClient.list_quota_preferences",
+                    extra={
+                        "serviceName": "google.api.cloudquotas.v1.CloudQuotas",
+                        "rpcName": "ListQuotaPreferences",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateQuotaPreference(
@@ -861,7 +1147,7 @@ class CloudQuotasRestTransport(_BaseCloudQuotasRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.QuotaPreference:
             r"""Call the update quota preference method over HTTP.
 
@@ -872,8 +1158,10 @@ class CloudQuotasRestTransport(_BaseCloudQuotasRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.QuotaPreference:
@@ -889,6 +1177,7 @@ class CloudQuotasRestTransport(_BaseCloudQuotasRestTransport):
             http_options = (
                 _BaseCloudQuotasRestTransport._BaseUpdateQuotaPreference._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_quota_preference(
                 request, metadata
             )
@@ -904,6 +1193,33 @@ class CloudQuotasRestTransport(_BaseCloudQuotasRestTransport):
             query_params = _BaseCloudQuotasRestTransport._BaseUpdateQuotaPreference._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.api.cloudquotas_v1.CloudQuotasClient.UpdateQuotaPreference",
+                    extra={
+                        "serviceName": "google.api.cloudquotas.v1.CloudQuotas",
+                        "rpcName": "UpdateQuotaPreference",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CloudQuotasRestTransport._UpdateQuotaPreference._get_response(
@@ -926,7 +1242,29 @@ class CloudQuotasRestTransport(_BaseCloudQuotasRestTransport):
             pb_resp = resources.QuotaPreference.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_quota_preference(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.QuotaPreference.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.api.cloudquotas_v1.CloudQuotasClient.update_quota_preference",
+                    extra={
+                        "serviceName": "google.api.cloudquotas.v1.CloudQuotas",
+                        "rpcName": "UpdateQuotaPreference",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
