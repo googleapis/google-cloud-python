@@ -191,28 +191,29 @@ class ListNotificationChannelsRequest(proto.Message):
             [``GetNotificationChannel``][google.monitoring.v3.NotificationChannelService.GetNotificationChannel]
             operation.
         filter (str):
-            If provided, this field specifies the criteria that must be
-            met by notification channels to be included in the response.
+            Optional. If provided, this field specifies the criteria
+            that must be met by notification channels to be included in
+            the response.
 
             For more details, see `sorting and
             filtering <https://cloud.google.com/monitoring/api/v3/sorting-and-filtering>`__.
         order_by (str):
-            A comma-separated list of fields by which to sort the
-            result. Supports the same set of fields as in ``filter``.
-            Entries can be prefixed with a minus sign to sort in
-            descending rather than ascending order.
+            Optional. A comma-separated list of fields by which to sort
+            the result. Supports the same set of fields as in
+            ``filter``. Entries can be prefixed with a minus sign to
+            sort in descending rather than ascending order.
 
             For more details, see `sorting and
             filtering <https://cloud.google.com/monitoring/api/v3/sorting-and-filtering>`__.
         page_size (int):
-            The maximum number of results to return in a
-            single response. If not set to a positive
-            number, a reasonable value will be chosen by the
-            service.
+            Optional. The maximum number of results to
+            return in a single response. If not set to a
+            positive number, a reasonable value will be
+            chosen by the service.
         page_token (str):
-            If non-empty, ``page_token`` must contain a value returned
-            as the ``next_page_token`` in a previous response to request
-            the next set of results.
+            Optional. If non-empty, ``page_token`` must contain a value
+            returned as the ``next_page_token`` in a previous response
+            to request the next set of results.
     """
 
     name: str = proto.Field(
@@ -301,7 +302,7 @@ class UpdateNotificationChannelRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            The fields to update.
+            Optional. The fields to update.
         notification_channel (google.cloud.monitoring_v3.types.NotificationChannel):
             Required. A description of the changes to be applied to the
             specified notification channel. The description must provide
@@ -336,9 +337,9 @@ class DeleteNotificationChannelRequest(proto.Message):
             If true, the notification channel will be
             deleted regardless of its use in alert policies
             (the policies will be updated to remove the
-            channel). If false, channels that are still
-            referenced by an existing alerting policy will
-            fail to be deleted in a delete operation.
+            channel). If false, this operation will fail if
+            the notification channel is referenced by
+            existing alerting policies.
     """
 
     name: str = proto.Field(

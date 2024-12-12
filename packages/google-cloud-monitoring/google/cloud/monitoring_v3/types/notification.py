@@ -124,7 +124,8 @@ class NotificationChannel(proto.Message):
             [NotificationChannelDescriptor.type][google.monitoring.v3.NotificationChannelDescriptor.type]
             field.
         name (str):
-            The full REST resource name for this channel. The format is:
+            Identifier. The full REST resource name for this channel.
+            The format is:
 
             ::
 

@@ -1004,7 +1004,7 @@ class NotificationChannelServiceAsyncClient:
             request (Optional[Union[google.cloud.monitoring_v3.types.UpdateNotificationChannelRequest, dict]]):
                 The request object. The ``UpdateNotificationChannel`` request.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
-                The fields to update.
+                Optional. The fields to update.
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1149,10 +1149,9 @@ class NotificationChannelServiceAsyncClient:
                 will be deleted regardless of its use in
                 alert policies (the policies will be
                 updated to remove the channel). If
-                false, channels that are still
-                referenced by an existing alerting
-                policy will fail to be deleted in a
-                delete operation.
+                false, this operation will fail if the
+                notification channel is referenced by
+                existing alerting policies.
 
                 This corresponds to the ``force`` field
                 on the ``request`` instance; if ``request`` is provided, this

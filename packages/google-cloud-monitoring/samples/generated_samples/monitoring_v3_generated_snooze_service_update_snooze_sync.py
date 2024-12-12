@@ -40,7 +40,6 @@ def sample_update_snooze():
 
     # Initialize request argument(s)
     snooze = monitoring_v3.Snooze()
-    snooze.name = "name_value"
     snooze.display_name = "display_name_value"
 
     request = monitoring_v3.UpdateSnoozeRequest(
