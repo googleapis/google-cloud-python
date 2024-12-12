@@ -1515,7 +1515,7 @@ replacements:
       \            str: The universe domain used by the client instance.
       \        """
       \        return self._universe_domain\n
-    after: "}\n"
+    after: "}"
     count: 1
   - paths: [
       packages/grafeas/grafeas/grafeas_v1/services/grafeas/client.py

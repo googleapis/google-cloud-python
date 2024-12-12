@@ -324,7 +324,6 @@ class GrafeasClient(metaclass=GrafeasClientMeta):
         m = re.match(r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)$", path)
         return m.groupdict() if m else {}
 
-
     def __init__(
         self,
         *,
