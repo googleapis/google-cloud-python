@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -37,6 +37,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -93,8 +101,10 @@ class PrivateCatalogRestInterceptor:
     def pre_search_catalogs(
         self,
         request: private_catalog.SearchCatalogsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[private_catalog.SearchCatalogsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        private_catalog.SearchCatalogsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for search_catalogs
 
         Override in a subclass to manipulate the request or metadata
@@ -116,8 +126,10 @@ class PrivateCatalogRestInterceptor:
     def pre_search_products(
         self,
         request: private_catalog.SearchProductsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[private_catalog.SearchProductsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        private_catalog.SearchProductsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for search_products
 
         Override in a subclass to manipulate the request or metadata
@@ -139,8 +151,10 @@ class PrivateCatalogRestInterceptor:
     def pre_search_versions(
         self,
         request: private_catalog.SearchVersionsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[private_catalog.SearchVersionsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        private_catalog.SearchVersionsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for search_versions
 
         Override in a subclass to manipulate the request or metadata
@@ -301,7 +315,7 @@ class PrivateCatalogRestTransport(_BasePrivateCatalogRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> private_catalog.SearchCatalogsResponse:
             r"""Call the search catalogs method over HTTP.
 
@@ -312,8 +326,10 @@ class PrivateCatalogRestTransport(_BasePrivateCatalogRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.private_catalog.SearchCatalogsResponse:
@@ -325,6 +341,7 @@ class PrivateCatalogRestTransport(_BasePrivateCatalogRestTransport):
             http_options = (
                 _BasePrivateCatalogRestTransport._BaseSearchCatalogs._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_search_catalogs(request, metadata)
             transcoded_request = _BasePrivateCatalogRestTransport._BaseSearchCatalogs._get_transcoded_request(
                 http_options, request
@@ -334,6 +351,33 @@ class PrivateCatalogRestTransport(_BasePrivateCatalogRestTransport):
             query_params = _BasePrivateCatalogRestTransport._BaseSearchCatalogs._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.privatecatalog_v1beta1.PrivateCatalogClient.SearchCatalogs",
+                    extra={
+                        "serviceName": "google.cloud.privatecatalog.v1beta1.PrivateCatalog",
+                        "rpcName": "SearchCatalogs",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = PrivateCatalogRestTransport._SearchCatalogs._get_response(
@@ -355,7 +399,31 @@ class PrivateCatalogRestTransport(_BasePrivateCatalogRestTransport):
             pb_resp = private_catalog.SearchCatalogsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_search_catalogs(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = private_catalog.SearchCatalogsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.privatecatalog_v1beta1.PrivateCatalogClient.search_catalogs",
+                    extra={
+                        "serviceName": "google.cloud.privatecatalog.v1beta1.PrivateCatalog",
+                        "rpcName": "SearchCatalogs",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _SearchProducts(
@@ -392,7 +460,7 @@ class PrivateCatalogRestTransport(_BasePrivateCatalogRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> private_catalog.SearchProductsResponse:
             r"""Call the search products method over HTTP.
 
@@ -403,8 +471,10 @@ class PrivateCatalogRestTransport(_BasePrivateCatalogRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.private_catalog.SearchProductsResponse:
@@ -416,6 +486,7 @@ class PrivateCatalogRestTransport(_BasePrivateCatalogRestTransport):
             http_options = (
                 _BasePrivateCatalogRestTransport._BaseSearchProducts._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_search_products(request, metadata)
             transcoded_request = _BasePrivateCatalogRestTransport._BaseSearchProducts._get_transcoded_request(
                 http_options, request
@@ -425,6 +496,33 @@ class PrivateCatalogRestTransport(_BasePrivateCatalogRestTransport):
             query_params = _BasePrivateCatalogRestTransport._BaseSearchProducts._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.privatecatalog_v1beta1.PrivateCatalogClient.SearchProducts",
+                    extra={
+                        "serviceName": "google.cloud.privatecatalog.v1beta1.PrivateCatalog",
+                        "rpcName": "SearchProducts",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = PrivateCatalogRestTransport._SearchProducts._get_response(
@@ -446,7 +544,31 @@ class PrivateCatalogRestTransport(_BasePrivateCatalogRestTransport):
             pb_resp = private_catalog.SearchProductsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_search_products(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = private_catalog.SearchProductsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.privatecatalog_v1beta1.PrivateCatalogClient.search_products",
+                    extra={
+                        "serviceName": "google.cloud.privatecatalog.v1beta1.PrivateCatalog",
+                        "rpcName": "SearchProducts",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _SearchVersions(
@@ -483,7 +605,7 @@ class PrivateCatalogRestTransport(_BasePrivateCatalogRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> private_catalog.SearchVersionsResponse:
             r"""Call the search versions method over HTTP.
 
@@ -494,8 +616,10 @@ class PrivateCatalogRestTransport(_BasePrivateCatalogRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.private_catalog.SearchVersionsResponse:
@@ -507,6 +631,7 @@ class PrivateCatalogRestTransport(_BasePrivateCatalogRestTransport):
             http_options = (
                 _BasePrivateCatalogRestTransport._BaseSearchVersions._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_search_versions(request, metadata)
             transcoded_request = _BasePrivateCatalogRestTransport._BaseSearchVersions._get_transcoded_request(
                 http_options, request
@@ -516,6 +641,33 @@ class PrivateCatalogRestTransport(_BasePrivateCatalogRestTransport):
             query_params = _BasePrivateCatalogRestTransport._BaseSearchVersions._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.privatecatalog_v1beta1.PrivateCatalogClient.SearchVersions",
+                    extra={
+                        "serviceName": "google.cloud.privatecatalog.v1beta1.PrivateCatalog",
+                        "rpcName": "SearchVersions",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = PrivateCatalogRestTransport._SearchVersions._get_response(
@@ -537,7 +689,31 @@ class PrivateCatalogRestTransport(_BasePrivateCatalogRestTransport):
             pb_resp = private_catalog.SearchVersionsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_search_versions(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = private_catalog.SearchVersionsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.privatecatalog_v1beta1.PrivateCatalogClient.search_versions",
+                    extra={
+                        "serviceName": "google.cloud.privatecatalog.v1beta1.PrivateCatalog",
+                        "rpcName": "SearchVersions",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property

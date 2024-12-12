@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -37,6 +37,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -77,8 +85,10 @@ class QuotaControllerRestInterceptor:
     def pre_allocate_quota(
         self,
         request: quota_controller.AllocateQuotaRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[quota_controller.AllocateQuotaRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        quota_controller.AllocateQuotaRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for allocate_quota
 
         Override in a subclass to manipulate the request or metadata
@@ -222,7 +232,7 @@ class QuotaControllerRestTransport(_BaseQuotaControllerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> quota_controller.AllocateQuotaResponse:
             r"""Call the allocate quota method over HTTP.
 
@@ -233,8 +243,10 @@ class QuotaControllerRestTransport(_BaseQuotaControllerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.quota_controller.AllocateQuotaResponse:
@@ -246,6 +258,7 @@ class QuotaControllerRestTransport(_BaseQuotaControllerRestTransport):
             http_options = (
                 _BaseQuotaControllerRestTransport._BaseAllocateQuota._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_allocate_quota(request, metadata)
             transcoded_request = _BaseQuotaControllerRestTransport._BaseAllocateQuota._get_transcoded_request(
                 http_options, request
@@ -259,6 +272,33 @@ class QuotaControllerRestTransport(_BaseQuotaControllerRestTransport):
             query_params = _BaseQuotaControllerRestTransport._BaseAllocateQuota._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.api.servicecontrol_v1.QuotaControllerClient.AllocateQuota",
+                    extra={
+                        "serviceName": "google.api.servicecontrol.v1.QuotaController",
+                        "rpcName": "AllocateQuota",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = QuotaControllerRestTransport._AllocateQuota._get_response(
@@ -281,7 +321,31 @@ class QuotaControllerRestTransport(_BaseQuotaControllerRestTransport):
             pb_resp = quota_controller.AllocateQuotaResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_allocate_quota(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = quota_controller.AllocateQuotaResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.api.servicecontrol_v1.QuotaControllerClient.allocate_quota",
+                    extra={
+                        "serviceName": "google.api.servicecontrol.v1.QuotaController",
+                        "rpcName": "AllocateQuota",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property

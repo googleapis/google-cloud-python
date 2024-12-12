@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -38,6 +38,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -162,8 +170,10 @@ class OsConfigServiceRestInterceptor:
     def pre_cancel_patch_job(
         self,
         request: patch_jobs.CancelPatchJobRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[patch_jobs.CancelPatchJobRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        patch_jobs.CancelPatchJobRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for cancel_patch_job
 
         Override in a subclass to manipulate the request or metadata
@@ -185,9 +195,10 @@ class OsConfigServiceRestInterceptor:
     def pre_create_patch_deployment(
         self,
         request: patch_deployments.CreatePatchDeploymentRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        patch_deployments.CreatePatchDeploymentRequest, Sequence[Tuple[str, str]]
+        patch_deployments.CreatePatchDeploymentRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for create_patch_deployment
 
@@ -210,9 +221,10 @@ class OsConfigServiceRestInterceptor:
     def pre_delete_patch_deployment(
         self,
         request: patch_deployments.DeletePatchDeploymentRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        patch_deployments.DeletePatchDeploymentRequest, Sequence[Tuple[str, str]]
+        patch_deployments.DeletePatchDeploymentRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for delete_patch_deployment
 
@@ -224,8 +236,10 @@ class OsConfigServiceRestInterceptor:
     def pre_execute_patch_job(
         self,
         request: patch_jobs.ExecutePatchJobRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[patch_jobs.ExecutePatchJobRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        patch_jobs.ExecutePatchJobRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for execute_patch_job
 
         Override in a subclass to manipulate the request or metadata
@@ -247,8 +261,11 @@ class OsConfigServiceRestInterceptor:
     def pre_get_patch_deployment(
         self,
         request: patch_deployments.GetPatchDeploymentRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[patch_deployments.GetPatchDeploymentRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        patch_deployments.GetPatchDeploymentRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for get_patch_deployment
 
         Override in a subclass to manipulate the request or metadata
@@ -270,8 +287,8 @@ class OsConfigServiceRestInterceptor:
     def pre_get_patch_job(
         self,
         request: patch_jobs.GetPatchJobRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[patch_jobs.GetPatchJobRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[patch_jobs.GetPatchJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_patch_job
 
         Override in a subclass to manipulate the request or metadata
@@ -291,9 +308,10 @@ class OsConfigServiceRestInterceptor:
     def pre_list_patch_deployments(
         self,
         request: patch_deployments.ListPatchDeploymentsRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        patch_deployments.ListPatchDeploymentsRequest, Sequence[Tuple[str, str]]
+        patch_deployments.ListPatchDeploymentsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for list_patch_deployments
 
@@ -316,9 +334,10 @@ class OsConfigServiceRestInterceptor:
     def pre_list_patch_job_instance_details(
         self,
         request: patch_jobs.ListPatchJobInstanceDetailsRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        patch_jobs.ListPatchJobInstanceDetailsRequest, Sequence[Tuple[str, str]]
+        patch_jobs.ListPatchJobInstanceDetailsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for list_patch_job_instance_details
 
@@ -341,8 +360,10 @@ class OsConfigServiceRestInterceptor:
     def pre_list_patch_jobs(
         self,
         request: patch_jobs.ListPatchJobsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[patch_jobs.ListPatchJobsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        patch_jobs.ListPatchJobsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_patch_jobs
 
         Override in a subclass to manipulate the request or metadata
@@ -364,9 +385,10 @@ class OsConfigServiceRestInterceptor:
     def pre_pause_patch_deployment(
         self,
         request: patch_deployments.PausePatchDeploymentRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        patch_deployments.PausePatchDeploymentRequest, Sequence[Tuple[str, str]]
+        patch_deployments.PausePatchDeploymentRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for pause_patch_deployment
 
@@ -389,9 +411,10 @@ class OsConfigServiceRestInterceptor:
     def pre_resume_patch_deployment(
         self,
         request: patch_deployments.ResumePatchDeploymentRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        patch_deployments.ResumePatchDeploymentRequest, Sequence[Tuple[str, str]]
+        patch_deployments.ResumePatchDeploymentRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for resume_patch_deployment
 
@@ -414,9 +437,10 @@ class OsConfigServiceRestInterceptor:
     def pre_update_patch_deployment(
         self,
         request: patch_deployments.UpdatePatchDeploymentRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        patch_deployments.UpdatePatchDeploymentRequest, Sequence[Tuple[str, str]]
+        patch_deployments.UpdatePatchDeploymentRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for update_patch_deployment
 
@@ -562,7 +586,7 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> patch_jobs.PatchJob:
             r"""Call the cancel patch job method over HTTP.
 
@@ -572,8 +596,10 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.patch_jobs.PatchJob:
@@ -593,6 +619,7 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
             http_options = (
                 _BaseOsConfigServiceRestTransport._BaseCancelPatchJob._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_cancel_patch_job(
                 request, metadata
             )
@@ -608,6 +635,33 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
             query_params = _BaseOsConfigServiceRestTransport._BaseCancelPatchJob._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.osconfig_v1.OsConfigServiceClient.CancelPatchJob",
+                    extra={
+                        "serviceName": "google.cloud.osconfig.v1.OsConfigService",
+                        "rpcName": "CancelPatchJob",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = OsConfigServiceRestTransport._CancelPatchJob._get_response(
@@ -630,7 +684,29 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
             pb_resp = patch_jobs.PatchJob.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_cancel_patch_job(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = patch_jobs.PatchJob.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.osconfig_v1.OsConfigServiceClient.cancel_patch_job",
+                    extra={
+                        "serviceName": "google.cloud.osconfig.v1.OsConfigService",
+                        "rpcName": "CancelPatchJob",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreatePatchDeployment(
@@ -669,7 +745,7 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> patch_deployments.PatchDeployment:
             r"""Call the create patch deployment method over HTTP.
 
@@ -680,8 +756,10 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.patch_deployments.PatchDeployment:
@@ -697,6 +775,7 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
             http_options = (
                 _BaseOsConfigServiceRestTransport._BaseCreatePatchDeployment._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_patch_deployment(
                 request, metadata
             )
@@ -712,6 +791,33 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
             query_params = _BaseOsConfigServiceRestTransport._BaseCreatePatchDeployment._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.osconfig_v1.OsConfigServiceClient.CreatePatchDeployment",
+                    extra={
+                        "serviceName": "google.cloud.osconfig.v1.OsConfigService",
+                        "rpcName": "CreatePatchDeployment",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -736,7 +842,31 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
             pb_resp = patch_deployments.PatchDeployment.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_patch_deployment(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = patch_deployments.PatchDeployment.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.osconfig_v1.OsConfigServiceClient.create_patch_deployment",
+                    extra={
+                        "serviceName": "google.cloud.osconfig.v1.OsConfigService",
+                        "rpcName": "CreatePatchDeployment",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeletePatchDeployment(
@@ -774,7 +904,7 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete patch deployment method over HTTP.
 
@@ -785,13 +915,16 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseOsConfigServiceRestTransport._BaseDeletePatchDeployment._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_patch_deployment(
                 request, metadata
             )
@@ -803,6 +936,33 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
             query_params = _BaseOsConfigServiceRestTransport._BaseDeletePatchDeployment._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.osconfig_v1.OsConfigServiceClient.DeletePatchDeployment",
+                    extra={
+                        "serviceName": "google.cloud.osconfig.v1.OsConfigService",
+                        "rpcName": "DeletePatchDeployment",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -856,7 +1016,7 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> patch_jobs.PatchJob:
             r"""Call the execute patch job method over HTTP.
 
@@ -868,8 +1028,10 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.patch_jobs.PatchJob:
@@ -889,6 +1051,7 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
             http_options = (
                 _BaseOsConfigServiceRestTransport._BaseExecutePatchJob._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_execute_patch_job(
                 request, metadata
             )
@@ -904,6 +1067,33 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
             query_params = _BaseOsConfigServiceRestTransport._BaseExecutePatchJob._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.osconfig_v1.OsConfigServiceClient.ExecutePatchJob",
+                    extra={
+                        "serviceName": "google.cloud.osconfig.v1.OsConfigService",
+                        "rpcName": "ExecutePatchJob",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = OsConfigServiceRestTransport._ExecutePatchJob._get_response(
@@ -926,7 +1116,29 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
             pb_resp = patch_jobs.PatchJob.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_execute_patch_job(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = patch_jobs.PatchJob.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.osconfig_v1.OsConfigServiceClient.execute_patch_job",
+                    extra={
+                        "serviceName": "google.cloud.osconfig.v1.OsConfigService",
+                        "rpcName": "ExecutePatchJob",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetPatchDeployment(
@@ -964,7 +1176,7 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> patch_deployments.PatchDeployment:
             r"""Call the get patch deployment method over HTTP.
 
@@ -975,8 +1187,10 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.patch_deployments.PatchDeployment:
@@ -992,6 +1206,7 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
             http_options = (
                 _BaseOsConfigServiceRestTransport._BaseGetPatchDeployment._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_patch_deployment(
                 request, metadata
             )
@@ -1003,6 +1218,33 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
             query_params = _BaseOsConfigServiceRestTransport._BaseGetPatchDeployment._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.osconfig_v1.OsConfigServiceClient.GetPatchDeployment",
+                    extra={
+                        "serviceName": "google.cloud.osconfig.v1.OsConfigService",
+                        "rpcName": "GetPatchDeployment",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = OsConfigServiceRestTransport._GetPatchDeployment._get_response(
@@ -1024,7 +1266,31 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
             pb_resp = patch_deployments.PatchDeployment.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_patch_deployment(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = patch_deployments.PatchDeployment.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.osconfig_v1.OsConfigServiceClient.get_patch_deployment",
+                    extra={
+                        "serviceName": "google.cloud.osconfig.v1.OsConfigService",
+                        "rpcName": "GetPatchDeployment",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetPatchJob(
@@ -1061,7 +1327,7 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> patch_jobs.PatchJob:
             r"""Call the get patch job method over HTTP.
 
@@ -1072,8 +1338,10 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.patch_jobs.PatchJob:
@@ -1093,6 +1361,7 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
             http_options = (
                 _BaseOsConfigServiceRestTransport._BaseGetPatchJob._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_patch_job(request, metadata)
             transcoded_request = _BaseOsConfigServiceRestTransport._BaseGetPatchJob._get_transcoded_request(
                 http_options, request
@@ -1102,6 +1371,33 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
             query_params = _BaseOsConfigServiceRestTransport._BaseGetPatchJob._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.osconfig_v1.OsConfigServiceClient.GetPatchJob",
+                    extra={
+                        "serviceName": "google.cloud.osconfig.v1.OsConfigService",
+                        "rpcName": "GetPatchJob",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = OsConfigServiceRestTransport._GetPatchJob._get_response(
@@ -1123,7 +1419,29 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
             pb_resp = patch_jobs.PatchJob.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_patch_job(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = patch_jobs.PatchJob.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.osconfig_v1.OsConfigServiceClient.get_patch_job",
+                    extra={
+                        "serviceName": "google.cloud.osconfig.v1.OsConfigService",
+                        "rpcName": "GetPatchJob",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListPatchDeployments(
@@ -1161,7 +1479,7 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> patch_deployments.ListPatchDeploymentsResponse:
             r"""Call the list patch deployments method over HTTP.
 
@@ -1172,8 +1490,10 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.patch_deployments.ListPatchDeploymentsResponse:
@@ -1185,6 +1505,7 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
             http_options = (
                 _BaseOsConfigServiceRestTransport._BaseListPatchDeployments._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_patch_deployments(
                 request, metadata
             )
@@ -1196,6 +1517,33 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
             query_params = _BaseOsConfigServiceRestTransport._BaseListPatchDeployments._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.osconfig_v1.OsConfigServiceClient.ListPatchDeployments",
+                    extra={
+                        "serviceName": "google.cloud.osconfig.v1.OsConfigService",
+                        "rpcName": "ListPatchDeployments",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = OsConfigServiceRestTransport._ListPatchDeployments._get_response(
@@ -1217,7 +1565,31 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
             pb_resp = patch_deployments.ListPatchDeploymentsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_patch_deployments(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        patch_deployments.ListPatchDeploymentsResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.osconfig_v1.OsConfigServiceClient.list_patch_deployments",
+                    extra={
+                        "serviceName": "google.cloud.osconfig.v1.OsConfigService",
+                        "rpcName": "ListPatchDeployments",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListPatchJobInstanceDetails(
@@ -1255,7 +1627,7 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> patch_jobs.ListPatchJobInstanceDetailsResponse:
             r"""Call the list patch job instance
             details method over HTTP.
@@ -1267,8 +1639,10 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.patch_jobs.ListPatchJobInstanceDetailsResponse:
@@ -1280,6 +1654,7 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
             http_options = (
                 _BaseOsConfigServiceRestTransport._BaseListPatchJobInstanceDetails._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_patch_job_instance_details(
                 request, metadata
             )
@@ -1291,6 +1666,33 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
             query_params = _BaseOsConfigServiceRestTransport._BaseListPatchJobInstanceDetails._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.osconfig_v1.OsConfigServiceClient.ListPatchJobInstanceDetails",
+                    extra={
+                        "serviceName": "google.cloud.osconfig.v1.OsConfigService",
+                        "rpcName": "ListPatchJobInstanceDetails",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1314,7 +1716,31 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
             pb_resp = patch_jobs.ListPatchJobInstanceDetailsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_patch_job_instance_details(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        patch_jobs.ListPatchJobInstanceDetailsResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.osconfig_v1.OsConfigServiceClient.list_patch_job_instance_details",
+                    extra={
+                        "serviceName": "google.cloud.osconfig.v1.OsConfigService",
+                        "rpcName": "ListPatchJobInstanceDetails",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListPatchJobs(
@@ -1351,7 +1777,7 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> patch_jobs.ListPatchJobsResponse:
             r"""Call the list patch jobs method over HTTP.
 
@@ -1362,8 +1788,10 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.patch_jobs.ListPatchJobsResponse:
@@ -1375,6 +1803,7 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
             http_options = (
                 _BaseOsConfigServiceRestTransport._BaseListPatchJobs._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_patch_jobs(request, metadata)
             transcoded_request = _BaseOsConfigServiceRestTransport._BaseListPatchJobs._get_transcoded_request(
                 http_options, request
@@ -1384,6 +1813,33 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
             query_params = _BaseOsConfigServiceRestTransport._BaseListPatchJobs._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.osconfig_v1.OsConfigServiceClient.ListPatchJobs",
+                    extra={
+                        "serviceName": "google.cloud.osconfig.v1.OsConfigService",
+                        "rpcName": "ListPatchJobs",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = OsConfigServiceRestTransport._ListPatchJobs._get_response(
@@ -1405,7 +1861,31 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
             pb_resp = patch_jobs.ListPatchJobsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_patch_jobs(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = patch_jobs.ListPatchJobsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.osconfig_v1.OsConfigServiceClient.list_patch_jobs",
+                    extra={
+                        "serviceName": "google.cloud.osconfig.v1.OsConfigService",
+                        "rpcName": "ListPatchJobs",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _PausePatchDeployment(
@@ -1444,7 +1924,7 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> patch_deployments.PatchDeployment:
             r"""Call the pause patch deployment method over HTTP.
 
@@ -1455,8 +1935,10 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.patch_deployments.PatchDeployment:
@@ -1472,6 +1954,7 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
             http_options = (
                 _BaseOsConfigServiceRestTransport._BasePausePatchDeployment._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_pause_patch_deployment(
                 request, metadata
             )
@@ -1487,6 +1970,33 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
             query_params = _BaseOsConfigServiceRestTransport._BasePausePatchDeployment._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.osconfig_v1.OsConfigServiceClient.PausePatchDeployment",
+                    extra={
+                        "serviceName": "google.cloud.osconfig.v1.OsConfigService",
+                        "rpcName": "PausePatchDeployment",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = OsConfigServiceRestTransport._PausePatchDeployment._get_response(
@@ -1509,7 +2019,31 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
             pb_resp = patch_deployments.PatchDeployment.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_pause_patch_deployment(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = patch_deployments.PatchDeployment.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.osconfig_v1.OsConfigServiceClient.pause_patch_deployment",
+                    extra={
+                        "serviceName": "google.cloud.osconfig.v1.OsConfigService",
+                        "rpcName": "PausePatchDeployment",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ResumePatchDeployment(
@@ -1548,7 +2082,7 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> patch_deployments.PatchDeployment:
             r"""Call the resume patch deployment method over HTTP.
 
@@ -1559,8 +2093,10 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.patch_deployments.PatchDeployment:
@@ -1576,6 +2112,7 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
             http_options = (
                 _BaseOsConfigServiceRestTransport._BaseResumePatchDeployment._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_resume_patch_deployment(
                 request, metadata
             )
@@ -1591,6 +2128,33 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
             query_params = _BaseOsConfigServiceRestTransport._BaseResumePatchDeployment._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.osconfig_v1.OsConfigServiceClient.ResumePatchDeployment",
+                    extra={
+                        "serviceName": "google.cloud.osconfig.v1.OsConfigService",
+                        "rpcName": "ResumePatchDeployment",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1615,7 +2179,31 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
             pb_resp = patch_deployments.PatchDeployment.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_resume_patch_deployment(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = patch_deployments.PatchDeployment.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.osconfig_v1.OsConfigServiceClient.resume_patch_deployment",
+                    extra={
+                        "serviceName": "google.cloud.osconfig.v1.OsConfigService",
+                        "rpcName": "ResumePatchDeployment",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdatePatchDeployment(
@@ -1654,7 +2242,7 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> patch_deployments.PatchDeployment:
             r"""Call the update patch deployment method over HTTP.
 
@@ -1665,8 +2253,10 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.patch_deployments.PatchDeployment:
@@ -1682,6 +2272,7 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
             http_options = (
                 _BaseOsConfigServiceRestTransport._BaseUpdatePatchDeployment._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_patch_deployment(
                 request, metadata
             )
@@ -1697,6 +2288,33 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
             query_params = _BaseOsConfigServiceRestTransport._BaseUpdatePatchDeployment._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.osconfig_v1.OsConfigServiceClient.UpdatePatchDeployment",
+                    extra={
+                        "serviceName": "google.cloud.osconfig.v1.OsConfigService",
+                        "rpcName": "UpdatePatchDeployment",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1721,7 +2339,31 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
             pb_resp = patch_deployments.PatchDeployment.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_patch_deployment(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = patch_deployments.PatchDeployment.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.osconfig_v1.OsConfigServiceClient.update_patch_deployment",
+                    extra={
+                        "serviceName": "google.cloud.osconfig.v1.OsConfigService",
+                        "rpcName": "UpdatePatchDeployment",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property

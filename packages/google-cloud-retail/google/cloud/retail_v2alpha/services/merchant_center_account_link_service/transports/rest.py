@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -40,6 +40,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -92,10 +100,10 @@ class MerchantCenterAccountLinkServiceRestInterceptor:
     def pre_create_merchant_center_account_link(
         self,
         request: merchant_center_account_link_service.CreateMerchantCenterAccountLinkRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         merchant_center_account_link_service.CreateMerchantCenterAccountLinkRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for create_merchant_center_account_link
 
@@ -118,10 +126,10 @@ class MerchantCenterAccountLinkServiceRestInterceptor:
     def pre_delete_merchant_center_account_link(
         self,
         request: merchant_center_account_link_service.DeleteMerchantCenterAccountLinkRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         merchant_center_account_link_service.DeleteMerchantCenterAccountLinkRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for delete_merchant_center_account_link
 
@@ -133,10 +141,10 @@ class MerchantCenterAccountLinkServiceRestInterceptor:
     def pre_list_merchant_center_account_links(
         self,
         request: merchant_center_account_link_service.ListMerchantCenterAccountLinksRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         merchant_center_account_link_service.ListMerchantCenterAccountLinksRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for list_merchant_center_account_links
 
@@ -160,8 +168,10 @@ class MerchantCenterAccountLinkServiceRestInterceptor:
     def pre_get_operation(
         self,
         request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -183,8 +193,10 @@ class MerchantCenterAccountLinkServiceRestInterceptor:
     def pre_list_operations(
         self,
         request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -398,7 +410,7 @@ class MerchantCenterAccountLinkServiceRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create merchant center
             account link method over HTTP.
@@ -411,8 +423,10 @@ class MerchantCenterAccountLinkServiceRestTransport(
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.operations_pb2.Operation:
@@ -425,6 +439,7 @@ class MerchantCenterAccountLinkServiceRestTransport(
             http_options = (
                 _BaseMerchantCenterAccountLinkServiceRestTransport._BaseCreateMerchantCenterAccountLink._get_http_options()
             )
+
             (
                 request,
                 metadata,
@@ -443,6 +458,33 @@ class MerchantCenterAccountLinkServiceRestTransport(
             query_params = _BaseMerchantCenterAccountLinkServiceRestTransport._BaseCreateMerchantCenterAccountLink._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.retail_v2alpha.MerchantCenterAccountLinkServiceClient.CreateMerchantCenterAccountLink",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2alpha.MerchantCenterAccountLinkService",
+                        "rpcName": "CreateMerchantCenterAccountLink",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = MerchantCenterAccountLinkServiceRestTransport._CreateMerchantCenterAccountLink._get_response(
@@ -463,7 +505,29 @@ class MerchantCenterAccountLinkServiceRestTransport(
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_merchant_center_account_link(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.retail_v2alpha.MerchantCenterAccountLinkServiceClient.create_merchant_center_account_link",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2alpha.MerchantCenterAccountLinkService",
+                        "rpcName": "CreateMerchantCenterAccountLink",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteMerchantCenterAccountLink(
@@ -503,7 +567,7 @@ class MerchantCenterAccountLinkServiceRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete merchant center
             account link method over HTTP.
@@ -516,13 +580,16 @@ class MerchantCenterAccountLinkServiceRestTransport(
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
             """
 
             http_options = (
                 _BaseMerchantCenterAccountLinkServiceRestTransport._BaseDeleteMerchantCenterAccountLink._get_http_options()
             )
+
             (
                 request,
                 metadata,
@@ -537,6 +604,33 @@ class MerchantCenterAccountLinkServiceRestTransport(
             query_params = _BaseMerchantCenterAccountLinkServiceRestTransport._BaseDeleteMerchantCenterAccountLink._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.retail_v2alpha.MerchantCenterAccountLinkServiceClient.DeleteMerchantCenterAccountLink",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2alpha.MerchantCenterAccountLinkService",
+                        "rpcName": "DeleteMerchantCenterAccountLink",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = MerchantCenterAccountLinkServiceRestTransport._DeleteMerchantCenterAccountLink._get_response(
@@ -590,7 +684,7 @@ class MerchantCenterAccountLinkServiceRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> (
             merchant_center_account_link_service.ListMerchantCenterAccountLinksResponse
         ):
@@ -605,8 +699,10 @@ class MerchantCenterAccountLinkServiceRestTransport(
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.merchant_center_account_link_service.ListMerchantCenterAccountLinksResponse:
@@ -619,6 +715,7 @@ class MerchantCenterAccountLinkServiceRestTransport(
             http_options = (
                 _BaseMerchantCenterAccountLinkServiceRestTransport._BaseListMerchantCenterAccountLinks._get_http_options()
             )
+
             (
                 request,
                 metadata,
@@ -633,6 +730,33 @@ class MerchantCenterAccountLinkServiceRestTransport(
             query_params = _BaseMerchantCenterAccountLinkServiceRestTransport._BaseListMerchantCenterAccountLinks._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.retail_v2alpha.MerchantCenterAccountLinkServiceClient.ListMerchantCenterAccountLinks",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2alpha.MerchantCenterAccountLinkService",
+                        "rpcName": "ListMerchantCenterAccountLinks",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = MerchantCenterAccountLinkServiceRestTransport._ListMerchantCenterAccountLinks._get_response(
@@ -658,7 +782,31 @@ class MerchantCenterAccountLinkServiceRestTransport(
             )
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_merchant_center_account_links(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = merchant_center_account_link_service.ListMerchantCenterAccountLinksResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.retail_v2alpha.MerchantCenterAccountLinkServiceClient.list_merchant_center_account_links",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2alpha.MerchantCenterAccountLinkService",
+                        "rpcName": "ListMerchantCenterAccountLinks",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -733,7 +881,7 @@ class MerchantCenterAccountLinkServiceRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the get operation method over HTTP.
 
@@ -743,8 +891,10 @@ class MerchantCenterAccountLinkServiceRestTransport(
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.
@@ -753,6 +903,7 @@ class MerchantCenterAccountLinkServiceRestTransport(
             http_options = (
                 _BaseMerchantCenterAccountLinkServiceRestTransport._BaseGetOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseMerchantCenterAccountLinkServiceRestTransport._BaseGetOperation._get_transcoded_request(
                 http_options, request
@@ -762,6 +913,33 @@ class MerchantCenterAccountLinkServiceRestTransport(
             query_params = _BaseMerchantCenterAccountLinkServiceRestTransport._BaseGetOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.retail_v2alpha.MerchantCenterAccountLinkServiceClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2alpha.MerchantCenterAccountLinkService",
+                        "rpcName": "GetOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = MerchantCenterAccountLinkServiceRestTransport._GetOperation._get_response(
@@ -782,6 +960,27 @@ class MerchantCenterAccountLinkServiceRestTransport(
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.retail_v2alpha.MerchantCenterAccountLinkServiceAsyncClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2alpha.MerchantCenterAccountLinkService",
+                        "rpcName": "GetOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -823,7 +1022,7 @@ class MerchantCenterAccountLinkServiceRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.ListOperationsResponse:
             r"""Call the list operations method over HTTP.
 
@@ -833,8 +1032,10 @@ class MerchantCenterAccountLinkServiceRestTransport(
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
@@ -843,6 +1044,7 @@ class MerchantCenterAccountLinkServiceRestTransport(
             http_options = (
                 _BaseMerchantCenterAccountLinkServiceRestTransport._BaseListOperations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseMerchantCenterAccountLinkServiceRestTransport._BaseListOperations._get_transcoded_request(
                 http_options, request
@@ -852,6 +1054,33 @@ class MerchantCenterAccountLinkServiceRestTransport(
             query_params = _BaseMerchantCenterAccountLinkServiceRestTransport._BaseListOperations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.retail_v2alpha.MerchantCenterAccountLinkServiceClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2alpha.MerchantCenterAccountLinkService",
+                        "rpcName": "ListOperations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = MerchantCenterAccountLinkServiceRestTransport._ListOperations._get_response(
@@ -872,6 +1101,27 @@ class MerchantCenterAccountLinkServiceRestTransport(
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.retail_v2alpha.MerchantCenterAccountLinkServiceAsyncClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2alpha.MerchantCenterAccountLinkService",
+                        "rpcName": "ListOperations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property

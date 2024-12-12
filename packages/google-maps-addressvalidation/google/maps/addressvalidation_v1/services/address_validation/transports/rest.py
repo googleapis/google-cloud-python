@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -37,6 +37,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -85,10 +93,10 @@ class AddressValidationRestInterceptor:
     def pre_provide_validation_feedback(
         self,
         request: address_validation_service.ProvideValidationFeedbackRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         address_validation_service.ProvideValidationFeedbackRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for provide_validation_feedback
 
@@ -111,9 +119,10 @@ class AddressValidationRestInterceptor:
     def pre_validate_address(
         self,
         request: address_validation_service.ValidateAddressRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        address_validation_service.ValidateAddressRequest, Sequence[Tuple[str, str]]
+        address_validation_service.ValidateAddressRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for validate_address
 
@@ -256,7 +265,7 @@ class AddressValidationRestTransport(_BaseAddressValidationRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> address_validation_service.ProvideValidationFeedbackResponse:
             r"""Call the provide validation
             feedback method over HTTP.
@@ -268,8 +277,10 @@ class AddressValidationRestTransport(_BaseAddressValidationRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.address_validation_service.ProvideValidationFeedbackResponse:
@@ -283,6 +294,7 @@ class AddressValidationRestTransport(_BaseAddressValidationRestTransport):
             http_options = (
                 _BaseAddressValidationRestTransport._BaseProvideValidationFeedback._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_provide_validation_feedback(
                 request, metadata
             )
@@ -298,6 +310,33 @@ class AddressValidationRestTransport(_BaseAddressValidationRestTransport):
             query_params = _BaseAddressValidationRestTransport._BaseProvideValidationFeedback._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.maps.addressvalidation_v1.AddressValidationClient.ProvideValidationFeedback",
+                    extra={
+                        "serviceName": "google.maps.addressvalidation.v1.AddressValidation",
+                        "rpcName": "ProvideValidationFeedback",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -324,7 +363,31 @@ class AddressValidationRestTransport(_BaseAddressValidationRestTransport):
             )
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_provide_validation_feedback(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = address_validation_service.ProvideValidationFeedbackResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.maps.addressvalidation_v1.AddressValidationClient.provide_validation_feedback",
+                    extra={
+                        "serviceName": "google.maps.addressvalidation.v1.AddressValidation",
+                        "rpcName": "ProvideValidationFeedback",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ValidateAddress(
@@ -363,7 +426,7 @@ class AddressValidationRestTransport(_BaseAddressValidationRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> address_validation_service.ValidateAddressResponse:
             r"""Call the validate address method over HTTP.
 
@@ -374,8 +437,10 @@ class AddressValidationRestTransport(_BaseAddressValidationRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.address_validation_service.ValidateAddressResponse:
@@ -387,6 +452,7 @@ class AddressValidationRestTransport(_BaseAddressValidationRestTransport):
             http_options = (
                 _BaseAddressValidationRestTransport._BaseValidateAddress._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_validate_address(
                 request, metadata
             )
@@ -402,6 +468,33 @@ class AddressValidationRestTransport(_BaseAddressValidationRestTransport):
             query_params = _BaseAddressValidationRestTransport._BaseValidateAddress._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.maps.addressvalidation_v1.AddressValidationClient.ValidateAddress",
+                    extra={
+                        "serviceName": "google.maps.addressvalidation.v1.AddressValidation",
+                        "rpcName": "ValidateAddress",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AddressValidationRestTransport._ValidateAddress._get_response(
@@ -424,7 +517,33 @@ class AddressValidationRestTransport(_BaseAddressValidationRestTransport):
             pb_resp = address_validation_service.ValidateAddressResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_validate_address(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        address_validation_service.ValidateAddressResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.maps.addressvalidation_v1.AddressValidationClient.validate_address",
+                    extra={
+                        "serviceName": "google.maps.addressvalidation.v1.AddressValidation",
+                        "rpcName": "ValidateAddress",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property

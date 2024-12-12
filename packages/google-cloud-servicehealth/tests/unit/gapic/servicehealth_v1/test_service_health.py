@@ -3893,6 +3893,7 @@ def test_list_events_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_events(request)
 
@@ -3948,6 +3949,7 @@ def test_list_events_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_events(**mock_args)
 
@@ -4139,6 +4141,7 @@ def test_get_event_rest_required_fields(request_type=event_resources.GetEventReq
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_event(request)
 
@@ -4184,6 +4187,7 @@ def test_get_event_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_event(**mock_args)
 
@@ -4330,6 +4334,7 @@ def test_list_organization_events_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_organization_events(request)
 
@@ -4385,6 +4390,7 @@ def test_list_organization_events_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_organization_events(**mock_args)
 
@@ -4584,6 +4590,7 @@ def test_get_organization_event_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_organization_event(request)
 
@@ -4631,6 +4638,7 @@ def test_get_organization_event_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_organization_event(**mock_args)
 
@@ -4777,6 +4785,7 @@ def test_list_organization_impacts_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_organization_impacts(request)
 
@@ -4831,6 +4840,7 @@ def test_list_organization_impacts_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_organization_impacts(**mock_args)
 
@@ -5030,6 +5040,7 @@ def test_get_organization_impact_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_organization_impact(request)
 
@@ -5077,6 +5088,7 @@ def test_get_organization_impact_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_organization_impact(**mock_args)
 
@@ -5575,6 +5587,7 @@ def test_list_events_rest_bad_request(request_type=event_resources.ListEventsReq
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_events(request)
 
 
@@ -5611,6 +5624,7 @@ def test_list_events_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_events(request)
 
     # Establish that the response is the type that we expect.
@@ -5652,6 +5666,7 @@ def test_list_events_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = event_resources.ListEventsResponse.to_json(
             event_resources.ListEventsResponse()
         )
@@ -5696,6 +5711,7 @@ def test_get_event_rest_bad_request(request_type=event_resources.GetEventRequest
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_event(request)
 
 
@@ -5739,6 +5755,7 @@ def test_get_event_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_event(request)
 
     # Establish that the response is the type that we expect.
@@ -5790,6 +5807,7 @@ def test_get_event_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = event_resources.Event.to_json(event_resources.Event())
         req.return_value.content = return_value
 
@@ -5834,6 +5852,7 @@ def test_list_organization_events_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_organization_events(request)
 
 
@@ -5870,6 +5889,7 @@ def test_list_organization_events_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_organization_events(request)
 
     # Establish that the response is the type that we expect.
@@ -5911,6 +5931,7 @@ def test_list_organization_events_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = event_resources.ListOrganizationEventsResponse.to_json(
             event_resources.ListOrganizationEventsResponse()
         )
@@ -5959,6 +5980,7 @@ def test_get_organization_event_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_organization_event(request)
 
 
@@ -6003,6 +6025,7 @@ def test_get_organization_event_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_organization_event(request)
 
     # Establish that the response is the type that we expect.
@@ -6056,6 +6079,7 @@ def test_get_organization_event_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = event_resources.OrganizationEvent.to_json(
             event_resources.OrganizationEvent()
         )
@@ -6102,6 +6126,7 @@ def test_list_organization_impacts_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_organization_impacts(request)
 
 
@@ -6138,6 +6163,7 @@ def test_list_organization_impacts_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_organization_impacts(request)
 
     # Establish that the response is the type that we expect.
@@ -6179,6 +6205,7 @@ def test_list_organization_impacts_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = event_resources.ListOrganizationImpactsResponse.to_json(
             event_resources.ListOrganizationImpactsResponse()
         )
@@ -6227,6 +6254,7 @@ def test_get_organization_impact_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_organization_impact(request)
 
 
@@ -6265,6 +6293,7 @@ def test_get_organization_impact_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_organization_impact(request)
 
     # Establish that the response is the type that we expect.
@@ -6306,6 +6335,7 @@ def test_get_organization_impact_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = event_resources.OrganizationImpact.to_json(
             event_resources.OrganizationImpact()
         )
@@ -6352,6 +6382,7 @@ def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationReq
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_location(request)
 
 
@@ -6382,6 +6413,7 @@ def test_get_location_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.get_location(request)
 
@@ -6410,6 +6442,7 @@ def test_list_locations_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_locations(request)
 
 
@@ -6440,6 +6473,7 @@ def test_list_locations_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.list_locations(request)
 

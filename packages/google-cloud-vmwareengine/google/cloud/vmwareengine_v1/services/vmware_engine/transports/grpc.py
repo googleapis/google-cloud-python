@@ -13,6 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import json
+import logging as std_logging
+import pickle
 from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -24,11 +27,89 @@ from google.cloud.location import locations_pb2  # type: ignore
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf.json_format import MessageToJson
+import google.protobuf.message
 import grpc  # type: ignore
+import proto  # type: ignore
 
 from google.cloud.vmwareengine_v1.types import vmwareengine, vmwareengine_resources
 
 from .base import DEFAULT_CLIENT_INFO, VmwareEngineTransport
+
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = std_logging.getLogger(__name__)
+
+
+class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
+    def intercept_unary_unary(self, continuation, client_call_details, request):
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+            std_logging.DEBUG
+        )
+        if logging_enabled:  # pragma: NO COVER
+            request_metadata = client_call_details.metadata
+            if isinstance(request, proto.Message):
+                request_payload = type(request).to_json(request)
+            elif isinstance(request, google.protobuf.message.Message):
+                request_payload = MessageToJson(request)
+            else:
+                request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
+
+            request_metadata = {
+                key: value.decode("utf-8") if isinstance(value, bytes) else value
+                for key, value in request_metadata
+            }
+            grpc_request = {
+                "payload": request_payload,
+                "requestMethod": "grpc",
+                "metadata": dict(request_metadata),
+            }
+            _LOGGER.debug(
+                f"Sending request for {client_call_details.method}",
+                extra={
+                    "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                    "rpcName": client_call_details.method,
+                    "request": grpc_request,
+                    "metadata": grpc_request["metadata"],
+                },
+            )
+
+        response = continuation(client_call_details, request)
+        if logging_enabled:  # pragma: NO COVER
+            response_metadata = response.trailing_metadata()
+            # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
+            metadata = (
+                dict([(k, str(v)) for k, v in response_metadata])
+                if response_metadata
+                else None
+            )
+            result = response.result()
+            if isinstance(result, proto.Message):
+                response_payload = type(result).to_json(result)
+            elif isinstance(result, google.protobuf.message.Message):
+                response_payload = MessageToJson(result)
+            else:
+                response_payload = f"{type(result).__name__}: {pickle.dumps(result)}"
+            grpc_response = {
+                "payload": response_payload,
+                "metadata": metadata,
+                "status": "OK",
+            }
+            _LOGGER.debug(
+                f"Received response for {client_call_details.method}.",
+                extra={
+                    "serviceName": "google.cloud.vmwareengine.v1.VmwareEngine",
+                    "rpcName": client_call_details.method,
+                    "response": grpc_response,
+                    "metadata": grpc_response["metadata"],
+                },
+            )
+        return response
 
 
 class VmwareEngineGrpcTransport(VmwareEngineTransport):
@@ -184,7 +265,12 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
                 ],
             )
 
-        # Wrap messages. This must be done after self._grpc_channel exists
+        self._interceptor = _LoggingClientInterceptor()
+        self._logged_channel = grpc.intercept_channel(
+            self._grpc_channel, self._interceptor
+        )
+
+        # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
     @classmethod
@@ -248,7 +334,9 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsClient(self.grpc_channel)
+            self._operations_client = operations_v1.OperationsClient(
+                self._logged_channel
+            )
 
         # Return the client from cache.
         return self._operations_client
@@ -275,7 +363,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_private_clouds" not in self._stubs:
-            self._stubs["list_private_clouds"] = self.grpc_channel.unary_unary(
+            self._stubs["list_private_clouds"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/ListPrivateClouds",
                 request_serializer=vmwareengine.ListPrivateCloudsRequest.serialize,
                 response_deserializer=vmwareengine.ListPrivateCloudsResponse.deserialize,
@@ -303,7 +391,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_private_cloud" not in self._stubs:
-            self._stubs["get_private_cloud"] = self.grpc_channel.unary_unary(
+            self._stubs["get_private_cloud"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/GetPrivateCloud",
                 request_serializer=vmwareengine.GetPrivateCloudRequest.serialize,
                 response_deserializer=vmwareengine_resources.PrivateCloud.deserialize,
@@ -335,7 +423,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_private_cloud" not in self._stubs:
-            self._stubs["create_private_cloud"] = self.grpc_channel.unary_unary(
+            self._stubs["create_private_cloud"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/CreatePrivateCloud",
                 request_serializer=vmwareengine.CreatePrivateCloudRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -368,7 +456,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_private_cloud" not in self._stubs:
-            self._stubs["update_private_cloud"] = self.grpc_channel.unary_unary(
+            self._stubs["update_private_cloud"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/UpdatePrivateCloud",
                 request_serializer=vmwareengine.UpdatePrivateCloudRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -411,7 +499,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_private_cloud" not in self._stubs:
-            self._stubs["delete_private_cloud"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_private_cloud"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/DeletePrivateCloud",
                 request_serializer=vmwareengine.DeletePrivateCloudRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -441,7 +529,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "undelete_private_cloud" not in self._stubs:
-            self._stubs["undelete_private_cloud"] = self.grpc_channel.unary_unary(
+            self._stubs["undelete_private_cloud"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/UndeletePrivateCloud",
                 request_serializer=vmwareengine.UndeletePrivateCloudRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -469,7 +557,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_clusters" not in self._stubs:
-            self._stubs["list_clusters"] = self.grpc_channel.unary_unary(
+            self._stubs["list_clusters"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/ListClusters",
                 request_serializer=vmwareengine.ListClustersRequest.serialize,
                 response_deserializer=vmwareengine.ListClustersResponse.deserialize,
@@ -495,7 +583,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_cluster" not in self._stubs:
-            self._stubs["get_cluster"] = self.grpc_channel.unary_unary(
+            self._stubs["get_cluster"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/GetCluster",
                 request_serializer=vmwareengine.GetClusterRequest.serialize,
                 response_deserializer=vmwareengine_resources.Cluster.deserialize,
@@ -524,7 +612,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_cluster" not in self._stubs:
-            self._stubs["create_cluster"] = self.grpc_channel.unary_unary(
+            self._stubs["create_cluster"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/CreateCluster",
                 request_serializer=vmwareengine.CreateClusterRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -556,7 +644,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_cluster" not in self._stubs:
-            self._stubs["update_cluster"] = self.grpc_channel.unary_unary(
+            self._stubs["update_cluster"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/UpdateCluster",
                 request_serializer=vmwareengine.UpdateClusterRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -585,7 +673,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_cluster" not in self._stubs:
-            self._stubs["delete_cluster"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_cluster"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/DeleteCluster",
                 request_serializer=vmwareengine.DeleteClusterRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -611,7 +699,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_nodes" not in self._stubs:
-            self._stubs["list_nodes"] = self.grpc_channel.unary_unary(
+            self._stubs["list_nodes"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/ListNodes",
                 request_serializer=vmwareengine.ListNodesRequest.serialize,
                 response_deserializer=vmwareengine.ListNodesResponse.deserialize,
@@ -637,7 +725,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_node" not in self._stubs:
-            self._stubs["get_node"] = self.grpc_channel.unary_unary(
+            self._stubs["get_node"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/GetNode",
                 request_serializer=vmwareengine.GetNodeRequest.serialize,
                 response_deserializer=vmwareengine_resources.Node.deserialize,
@@ -667,7 +755,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_external_addresses" not in self._stubs:
-            self._stubs["list_external_addresses"] = self.grpc_channel.unary_unary(
+            self._stubs["list_external_addresses"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/ListExternalAddresses",
                 request_serializer=vmwareengine.ListExternalAddressesRequest.serialize,
                 response_deserializer=vmwareengine.ListExternalAddressesResponse.deserialize,
@@ -701,7 +789,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         if "fetch_network_policy_external_addresses" not in self._stubs:
             self._stubs[
                 "fetch_network_policy_external_addresses"
-            ] = self.grpc_channel.unary_unary(
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/FetchNetworkPolicyExternalAddresses",
                 request_serializer=vmwareengine.FetchNetworkPolicyExternalAddressesRequest.serialize,
                 response_deserializer=vmwareengine.FetchNetworkPolicyExternalAddressesResponse.deserialize,
@@ -729,7 +817,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_external_address" not in self._stubs:
-            self._stubs["get_external_address"] = self.grpc_channel.unary_unary(
+            self._stubs["get_external_address"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/GetExternalAddress",
                 request_serializer=vmwareengine.GetExternalAddressRequest.serialize,
                 response_deserializer=vmwareengine_resources.ExternalAddress.deserialize,
@@ -760,7 +848,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_external_address" not in self._stubs:
-            self._stubs["create_external_address"] = self.grpc_channel.unary_unary(
+            self._stubs["create_external_address"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/CreateExternalAddress",
                 request_serializer=vmwareengine.CreateExternalAddressRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -794,7 +882,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_external_address" not in self._stubs:
-            self._stubs["update_external_address"] = self.grpc_channel.unary_unary(
+            self._stubs["update_external_address"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/UpdateExternalAddress",
                 request_serializer=vmwareengine.UpdateExternalAddressRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -825,7 +913,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_external_address" not in self._stubs:
-            self._stubs["delete_external_address"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_external_address"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/DeleteExternalAddress",
                 request_serializer=vmwareengine.DeleteExternalAddressRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -851,7 +939,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_subnets" not in self._stubs:
-            self._stubs["list_subnets"] = self.grpc_channel.unary_unary(
+            self._stubs["list_subnets"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/ListSubnets",
                 request_serializer=vmwareengine.ListSubnetsRequest.serialize,
                 response_deserializer=vmwareengine.ListSubnetsResponse.deserialize,
@@ -877,7 +965,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_subnet" not in self._stubs:
-            self._stubs["get_subnet"] = self.grpc_channel.unary_unary(
+            self._stubs["get_subnet"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/GetSubnet",
                 request_serializer=vmwareengine.GetSubnetRequest.serialize,
                 response_deserializer=vmwareengine_resources.Subnet.deserialize,
@@ -908,7 +996,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_subnet" not in self._stubs:
-            self._stubs["update_subnet"] = self.grpc_channel.unary_unary(
+            self._stubs["update_subnet"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/UpdateSubnet",
                 request_serializer=vmwareengine.UpdateSubnetRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -938,7 +1026,9 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_external_access_rules" not in self._stubs:
-            self._stubs["list_external_access_rules"] = self.grpc_channel.unary_unary(
+            self._stubs[
+                "list_external_access_rules"
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/ListExternalAccessRules",
                 request_serializer=vmwareengine.ListExternalAccessRulesRequest.serialize,
                 response_deserializer=vmwareengine.ListExternalAccessRulesResponse.deserialize,
@@ -967,7 +1057,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_external_access_rule" not in self._stubs:
-            self._stubs["get_external_access_rule"] = self.grpc_channel.unary_unary(
+            self._stubs["get_external_access_rule"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/GetExternalAccessRule",
                 request_serializer=vmwareengine.GetExternalAccessRuleRequest.serialize,
                 response_deserializer=vmwareengine_resources.ExternalAccessRule.deserialize,
@@ -996,7 +1086,9 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_external_access_rule" not in self._stubs:
-            self._stubs["create_external_access_rule"] = self.grpc_channel.unary_unary(
+            self._stubs[
+                "create_external_access_rule"
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/CreateExternalAccessRule",
                 request_serializer=vmwareengine.CreateExternalAccessRuleRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1025,7 +1117,9 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_external_access_rule" not in self._stubs:
-            self._stubs["update_external_access_rule"] = self.grpc_channel.unary_unary(
+            self._stubs[
+                "update_external_access_rule"
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/UpdateExternalAccessRule",
                 request_serializer=vmwareengine.UpdateExternalAccessRuleRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1053,7 +1147,9 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_external_access_rule" not in self._stubs:
-            self._stubs["delete_external_access_rule"] = self.grpc_channel.unary_unary(
+            self._stubs[
+                "delete_external_access_rule"
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/DeleteExternalAccessRule",
                 request_serializer=vmwareengine.DeleteExternalAccessRuleRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1083,7 +1179,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_logging_servers" not in self._stubs:
-            self._stubs["list_logging_servers"] = self.grpc_channel.unary_unary(
+            self._stubs["list_logging_servers"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/ListLoggingServers",
                 request_serializer=vmwareengine.ListLoggingServersRequest.serialize,
                 response_deserializer=vmwareengine.ListLoggingServersResponse.deserialize,
@@ -1111,7 +1207,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_logging_server" not in self._stubs:
-            self._stubs["get_logging_server"] = self.grpc_channel.unary_unary(
+            self._stubs["get_logging_server"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/GetLoggingServer",
                 request_serializer=vmwareengine.GetLoggingServerRequest.serialize,
                 response_deserializer=vmwareengine_resources.LoggingServer.deserialize,
@@ -1138,7 +1234,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_logging_server" not in self._stubs:
-            self._stubs["create_logging_server"] = self.grpc_channel.unary_unary(
+            self._stubs["create_logging_server"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/CreateLoggingServer",
                 request_serializer=vmwareengine.CreateLoggingServerRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1165,7 +1261,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_logging_server" not in self._stubs:
-            self._stubs["update_logging_server"] = self.grpc_channel.unary_unary(
+            self._stubs["update_logging_server"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/UpdateLoggingServer",
                 request_serializer=vmwareengine.UpdateLoggingServerRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1191,7 +1287,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_logging_server" not in self._stubs:
-            self._stubs["delete_logging_server"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_logging_server"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/DeleteLoggingServer",
                 request_serializer=vmwareengine.DeleteLoggingServerRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1219,7 +1315,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_node_types" not in self._stubs:
-            self._stubs["list_node_types"] = self.grpc_channel.unary_unary(
+            self._stubs["list_node_types"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/ListNodeTypes",
                 request_serializer=vmwareengine.ListNodeTypesRequest.serialize,
                 response_deserializer=vmwareengine.ListNodeTypesResponse.deserialize,
@@ -1245,7 +1341,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_node_type" not in self._stubs:
-            self._stubs["get_node_type"] = self.grpc_channel.unary_unary(
+            self._stubs["get_node_type"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/GetNodeType",
                 request_serializer=vmwareengine.GetNodeTypeRequest.serialize,
                 response_deserializer=vmwareengine_resources.NodeType.deserialize,
@@ -1273,7 +1369,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "show_nsx_credentials" not in self._stubs:
-            self._stubs["show_nsx_credentials"] = self.grpc_channel.unary_unary(
+            self._stubs["show_nsx_credentials"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/ShowNsxCredentials",
                 request_serializer=vmwareengine.ShowNsxCredentialsRequest.serialize,
                 response_deserializer=vmwareengine_resources.Credentials.deserialize,
@@ -1301,7 +1397,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "show_vcenter_credentials" not in self._stubs:
-            self._stubs["show_vcenter_credentials"] = self.grpc_channel.unary_unary(
+            self._stubs["show_vcenter_credentials"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/ShowVcenterCredentials",
                 request_serializer=vmwareengine.ShowVcenterCredentialsRequest.serialize,
                 response_deserializer=vmwareengine_resources.Credentials.deserialize,
@@ -1327,7 +1423,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "reset_nsx_credentials" not in self._stubs:
-            self._stubs["reset_nsx_credentials"] = self.grpc_channel.unary_unary(
+            self._stubs["reset_nsx_credentials"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/ResetNsxCredentials",
                 request_serializer=vmwareengine.ResetNsxCredentialsRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1355,7 +1451,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "reset_vcenter_credentials" not in self._stubs:
-            self._stubs["reset_vcenter_credentials"] = self.grpc_channel.unary_unary(
+            self._stubs["reset_vcenter_credentials"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/ResetVcenterCredentials",
                 request_serializer=vmwareengine.ResetVcenterCredentialsRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1383,7 +1479,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_dns_forwarding" not in self._stubs:
-            self._stubs["get_dns_forwarding"] = self.grpc_channel.unary_unary(
+            self._stubs["get_dns_forwarding"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/GetDnsForwarding",
                 request_serializer=vmwareengine.GetDnsForwardingRequest.serialize,
                 response_deserializer=vmwareengine_resources.DnsForwarding.deserialize,
@@ -1411,7 +1507,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_dns_forwarding" not in self._stubs:
-            self._stubs["update_dns_forwarding"] = self.grpc_channel.unary_unary(
+            self._stubs["update_dns_forwarding"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/UpdateDnsForwarding",
                 request_serializer=vmwareengine.UpdateDnsForwardingRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1443,7 +1539,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_network_peering" not in self._stubs:
-            self._stubs["get_network_peering"] = self.grpc_channel.unary_unary(
+            self._stubs["get_network_peering"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/GetNetworkPeering",
                 request_serializer=vmwareengine.GetNetworkPeeringRequest.serialize,
                 response_deserializer=vmwareengine_resources.NetworkPeering.deserialize,
@@ -1474,7 +1570,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_network_peerings" not in self._stubs:
-            self._stubs["list_network_peerings"] = self.grpc_channel.unary_unary(
+            self._stubs["list_network_peerings"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/ListNetworkPeerings",
                 request_serializer=vmwareengine.ListNetworkPeeringsRequest.serialize,
                 response_deserializer=vmwareengine.ListNetworkPeeringsResponse.deserialize,
@@ -1503,7 +1599,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_network_peering" not in self._stubs:
-            self._stubs["create_network_peering"] = self.grpc_channel.unary_unary(
+            self._stubs["create_network_peering"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/CreateNetworkPeering",
                 request_serializer=vmwareengine.CreateNetworkPeeringRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1532,7 +1628,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_network_peering" not in self._stubs:
-            self._stubs["delete_network_peering"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_network_peering"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/DeleteNetworkPeering",
                 request_serializer=vmwareengine.DeleteNetworkPeeringRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1561,7 +1657,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_network_peering" not in self._stubs:
-            self._stubs["update_network_peering"] = self.grpc_channel.unary_unary(
+            self._stubs["update_network_peering"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/UpdateNetworkPeering",
                 request_serializer=vmwareengine.UpdateNetworkPeeringRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1591,7 +1687,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_peering_routes" not in self._stubs:
-            self._stubs["list_peering_routes"] = self.grpc_channel.unary_unary(
+            self._stubs["list_peering_routes"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/ListPeeringRoutes",
                 request_serializer=vmwareengine.ListPeeringRoutesRequest.serialize,
                 response_deserializer=vmwareengine.ListPeeringRoutesResponse.deserialize,
@@ -1620,7 +1716,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_hcx_activation_key" not in self._stubs:
-            self._stubs["create_hcx_activation_key"] = self.grpc_channel.unary_unary(
+            self._stubs["create_hcx_activation_key"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/CreateHcxActivationKey",
                 request_serializer=vmwareengine.CreateHcxActivationKeyRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1649,7 +1745,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_hcx_activation_keys" not in self._stubs:
-            self._stubs["list_hcx_activation_keys"] = self.grpc_channel.unary_unary(
+            self._stubs["list_hcx_activation_keys"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/ListHcxActivationKeys",
                 request_serializer=vmwareengine.ListHcxActivationKeysRequest.serialize,
                 response_deserializer=vmwareengine.ListHcxActivationKeysResponse.deserialize,
@@ -1678,7 +1774,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_hcx_activation_key" not in self._stubs:
-            self._stubs["get_hcx_activation_key"] = self.grpc_channel.unary_unary(
+            self._stubs["get_hcx_activation_key"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/GetHcxActivationKey",
                 request_serializer=vmwareengine.GetHcxActivationKeyRequest.serialize,
                 response_deserializer=vmwareengine_resources.HcxActivationKey.deserialize,
@@ -1706,7 +1802,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_network_policy" not in self._stubs:
-            self._stubs["get_network_policy"] = self.grpc_channel.unary_unary(
+            self._stubs["get_network_policy"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/GetNetworkPolicy",
                 request_serializer=vmwareengine.GetNetworkPolicyRequest.serialize,
                 response_deserializer=vmwareengine_resources.NetworkPolicy.deserialize,
@@ -1736,7 +1832,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_network_policies" not in self._stubs:
-            self._stubs["list_network_policies"] = self.grpc_channel.unary_unary(
+            self._stubs["list_network_policies"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/ListNetworkPolicies",
                 request_serializer=vmwareengine.ListNetworkPoliciesRequest.serialize,
                 response_deserializer=vmwareengine.ListNetworkPoliciesResponse.deserialize,
@@ -1765,7 +1861,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_network_policy" not in self._stubs:
-            self._stubs["create_network_policy"] = self.grpc_channel.unary_unary(
+            self._stubs["create_network_policy"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/CreateNetworkPolicy",
                 request_serializer=vmwareengine.CreateNetworkPolicyRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1803,7 +1899,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_network_policy" not in self._stubs:
-            self._stubs["update_network_policy"] = self.grpc_channel.unary_unary(
+            self._stubs["update_network_policy"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/UpdateNetworkPolicy",
                 request_serializer=vmwareengine.UpdateNetworkPolicyRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1831,7 +1927,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_network_policy" not in self._stubs:
-            self._stubs["delete_network_policy"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_network_policy"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/DeleteNetworkPolicy",
                 request_serializer=vmwareengine.DeleteNetworkPolicyRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1864,7 +1960,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         if "list_management_dns_zone_bindings" not in self._stubs:
             self._stubs[
                 "list_management_dns_zone_bindings"
-            ] = self.grpc_channel.unary_unary(
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/ListManagementDnsZoneBindings",
                 request_serializer=vmwareengine.ListManagementDnsZoneBindingsRequest.serialize,
                 response_deserializer=vmwareengine.ListManagementDnsZoneBindingsResponse.deserialize,
@@ -1897,7 +1993,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         if "get_management_dns_zone_binding" not in self._stubs:
             self._stubs[
                 "get_management_dns_zone_binding"
-            ] = self.grpc_channel.unary_unary(
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/GetManagementDnsZoneBinding",
                 request_serializer=vmwareengine.GetManagementDnsZoneBindingRequest.serialize,
                 response_deserializer=vmwareengine_resources.ManagementDnsZoneBinding.deserialize,
@@ -1935,7 +2031,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         if "create_management_dns_zone_binding" not in self._stubs:
             self._stubs[
                 "create_management_dns_zone_binding"
-            ] = self.grpc_channel.unary_unary(
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/CreateManagementDnsZoneBinding",
                 request_serializer=vmwareengine.CreateManagementDnsZoneBindingRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1967,7 +2063,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         if "update_management_dns_zone_binding" not in self._stubs:
             self._stubs[
                 "update_management_dns_zone_binding"
-            ] = self.grpc_channel.unary_unary(
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/UpdateManagementDnsZoneBinding",
                 request_serializer=vmwareengine.UpdateManagementDnsZoneBindingRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -2001,7 +2097,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         if "delete_management_dns_zone_binding" not in self._stubs:
             self._stubs[
                 "delete_management_dns_zone_binding"
-            ] = self.grpc_channel.unary_unary(
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/DeleteManagementDnsZoneBinding",
                 request_serializer=vmwareengine.DeleteManagementDnsZoneBindingRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -2033,7 +2129,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         if "repair_management_dns_zone_binding" not in self._stubs:
             self._stubs[
                 "repair_management_dns_zone_binding"
-            ] = self.grpc_channel.unary_unary(
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/RepairManagementDnsZoneBinding",
                 request_serializer=vmwareengine.RepairManagementDnsZoneBindingRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -2062,7 +2158,9 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_vmware_engine_network" not in self._stubs:
-            self._stubs["create_vmware_engine_network"] = self.grpc_channel.unary_unary(
+            self._stubs[
+                "create_vmware_engine_network"
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/CreateVmwareEngineNetwork",
                 request_serializer=vmwareengine.CreateVmwareEngineNetworkRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -2092,7 +2190,9 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_vmware_engine_network" not in self._stubs:
-            self._stubs["update_vmware_engine_network"] = self.grpc_channel.unary_unary(
+            self._stubs[
+                "update_vmware_engine_network"
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/UpdateVmwareEngineNetwork",
                 request_serializer=vmwareengine.UpdateVmwareEngineNetworkRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -2123,7 +2223,9 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_vmware_engine_network" not in self._stubs:
-            self._stubs["delete_vmware_engine_network"] = self.grpc_channel.unary_unary(
+            self._stubs[
+                "delete_vmware_engine_network"
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/DeleteVmwareEngineNetwork",
                 request_serializer=vmwareengine.DeleteVmwareEngineNetworkRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -2156,7 +2258,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_vmware_engine_network" not in self._stubs:
-            self._stubs["get_vmware_engine_network"] = self.grpc_channel.unary_unary(
+            self._stubs["get_vmware_engine_network"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/GetVmwareEngineNetwork",
                 request_serializer=vmwareengine.GetVmwareEngineNetworkRequest.serialize,
                 response_deserializer=vmwareengine_resources.VmwareEngineNetwork.deserialize,
@@ -2186,7 +2288,9 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_vmware_engine_networks" not in self._stubs:
-            self._stubs["list_vmware_engine_networks"] = self.grpc_channel.unary_unary(
+            self._stubs[
+                "list_vmware_engine_networks"
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/ListVmwareEngineNetworks",
                 request_serializer=vmwareengine.ListVmwareEngineNetworksRequest.serialize,
                 response_deserializer=vmwareengine.ListVmwareEngineNetworksResponse.deserialize,
@@ -2215,7 +2319,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_private_connection" not in self._stubs:
-            self._stubs["create_private_connection"] = self.grpc_channel.unary_unary(
+            self._stubs["create_private_connection"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/CreatePrivateConnection",
                 request_serializer=vmwareengine.CreatePrivateConnectionRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -2246,7 +2350,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_private_connection" not in self._stubs:
-            self._stubs["get_private_connection"] = self.grpc_channel.unary_unary(
+            self._stubs["get_private_connection"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/GetPrivateConnection",
                 request_serializer=vmwareengine.GetPrivateConnectionRequest.serialize,
                 response_deserializer=vmwareengine_resources.PrivateConnection.deserialize,
@@ -2276,7 +2380,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_private_connections" not in self._stubs:
-            self._stubs["list_private_connections"] = self.grpc_channel.unary_unary(
+            self._stubs["list_private_connections"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/ListPrivateConnections",
                 request_serializer=vmwareengine.ListPrivateConnectionsRequest.serialize,
                 response_deserializer=vmwareengine.ListPrivateConnectionsResponse.deserialize,
@@ -2306,7 +2410,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_private_connection" not in self._stubs:
-            self._stubs["update_private_connection"] = self.grpc_channel.unary_unary(
+            self._stubs["update_private_connection"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/UpdatePrivateConnection",
                 request_serializer=vmwareengine.UpdatePrivateConnectionRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -2336,7 +2440,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_private_connection" not in self._stubs:
-            self._stubs["delete_private_connection"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_private_connection"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/DeletePrivateConnection",
                 request_serializer=vmwareengine.DeletePrivateConnectionRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -2369,7 +2473,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         if "list_private_connection_peering_routes" not in self._stubs:
             self._stubs[
                 "list_private_connection_peering_routes"
-            ] = self.grpc_channel.unary_unary(
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/ListPrivateConnectionPeeringRoutes",
                 request_serializer=vmwareengine.ListPrivateConnectionPeeringRoutesRequest.serialize,
                 response_deserializer=vmwareengine.ListPrivateConnectionPeeringRoutesResponse.deserialize,
@@ -2401,7 +2505,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "grant_dns_bind_permission" not in self._stubs:
-            self._stubs["grant_dns_bind_permission"] = self.grpc_channel.unary_unary(
+            self._stubs["grant_dns_bind_permission"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/GrantDnsBindPermission",
                 request_serializer=vmwareengine.GrantDnsBindPermissionRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -2433,7 +2537,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_dns_bind_permission" not in self._stubs:
-            self._stubs["get_dns_bind_permission"] = self.grpc_channel.unary_unary(
+            self._stubs["get_dns_bind_permission"] = self._logged_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/GetDnsBindPermission",
                 request_serializer=vmwareengine.GetDnsBindPermissionRequest.serialize,
                 response_deserializer=vmwareengine_resources.DnsBindPermission.deserialize,
@@ -2465,7 +2569,9 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "revoke_dns_bind_permission" not in self._stubs:
-            self._stubs["revoke_dns_bind_permission"] = self.grpc_channel.unary_unary(
+            self._stubs[
+                "revoke_dns_bind_permission"
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.vmwareengine.v1.VmwareEngine/RevokeDnsBindPermission",
                 request_serializer=vmwareengine.RevokeDnsBindPermissionRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -2473,7 +2579,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         return self._stubs["revoke_dns_bind_permission"]
 
     def close(self):
-        self.grpc_channel.close()
+        self._logged_channel.close()
 
     @property
     def delete_operation(
@@ -2485,7 +2591,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_operation" not in self._stubs:
-            self._stubs["delete_operation"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_operation"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/DeleteOperation",
                 request_serializer=operations_pb2.DeleteOperationRequest.SerializeToString,
                 response_deserializer=None,
@@ -2502,7 +2608,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_operation" not in self._stubs:
-            self._stubs["get_operation"] = self.grpc_channel.unary_unary(
+            self._stubs["get_operation"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/GetOperation",
                 request_serializer=operations_pb2.GetOperationRequest.SerializeToString,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -2521,7 +2627,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_operations" not in self._stubs:
-            self._stubs["list_operations"] = self.grpc_channel.unary_unary(
+            self._stubs["list_operations"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/ListOperations",
                 request_serializer=operations_pb2.ListOperationsRequest.SerializeToString,
                 response_deserializer=operations_pb2.ListOperationsResponse.FromString,
@@ -2540,7 +2646,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_locations" not in self._stubs:
-            self._stubs["list_locations"] = self.grpc_channel.unary_unary(
+            self._stubs["list_locations"] = self._logged_channel.unary_unary(
                 "/google.cloud.location.Locations/ListLocations",
                 request_serializer=locations_pb2.ListLocationsRequest.SerializeToString,
                 response_deserializer=locations_pb2.ListLocationsResponse.FromString,
@@ -2557,7 +2663,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_location" not in self._stubs:
-            self._stubs["get_location"] = self.grpc_channel.unary_unary(
+            self._stubs["get_location"] = self._logged_channel.unary_unary(
                 "/google.cloud.location.Locations/GetLocation",
                 request_serializer=locations_pb2.GetLocationRequest.SerializeToString,
                 response_deserializer=locations_pb2.Location.FromString,
@@ -2582,7 +2688,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "set_iam_policy" not in self._stubs:
-            self._stubs["set_iam_policy"] = self.grpc_channel.unary_unary(
+            self._stubs["set_iam_policy"] = self._logged_channel.unary_unary(
                 "/google.iam.v1.IAMPolicy/SetIamPolicy",
                 request_serializer=iam_policy_pb2.SetIamPolicyRequest.SerializeToString,
                 response_deserializer=policy_pb2.Policy.FromString,
@@ -2608,7 +2714,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_iam_policy" not in self._stubs:
-            self._stubs["get_iam_policy"] = self.grpc_channel.unary_unary(
+            self._stubs["get_iam_policy"] = self._logged_channel.unary_unary(
                 "/google.iam.v1.IAMPolicy/GetIamPolicy",
                 request_serializer=iam_policy_pb2.GetIamPolicyRequest.SerializeToString,
                 response_deserializer=policy_pb2.Policy.FromString,
@@ -2637,7 +2743,7 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "test_iam_permissions" not in self._stubs:
-            self._stubs["test_iam_permissions"] = self.grpc_channel.unary_unary(
+            self._stubs["test_iam_permissions"] = self._logged_channel.unary_unary(
                 "/google.iam.v1.IAMPolicy/TestIamPermissions",
                 request_serializer=iam_policy_pb2.TestIamPermissionsRequest.SerializeToString,
                 response_deserializer=iam_policy_pb2.TestIamPermissionsResponse.FromString,
