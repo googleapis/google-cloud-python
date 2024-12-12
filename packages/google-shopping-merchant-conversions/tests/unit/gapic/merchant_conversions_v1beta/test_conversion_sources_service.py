@@ -3500,6 +3500,7 @@ def test_create_conversion_source_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_conversion_source(request)
 
@@ -3558,6 +3559,7 @@ def test_create_conversion_source_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_conversion_source(**mock_args)
 
@@ -3697,6 +3699,7 @@ def test_update_conversion_source_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_conversion_source(request)
 
@@ -3757,6 +3760,7 @@ def test_update_conversion_source_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_conversion_source(**mock_args)
 
@@ -3895,6 +3899,7 @@ def test_delete_conversion_source_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_conversion_source(request)
 
@@ -3938,6 +3943,7 @@ def test_delete_conversion_source_rest_flattened():
         json_return_value = ""
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_conversion_source(**mock_args)
 
@@ -4075,6 +4081,7 @@ def test_undelete_conversion_source_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.undelete_conversion_source(request)
 
@@ -4199,6 +4206,7 @@ def test_get_conversion_source_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_conversion_source(request)
 
@@ -4244,6 +4252,7 @@ def test_get_conversion_source_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_conversion_source(**mock_args)
 
@@ -4390,6 +4399,7 @@ def test_list_conversion_sources_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_conversion_sources(request)
 
@@ -4444,6 +4454,7 @@ def test_list_conversion_sources_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_conversion_sources(**mock_args)
 
@@ -5000,6 +5011,7 @@ def test_create_conversion_source_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_conversion_source(request)
 
 
@@ -5127,6 +5139,7 @@ def test_create_conversion_source_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_conversion_source(request)
 
     # Establish that the response is the type that we expect.
@@ -5171,6 +5184,7 @@ def test_create_conversion_source_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = conversionsources.ConversionSource.to_json(
             conversionsources.ConversionSource()
         )
@@ -5219,6 +5233,7 @@ def test_update_conversion_source_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_conversion_source(request)
 
 
@@ -5348,6 +5363,7 @@ def test_update_conversion_source_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_conversion_source(request)
 
     # Establish that the response is the type that we expect.
@@ -5392,6 +5408,7 @@ def test_update_conversion_source_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = conversionsources.ConversionSource.to_json(
             conversionsources.ConversionSource()
         )
@@ -5438,6 +5455,7 @@ def test_delete_conversion_source_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_conversion_source(request)
 
 
@@ -5468,6 +5486,7 @@ def test_delete_conversion_source_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_conversion_source(request)
 
     # Establish that the response is the type that we expect.
@@ -5505,6 +5524,7 @@ def test_delete_conversion_source_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = conversionsources.DeleteConversionSourceRequest()
         metadata = [
@@ -5545,6 +5565,7 @@ def test_undelete_conversion_source_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.undelete_conversion_source(request)
 
 
@@ -5582,6 +5603,7 @@ def test_undelete_conversion_source_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.undelete_conversion_source(request)
 
     # Establish that the response is the type that we expect.
@@ -5626,6 +5648,7 @@ def test_undelete_conversion_source_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = conversionsources.ConversionSource.to_json(
             conversionsources.ConversionSource()
         )
@@ -5672,6 +5695,7 @@ def test_get_conversion_source_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_conversion_source(request)
 
 
@@ -5709,6 +5733,7 @@ def test_get_conversion_source_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_conversion_source(request)
 
     # Establish that the response is the type that we expect.
@@ -5751,6 +5776,7 @@ def test_get_conversion_source_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = conversionsources.ConversionSource.to_json(
             conversionsources.ConversionSource()
         )
@@ -5797,6 +5823,7 @@ def test_list_conversion_sources_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_conversion_sources(request)
 
 
@@ -5832,6 +5859,7 @@ def test_list_conversion_sources_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_conversion_sources(request)
 
     # Establish that the response is the type that we expect.
@@ -5874,6 +5902,7 @@ def test_list_conversion_sources_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = conversionsources.ListConversionSourcesResponse.to_json(
             conversionsources.ListConversionSourcesResponse()
         )

@@ -2758,6 +2758,7 @@ def test_get_lfp_store_rest_required_fields(request_type=lfpstore.GetLfpStoreReq
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_lfp_store(request)
 
@@ -2803,6 +2804,7 @@ def test_get_lfp_store_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_lfp_store(**mock_args)
 
@@ -2936,6 +2938,7 @@ def test_insert_lfp_store_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.insert_lfp_store(request)
 
@@ -2990,6 +2993,7 @@ def test_insert_lfp_store_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.insert_lfp_store(**mock_args)
 
@@ -3121,6 +3125,7 @@ def test_delete_lfp_store_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_lfp_store(request)
 
@@ -3164,6 +3169,7 @@ def test_delete_lfp_store_rest_flattened():
         json_return_value = ""
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_lfp_store(**mock_args)
 
@@ -3309,6 +3315,7 @@ def test_list_lfp_stores_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_lfp_stores(request)
 
@@ -3374,6 +3381,7 @@ def test_list_lfp_stores_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_lfp_stores(**mock_args)
 
@@ -3817,6 +3825,7 @@ def test_get_lfp_store_rest_bad_request(request_type=lfpstore.GetLfpStoreRequest
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_lfp_store(request)
 
 
@@ -3862,6 +3871,7 @@ def test_get_lfp_store_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_lfp_store(request)
 
     # Establish that the response is the type that we expect.
@@ -3913,6 +3923,7 @@ def test_get_lfp_store_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = lfpstore.LfpStore.to_json(lfpstore.LfpStore())
         req.return_value.content = return_value
 
@@ -3955,6 +3966,7 @@ def test_insert_lfp_store_rest_bad_request(request_type=lfpstore.InsertLfpStoreR
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.insert_lfp_store(request)
 
 
@@ -4080,6 +4092,7 @@ def test_insert_lfp_store_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.insert_lfp_store(request)
 
     # Establish that the response is the type that we expect.
@@ -4131,6 +4144,7 @@ def test_insert_lfp_store_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = lfpstore.LfpStore.to_json(lfpstore.LfpStore())
         req.return_value.content = return_value
 
@@ -4173,6 +4187,7 @@ def test_delete_lfp_store_rest_bad_request(request_type=lfpstore.DeleteLfpStoreR
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_lfp_store(request)
 
 
@@ -4203,6 +4218,7 @@ def test_delete_lfp_store_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_lfp_store(request)
 
     # Establish that the response is the type that we expect.
@@ -4237,6 +4253,7 @@ def test_delete_lfp_store_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = lfpstore.DeleteLfpStoreRequest()
         metadata = [
@@ -4275,6 +4292,7 @@ def test_list_lfp_stores_rest_bad_request(request_type=lfpstore.ListLfpStoresReq
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_lfp_stores(request)
 
 
@@ -4310,6 +4328,7 @@ def test_list_lfp_stores_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_lfp_stores(request)
 
     # Establish that the response is the type that we expect.
@@ -4348,6 +4367,7 @@ def test_list_lfp_stores_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = lfpstore.ListLfpStoresResponse.to_json(
             lfpstore.ListLfpStoresResponse()
         )
