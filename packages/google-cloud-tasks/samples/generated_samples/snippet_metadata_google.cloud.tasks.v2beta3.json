@@ -51,7 +51,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.tasks_v2beta3.types.Queue",
@@ -135,7 +135,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.tasks_v2beta3.types.Queue",
@@ -220,7 +220,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.tasks_v2beta3.types.Task",
@@ -304,7 +304,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.tasks_v2beta3.types.Task",
@@ -385,7 +385,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "shortName": "delete_queue"
@@ -462,7 +462,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "shortName": "delete_queue"
@@ -540,7 +540,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "shortName": "delete_task"
@@ -617,7 +617,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "shortName": "delete_task"
@@ -695,7 +695,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.iam.v1.policy_pb2.Policy",
@@ -775,7 +775,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.iam.v1.policy_pb2.Policy",
@@ -856,7 +856,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.tasks_v2beta3.types.Queue",
@@ -936,7 +936,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.tasks_v2beta3.types.Queue",
@@ -1017,7 +1017,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.tasks_v2beta3.types.Task",
@@ -1097,7 +1097,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.tasks_v2beta3.types.Task",
@@ -1178,7 +1178,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.tasks_v2beta3.services.cloud_tasks.pagers.ListQueuesAsyncPager",
@@ -1258,7 +1258,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.tasks_v2beta3.services.cloud_tasks.pagers.ListQueuesPager",
@@ -1339,7 +1339,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.tasks_v2beta3.services.cloud_tasks.pagers.ListTasksAsyncPager",
@@ -1419,7 +1419,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.tasks_v2beta3.services.cloud_tasks.pagers.ListTasksPager",
@@ -1500,7 +1500,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.tasks_v2beta3.types.Queue",
@@ -1580,7 +1580,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.tasks_v2beta3.types.Queue",
@@ -1661,7 +1661,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.tasks_v2beta3.types.Queue",
@@ -1741,7 +1741,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.tasks_v2beta3.types.Queue",
@@ -1822,7 +1822,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.tasks_v2beta3.types.Queue",
@@ -1902,7 +1902,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.tasks_v2beta3.types.Queue",
@@ -1983,7 +1983,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.tasks_v2beta3.types.Task",
@@ -2063,7 +2063,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.tasks_v2beta3.types.Task",
@@ -2144,7 +2144,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.iam.v1.policy_pb2.Policy",
@@ -2224,7 +2224,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.iam.v1.policy_pb2.Policy",
@@ -2309,7 +2309,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.iam.v1.iam_policy_pb2.TestIamPermissionsResponse",
@@ -2393,7 +2393,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.iam.v1.iam_policy_pb2.TestIamPermissionsResponse",
@@ -2478,7 +2478,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.tasks_v2beta3.types.Queue",
@@ -2562,7 +2562,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.tasks_v2beta3.types.Queue",
