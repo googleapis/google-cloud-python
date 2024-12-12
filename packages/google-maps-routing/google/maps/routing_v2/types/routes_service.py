@@ -243,12 +243,28 @@ class ComputeRoutesRequest(proto.Message):
                 presented as a formatted HTML text string. This content is
                 meant to be read as-is. This content is for display only. Do
                 not programmatically parse it.
+            FLYOVER_INFO_ON_POLYLINE (7):
+                Flyover information for the route(s). The
+                ``routes.polyline_details.flyover_info`` fieldmask must be
+                specified to return this information. This data will only
+                currently be populated for certain metros in India. This
+                feature is experimental, and the SKU/charge is subject to
+                change.
+            NARROW_ROAD_INFO_ON_POLYLINE (8):
+                Narrow road information for the route(s). The
+                ``routes.polyline_details.narrow_road_info`` fieldmask must
+                be specified to return this information. This data will only
+                currently be populated for certain metros in India. This
+                feature is experimental, and the SKU/charge is subject to
+                change.
         """
         EXTRA_COMPUTATION_UNSPECIFIED = 0
         TOLLS = 1
         FUEL_CONSUMPTION = 2
         TRAFFIC_ON_POLYLINE = 3
         HTML_FORMATTED_NAVIGATION_INSTRUCTIONS = 4
+        FLYOVER_INFO_ON_POLYLINE = 7
+        NARROW_ROAD_INFO_ON_POLYLINE = 8
 
     origin: gmr_waypoint.Waypoint = proto.Field(
         proto.MESSAGE,

@@ -20,6 +20,7 @@ from .location import Location
 from .maneuver import Maneuver
 from .navigation_instruction import NavigationInstruction
 from .polyline import Polyline, PolylineEncoding, PolylineQuality
+from .polyline_details import PolylineDetails
 from .route import (
     Route,
     RouteLeg,
@@ -66,6 +67,7 @@ __all__ = (
     "Polyline",
     "PolylineEncoding",
     "PolylineQuality",
+    "PolylineDetails",
     "Route",
     "RouteLeg",
     "RouteLegStep",
