@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.8.15](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataflow-client-v0.8.14...google-cloud-dataflow-client-v0.8.15) (2024-12-12)
+
+
+### Features
+
+* Add support for opt-in debug logging ([19ed3be](https://github.com/googleapis/google-cloud-python/commit/19ed3bec7fcbc09aa5828180778ffc828d3eafa3))
+
+
+### Bug Fixes
+
+* Fix typing issue with gRPC metadata when key ends in -bin ([19ed3be](https://github.com/googleapis/google-cloud-python/commit/19ed3bec7fcbc09aa5828180778ffc828d3eafa3))
+
 ## [0.8.14](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataflow-client-v0.8.13...google-cloud-dataflow-client-v0.8.14) (2024-11-11)
 
 

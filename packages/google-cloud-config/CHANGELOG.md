@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.1.14](https://github.com/googleapis/google-cloud-python/compare/google-cloud-config-v0.1.13...google-cloud-config-v0.1.14) (2024-12-12)
+
+
+### Features
+
+* Add support for opt-in debug logging ([4795f26](https://github.com/googleapis/google-cloud-python/commit/4795f26b927cc138f5bdc92245848a8ca262ef86))
+* added annotations ([4795f26](https://github.com/googleapis/google-cloud-python/commit/4795f26b927cc138f5bdc92245848a8ca262ef86))
+
+
+### Bug Fixes
+
+* Changed field behavior for an existing field `service_account` in message `.google.cloud.config.v1.Deployment` ([4795f26](https://github.com/googleapis/google-cloud-python/commit/4795f26b927cc138f5bdc92245848a8ca262ef86))
+* Changed field behavior for an existing field `service_account` in message `.google.cloud.config.v1.Preview` ([4795f26](https://github.com/googleapis/google-cloud-python/commit/4795f26b927cc138f5bdc92245848a8ca262ef86))
+* Fix typing issue with gRPC metadata when key ends in -bin ([4795f26](https://github.com/googleapis/google-cloud-python/commit/4795f26b927cc138f5bdc92245848a8ca262ef86))
+
+
+### Documentation
+
+* Service Account is a required field ([4795f26](https://github.com/googleapis/google-cloud-python/commit/4795f26b927cc138f5bdc92245848a8ca262ef86))
+
 ## [0.1.13](https://github.com/googleapis/google-cloud-python/compare/google-cloud-config-v0.1.12...google-cloud-config-v0.1.13) (2024-10-31)
 
 
