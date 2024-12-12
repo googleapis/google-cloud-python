@@ -15,6 +15,7 @@
 #
 from collections import OrderedDict
 import functools
+import logging as std_logging
 import os
 import re
 from typing import (
@@ -48,6 +49,15 @@ try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
+
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = std_logging.getLogger(__name__)
 
 from google.api_core import extended_operation  # type: ignore
 
@@ -568,6 +578,10 @@ class RegionInstanceGroupManagersClient(
         # Initialize the universe domain validation.
         self._is_universe_domain_valid = False
 
+        if CLIENT_LOGGING_SUPPORTED:  # pragma: NO COVER
+            # Setup logging.
+            client_logging.initialize_logging()
+
         api_key_value = getattr(self._client_options, "api_key", None)
         if api_key_value and credentials:
             raise ValueError(
@@ -636,6 +650,29 @@ class RegionInstanceGroupManagersClient(
                 api_audience=self._client_options.api_audience,
             )
 
+        if "async" not in str(self._transport):
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                std_logging.DEBUG
+            ):  # pragma: NO COVER
+                _LOGGER.debug(
+                    "Created client `google.cloud.compute_v1.RegionInstanceGroupManagersClient`.",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionInstanceGroupManagers",
+                        "universeDomain": getattr(
+                            self._transport._credentials, "universe_domain", ""
+                        ),
+                        "credentialsType": f"{type(self._transport._credentials).__module__}.{type(self._transport._credentials).__qualname__}",
+                        "credentialsInfo": getattr(
+                            self.transport._credentials, "get_cred_info", lambda: None
+                        )(),
+                    }
+                    if hasattr(self._transport, "_credentials")
+                    else {
+                        "serviceName": "google.cloud.compute.v1.RegionInstanceGroupManagers",
+                        "credentialsType": None,
+                    },
+                )
+
     def abandon_instances_unary(
         self,
         request: Optional[
@@ -650,7 +687,7 @@ class RegionInstanceGroupManagersClient(
         ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Operation:
         r"""Flags the specified instances to be immediately
         removed from the managed instance group. Abandoning an
@@ -727,8 +764,10 @@ class RegionInstanceGroupManagersClient(
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.api_core.extended_operation.ExtendedOperation:
@@ -819,7 +858,7 @@ class RegionInstanceGroupManagersClient(
         ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Flags the specified instances to be immediately
         removed from the managed instance group. Abandoning an
@@ -896,8 +935,10 @@ class RegionInstanceGroupManagersClient(
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.api_core.extended_operation.ExtendedOperation:
@@ -1015,7 +1056,7 @@ class RegionInstanceGroupManagersClient(
         ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Operation:
         r"""Apply updates to selected instances the managed
         instance group.
@@ -1080,8 +1121,10 @@ class RegionInstanceGroupManagersClient(
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.api_core.extended_operation.ExtendedOperation:
@@ -1178,7 +1221,7 @@ class RegionInstanceGroupManagersClient(
         ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Apply updates to selected instances the managed
         instance group.
@@ -1243,8 +1286,10 @@ class RegionInstanceGroupManagersClient(
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.api_core.extended_operation.ExtendedOperation:
@@ -1364,7 +1409,7 @@ class RegionInstanceGroupManagersClient(
         ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Operation:
         r"""Creates instances with per-instance configurations in
         this regional managed instance group. Instances are
@@ -1436,8 +1481,10 @@ class RegionInstanceGroupManagersClient(
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.api_core.extended_operation.ExtendedOperation:
@@ -1528,7 +1575,7 @@ class RegionInstanceGroupManagersClient(
         ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Creates instances with per-instance configurations in
         this regional managed instance group. Instances are
@@ -1600,8 +1647,10 @@ class RegionInstanceGroupManagersClient(
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.api_core.extended_operation.ExtendedOperation:
@@ -1714,7 +1763,7 @@ class RegionInstanceGroupManagersClient(
         instance_group_manager: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Operation:
         r"""Deletes the specified managed instance group and all
         of the instances in that group.
@@ -1774,8 +1823,10 @@ class RegionInstanceGroupManagersClient(
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.api_core.extended_operation.ExtendedOperation:
@@ -1847,7 +1898,7 @@ class RegionInstanceGroupManagersClient(
         instance_group_manager: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Deletes the specified managed instance group and all
         of the instances in that group.
@@ -1907,8 +1958,10 @@ class RegionInstanceGroupManagersClient(
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.api_core.extended_operation.ExtendedOperation:
@@ -2008,7 +2061,7 @@ class RegionInstanceGroupManagersClient(
         ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Operation:
         r"""Flags the specified instances in the managed instance
         group to be immediately deleted. The instances are also
@@ -2084,8 +2137,10 @@ class RegionInstanceGroupManagersClient(
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.api_core.extended_operation.ExtendedOperation:
@@ -2176,7 +2231,7 @@ class RegionInstanceGroupManagersClient(
         ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Flags the specified instances in the managed instance
         group to be immediately deleted. The instances are also
@@ -2252,8 +2307,10 @@ class RegionInstanceGroupManagersClient(
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.api_core.extended_operation.ExtendedOperation:
@@ -2371,7 +2428,7 @@ class RegionInstanceGroupManagersClient(
         ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Operation:
         r"""Deletes selected per-instance configurations for the
         managed instance group.
@@ -2436,8 +2493,10 @@ class RegionInstanceGroupManagersClient(
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.api_core.extended_operation.ExtendedOperation:
@@ -2534,7 +2593,7 @@ class RegionInstanceGroupManagersClient(
         ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Deletes selected per-instance configurations for the
         managed instance group.
@@ -2599,8 +2658,10 @@ class RegionInstanceGroupManagersClient(
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.api_core.extended_operation.ExtendedOperation:
@@ -2717,7 +2778,7 @@ class RegionInstanceGroupManagersClient(
         instance_group_manager: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.InstanceGroupManager:
         r"""Returns all of the details about the specified
         managed instance group.
@@ -2777,8 +2838,10 @@ class RegionInstanceGroupManagersClient(
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.compute_v1.types.InstanceGroupManager:
@@ -2857,7 +2920,7 @@ class RegionInstanceGroupManagersClient(
         instance_group_manager_resource: Optional[compute.InstanceGroupManager] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Operation:
         r"""Creates a managed instance group using the
         information that you specify in the request. After the
@@ -2922,8 +2985,10 @@ class RegionInstanceGroupManagersClient(
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.api_core.extended_operation.ExtendedOperation:
@@ -2996,7 +3061,7 @@ class RegionInstanceGroupManagersClient(
         instance_group_manager_resource: Optional[compute.InstanceGroupManager] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Creates a managed instance group using the
         information that you specify in the request. After the
@@ -3061,8 +3126,10 @@ class RegionInstanceGroupManagersClient(
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.api_core.extended_operation.ExtendedOperation:
@@ -3159,7 +3226,7 @@ class RegionInstanceGroupManagersClient(
         region: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListPager:
         r"""Retrieves the list of managed instance groups that
         are contained within the specified region.
@@ -3212,8 +3279,10 @@ class RegionInstanceGroupManagersClient(
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.compute_v1.services.region_instance_group_managers.pagers.ListPager:
@@ -3296,7 +3365,7 @@ class RegionInstanceGroupManagersClient(
         instance_group_manager: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListErrorsPager:
         r"""Lists all errors thrown by actions on instances for a
         given regional managed instance group. The filter and
@@ -3360,8 +3429,10 @@ class RegionInstanceGroupManagersClient(
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.compute_v1.services.region_instance_group_managers.pagers.ListErrorsPager:
@@ -3447,7 +3518,7 @@ class RegionInstanceGroupManagersClient(
         instance_group_manager: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListManagedInstancesPager:
         r"""Lists the instances in the managed instance group and instances
         that are scheduled to be created. The list includes any current
@@ -3512,8 +3583,10 @@ class RegionInstanceGroupManagersClient(
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.compute_v1.services.region_instance_group_managers.pagers.ListManagedInstancesPager:
@@ -3603,7 +3676,7 @@ class RegionInstanceGroupManagersClient(
         instance_group_manager: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListPerInstanceConfigsPager:
         r"""Lists all of the per-instance configurations defined
         for the managed instance group. The orderBy query
@@ -3665,8 +3738,10 @@ class RegionInstanceGroupManagersClient(
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.compute_v1.services.region_instance_group_managers.pagers.ListPerInstanceConfigsPager:
@@ -3757,7 +3832,7 @@ class RegionInstanceGroupManagersClient(
         instance_group_manager_resource: Optional[compute.InstanceGroupManager] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Operation:
         r"""Updates a managed instance group using the
         information that you specify in the request. This
@@ -3834,8 +3909,10 @@ class RegionInstanceGroupManagersClient(
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.api_core.extended_operation.ExtendedOperation:
@@ -3914,7 +3991,7 @@ class RegionInstanceGroupManagersClient(
         instance_group_manager_resource: Optional[compute.InstanceGroupManager] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Updates a managed instance group using the
         information that you specify in the request. This
@@ -3991,8 +4068,10 @@ class RegionInstanceGroupManagersClient(
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.api_core.extended_operation.ExtendedOperation:
@@ -4100,7 +4179,7 @@ class RegionInstanceGroupManagersClient(
         ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Operation:
         r"""Inserts or patches per-instance configurations for
         the managed instance group. perInstanceConfig.name
@@ -4167,8 +4246,10 @@ class RegionInstanceGroupManagersClient(
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.api_core.extended_operation.ExtendedOperation:
@@ -4265,7 +4346,7 @@ class RegionInstanceGroupManagersClient(
         ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Inserts or patches per-instance configurations for
         the managed instance group. perInstanceConfig.name
@@ -4332,8 +4413,10 @@ class RegionInstanceGroupManagersClient(
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.api_core.extended_operation.ExtendedOperation:
@@ -4453,7 +4536,7 @@ class RegionInstanceGroupManagersClient(
         ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Operation:
         r"""Flags the specified VM instances in the managed
         instance group to be immediately recreated. Each
@@ -4528,8 +4611,10 @@ class RegionInstanceGroupManagersClient(
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.api_core.extended_operation.ExtendedOperation:
@@ -4619,7 +4704,7 @@ class RegionInstanceGroupManagersClient(
         ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Flags the specified VM instances in the managed
         instance group to be immediately recreated. Each
@@ -4694,8 +4779,10 @@ class RegionInstanceGroupManagersClient(
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.api_core.extended_operation.ExtendedOperation:
@@ -4808,7 +4895,7 @@ class RegionInstanceGroupManagersClient(
         size: Optional[int] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Operation:
         r"""Changes the intended size of the managed instance
         group. If you increase the size, the group creates new
@@ -4885,8 +4972,10 @@ class RegionInstanceGroupManagersClient(
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.api_core.extended_operation.ExtendedOperation:
@@ -4961,7 +5050,7 @@ class RegionInstanceGroupManagersClient(
         size: Optional[int] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Changes the intended size of the managed instance
         group. If you increase the size, the group creates new
@@ -5038,8 +5127,10 @@ class RegionInstanceGroupManagersClient(
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.api_core.extended_operation.ExtendedOperation:
@@ -5141,7 +5232,7 @@ class RegionInstanceGroupManagersClient(
         ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Operation:
         r"""Flags the specified instances in the managed instance
         group to be resumed. This method increases the
@@ -5219,8 +5310,10 @@ class RegionInstanceGroupManagersClient(
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.api_core.extended_operation.ExtendedOperation:
@@ -5311,7 +5404,7 @@ class RegionInstanceGroupManagersClient(
         ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Flags the specified instances in the managed instance
         group to be resumed. This method increases the
@@ -5389,8 +5482,10 @@ class RegionInstanceGroupManagersClient(
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.api_core.extended_operation.ExtendedOperation:
@@ -5506,7 +5601,7 @@ class RegionInstanceGroupManagersClient(
         ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Operation:
         r"""Sets the instance template to use when creating new
         instances or recreating instances in this group.
@@ -5572,8 +5667,10 @@ class RegionInstanceGroupManagersClient(
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.api_core.extended_operation.ExtendedOperation:
@@ -5663,7 +5760,7 @@ class RegionInstanceGroupManagersClient(
         ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Sets the instance template to use when creating new
         instances or recreating instances in this group.
@@ -5729,8 +5826,10 @@ class RegionInstanceGroupManagersClient(
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.api_core.extended_operation.ExtendedOperation:
@@ -5845,7 +5944,7 @@ class RegionInstanceGroupManagersClient(
         ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Operation:
         r"""Modifies the target pools to which all new instances
         in this group are assigned. Existing instances in the
@@ -5909,8 +6008,10 @@ class RegionInstanceGroupManagersClient(
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.api_core.extended_operation.ExtendedOperation:
@@ -6001,7 +6102,7 @@ class RegionInstanceGroupManagersClient(
         ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Modifies the target pools to which all new instances
         in this group are assigned. Existing instances in the
@@ -6065,8 +6166,10 @@ class RegionInstanceGroupManagersClient(
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.api_core.extended_operation.ExtendedOperation:
@@ -6182,7 +6285,7 @@ class RegionInstanceGroupManagersClient(
         ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Operation:
         r"""Flags the specified instances in the managed instance
         group to be started. This method increases the
@@ -6260,8 +6363,10 @@ class RegionInstanceGroupManagersClient(
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.api_core.extended_operation.ExtendedOperation:
@@ -6352,7 +6457,7 @@ class RegionInstanceGroupManagersClient(
         ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Flags the specified instances in the managed instance
         group to be started. This method increases the
@@ -6430,8 +6535,10 @@ class RegionInstanceGroupManagersClient(
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.api_core.extended_operation.ExtendedOperation:
@@ -6547,7 +6654,7 @@ class RegionInstanceGroupManagersClient(
         ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Operation:
         r"""Flags the specified instances in the managed instance
         group to be immediately stopped. You can only specify
@@ -6634,8 +6741,10 @@ class RegionInstanceGroupManagersClient(
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.api_core.extended_operation.ExtendedOperation:
@@ -6726,7 +6835,7 @@ class RegionInstanceGroupManagersClient(
         ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Flags the specified instances in the managed instance
         group to be immediately stopped. You can only specify
@@ -6813,8 +6922,10 @@ class RegionInstanceGroupManagersClient(
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.api_core.extended_operation.ExtendedOperation:
@@ -6930,7 +7041,7 @@ class RegionInstanceGroupManagersClient(
         ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Operation:
         r"""Flags the specified instances in the managed instance
         group to be immediately suspended. You can only specify
@@ -7017,8 +7128,10 @@ class RegionInstanceGroupManagersClient(
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.api_core.extended_operation.ExtendedOperation:
@@ -7109,7 +7222,7 @@ class RegionInstanceGroupManagersClient(
         ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Flags the specified instances in the managed instance
         group to be immediately suspended. You can only specify
@@ -7196,8 +7309,10 @@ class RegionInstanceGroupManagersClient(
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.api_core.extended_operation.ExtendedOperation:
@@ -7315,7 +7430,7 @@ class RegionInstanceGroupManagersClient(
         ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Operation:
         r"""Inserts or updates per-instance configurations for
         the managed instance group. perInstanceConfig.name
@@ -7382,8 +7497,10 @@ class RegionInstanceGroupManagersClient(
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.api_core.extended_operation.ExtendedOperation:
@@ -7480,7 +7597,7 @@ class RegionInstanceGroupManagersClient(
         ] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Inserts or updates per-instance configurations for
         the managed instance group. perInstanceConfig.name
@@ -7547,8 +7664,10 @@ class RegionInstanceGroupManagersClient(
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.api_core.extended_operation.ExtendedOperation:

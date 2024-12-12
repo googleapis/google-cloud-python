@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -37,6 +37,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -101,8 +109,11 @@ class RegionSslCertificatesRestInterceptor:
     def pre_delete(
         self,
         request: compute.DeleteRegionSslCertificateRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.DeleteRegionSslCertificateRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.DeleteRegionSslCertificateRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for delete
 
         Override in a subclass to manipulate the request or metadata
@@ -122,8 +133,10 @@ class RegionSslCertificatesRestInterceptor:
     def pre_get(
         self,
         request: compute.GetRegionSslCertificateRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.GetRegionSslCertificateRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.GetRegionSslCertificateRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get
 
         Override in a subclass to manipulate the request or metadata
@@ -143,8 +156,11 @@ class RegionSslCertificatesRestInterceptor:
     def pre_insert(
         self,
         request: compute.InsertRegionSslCertificateRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.InsertRegionSslCertificateRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.InsertRegionSslCertificateRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for insert
 
         Override in a subclass to manipulate the request or metadata
@@ -164,8 +180,11 @@ class RegionSslCertificatesRestInterceptor:
     def pre_list(
         self,
         request: compute.ListRegionSslCertificatesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.ListRegionSslCertificatesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.ListRegionSslCertificatesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for list
 
         Override in a subclass to manipulate the request or metadata
@@ -310,7 +329,7 @@ class RegionSslCertificatesRestTransport(_BaseRegionSslCertificatesRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the delete method over HTTP.
 
@@ -322,8 +341,10 @@ class RegionSslCertificatesRestTransport(_BaseRegionSslCertificatesRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -350,6 +371,7 @@ class RegionSslCertificatesRestTransport(_BaseRegionSslCertificatesRestTransport
             http_options = (
                 _BaseRegionSslCertificatesRestTransport._BaseDelete._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete(request, metadata)
             transcoded_request = _BaseRegionSslCertificatesRestTransport._BaseDelete._get_transcoded_request(
                 http_options, request
@@ -359,6 +381,33 @@ class RegionSslCertificatesRestTransport(_BaseRegionSslCertificatesRestTransport
             query_params = _BaseRegionSslCertificatesRestTransport._BaseDelete._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.RegionSslCertificatesClient.Delete",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionSslCertificates",
+                        "rpcName": "Delete",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegionSslCertificatesRestTransport._Delete._get_response(
@@ -380,7 +429,29 @@ class RegionSslCertificatesRestTransport(_BaseRegionSslCertificatesRestTransport
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.RegionSslCertificatesClient.delete",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionSslCertificates",
+                        "rpcName": "Delete",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _Get(
@@ -417,7 +488,7 @@ class RegionSslCertificatesRestTransport(_BaseRegionSslCertificatesRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.SslCertificate:
             r"""Call the get method over HTTP.
 
@@ -429,8 +500,10 @@ class RegionSslCertificatesRestTransport(_BaseRegionSslCertificatesRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.SslCertificate:
@@ -460,6 +533,7 @@ class RegionSslCertificatesRestTransport(_BaseRegionSslCertificatesRestTransport
             http_options = (
                 _BaseRegionSslCertificatesRestTransport._BaseGet._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get(request, metadata)
             transcoded_request = _BaseRegionSslCertificatesRestTransport._BaseGet._get_transcoded_request(
                 http_options, request
@@ -471,6 +545,33 @@ class RegionSslCertificatesRestTransport(_BaseRegionSslCertificatesRestTransport
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.RegionSslCertificatesClient.Get",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionSslCertificates",
+                        "rpcName": "Get",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegionSslCertificatesRestTransport._Get._get_response(
@@ -492,7 +593,29 @@ class RegionSslCertificatesRestTransport(_BaseRegionSslCertificatesRestTransport
             pb_resp = compute.SslCertificate.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.SslCertificate.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.RegionSslCertificatesClient.get",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionSslCertificates",
+                        "rpcName": "Get",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _Insert(
@@ -531,7 +654,7 @@ class RegionSslCertificatesRestTransport(_BaseRegionSslCertificatesRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the insert method over HTTP.
 
@@ -543,8 +666,10 @@ class RegionSslCertificatesRestTransport(_BaseRegionSslCertificatesRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -571,6 +696,7 @@ class RegionSslCertificatesRestTransport(_BaseRegionSslCertificatesRestTransport
             http_options = (
                 _BaseRegionSslCertificatesRestTransport._BaseInsert._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_insert(request, metadata)
             transcoded_request = _BaseRegionSslCertificatesRestTransport._BaseInsert._get_transcoded_request(
                 http_options, request
@@ -584,6 +710,33 @@ class RegionSslCertificatesRestTransport(_BaseRegionSslCertificatesRestTransport
             query_params = _BaseRegionSslCertificatesRestTransport._BaseInsert._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.RegionSslCertificatesClient.Insert",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionSslCertificates",
+                        "rpcName": "Insert",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegionSslCertificatesRestTransport._Insert._get_response(
@@ -606,7 +759,29 @@ class RegionSslCertificatesRestTransport(_BaseRegionSslCertificatesRestTransport
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_insert(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.RegionSslCertificatesClient.insert",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionSslCertificates",
+                        "rpcName": "Insert",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _List(
@@ -643,7 +818,7 @@ class RegionSslCertificatesRestTransport(_BaseRegionSslCertificatesRestTransport
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.SslCertificateList:
             r"""Call the list method over HTTP.
 
@@ -655,8 +830,10 @@ class RegionSslCertificatesRestTransport(_BaseRegionSslCertificatesRestTransport
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.SslCertificateList:
@@ -668,6 +845,7 @@ class RegionSslCertificatesRestTransport(_BaseRegionSslCertificatesRestTransport
             http_options = (
                 _BaseRegionSslCertificatesRestTransport._BaseList._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list(request, metadata)
             transcoded_request = _BaseRegionSslCertificatesRestTransport._BaseList._get_transcoded_request(
                 http_options, request
@@ -677,6 +855,33 @@ class RegionSslCertificatesRestTransport(_BaseRegionSslCertificatesRestTransport
             query_params = _BaseRegionSslCertificatesRestTransport._BaseList._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.RegionSslCertificatesClient.List",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionSslCertificates",
+                        "rpcName": "List",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegionSslCertificatesRestTransport._List._get_response(
@@ -698,7 +903,29 @@ class RegionSslCertificatesRestTransport(_BaseRegionSslCertificatesRestTransport
             pb_resp = compute.SslCertificateList.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.SslCertificateList.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.RegionSslCertificatesClient.list",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionSslCertificates",
+                        "rpcName": "List",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property

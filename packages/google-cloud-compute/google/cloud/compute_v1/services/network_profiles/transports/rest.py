@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -37,6 +37,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -85,8 +93,10 @@ class NetworkProfilesRestInterceptor:
     def pre_get(
         self,
         request: compute.GetNetworkProfileRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.GetNetworkProfileRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.GetNetworkProfileRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get
 
         Override in a subclass to manipulate the request or metadata
@@ -106,8 +116,10 @@ class NetworkProfilesRestInterceptor:
     def pre_list(
         self,
         request: compute.ListNetworkProfilesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.ListNetworkProfilesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.ListNetworkProfilesRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list
 
         Override in a subclass to manipulate the request or metadata
@@ -249,7 +261,7 @@ class NetworkProfilesRestTransport(_BaseNetworkProfilesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.NetworkProfile:
             r"""Call the get method over HTTP.
 
@@ -261,8 +273,10 @@ class NetworkProfilesRestTransport(_BaseNetworkProfilesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.NetworkProfile:
@@ -274,6 +288,7 @@ class NetworkProfilesRestTransport(_BaseNetworkProfilesRestTransport):
             http_options = (
                 _BaseNetworkProfilesRestTransport._BaseGet._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get(request, metadata)
             transcoded_request = (
                 _BaseNetworkProfilesRestTransport._BaseGet._get_transcoded_request(
@@ -287,6 +302,33 @@ class NetworkProfilesRestTransport(_BaseNetworkProfilesRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.NetworkProfilesClient.Get",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.NetworkProfiles",
+                        "rpcName": "Get",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetworkProfilesRestTransport._Get._get_response(
@@ -308,7 +350,29 @@ class NetworkProfilesRestTransport(_BaseNetworkProfilesRestTransport):
             pb_resp = compute.NetworkProfile.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.NetworkProfile.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.NetworkProfilesClient.get",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.NetworkProfiles",
+                        "rpcName": "Get",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _List(_BaseNetworkProfilesRestTransport._BaseList, NetworkProfilesRestStub):
@@ -343,7 +407,7 @@ class NetworkProfilesRestTransport(_BaseNetworkProfilesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.NetworkProfilesListResponse:
             r"""Call the list method over HTTP.
 
@@ -355,8 +419,10 @@ class NetworkProfilesRestTransport(_BaseNetworkProfilesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.NetworkProfilesListResponse:
@@ -366,6 +432,7 @@ class NetworkProfilesRestTransport(_BaseNetworkProfilesRestTransport):
             http_options = (
                 _BaseNetworkProfilesRestTransport._BaseList._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list(request, metadata)
             transcoded_request = (
                 _BaseNetworkProfilesRestTransport._BaseList._get_transcoded_request(
@@ -379,6 +446,33 @@ class NetworkProfilesRestTransport(_BaseNetworkProfilesRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.NetworkProfilesClient.List",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.NetworkProfiles",
+                        "rpcName": "List",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = NetworkProfilesRestTransport._List._get_response(
@@ -400,7 +494,31 @@ class NetworkProfilesRestTransport(_BaseNetworkProfilesRestTransport):
             pb_resp = compute.NetworkProfilesListResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.NetworkProfilesListResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.NetworkProfilesClient.list",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.NetworkProfiles",
+                        "rpcName": "List",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property

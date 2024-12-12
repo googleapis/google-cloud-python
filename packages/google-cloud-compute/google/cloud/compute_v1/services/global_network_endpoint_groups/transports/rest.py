@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -37,6 +37,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -125,10 +133,10 @@ class GlobalNetworkEndpointGroupsRestInterceptor:
     def pre_attach_network_endpoints(
         self,
         request: compute.AttachNetworkEndpointsGlobalNetworkEndpointGroupRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         compute.AttachNetworkEndpointsGlobalNetworkEndpointGroupRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for attach_network_endpoints
 
@@ -151,9 +159,10 @@ class GlobalNetworkEndpointGroupsRestInterceptor:
     def pre_delete(
         self,
         request: compute.DeleteGlobalNetworkEndpointGroupRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        compute.DeleteGlobalNetworkEndpointGroupRequest, Sequence[Tuple[str, str]]
+        compute.DeleteGlobalNetworkEndpointGroupRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for delete
 
@@ -174,10 +183,10 @@ class GlobalNetworkEndpointGroupsRestInterceptor:
     def pre_detach_network_endpoints(
         self,
         request: compute.DetachNetworkEndpointsGlobalNetworkEndpointGroupRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         compute.DetachNetworkEndpointsGlobalNetworkEndpointGroupRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for detach_network_endpoints
 
@@ -200,8 +209,11 @@ class GlobalNetworkEndpointGroupsRestInterceptor:
     def pre_get(
         self,
         request: compute.GetGlobalNetworkEndpointGroupRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.GetGlobalNetworkEndpointGroupRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.GetGlobalNetworkEndpointGroupRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for get
 
         Override in a subclass to manipulate the request or metadata
@@ -223,9 +235,10 @@ class GlobalNetworkEndpointGroupsRestInterceptor:
     def pre_insert(
         self,
         request: compute.InsertGlobalNetworkEndpointGroupRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        compute.InsertGlobalNetworkEndpointGroupRequest, Sequence[Tuple[str, str]]
+        compute.InsertGlobalNetworkEndpointGroupRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for insert
 
@@ -246,9 +259,10 @@ class GlobalNetworkEndpointGroupsRestInterceptor:
     def pre_list(
         self,
         request: compute.ListGlobalNetworkEndpointGroupsRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        compute.ListGlobalNetworkEndpointGroupsRequest, Sequence[Tuple[str, str]]
+        compute.ListGlobalNetworkEndpointGroupsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for list
 
@@ -271,10 +285,10 @@ class GlobalNetworkEndpointGroupsRestInterceptor:
     def pre_list_network_endpoints(
         self,
         request: compute.ListNetworkEndpointsGlobalNetworkEndpointGroupsRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         compute.ListNetworkEndpointsGlobalNetworkEndpointGroupsRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for list_network_endpoints
 
@@ -425,7 +439,7 @@ class GlobalNetworkEndpointGroupsRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the attach network endpoints method over HTTP.
 
@@ -437,8 +451,10 @@ class GlobalNetworkEndpointGroupsRestTransport(
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -465,6 +481,7 @@ class GlobalNetworkEndpointGroupsRestTransport(
             http_options = (
                 _BaseGlobalNetworkEndpointGroupsRestTransport._BaseAttachNetworkEndpoints._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_attach_network_endpoints(
                 request, metadata
             )
@@ -480,6 +497,33 @@ class GlobalNetworkEndpointGroupsRestTransport(
             query_params = _BaseGlobalNetworkEndpointGroupsRestTransport._BaseAttachNetworkEndpoints._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.GlobalNetworkEndpointGroupsClient.AttachNetworkEndpoints",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.GlobalNetworkEndpointGroups",
+                        "rpcName": "AttachNetworkEndpoints",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = GlobalNetworkEndpointGroupsRestTransport._AttachNetworkEndpoints._get_response(
@@ -502,7 +546,29 @@ class GlobalNetworkEndpointGroupsRestTransport(
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_attach_network_endpoints(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.GlobalNetworkEndpointGroupsClient.attach_network_endpoints",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.GlobalNetworkEndpointGroups",
+                        "rpcName": "AttachNetworkEndpoints",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _Delete(
@@ -540,7 +606,7 @@ class GlobalNetworkEndpointGroupsRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the delete method over HTTP.
 
@@ -552,8 +618,10 @@ class GlobalNetworkEndpointGroupsRestTransport(
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -580,6 +648,7 @@ class GlobalNetworkEndpointGroupsRestTransport(
             http_options = (
                 _BaseGlobalNetworkEndpointGroupsRestTransport._BaseDelete._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete(request, metadata)
             transcoded_request = _BaseGlobalNetworkEndpointGroupsRestTransport._BaseDelete._get_transcoded_request(
                 http_options, request
@@ -589,6 +658,33 @@ class GlobalNetworkEndpointGroupsRestTransport(
             query_params = _BaseGlobalNetworkEndpointGroupsRestTransport._BaseDelete._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.GlobalNetworkEndpointGroupsClient.Delete",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.GlobalNetworkEndpointGroups",
+                        "rpcName": "Delete",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = GlobalNetworkEndpointGroupsRestTransport._Delete._get_response(
@@ -610,7 +706,29 @@ class GlobalNetworkEndpointGroupsRestTransport(
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.GlobalNetworkEndpointGroupsClient.delete",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.GlobalNetworkEndpointGroups",
+                        "rpcName": "Delete",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DetachNetworkEndpoints(
@@ -651,7 +769,7 @@ class GlobalNetworkEndpointGroupsRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the detach network endpoints method over HTTP.
 
@@ -663,8 +781,10 @@ class GlobalNetworkEndpointGroupsRestTransport(
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -691,6 +811,7 @@ class GlobalNetworkEndpointGroupsRestTransport(
             http_options = (
                 _BaseGlobalNetworkEndpointGroupsRestTransport._BaseDetachNetworkEndpoints._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_detach_network_endpoints(
                 request, metadata
             )
@@ -706,6 +827,33 @@ class GlobalNetworkEndpointGroupsRestTransport(
             query_params = _BaseGlobalNetworkEndpointGroupsRestTransport._BaseDetachNetworkEndpoints._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.GlobalNetworkEndpointGroupsClient.DetachNetworkEndpoints",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.GlobalNetworkEndpointGroups",
+                        "rpcName": "DetachNetworkEndpoints",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = GlobalNetworkEndpointGroupsRestTransport._DetachNetworkEndpoints._get_response(
@@ -728,7 +876,29 @@ class GlobalNetworkEndpointGroupsRestTransport(
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_detach_network_endpoints(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.GlobalNetworkEndpointGroupsClient.detach_network_endpoints",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.GlobalNetworkEndpointGroups",
+                        "rpcName": "DetachNetworkEndpoints",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _Get(
@@ -766,7 +936,7 @@ class GlobalNetworkEndpointGroupsRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.NetworkEndpointGroup:
             r"""Call the get method over HTTP.
 
@@ -778,8 +948,10 @@ class GlobalNetworkEndpointGroupsRestTransport(
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.NetworkEndpointGroup:
@@ -797,6 +969,7 @@ class GlobalNetworkEndpointGroupsRestTransport(
             http_options = (
                 _BaseGlobalNetworkEndpointGroupsRestTransport._BaseGet._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get(request, metadata)
             transcoded_request = _BaseGlobalNetworkEndpointGroupsRestTransport._BaseGet._get_transcoded_request(
                 http_options, request
@@ -806,6 +979,33 @@ class GlobalNetworkEndpointGroupsRestTransport(
             query_params = _BaseGlobalNetworkEndpointGroupsRestTransport._BaseGet._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.GlobalNetworkEndpointGroupsClient.Get",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.GlobalNetworkEndpointGroups",
+                        "rpcName": "Get",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = GlobalNetworkEndpointGroupsRestTransport._Get._get_response(
@@ -827,7 +1027,29 @@ class GlobalNetworkEndpointGroupsRestTransport(
             pb_resp = compute.NetworkEndpointGroup.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.NetworkEndpointGroup.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.GlobalNetworkEndpointGroupsClient.get",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.GlobalNetworkEndpointGroups",
+                        "rpcName": "Get",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _Insert(
@@ -866,7 +1088,7 @@ class GlobalNetworkEndpointGroupsRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the insert method over HTTP.
 
@@ -878,8 +1100,10 @@ class GlobalNetworkEndpointGroupsRestTransport(
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -906,6 +1130,7 @@ class GlobalNetworkEndpointGroupsRestTransport(
             http_options = (
                 _BaseGlobalNetworkEndpointGroupsRestTransport._BaseInsert._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_insert(request, metadata)
             transcoded_request = _BaseGlobalNetworkEndpointGroupsRestTransport._BaseInsert._get_transcoded_request(
                 http_options, request
@@ -919,6 +1144,33 @@ class GlobalNetworkEndpointGroupsRestTransport(
             query_params = _BaseGlobalNetworkEndpointGroupsRestTransport._BaseInsert._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.GlobalNetworkEndpointGroupsClient.Insert",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.GlobalNetworkEndpointGroups",
+                        "rpcName": "Insert",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = GlobalNetworkEndpointGroupsRestTransport._Insert._get_response(
@@ -941,7 +1193,29 @@ class GlobalNetworkEndpointGroupsRestTransport(
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_insert(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.GlobalNetworkEndpointGroupsClient.insert",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.GlobalNetworkEndpointGroups",
+                        "rpcName": "Insert",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _List(
@@ -979,7 +1253,7 @@ class GlobalNetworkEndpointGroupsRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.NetworkEndpointGroupList:
             r"""Call the list method over HTTP.
 
@@ -991,8 +1265,10 @@ class GlobalNetworkEndpointGroupsRestTransport(
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.NetworkEndpointGroupList:
@@ -1002,6 +1278,7 @@ class GlobalNetworkEndpointGroupsRestTransport(
             http_options = (
                 _BaseGlobalNetworkEndpointGroupsRestTransport._BaseList._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list(request, metadata)
             transcoded_request = _BaseGlobalNetworkEndpointGroupsRestTransport._BaseList._get_transcoded_request(
                 http_options, request
@@ -1011,6 +1288,33 @@ class GlobalNetworkEndpointGroupsRestTransport(
             query_params = _BaseGlobalNetworkEndpointGroupsRestTransport._BaseList._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.GlobalNetworkEndpointGroupsClient.List",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.GlobalNetworkEndpointGroups",
+                        "rpcName": "List",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = GlobalNetworkEndpointGroupsRestTransport._List._get_response(
@@ -1032,7 +1336,31 @@ class GlobalNetworkEndpointGroupsRestTransport(
             pb_resp = compute.NetworkEndpointGroupList.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.NetworkEndpointGroupList.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.GlobalNetworkEndpointGroupsClient.list",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.GlobalNetworkEndpointGroups",
+                        "rpcName": "List",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListNetworkEndpoints(
@@ -1070,7 +1398,7 @@ class GlobalNetworkEndpointGroupsRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.NetworkEndpointGroupsListNetworkEndpoints:
             r"""Call the list network endpoints method over HTTP.
 
@@ -1082,8 +1410,10 @@ class GlobalNetworkEndpointGroupsRestTransport(
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.NetworkEndpointGroupsListNetworkEndpoints:
@@ -1093,6 +1423,7 @@ class GlobalNetworkEndpointGroupsRestTransport(
             http_options = (
                 _BaseGlobalNetworkEndpointGroupsRestTransport._BaseListNetworkEndpoints._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_network_endpoints(
                 request, metadata
             )
@@ -1104,6 +1435,33 @@ class GlobalNetworkEndpointGroupsRestTransport(
             query_params = _BaseGlobalNetworkEndpointGroupsRestTransport._BaseListNetworkEndpoints._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.GlobalNetworkEndpointGroupsClient.ListNetworkEndpoints",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.GlobalNetworkEndpointGroups",
+                        "rpcName": "ListNetworkEndpoints",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = GlobalNetworkEndpointGroupsRestTransport._ListNetworkEndpoints._get_response(
@@ -1125,7 +1483,33 @@ class GlobalNetworkEndpointGroupsRestTransport(
             pb_resp = compute.NetworkEndpointGroupsListNetworkEndpoints.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_network_endpoints(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        compute.NetworkEndpointGroupsListNetworkEndpoints.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.GlobalNetworkEndpointGroupsClient.list_network_endpoints",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.GlobalNetworkEndpointGroups",
+                        "rpcName": "ListNetworkEndpoints",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property

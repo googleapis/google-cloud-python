@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -37,6 +37,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -149,8 +157,11 @@ class RegionSecurityPoliciesRestInterceptor:
     def pre_add_rule(
         self,
         request: compute.AddRuleRegionSecurityPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.AddRuleRegionSecurityPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.AddRuleRegionSecurityPolicyRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for add_rule
 
         Override in a subclass to manipulate the request or metadata
@@ -170,8 +181,11 @@ class RegionSecurityPoliciesRestInterceptor:
     def pre_delete(
         self,
         request: compute.DeleteRegionSecurityPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.DeleteRegionSecurityPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.DeleteRegionSecurityPolicyRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for delete
 
         Override in a subclass to manipulate the request or metadata
@@ -191,8 +205,10 @@ class RegionSecurityPoliciesRestInterceptor:
     def pre_get(
         self,
         request: compute.GetRegionSecurityPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.GetRegionSecurityPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.GetRegionSecurityPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get
 
         Override in a subclass to manipulate the request or metadata
@@ -212,8 +228,11 @@ class RegionSecurityPoliciesRestInterceptor:
     def pre_get_rule(
         self,
         request: compute.GetRuleRegionSecurityPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.GetRuleRegionSecurityPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.GetRuleRegionSecurityPolicyRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for get_rule
 
         Override in a subclass to manipulate the request or metadata
@@ -235,8 +254,11 @@ class RegionSecurityPoliciesRestInterceptor:
     def pre_insert(
         self,
         request: compute.InsertRegionSecurityPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.InsertRegionSecurityPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.InsertRegionSecurityPolicyRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for insert
 
         Override in a subclass to manipulate the request or metadata
@@ -256,8 +278,11 @@ class RegionSecurityPoliciesRestInterceptor:
     def pre_list(
         self,
         request: compute.ListRegionSecurityPoliciesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.ListRegionSecurityPoliciesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.ListRegionSecurityPoliciesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for list
 
         Override in a subclass to manipulate the request or metadata
@@ -279,8 +304,11 @@ class RegionSecurityPoliciesRestInterceptor:
     def pre_patch(
         self,
         request: compute.PatchRegionSecurityPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.PatchRegionSecurityPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.PatchRegionSecurityPolicyRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for patch
 
         Override in a subclass to manipulate the request or metadata
@@ -300,8 +328,11 @@ class RegionSecurityPoliciesRestInterceptor:
     def pre_patch_rule(
         self,
         request: compute.PatchRuleRegionSecurityPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.PatchRuleRegionSecurityPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.PatchRuleRegionSecurityPolicyRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for patch_rule
 
         Override in a subclass to manipulate the request or metadata
@@ -321,9 +352,10 @@ class RegionSecurityPoliciesRestInterceptor:
     def pre_remove_rule(
         self,
         request: compute.RemoveRuleRegionSecurityPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        compute.RemoveRuleRegionSecurityPolicyRequest, Sequence[Tuple[str, str]]
+        compute.RemoveRuleRegionSecurityPolicyRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for remove_rule
 
@@ -344,8 +376,11 @@ class RegionSecurityPoliciesRestInterceptor:
     def pre_set_labels(
         self,
         request: compute.SetLabelsRegionSecurityPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[compute.SetLabelsRegionSecurityPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.SetLabelsRegionSecurityPolicyRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for set_labels
 
         Override in a subclass to manipulate the request or metadata
@@ -489,7 +524,7 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the add rule method over HTTP.
 
@@ -501,8 +536,10 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -529,6 +566,7 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
             http_options = (
                 _BaseRegionSecurityPoliciesRestTransport._BaseAddRule._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_add_rule(request, metadata)
             transcoded_request = _BaseRegionSecurityPoliciesRestTransport._BaseAddRule._get_transcoded_request(
                 http_options, request
@@ -542,6 +580,33 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
             query_params = _BaseRegionSecurityPoliciesRestTransport._BaseAddRule._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.RegionSecurityPoliciesClient.AddRule",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionSecurityPolicies",
+                        "rpcName": "AddRule",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegionSecurityPoliciesRestTransport._AddRule._get_response(
@@ -564,7 +629,29 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_add_rule(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.RegionSecurityPoliciesClient.add_rule",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionSecurityPolicies",
+                        "rpcName": "AddRule",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _Delete(
@@ -602,7 +689,7 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the delete method over HTTP.
 
@@ -614,8 +701,10 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -642,6 +731,7 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
             http_options = (
                 _BaseRegionSecurityPoliciesRestTransport._BaseDelete._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete(request, metadata)
             transcoded_request = _BaseRegionSecurityPoliciesRestTransport._BaseDelete._get_transcoded_request(
                 http_options, request
@@ -651,6 +741,33 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
             query_params = _BaseRegionSecurityPoliciesRestTransport._BaseDelete._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.RegionSecurityPoliciesClient.Delete",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionSecurityPolicies",
+                        "rpcName": "Delete",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegionSecurityPoliciesRestTransport._Delete._get_response(
@@ -672,7 +789,29 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.RegionSecurityPoliciesClient.delete",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionSecurityPolicies",
+                        "rpcName": "Delete",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _Get(
@@ -710,7 +849,7 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.SecurityPolicy:
             r"""Call the get method over HTTP.
 
@@ -722,8 +861,10 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.SecurityPolicy:
@@ -739,6 +880,7 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
             http_options = (
                 _BaseRegionSecurityPoliciesRestTransport._BaseGet._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get(request, metadata)
             transcoded_request = _BaseRegionSecurityPoliciesRestTransport._BaseGet._get_transcoded_request(
                 http_options, request
@@ -748,6 +890,33 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
             query_params = _BaseRegionSecurityPoliciesRestTransport._BaseGet._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.RegionSecurityPoliciesClient.Get",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionSecurityPolicies",
+                        "rpcName": "Get",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegionSecurityPoliciesRestTransport._Get._get_response(
@@ -769,7 +938,29 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
             pb_resp = compute.SecurityPolicy.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.SecurityPolicy.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.RegionSecurityPoliciesClient.get",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionSecurityPolicies",
+                        "rpcName": "Get",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetRule(
@@ -807,7 +998,7 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.SecurityPolicyRule:
             r"""Call the get rule method over HTTP.
 
@@ -819,8 +1010,10 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.SecurityPolicyRule:
@@ -834,6 +1027,7 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
             http_options = (
                 _BaseRegionSecurityPoliciesRestTransport._BaseGetRule._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_rule(request, metadata)
             transcoded_request = _BaseRegionSecurityPoliciesRestTransport._BaseGetRule._get_transcoded_request(
                 http_options, request
@@ -843,6 +1037,33 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
             query_params = _BaseRegionSecurityPoliciesRestTransport._BaseGetRule._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.RegionSecurityPoliciesClient.GetRule",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionSecurityPolicies",
+                        "rpcName": "GetRule",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegionSecurityPoliciesRestTransport._GetRule._get_response(
@@ -864,7 +1085,29 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
             pb_resp = compute.SecurityPolicyRule.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_rule(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.SecurityPolicyRule.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.RegionSecurityPoliciesClient.get_rule",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionSecurityPolicies",
+                        "rpcName": "GetRule",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _Insert(
@@ -903,7 +1146,7 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the insert method over HTTP.
 
@@ -915,8 +1158,10 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -943,6 +1188,7 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
             http_options = (
                 _BaseRegionSecurityPoliciesRestTransport._BaseInsert._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_insert(request, metadata)
             transcoded_request = _BaseRegionSecurityPoliciesRestTransport._BaseInsert._get_transcoded_request(
                 http_options, request
@@ -956,6 +1202,33 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
             query_params = _BaseRegionSecurityPoliciesRestTransport._BaseInsert._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.RegionSecurityPoliciesClient.Insert",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionSecurityPolicies",
+                        "rpcName": "Insert",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegionSecurityPoliciesRestTransport._Insert._get_response(
@@ -978,7 +1251,29 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_insert(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.RegionSecurityPoliciesClient.insert",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionSecurityPolicies",
+                        "rpcName": "Insert",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _List(
@@ -1016,7 +1311,7 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.SecurityPolicyList:
             r"""Call the list method over HTTP.
 
@@ -1028,8 +1323,10 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.SecurityPolicyList:
@@ -1039,6 +1336,7 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
             http_options = (
                 _BaseRegionSecurityPoliciesRestTransport._BaseList._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list(request, metadata)
             transcoded_request = _BaseRegionSecurityPoliciesRestTransport._BaseList._get_transcoded_request(
                 http_options, request
@@ -1048,6 +1346,33 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
             query_params = _BaseRegionSecurityPoliciesRestTransport._BaseList._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.RegionSecurityPoliciesClient.List",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionSecurityPolicies",
+                        "rpcName": "List",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegionSecurityPoliciesRestTransport._List._get_response(
@@ -1069,7 +1394,29 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
             pb_resp = compute.SecurityPolicyList.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.SecurityPolicyList.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.RegionSecurityPoliciesClient.list",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionSecurityPolicies",
+                        "rpcName": "List",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _Patch(
@@ -1108,7 +1455,7 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the patch method over HTTP.
 
@@ -1120,8 +1467,10 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -1148,6 +1497,7 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
             http_options = (
                 _BaseRegionSecurityPoliciesRestTransport._BasePatch._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_patch(request, metadata)
             transcoded_request = _BaseRegionSecurityPoliciesRestTransport._BasePatch._get_transcoded_request(
                 http_options, request
@@ -1161,6 +1511,33 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
             query_params = _BaseRegionSecurityPoliciesRestTransport._BasePatch._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.RegionSecurityPoliciesClient.Patch",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionSecurityPolicies",
+                        "rpcName": "Patch",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegionSecurityPoliciesRestTransport._Patch._get_response(
@@ -1183,7 +1560,29 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_patch(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.RegionSecurityPoliciesClient.patch",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionSecurityPolicies",
+                        "rpcName": "Patch",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _PatchRule(
@@ -1222,7 +1621,7 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the patch rule method over HTTP.
 
@@ -1234,8 +1633,10 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -1262,6 +1663,7 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
             http_options = (
                 _BaseRegionSecurityPoliciesRestTransport._BasePatchRule._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_patch_rule(request, metadata)
             transcoded_request = _BaseRegionSecurityPoliciesRestTransport._BasePatchRule._get_transcoded_request(
                 http_options, request
@@ -1275,6 +1677,33 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
             query_params = _BaseRegionSecurityPoliciesRestTransport._BasePatchRule._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.RegionSecurityPoliciesClient.PatchRule",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionSecurityPolicies",
+                        "rpcName": "PatchRule",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegionSecurityPoliciesRestTransport._PatchRule._get_response(
@@ -1297,7 +1726,29 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_patch_rule(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.RegionSecurityPoliciesClient.patch_rule",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionSecurityPolicies",
+                        "rpcName": "PatchRule",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _RemoveRule(
@@ -1335,7 +1786,7 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the remove rule method over HTTP.
 
@@ -1347,8 +1798,10 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -1375,6 +1828,7 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
             http_options = (
                 _BaseRegionSecurityPoliciesRestTransport._BaseRemoveRule._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_remove_rule(request, metadata)
             transcoded_request = _BaseRegionSecurityPoliciesRestTransport._BaseRemoveRule._get_transcoded_request(
                 http_options, request
@@ -1384,6 +1838,33 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
             query_params = _BaseRegionSecurityPoliciesRestTransport._BaseRemoveRule._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.RegionSecurityPoliciesClient.RemoveRule",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionSecurityPolicies",
+                        "rpcName": "RemoveRule",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegionSecurityPoliciesRestTransport._RemoveRule._get_response(
@@ -1405,7 +1886,29 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_remove_rule(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.RegionSecurityPoliciesClient.remove_rule",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionSecurityPolicies",
+                        "rpcName": "RemoveRule",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _SetLabels(
@@ -1444,7 +1947,7 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> compute.Operation:
             r"""Call the set labels method over HTTP.
 
@@ -1456,8 +1959,10 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.compute.Operation:
@@ -1484,6 +1989,7 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
             http_options = (
                 _BaseRegionSecurityPoliciesRestTransport._BaseSetLabels._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_set_labels(request, metadata)
             transcoded_request = _BaseRegionSecurityPoliciesRestTransport._BaseSetLabels._get_transcoded_request(
                 http_options, request
@@ -1497,6 +2003,33 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
             query_params = _BaseRegionSecurityPoliciesRestTransport._BaseSetLabels._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1.RegionSecurityPoliciesClient.SetLabels",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionSecurityPolicies",
+                        "rpcName": "SetLabels",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegionSecurityPoliciesRestTransport._SetLabels._get_response(
@@ -1519,7 +2052,29 @@ class RegionSecurityPoliciesRestTransport(_BaseRegionSecurityPoliciesRestTranspo
             pb_resp = compute.Operation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_set_labels(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.Operation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1.RegionSecurityPoliciesClient.set_labels",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1.RegionSecurityPolicies",
+                        "rpcName": "SetLabels",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
