@@ -2241,6 +2241,63 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             for item in df.itertuples(index=index, name=name):
                 yield item
 
+    def where(self, cond, other=None):
+        if isinstance(other, bigframes.series.Series):
+            raise ValueError("Seires is not a supported replacement type!")
+
+        if self.columns.nlevels > 1 or self.index.nlevels > 1:
+            raise NotImplementedError(
+                "The dataframe.where() method does not support multi-index and/or multi-column."
+            )
+
+        aligned_block, (_, _) = self._block.join(cond._block, how="left")
+        # No left join is needed when 'other' is None or constant.
+        if isinstance(other, bigframes.dataframe.DataFrame):
+            aligned_block, (_, _) = aligned_block.join(other._block, how="left")
+        self_len = len(self._block.value_columns)
+        cond_len = len(cond._block.value_columns)
+
+        ids = aligned_block.value_columns[:self_len]
+        labels = aligned_block.column_labels[:self_len]
+        self_col = {x: ex.deref(y) for x, y in zip(labels, ids)}
+
+        if isinstance(cond, bigframes.series.Series) and cond.name in self_col:
+            # This is when 'cond' is a valid series.
+            y = aligned_block.value_columns[self_len]
+            cond_col = {x: ex.deref(y) for x in self_col.keys()}
+        else:
+            # This is when 'cond' is a dataframe.
+            ids = aligned_block.value_columns[self_len : self_len + cond_len]
+            labels = aligned_block.column_labels[self_len : self_len + cond_len]
+            cond_col = {x: ex.deref(y) for x, y in zip(labels, ids)}
+
+        if isinstance(other, DataFrame):
+            other_len = len(self._block.value_columns)
+            ids = aligned_block.value_columns[-other_len:]
+            labels = aligned_block.column_labels[-other_len:]
+            other_col = {x: ex.deref(y) for x, y in zip(labels, ids)}
+        else:
+            # This is when 'other' is None or constant.
+            labels = aligned_block.column_labels[:self_len]
+            other_col = {x: ex.const(other) for x in labels}  # type: ignore
+
+        result_series = {}
+        for x, self_id in self_col.items():
+            cond_id = cond_col[x] if x in cond_col else ex.const(False)
+            other_id = other_col[x] if x in other_col else ex.const(None)
+            result_block, result_id = aligned_block.project_expr(
+                ops.where_op.as_expr(self_id, cond_id, other_id)
+            )
+            series = bigframes.series.Series(
+                result_block.select_column(result_id).with_column_labels([x])
+            )
+            result_series[x] = series
+
+        result = DataFrame(result_series)
+        result.columns.name = self.columns.name
+        result.columns.names = self.columns.names
+        return result
+
     def dropna(
         self,
         *,

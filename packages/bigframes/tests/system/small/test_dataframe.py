@@ -322,6 +322,114 @@ def test_insert(scalars_dfs, loc, column, value, allow_duplicates):
     pd.testing.assert_frame_equal(bf_df.to_pandas(), pd_df, check_dtype=False)
 
 
+def test_where_series_cond(scalars_df_index, scalars_pandas_df_index):
+    # Condition is dataframe, other is None (as default).
+    cond_bf = scalars_df_index["int64_col"] > 0
+    cond_pd = scalars_pandas_df_index["int64_col"] > 0
+    bf_result = scalars_df_index.where(cond_bf).to_pandas()
+    pd_result = scalars_pandas_df_index.where(cond_pd)
+    pandas.testing.assert_frame_equal(bf_result, pd_result)
+
+
+def test_where_series_multi_index(scalars_df_index, scalars_pandas_df_index):
+    # Test when a dataframe has multi-index or multi-columns.
+    columns = ["int64_col", "float64_col"]
+    dataframe_bf = scalars_df_index[columns]
+
+    dataframe_bf.columns = pd.MultiIndex.from_tuples(
+        [("str1", 1), ("str2", 2)], names=["STR", "INT"]
+    )
+    cond_bf = dataframe_bf["str1"] > 0
+
+    with pytest.raises(NotImplementedError) as context:
+        dataframe_bf.where(cond_bf).to_pandas()
+    assert (
+        str(context.value)
+        == "The dataframe.where() method does not support multi-index and/or multi-column."
+    )
+
+
+def test_where_series_cond_const_other(scalars_df_index, scalars_pandas_df_index):
+    # Condition is a series, other is a constant.
+    columns = ["int64_col", "float64_col"]
+    dataframe_bf = scalars_df_index[columns]
+    dataframe_pd = scalars_pandas_df_index[columns]
+    dataframe_bf.columns.name = "test_name"
+    dataframe_pd.columns.name = "test_name"
+
+    cond_bf = dataframe_bf["int64_col"] > 0
+    cond_pd = dataframe_pd["int64_col"] > 0
+    other = 0
+
+    bf_result = dataframe_bf.where(cond_bf, other).to_pandas()
+    pd_result = dataframe_pd.where(cond_pd, other)
+    pandas.testing.assert_frame_equal(bf_result, pd_result)
+
+
+def test_where_series_cond_dataframe_other(scalars_df_index, scalars_pandas_df_index):
+    # Condition is a series, other is a dataframe.
+    columns = ["int64_col", "float64_col"]
+    dataframe_bf = scalars_df_index[columns]
+    dataframe_pd = scalars_pandas_df_index[columns]
+
+    cond_bf = dataframe_bf["int64_col"] > 0
+    cond_pd = dataframe_pd["int64_col"] > 0
+    other_bf = -dataframe_bf
+    other_pd = -dataframe_pd
+
+    bf_result = dataframe_bf.where(cond_bf, other_bf).to_pandas()
+    pd_result = dataframe_pd.where(cond_pd, other_pd)
+    pandas.testing.assert_frame_equal(bf_result, pd_result)
+
+
+def test_where_dataframe_cond(scalars_df_index, scalars_pandas_df_index):
+    # Condition is a dataframe, other is None.
+    columns = ["int64_col", "float64_col"]
+    dataframe_bf = scalars_df_index[columns]
+    dataframe_pd = scalars_pandas_df_index[columns]
+
+    cond_bf = dataframe_bf > 0
+    cond_pd = dataframe_pd > 0
+
+    bf_result = dataframe_bf.where(cond_bf, None).to_pandas()
+    pd_result = dataframe_pd.where(cond_pd, None)
+    pandas.testing.assert_frame_equal(bf_result, pd_result)
+
+
+def test_where_dataframe_cond_const_other(scalars_df_index, scalars_pandas_df_index):
+    # Condition is a dataframe, other is a constant.
+    columns = ["int64_col", "float64_col"]
+    dataframe_bf = scalars_df_index[columns]
+    dataframe_pd = scalars_pandas_df_index[columns]
+
+    cond_bf = dataframe_bf > 0
+    cond_pd = dataframe_pd > 0
+    other_bf = 10
+    other_pd = 10
+
+    bf_result = dataframe_bf.where(cond_bf, other_bf).to_pandas()
+    pd_result = dataframe_pd.where(cond_pd, other_pd)
+    pandas.testing.assert_frame_equal(bf_result, pd_result)
+
+
+def test_where_dataframe_cond_dataframe_other(
+    scalars_df_index, scalars_pandas_df_index
+):
+    # Condition is a dataframe, other is a dataframe.
+    columns = ["int64_col", "float64_col"]
+    dataframe_bf = scalars_df_index[columns]
+    dataframe_pd = scalars_pandas_df_index[columns]
+
+    cond_bf = dataframe_bf > 0
+    cond_pd = dataframe_pd > 0
+    other_bf = dataframe_bf * 2
+    other_pd = dataframe_pd * 2
+
+    bf_result = dataframe_bf.where(cond_bf, other_bf).to_pandas()
+    pd_result = dataframe_pd.where(cond_pd, other_pd)
+    pandas.testing.assert_frame_equal(bf_result, pd_result)
+
+
 def test_drop_column(scalars_dfs):
     scalars_df, scalars_pandas_df = scalars_dfs
     col_name = "int64_col"
