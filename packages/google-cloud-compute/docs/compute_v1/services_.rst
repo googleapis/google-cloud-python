@@ -42,6 +42,7 @@ Services for Google Cloud Compute v1 API
     network_edge_security_services
     network_endpoint_groups
     network_firewall_policies
+    network_profiles
     networks
     node_groups
     node_templates

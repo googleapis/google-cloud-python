@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -37,6 +37,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -83,8 +91,10 @@ class ProductsServiceRestInterceptor:
     """
 
     def pre_get_product(
-        self, request: products.GetProductRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[products.GetProductRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: products.GetProductRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[products.GetProductRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_product
 
         Override in a subclass to manipulate the request or metadata
@@ -102,8 +112,10 @@ class ProductsServiceRestInterceptor:
         return response
 
     def pre_list_products(
-        self, request: products.ListProductsRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[products.ListProductsRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: products.ListProductsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[products.ListProductsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_products
 
         Override in a subclass to manipulate the request or metadata
@@ -244,7 +256,7 @@ class ProductsServiceRestTransport(_BaseProductsServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> products.Product:
             r"""Call the get product method over HTTP.
 
@@ -255,13 +267,15 @@ class ProductsServiceRestTransport(_BaseProductsServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.products.Product:
                     The processed product, built from multiple [product
-                inputs][[google.shopping.content.bundles.Products.ProductInput]
+                inputs][google.shopping.merchant.products.v1main.ProductInput]
                 after applying rules and supplemental data sources. This
                 processed product matches what is shown in your Merchant
                 Center account and in Shopping ads and other surfaces
@@ -283,6 +297,7 @@ class ProductsServiceRestTransport(_BaseProductsServiceRestTransport):
             http_options = (
                 _BaseProductsServiceRestTransport._BaseGetProduct._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_product(request, metadata)
             transcoded_request = _BaseProductsServiceRestTransport._BaseGetProduct._get_transcoded_request(
                 http_options, request
@@ -292,6 +307,33 @@ class ProductsServiceRestTransport(_BaseProductsServiceRestTransport):
             query_params = _BaseProductsServiceRestTransport._BaseGetProduct._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.shopping.merchant.products_v1beta.ProductsServiceClient.GetProduct",
+                    extra={
+                        "serviceName": "google.shopping.merchant.products.v1beta.ProductsService",
+                        "rpcName": "GetProduct",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ProductsServiceRestTransport._GetProduct._get_response(
@@ -313,7 +355,29 @@ class ProductsServiceRestTransport(_BaseProductsServiceRestTransport):
             pb_resp = products.Product.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_product(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = products.Product.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.shopping.merchant.products_v1beta.ProductsServiceClient.get_product",
+                    extra={
+                        "serviceName": "google.shopping.merchant.products.v1beta.ProductsService",
+                        "rpcName": "GetProduct",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListProducts(
@@ -350,7 +414,7 @@ class ProductsServiceRestTransport(_BaseProductsServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> products.ListProductsResponse:
             r"""Call the list products method over HTTP.
 
@@ -361,8 +425,10 @@ class ProductsServiceRestTransport(_BaseProductsServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.products.ListProductsResponse:
@@ -374,6 +440,7 @@ class ProductsServiceRestTransport(_BaseProductsServiceRestTransport):
             http_options = (
                 _BaseProductsServiceRestTransport._BaseListProducts._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_products(request, metadata)
             transcoded_request = _BaseProductsServiceRestTransport._BaseListProducts._get_transcoded_request(
                 http_options, request
@@ -383,6 +450,33 @@ class ProductsServiceRestTransport(_BaseProductsServiceRestTransport):
             query_params = _BaseProductsServiceRestTransport._BaseListProducts._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.shopping.merchant.products_v1beta.ProductsServiceClient.ListProducts",
+                    extra={
+                        "serviceName": "google.shopping.merchant.products.v1beta.ProductsService",
+                        "rpcName": "ListProducts",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ProductsServiceRestTransport._ListProducts._get_response(
@@ -404,7 +498,29 @@ class ProductsServiceRestTransport(_BaseProductsServiceRestTransport):
             pb_resp = products.ListProductsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_products(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = products.ListProductsResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.shopping.merchant.products_v1beta.ProductsServiceClient.list_products",
+                    extra={
+                        "serviceName": "google.shopping.merchant.products.v1beta.ProductsService",
+                        "rpcName": "ListProducts",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
