@@ -1,0 +1,2 @@
+recursive-include google/cloud/trace *.py
+recursive-include google/cloud/trace_v2 *.py
