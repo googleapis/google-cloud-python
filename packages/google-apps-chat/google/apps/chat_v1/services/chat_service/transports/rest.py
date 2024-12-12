@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -50,6 +50,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -302,8 +310,10 @@ class ChatServiceRestInterceptor:
     def pre_complete_import_space(
         self,
         request: space.CompleteImportSpaceRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[space.CompleteImportSpaceRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        space.CompleteImportSpaceRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for complete_import_space
 
         Override in a subclass to manipulate the request or metadata
@@ -325,8 +335,10 @@ class ChatServiceRestInterceptor:
     def pre_create_membership(
         self,
         request: gc_membership.CreateMembershipRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[gc_membership.CreateMembershipRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gc_membership.CreateMembershipRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_membership
 
         Override in a subclass to manipulate the request or metadata
@@ -348,8 +360,10 @@ class ChatServiceRestInterceptor:
     def pre_create_message(
         self,
         request: gc_message.CreateMessageRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[gc_message.CreateMessageRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gc_message.CreateMessageRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_message
 
         Override in a subclass to manipulate the request or metadata
@@ -369,8 +383,10 @@ class ChatServiceRestInterceptor:
     def pre_create_reaction(
         self,
         request: gc_reaction.CreateReactionRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[gc_reaction.CreateReactionRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gc_reaction.CreateReactionRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_reaction
 
         Override in a subclass to manipulate the request or metadata
@@ -390,8 +406,10 @@ class ChatServiceRestInterceptor:
         return response
 
     def pre_create_space(
-        self, request: gc_space.CreateSpaceRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[gc_space.CreateSpaceRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: gc_space.CreateSpaceRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[gc_space.CreateSpaceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_space
 
         Override in a subclass to manipulate the request or metadata
@@ -411,8 +429,10 @@ class ChatServiceRestInterceptor:
     def pre_delete_membership(
         self,
         request: membership.DeleteMembershipRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[membership.DeleteMembershipRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        membership.DeleteMembershipRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_membership
 
         Override in a subclass to manipulate the request or metadata
@@ -432,8 +452,10 @@ class ChatServiceRestInterceptor:
         return response
 
     def pre_delete_message(
-        self, request: message.DeleteMessageRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[message.DeleteMessageRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: message.DeleteMessageRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[message.DeleteMessageRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_message
 
         Override in a subclass to manipulate the request or metadata
@@ -444,8 +466,8 @@ class ChatServiceRestInterceptor:
     def pre_delete_reaction(
         self,
         request: reaction.DeleteReactionRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[reaction.DeleteReactionRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[reaction.DeleteReactionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_reaction
 
         Override in a subclass to manipulate the request or metadata
@@ -454,8 +476,10 @@ class ChatServiceRestInterceptor:
         return request, metadata
 
     def pre_delete_space(
-        self, request: space.DeleteSpaceRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[space.DeleteSpaceRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: space.DeleteSpaceRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[space.DeleteSpaceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_space
 
         Override in a subclass to manipulate the request or metadata
@@ -466,8 +490,8 @@ class ChatServiceRestInterceptor:
     def pre_find_direct_message(
         self,
         request: space.FindDirectMessageRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[space.FindDirectMessageRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[space.FindDirectMessageRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for find_direct_message
 
         Override in a subclass to manipulate the request or metadata
@@ -487,8 +511,10 @@ class ChatServiceRestInterceptor:
     def pre_get_attachment(
         self,
         request: attachment.GetAttachmentRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[attachment.GetAttachmentRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        attachment.GetAttachmentRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_attachment
 
         Override in a subclass to manipulate the request or metadata
@@ -510,8 +536,10 @@ class ChatServiceRestInterceptor:
     def pre_get_membership(
         self,
         request: membership.GetMembershipRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[membership.GetMembershipRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        membership.GetMembershipRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_membership
 
         Override in a subclass to manipulate the request or metadata
@@ -531,8 +559,10 @@ class ChatServiceRestInterceptor:
         return response
 
     def pre_get_message(
-        self, request: message.GetMessageRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[message.GetMessageRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: message.GetMessageRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[message.GetMessageRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_message
 
         Override in a subclass to manipulate the request or metadata
@@ -550,8 +580,10 @@ class ChatServiceRestInterceptor:
         return response
 
     def pre_get_space(
-        self, request: space.GetSpaceRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[space.GetSpaceRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: space.GetSpaceRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[space.GetSpaceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_space
 
         Override in a subclass to manipulate the request or metadata
@@ -571,8 +603,10 @@ class ChatServiceRestInterceptor:
     def pre_get_space_event(
         self,
         request: space_event.GetSpaceEventRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[space_event.GetSpaceEventRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        space_event.GetSpaceEventRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_space_event
 
         Override in a subclass to manipulate the request or metadata
@@ -594,8 +628,11 @@ class ChatServiceRestInterceptor:
     def pre_get_space_read_state(
         self,
         request: space_read_state.GetSpaceReadStateRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[space_read_state.GetSpaceReadStateRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        space_read_state.GetSpaceReadStateRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for get_space_read_state
 
         Override in a subclass to manipulate the request or metadata
@@ -617,8 +654,11 @@ class ChatServiceRestInterceptor:
     def pre_get_thread_read_state(
         self,
         request: thread_read_state.GetThreadReadStateRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[thread_read_state.GetThreadReadStateRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        thread_read_state.GetThreadReadStateRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for get_thread_read_state
 
         Override in a subclass to manipulate the request or metadata
@@ -640,8 +680,10 @@ class ChatServiceRestInterceptor:
     def pre_list_memberships(
         self,
         request: membership.ListMembershipsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[membership.ListMembershipsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        membership.ListMembershipsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_memberships
 
         Override in a subclass to manipulate the request or metadata
@@ -661,8 +703,10 @@ class ChatServiceRestInterceptor:
         return response
 
     def pre_list_messages(
-        self, request: message.ListMessagesRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[message.ListMessagesRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: message.ListMessagesRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[message.ListMessagesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_messages
 
         Override in a subclass to manipulate the request or metadata
@@ -684,8 +728,8 @@ class ChatServiceRestInterceptor:
     def pre_list_reactions(
         self,
         request: reaction.ListReactionsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[reaction.ListReactionsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[reaction.ListReactionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_reactions
 
         Override in a subclass to manipulate the request or metadata
@@ -707,8 +751,10 @@ class ChatServiceRestInterceptor:
     def pre_list_space_events(
         self,
         request: space_event.ListSpaceEventsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[space_event.ListSpaceEventsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        space_event.ListSpaceEventsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_space_events
 
         Override in a subclass to manipulate the request or metadata
@@ -728,8 +774,10 @@ class ChatServiceRestInterceptor:
         return response
 
     def pre_list_spaces(
-        self, request: space.ListSpacesRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[space.ListSpacesRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: space.ListSpacesRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[space.ListSpacesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_spaces
 
         Override in a subclass to manipulate the request or metadata
@@ -749,8 +797,10 @@ class ChatServiceRestInterceptor:
         return response
 
     def pre_search_spaces(
-        self, request: space.SearchSpacesRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[space.SearchSpacesRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: space.SearchSpacesRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[space.SearchSpacesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for search_spaces
 
         Override in a subclass to manipulate the request or metadata
@@ -772,8 +822,8 @@ class ChatServiceRestInterceptor:
     def pre_set_up_space(
         self,
         request: space_setup.SetUpSpaceRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[space_setup.SetUpSpaceRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[space_setup.SetUpSpaceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_up_space
 
         Override in a subclass to manipulate the request or metadata
@@ -793,8 +843,10 @@ class ChatServiceRestInterceptor:
     def pre_update_membership(
         self,
         request: gc_membership.UpdateMembershipRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[gc_membership.UpdateMembershipRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gc_membership.UpdateMembershipRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_membership
 
         Override in a subclass to manipulate the request or metadata
@@ -816,8 +868,10 @@ class ChatServiceRestInterceptor:
     def pre_update_message(
         self,
         request: gc_message.UpdateMessageRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[gc_message.UpdateMessageRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gc_message.UpdateMessageRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_message
 
         Override in a subclass to manipulate the request or metadata
@@ -835,8 +889,10 @@ class ChatServiceRestInterceptor:
         return response
 
     def pre_update_space(
-        self, request: gc_space.UpdateSpaceRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[gc_space.UpdateSpaceRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: gc_space.UpdateSpaceRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[gc_space.UpdateSpaceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_space
 
         Override in a subclass to manipulate the request or metadata
@@ -856,9 +912,10 @@ class ChatServiceRestInterceptor:
     def pre_update_space_read_state(
         self,
         request: gc_space_read_state.UpdateSpaceReadStateRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        gc_space_read_state.UpdateSpaceReadStateRequest, Sequence[Tuple[str, str]]
+        gc_space_read_state.UpdateSpaceReadStateRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for update_space_read_state
 
@@ -881,8 +938,10 @@ class ChatServiceRestInterceptor:
     def pre_upload_attachment(
         self,
         request: attachment.UploadAttachmentRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[attachment.UploadAttachmentRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        attachment.UploadAttachmentRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for upload_attachment
 
         Override in a subclass to manipulate the request or metadata
@@ -1024,7 +1083,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> space.CompleteImportSpaceResponse:
             r"""Call the complete import space method over HTTP.
 
@@ -1035,8 +1094,10 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.space.CompleteImportSpaceResponse:
@@ -1048,6 +1109,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             http_options = (
                 _BaseChatServiceRestTransport._BaseCompleteImportSpace._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_complete_import_space(
                 request, metadata
             )
@@ -1063,6 +1125,33 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             query_params = _BaseChatServiceRestTransport._BaseCompleteImportSpace._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.chat_v1.ChatServiceClient.CompleteImportSpace",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "CompleteImportSpace",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ChatServiceRestTransport._CompleteImportSpace._get_response(
@@ -1085,7 +1174,31 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             pb_resp = space.CompleteImportSpaceResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_complete_import_space(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = space.CompleteImportSpaceResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.chat_v1.ChatServiceClient.complete_import_space",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "CompleteImportSpace",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateMembership(
@@ -1123,7 +1236,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gc_membership.Membership:
             r"""Call the create membership method over HTTP.
 
@@ -1134,8 +1247,10 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.gc_membership.Membership:
@@ -1149,6 +1264,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             http_options = (
                 _BaseChatServiceRestTransport._BaseCreateMembership._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_membership(
                 request, metadata
             )
@@ -1164,6 +1280,33 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             query_params = _BaseChatServiceRestTransport._BaseCreateMembership._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.chat_v1.ChatServiceClient.CreateMembership",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "CreateMembership",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ChatServiceRestTransport._CreateMembership._get_response(
@@ -1186,7 +1329,29 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             pb_resp = gc_membership.Membership.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_membership(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gc_membership.Membership.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.chat_v1.ChatServiceClient.create_membership",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "CreateMembership",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateMessage(
@@ -1224,7 +1389,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gc_message.Message:
             r"""Call the create message method over HTTP.
 
@@ -1234,8 +1399,10 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.gc_message.Message:
@@ -1245,6 +1412,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             http_options = (
                 _BaseChatServiceRestTransport._BaseCreateMessage._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_message(request, metadata)
             transcoded_request = _BaseChatServiceRestTransport._BaseCreateMessage._get_transcoded_request(
                 http_options, request
@@ -1262,6 +1430,33 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.chat_v1.ChatServiceClient.CreateMessage",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "CreateMessage",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ChatServiceRestTransport._CreateMessage._get_response(
@@ -1284,7 +1479,29 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             pb_resp = gc_message.Message.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_message(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gc_message.Message.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.chat_v1.ChatServiceClient.create_message",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "CreateMessage",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateReaction(
@@ -1322,7 +1539,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gc_reaction.Reaction:
             r"""Call the create reaction method over HTTP.
 
@@ -1332,8 +1549,10 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.gc_reaction.Reaction:
@@ -1343,6 +1562,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             http_options = (
                 _BaseChatServiceRestTransport._BaseCreateReaction._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_reaction(request, metadata)
             transcoded_request = _BaseChatServiceRestTransport._BaseCreateReaction._get_transcoded_request(
                 http_options, request
@@ -1356,6 +1576,33 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             query_params = _BaseChatServiceRestTransport._BaseCreateReaction._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.chat_v1.ChatServiceClient.CreateReaction",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "CreateReaction",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ChatServiceRestTransport._CreateReaction._get_response(
@@ -1378,7 +1625,29 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             pb_resp = gc_reaction.Reaction.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_reaction(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gc_reaction.Reaction.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.chat_v1.ChatServiceClient.create_reaction",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "CreateReaction",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateSpace(
@@ -1416,7 +1685,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gc_space.Space:
             r"""Call the create space method over HTTP.
 
@@ -1427,8 +1696,10 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.gc_space.Space:
@@ -1442,6 +1713,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             http_options = (
                 _BaseChatServiceRestTransport._BaseCreateSpace._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_space(request, metadata)
             transcoded_request = (
                 _BaseChatServiceRestTransport._BaseCreateSpace._get_transcoded_request(
@@ -1461,6 +1733,33 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.chat_v1.ChatServiceClient.CreateSpace",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "CreateSpace",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ChatServiceRestTransport._CreateSpace._get_response(
@@ -1483,7 +1782,29 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             pb_resp = gc_space.Space.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_space(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gc_space.Space.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.chat_v1.ChatServiceClient.create_space",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "CreateSpace",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteMembership(
@@ -1520,7 +1841,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> membership.Membership:
             r"""Call the delete membership method over HTTP.
 
@@ -1531,8 +1852,10 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.membership.Membership:
@@ -1546,6 +1869,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             http_options = (
                 _BaseChatServiceRestTransport._BaseDeleteMembership._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_membership(
                 request, metadata
             )
@@ -1557,6 +1881,33 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             query_params = _BaseChatServiceRestTransport._BaseDeleteMembership._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.chat_v1.ChatServiceClient.DeleteMembership",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "DeleteMembership",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ChatServiceRestTransport._DeleteMembership._get_response(
@@ -1578,7 +1929,29 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             pb_resp = membership.Membership.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_membership(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = membership.Membership.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.chat_v1.ChatServiceClient.delete_membership",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "DeleteMembership",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteMessage(
@@ -1615,7 +1988,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete message method over HTTP.
 
@@ -1625,13 +1998,16 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseChatServiceRestTransport._BaseDeleteMessage._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_message(request, metadata)
             transcoded_request = _BaseChatServiceRestTransport._BaseDeleteMessage._get_transcoded_request(
                 http_options, request
@@ -1643,6 +2019,33 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.chat_v1.ChatServiceClient.DeleteMessage",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "DeleteMessage",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ChatServiceRestTransport._DeleteMessage._get_response(
@@ -1693,7 +2096,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete reaction method over HTTP.
 
@@ -1703,13 +2106,16 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseChatServiceRestTransport._BaseDeleteReaction._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_reaction(request, metadata)
             transcoded_request = _BaseChatServiceRestTransport._BaseDeleteReaction._get_transcoded_request(
                 http_options, request
@@ -1719,6 +2125,33 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             query_params = _BaseChatServiceRestTransport._BaseDeleteReaction._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.chat_v1.ChatServiceClient.DeleteReaction",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "DeleteReaction",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ChatServiceRestTransport._DeleteReaction._get_response(
@@ -1769,7 +2202,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete space method over HTTP.
 
@@ -1779,13 +2212,16 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseChatServiceRestTransport._BaseDeleteSpace._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_space(request, metadata)
             transcoded_request = (
                 _BaseChatServiceRestTransport._BaseDeleteSpace._get_transcoded_request(
@@ -1799,6 +2235,33 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.chat_v1.ChatServiceClient.DeleteSpace",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "DeleteSpace",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ChatServiceRestTransport._DeleteSpace._get_response(
@@ -1849,7 +2312,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> space.Space:
             r"""Call the find direct message method over HTTP.
 
@@ -1860,8 +2323,10 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.space.Space:
@@ -1875,6 +2340,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             http_options = (
                 _BaseChatServiceRestTransport._BaseFindDirectMessage._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_find_direct_message(
                 request, metadata
             )
@@ -1886,6 +2352,33 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             query_params = _BaseChatServiceRestTransport._BaseFindDirectMessage._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.chat_v1.ChatServiceClient.FindDirectMessage",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "FindDirectMessage",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ChatServiceRestTransport._FindDirectMessage._get_response(
@@ -1907,7 +2400,29 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             pb_resp = space.Space.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_find_direct_message(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = space.Space.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.chat_v1.ChatServiceClient.find_direct_message",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "FindDirectMessage",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetAttachment(
@@ -1944,7 +2459,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> attachment.Attachment:
             r"""Call the get attachment method over HTTP.
 
@@ -1954,8 +2469,10 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.attachment.Attachment:
@@ -1965,6 +2482,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             http_options = (
                 _BaseChatServiceRestTransport._BaseGetAttachment._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_attachment(request, metadata)
             transcoded_request = _BaseChatServiceRestTransport._BaseGetAttachment._get_transcoded_request(
                 http_options, request
@@ -1976,6 +2494,33 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.chat_v1.ChatServiceClient.GetAttachment",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "GetAttachment",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ChatServiceRestTransport._GetAttachment._get_response(
@@ -1997,7 +2542,29 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             pb_resp = attachment.Attachment.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_attachment(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = attachment.Attachment.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.chat_v1.ChatServiceClient.get_attachment",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "GetAttachment",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetMembership(
@@ -2034,7 +2601,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> membership.Membership:
             r"""Call the get membership method over HTTP.
 
@@ -2045,8 +2612,10 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.membership.Membership:
@@ -2060,6 +2629,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             http_options = (
                 _BaseChatServiceRestTransport._BaseGetMembership._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_membership(request, metadata)
             transcoded_request = _BaseChatServiceRestTransport._BaseGetMembership._get_transcoded_request(
                 http_options, request
@@ -2071,6 +2641,33 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.chat_v1.ChatServiceClient.GetMembership",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "GetMembership",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ChatServiceRestTransport._GetMembership._get_response(
@@ -2092,7 +2689,29 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             pb_resp = membership.Membership.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_membership(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = membership.Membership.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.chat_v1.ChatServiceClient.get_membership",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "GetMembership",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetMessage(
@@ -2129,7 +2748,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> message.Message:
             r"""Call the get message method over HTTP.
 
@@ -2139,8 +2758,10 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.message.Message:
@@ -2150,6 +2771,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             http_options = (
                 _BaseChatServiceRestTransport._BaseGetMessage._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_message(request, metadata)
             transcoded_request = (
                 _BaseChatServiceRestTransport._BaseGetMessage._get_transcoded_request(
@@ -2163,6 +2785,33 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.chat_v1.ChatServiceClient.GetMessage",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "GetMessage",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ChatServiceRestTransport._GetMessage._get_response(
@@ -2184,7 +2833,29 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             pb_resp = message.Message.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_message(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = message.Message.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.chat_v1.ChatServiceClient.get_message",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "GetMessage",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetSpace(_BaseChatServiceRestTransport._BaseGetSpace, ChatServiceRestStub):
@@ -2219,7 +2890,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> space.Space:
             r"""Call the get space method over HTTP.
 
@@ -2229,8 +2900,10 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.space.Space:
@@ -2244,6 +2917,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             http_options = (
                 _BaseChatServiceRestTransport._BaseGetSpace._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_space(request, metadata)
             transcoded_request = (
                 _BaseChatServiceRestTransport._BaseGetSpace._get_transcoded_request(
@@ -2257,6 +2931,33 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.chat_v1.ChatServiceClient.GetSpace",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "GetSpace",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ChatServiceRestTransport._GetSpace._get_response(
@@ -2278,7 +2979,29 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             pb_resp = space.Space.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_space(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = space.Space.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.chat_v1.ChatServiceClient.get_space",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "GetSpace",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetSpaceEvent(
@@ -2315,7 +3038,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> space_event.SpaceEvent:
             r"""Call the get space event method over HTTP.
 
@@ -2326,8 +3049,10 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.space_event.SpaceEvent:
@@ -2341,6 +3066,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             http_options = (
                 _BaseChatServiceRestTransport._BaseGetSpaceEvent._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_space_event(request, metadata)
             transcoded_request = _BaseChatServiceRestTransport._BaseGetSpaceEvent._get_transcoded_request(
                 http_options, request
@@ -2352,6 +3078,33 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.chat_v1.ChatServiceClient.GetSpaceEvent",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "GetSpaceEvent",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ChatServiceRestTransport._GetSpaceEvent._get_response(
@@ -2373,7 +3126,29 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             pb_resp = space_event.SpaceEvent.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_space_event(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = space_event.SpaceEvent.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.chat_v1.ChatServiceClient.get_space_event",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "GetSpaceEvent",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetSpaceReadState(
@@ -2410,7 +3185,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> space_read_state.SpaceReadState:
             r"""Call the get space read state method over HTTP.
 
@@ -2421,8 +3196,10 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.space_read_state.SpaceReadState:
@@ -2435,6 +3212,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             http_options = (
                 _BaseChatServiceRestTransport._BaseGetSpaceReadState._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_space_read_state(
                 request, metadata
             )
@@ -2446,6 +3224,33 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             query_params = _BaseChatServiceRestTransport._BaseGetSpaceReadState._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.chat_v1.ChatServiceClient.GetSpaceReadState",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "GetSpaceReadState",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ChatServiceRestTransport._GetSpaceReadState._get_response(
@@ -2467,7 +3272,29 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             pb_resp = space_read_state.SpaceReadState.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_space_read_state(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = space_read_state.SpaceReadState.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.chat_v1.ChatServiceClient.get_space_read_state",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "GetSpaceReadState",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetThreadReadState(
@@ -2504,7 +3331,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> thread_read_state.ThreadReadState:
             r"""Call the get thread read state method over HTTP.
 
@@ -2515,8 +3342,10 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.thread_read_state.ThreadReadState:
@@ -2529,6 +3358,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             http_options = (
                 _BaseChatServiceRestTransport._BaseGetThreadReadState._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_thread_read_state(
                 request, metadata
             )
@@ -2540,6 +3370,33 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             query_params = _BaseChatServiceRestTransport._BaseGetThreadReadState._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.chat_v1.ChatServiceClient.GetThreadReadState",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "GetThreadReadState",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ChatServiceRestTransport._GetThreadReadState._get_response(
@@ -2561,7 +3418,31 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             pb_resp = thread_read_state.ThreadReadState.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_thread_read_state(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = thread_read_state.ThreadReadState.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.chat_v1.ChatServiceClient.get_thread_read_state",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "GetThreadReadState",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListMemberships(
@@ -2598,7 +3479,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> membership.ListMembershipsResponse:
             r"""Call the list memberships method over HTTP.
 
@@ -2609,8 +3490,10 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.membership.ListMembershipsResponse:
@@ -2622,6 +3505,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             http_options = (
                 _BaseChatServiceRestTransport._BaseListMemberships._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_memberships(
                 request, metadata
             )
@@ -2633,6 +3517,33 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             query_params = _BaseChatServiceRestTransport._BaseListMemberships._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.chat_v1.ChatServiceClient.ListMemberships",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "ListMemberships",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ChatServiceRestTransport._ListMemberships._get_response(
@@ -2654,7 +3565,31 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             pb_resp = membership.ListMembershipsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_memberships(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = membership.ListMembershipsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.chat_v1.ChatServiceClient.list_memberships",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "ListMemberships",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListMessages(
@@ -2691,7 +3626,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> message.ListMessagesResponse:
             r"""Call the list messages method over HTTP.
 
@@ -2702,8 +3637,10 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.message.ListMessagesResponse:
@@ -2715,6 +3652,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             http_options = (
                 _BaseChatServiceRestTransport._BaseListMessages._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_messages(request, metadata)
             transcoded_request = (
                 _BaseChatServiceRestTransport._BaseListMessages._get_transcoded_request(
@@ -2728,6 +3666,33 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.chat_v1.ChatServiceClient.ListMessages",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "ListMessages",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ChatServiceRestTransport._ListMessages._get_response(
@@ -2749,7 +3714,29 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             pb_resp = message.ListMessagesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_messages(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = message.ListMessagesResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.chat_v1.ChatServiceClient.list_messages",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "ListMessages",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListReactions(
@@ -2786,7 +3773,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> reaction.ListReactionsResponse:
             r"""Call the list reactions method over HTTP.
 
@@ -2796,8 +3783,10 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.reaction.ListReactionsResponse:
@@ -2807,6 +3796,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             http_options = (
                 _BaseChatServiceRestTransport._BaseListReactions._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_reactions(request, metadata)
             transcoded_request = _BaseChatServiceRestTransport._BaseListReactions._get_transcoded_request(
                 http_options, request
@@ -2818,6 +3808,33 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.chat_v1.ChatServiceClient.ListReactions",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "ListReactions",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ChatServiceRestTransport._ListReactions._get_response(
@@ -2839,7 +3856,29 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             pb_resp = reaction.ListReactionsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_reactions(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = reaction.ListReactionsResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.chat_v1.ChatServiceClient.list_reactions",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "ListReactions",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListSpaceEvents(
@@ -2876,7 +3915,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> space_event.ListSpaceEventsResponse:
             r"""Call the list space events method over HTTP.
 
@@ -2887,8 +3926,10 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.space_event.ListSpaceEventsResponse:
@@ -2900,6 +3941,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             http_options = (
                 _BaseChatServiceRestTransport._BaseListSpaceEvents._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_space_events(
                 request, metadata
             )
@@ -2911,6 +3953,33 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             query_params = _BaseChatServiceRestTransport._BaseListSpaceEvents._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.chat_v1.ChatServiceClient.ListSpaceEvents",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "ListSpaceEvents",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ChatServiceRestTransport._ListSpaceEvents._get_response(
@@ -2932,7 +4001,31 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             pb_resp = space_event.ListSpaceEventsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_space_events(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = space_event.ListSpaceEventsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.chat_v1.ChatServiceClient.list_space_events",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "ListSpaceEvents",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListSpaces(
@@ -2969,7 +4062,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> space.ListSpacesResponse:
             r"""Call the list spaces method over HTTP.
 
@@ -2980,8 +4073,10 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.space.ListSpacesResponse:
@@ -2993,6 +4088,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             http_options = (
                 _BaseChatServiceRestTransport._BaseListSpaces._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_spaces(request, metadata)
             transcoded_request = (
                 _BaseChatServiceRestTransport._BaseListSpaces._get_transcoded_request(
@@ -3006,6 +4102,33 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.chat_v1.ChatServiceClient.ListSpaces",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "ListSpaces",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ChatServiceRestTransport._ListSpaces._get_response(
@@ -3027,7 +4150,29 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             pb_resp = space.ListSpacesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_spaces(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = space.ListSpacesResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.chat_v1.ChatServiceClient.list_spaces",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "ListSpaces",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _SearchSpaces(
@@ -3064,7 +4209,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> space.SearchSpacesResponse:
             r"""Call the search spaces method over HTTP.
 
@@ -3075,8 +4220,10 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.space.SearchSpacesResponse:
@@ -3089,6 +4236,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             http_options = (
                 _BaseChatServiceRestTransport._BaseSearchSpaces._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_search_spaces(request, metadata)
             transcoded_request = (
                 _BaseChatServiceRestTransport._BaseSearchSpaces._get_transcoded_request(
@@ -3102,6 +4250,33 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.chat_v1.ChatServiceClient.SearchSpaces",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "SearchSpaces",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ChatServiceRestTransport._SearchSpaces._get_response(
@@ -3123,7 +4298,29 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             pb_resp = space.SearchSpacesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_search_spaces(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = space.SearchSpacesResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.chat_v1.ChatServiceClient.search_spaces",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "SearchSpaces",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _SetUpSpace(
@@ -3161,7 +4358,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> space.Space:
             r"""Call the set up space method over HTTP.
 
@@ -3172,8 +4369,10 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.space.Space:
@@ -3187,6 +4386,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             http_options = (
                 _BaseChatServiceRestTransport._BaseSetUpSpace._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_set_up_space(request, metadata)
             transcoded_request = (
                 _BaseChatServiceRestTransport._BaseSetUpSpace._get_transcoded_request(
@@ -3204,6 +4404,33 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.chat_v1.ChatServiceClient.SetUpSpace",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "SetUpSpace",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ChatServiceRestTransport._SetUpSpace._get_response(
@@ -3226,7 +4453,29 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             pb_resp = space.Space.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_set_up_space(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = space.Space.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.chat_v1.ChatServiceClient.set_up_space",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "SetUpSpace",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateMembership(
@@ -3264,7 +4513,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gc_membership.Membership:
             r"""Call the update membership method over HTTP.
 
@@ -3275,8 +4524,10 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.gc_membership.Membership:
@@ -3290,6 +4541,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             http_options = (
                 _BaseChatServiceRestTransport._BaseUpdateMembership._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_membership(
                 request, metadata
             )
@@ -3305,6 +4557,33 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             query_params = _BaseChatServiceRestTransport._BaseUpdateMembership._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.chat_v1.ChatServiceClient.UpdateMembership",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "UpdateMembership",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ChatServiceRestTransport._UpdateMembership._get_response(
@@ -3327,7 +4606,29 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             pb_resp = gc_membership.Membership.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_membership(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gc_membership.Membership.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.chat_v1.ChatServiceClient.update_membership",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "UpdateMembership",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateMessage(
@@ -3365,7 +4666,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gc_message.Message:
             r"""Call the update message method over HTTP.
 
@@ -3375,8 +4676,10 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.gc_message.Message:
@@ -3386,6 +4689,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             http_options = (
                 _BaseChatServiceRestTransport._BaseUpdateMessage._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_message(request, metadata)
             transcoded_request = _BaseChatServiceRestTransport._BaseUpdateMessage._get_transcoded_request(
                 http_options, request
@@ -3403,6 +4707,33 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.chat_v1.ChatServiceClient.UpdateMessage",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "UpdateMessage",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ChatServiceRestTransport._UpdateMessage._get_response(
@@ -3425,7 +4756,29 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             pb_resp = gc_message.Message.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_message(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gc_message.Message.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.chat_v1.ChatServiceClient.update_message",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "UpdateMessage",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateSpace(
@@ -3463,7 +4816,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gc_space.Space:
             r"""Call the update space method over HTTP.
 
@@ -3473,8 +4826,10 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.gc_space.Space:
@@ -3488,6 +4843,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             http_options = (
                 _BaseChatServiceRestTransport._BaseUpdateSpace._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_space(request, metadata)
             transcoded_request = (
                 _BaseChatServiceRestTransport._BaseUpdateSpace._get_transcoded_request(
@@ -3507,6 +4863,33 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.chat_v1.ChatServiceClient.UpdateSpace",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "UpdateSpace",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ChatServiceRestTransport._UpdateSpace._get_response(
@@ -3529,7 +4912,29 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             pb_resp = gc_space.Space.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_space(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gc_space.Space.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.chat_v1.ChatServiceClient.update_space",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "UpdateSpace",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateSpaceReadState(
@@ -3567,7 +4972,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gc_space_read_state.SpaceReadState:
             r"""Call the update space read state method over HTTP.
 
@@ -3578,8 +4983,10 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.gc_space_read_state.SpaceReadState:
@@ -3592,6 +4999,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             http_options = (
                 _BaseChatServiceRestTransport._BaseUpdateSpaceReadState._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_space_read_state(
                 request, metadata
             )
@@ -3607,6 +5015,33 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             query_params = _BaseChatServiceRestTransport._BaseUpdateSpaceReadState._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.chat_v1.ChatServiceClient.UpdateSpaceReadState",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "UpdateSpaceReadState",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ChatServiceRestTransport._UpdateSpaceReadState._get_response(
@@ -3629,7 +5064,31 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             pb_resp = gc_space_read_state.SpaceReadState.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_space_read_state(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gc_space_read_state.SpaceReadState.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.chat_v1.ChatServiceClient.update_space_read_state",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "UpdateSpaceReadState",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UploadAttachment(
@@ -3667,7 +5126,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> attachment.UploadAttachmentResponse:
             r"""Call the upload attachment method over HTTP.
 
@@ -3677,8 +5136,10 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.attachment.UploadAttachmentResponse:
@@ -3688,6 +5149,7 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             http_options = (
                 _BaseChatServiceRestTransport._BaseUploadAttachment._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_upload_attachment(
                 request, metadata
             )
@@ -3703,6 +5165,33 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             query_params = _BaseChatServiceRestTransport._BaseUploadAttachment._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.chat_v1.ChatServiceClient.UploadAttachment",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "UploadAttachment",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ChatServiceRestTransport._UploadAttachment._get_response(
@@ -3725,7 +5214,31 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
             pb_resp = attachment.UploadAttachmentResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_upload_attachment(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = attachment.UploadAttachmentResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.chat_v1.ChatServiceClient.upload_attachment",
+                    extra={
+                        "serviceName": "google.chat.v1.ChatService",
+                        "rpcName": "UploadAttachment",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property

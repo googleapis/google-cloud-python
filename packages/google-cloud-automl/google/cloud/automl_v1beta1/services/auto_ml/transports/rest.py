@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -45,6 +45,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -267,8 +275,10 @@ class AutoMlRestInterceptor:
     """
 
     def pre_create_dataset(
-        self, request: service.CreateDatasetRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.CreateDatasetRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.CreateDatasetRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.CreateDatasetRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_dataset
 
         Override in a subclass to manipulate the request or metadata
@@ -286,8 +296,10 @@ class AutoMlRestInterceptor:
         return response
 
     def pre_create_model(
-        self, request: service.CreateModelRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.CreateModelRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.CreateModelRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.CreateModelRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_model
 
         Override in a subclass to manipulate the request or metadata
@@ -307,8 +319,10 @@ class AutoMlRestInterceptor:
         return response
 
     def pre_delete_dataset(
-        self, request: service.DeleteDatasetRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.DeleteDatasetRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.DeleteDatasetRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.DeleteDatasetRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_dataset
 
         Override in a subclass to manipulate the request or metadata
@@ -328,8 +342,10 @@ class AutoMlRestInterceptor:
         return response
 
     def pre_delete_model(
-        self, request: service.DeleteModelRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.DeleteModelRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.DeleteModelRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.DeleteModelRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_model
 
         Override in a subclass to manipulate the request or metadata
@@ -349,8 +365,10 @@ class AutoMlRestInterceptor:
         return response
 
     def pre_deploy_model(
-        self, request: service.DeployModelRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.DeployModelRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.DeployModelRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.DeployModelRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for deploy_model
 
         Override in a subclass to manipulate the request or metadata
@@ -370,8 +388,10 @@ class AutoMlRestInterceptor:
         return response
 
     def pre_export_data(
-        self, request: service.ExportDataRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.ExportDataRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.ExportDataRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.ExportDataRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for export_data
 
         Override in a subclass to manipulate the request or metadata
@@ -393,8 +413,10 @@ class AutoMlRestInterceptor:
     def pre_export_evaluated_examples(
         self,
         request: service.ExportEvaluatedExamplesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[service.ExportEvaluatedExamplesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.ExportEvaluatedExamplesRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for export_evaluated_examples
 
         Override in a subclass to manipulate the request or metadata
@@ -414,8 +436,10 @@ class AutoMlRestInterceptor:
         return response
 
     def pre_export_model(
-        self, request: service.ExportModelRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.ExportModelRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.ExportModelRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.ExportModelRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for export_model
 
         Override in a subclass to manipulate the request or metadata
@@ -437,8 +461,10 @@ class AutoMlRestInterceptor:
     def pre_get_annotation_spec(
         self,
         request: service.GetAnnotationSpecRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[service.GetAnnotationSpecRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.GetAnnotationSpecRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_annotation_spec
 
         Override in a subclass to manipulate the request or metadata
@@ -458,8 +484,10 @@ class AutoMlRestInterceptor:
         return response
 
     def pre_get_column_spec(
-        self, request: service.GetColumnSpecRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.GetColumnSpecRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.GetColumnSpecRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.GetColumnSpecRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_column_spec
 
         Override in a subclass to manipulate the request or metadata
@@ -479,8 +507,10 @@ class AutoMlRestInterceptor:
         return response
 
     def pre_get_dataset(
-        self, request: service.GetDatasetRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.GetDatasetRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.GetDatasetRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.GetDatasetRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_dataset
 
         Override in a subclass to manipulate the request or metadata
@@ -498,8 +528,10 @@ class AutoMlRestInterceptor:
         return response
 
     def pre_get_model(
-        self, request: service.GetModelRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.GetModelRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.GetModelRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.GetModelRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_model
 
         Override in a subclass to manipulate the request or metadata
@@ -519,8 +551,10 @@ class AutoMlRestInterceptor:
     def pre_get_model_evaluation(
         self,
         request: service.GetModelEvaluationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[service.GetModelEvaluationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.GetModelEvaluationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_model_evaluation
 
         Override in a subclass to manipulate the request or metadata
@@ -540,8 +574,10 @@ class AutoMlRestInterceptor:
         return response
 
     def pre_get_table_spec(
-        self, request: service.GetTableSpecRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.GetTableSpecRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.GetTableSpecRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.GetTableSpecRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_table_spec
 
         Override in a subclass to manipulate the request or metadata
@@ -561,8 +597,10 @@ class AutoMlRestInterceptor:
         return response
 
     def pre_import_data(
-        self, request: service.ImportDataRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.ImportDataRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.ImportDataRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.ImportDataRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for import_data
 
         Override in a subclass to manipulate the request or metadata
@@ -584,8 +622,8 @@ class AutoMlRestInterceptor:
     def pre_list_column_specs(
         self,
         request: service.ListColumnSpecsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[service.ListColumnSpecsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.ListColumnSpecsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_column_specs
 
         Override in a subclass to manipulate the request or metadata
@@ -605,8 +643,10 @@ class AutoMlRestInterceptor:
         return response
 
     def pre_list_datasets(
-        self, request: service.ListDatasetsRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.ListDatasetsRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.ListDatasetsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.ListDatasetsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_datasets
 
         Override in a subclass to manipulate the request or metadata
@@ -628,8 +668,10 @@ class AutoMlRestInterceptor:
     def pre_list_model_evaluations(
         self,
         request: service.ListModelEvaluationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[service.ListModelEvaluationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.ListModelEvaluationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_model_evaluations
 
         Override in a subclass to manipulate the request or metadata
@@ -649,8 +691,10 @@ class AutoMlRestInterceptor:
         return response
 
     def pre_list_models(
-        self, request: service.ListModelsRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.ListModelsRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.ListModelsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.ListModelsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_models
 
         Override in a subclass to manipulate the request or metadata
@@ -672,8 +716,8 @@ class AutoMlRestInterceptor:
     def pre_list_table_specs(
         self,
         request: service.ListTableSpecsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[service.ListTableSpecsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.ListTableSpecsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_table_specs
 
         Override in a subclass to manipulate the request or metadata
@@ -693,8 +737,10 @@ class AutoMlRestInterceptor:
         return response
 
     def pre_undeploy_model(
-        self, request: service.UndeployModelRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.UndeployModelRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.UndeployModelRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.UndeployModelRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for undeploy_model
 
         Override in a subclass to manipulate the request or metadata
@@ -716,8 +762,10 @@ class AutoMlRestInterceptor:
     def pre_update_column_spec(
         self,
         request: service.UpdateColumnSpecRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[service.UpdateColumnSpecRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.UpdateColumnSpecRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_column_spec
 
         Override in a subclass to manipulate the request or metadata
@@ -737,8 +785,10 @@ class AutoMlRestInterceptor:
         return response
 
     def pre_update_dataset(
-        self, request: service.UpdateDatasetRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.UpdateDatasetRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.UpdateDatasetRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.UpdateDatasetRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_dataset
 
         Override in a subclass to manipulate the request or metadata
@@ -758,8 +808,8 @@ class AutoMlRestInterceptor:
     def pre_update_table_spec(
         self,
         request: service.UpdateTableSpecRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[service.UpdateTableSpecRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.UpdateTableSpecRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_table_spec
 
         Override in a subclass to manipulate the request or metadata
@@ -973,7 +1023,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gca_dataset.Dataset:
             r"""Call the create dataset method over HTTP.
 
@@ -984,8 +1034,10 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.gca_dataset.Dataset:
@@ -999,6 +1051,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             http_options = (
                 _BaseAutoMlRestTransport._BaseCreateDataset._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_dataset(request, metadata)
             transcoded_request = (
                 _BaseAutoMlRestTransport._BaseCreateDataset._get_transcoded_request(
@@ -1016,6 +1069,33 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.automl_v1beta1.AutoMlClient.CreateDataset",
+                    extra={
+                        "serviceName": "google.cloud.automl.v1beta1.AutoMl",
+                        "rpcName": "CreateDataset",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AutoMlRestTransport._CreateDataset._get_response(
@@ -1038,7 +1118,29 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             pb_resp = gca_dataset.Dataset.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_dataset(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gca_dataset.Dataset.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.automl_v1beta1.AutoMlClient.create_dataset",
+                    extra={
+                        "serviceName": "google.cloud.automl.v1beta1.AutoMl",
+                        "rpcName": "CreateDataset",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateModel(_BaseAutoMlRestTransport._BaseCreateModel, AutoMlRestStub):
@@ -1074,7 +1176,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create model method over HTTP.
 
@@ -1085,8 +1187,10 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1097,6 +1201,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             """
 
             http_options = _BaseAutoMlRestTransport._BaseCreateModel._get_http_options()
+
             request, metadata = self._interceptor.pre_create_model(request, metadata)
             transcoded_request = (
                 _BaseAutoMlRestTransport._BaseCreateModel._get_transcoded_request(
@@ -1114,6 +1219,33 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.automl_v1beta1.AutoMlClient.CreateModel",
+                    extra={
+                        "serviceName": "google.cloud.automl.v1beta1.AutoMl",
+                        "rpcName": "CreateModel",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AutoMlRestTransport._CreateModel._get_response(
@@ -1134,7 +1266,29 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_model(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.automl_v1beta1.AutoMlClient.create_model",
+                    extra={
+                        "serviceName": "google.cloud.automl.v1beta1.AutoMl",
+                        "rpcName": "CreateModel",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteDataset(_BaseAutoMlRestTransport._BaseDeleteDataset, AutoMlRestStub):
@@ -1169,7 +1323,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete dataset method over HTTP.
 
@@ -1180,8 +1334,10 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1194,6 +1350,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             http_options = (
                 _BaseAutoMlRestTransport._BaseDeleteDataset._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_dataset(request, metadata)
             transcoded_request = (
                 _BaseAutoMlRestTransport._BaseDeleteDataset._get_transcoded_request(
@@ -1207,6 +1364,33 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.automl_v1beta1.AutoMlClient.DeleteDataset",
+                    extra={
+                        "serviceName": "google.cloud.automl.v1beta1.AutoMl",
+                        "rpcName": "DeleteDataset",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AutoMlRestTransport._DeleteDataset._get_response(
@@ -1226,7 +1410,29 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_dataset(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.automl_v1beta1.AutoMlClient.delete_dataset",
+                    extra={
+                        "serviceName": "google.cloud.automl.v1beta1.AutoMl",
+                        "rpcName": "DeleteDataset",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteModel(_BaseAutoMlRestTransport._BaseDeleteModel, AutoMlRestStub):
@@ -1261,7 +1467,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete model method over HTTP.
 
@@ -1272,8 +1478,10 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1284,6 +1492,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             """
 
             http_options = _BaseAutoMlRestTransport._BaseDeleteModel._get_http_options()
+
             request, metadata = self._interceptor.pre_delete_model(request, metadata)
             transcoded_request = (
                 _BaseAutoMlRestTransport._BaseDeleteModel._get_transcoded_request(
@@ -1297,6 +1506,33 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.automl_v1beta1.AutoMlClient.DeleteModel",
+                    extra={
+                        "serviceName": "google.cloud.automl.v1beta1.AutoMl",
+                        "rpcName": "DeleteModel",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AutoMlRestTransport._DeleteModel._get_response(
@@ -1316,7 +1552,29 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_model(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.automl_v1beta1.AutoMlClient.delete_model",
+                    extra={
+                        "serviceName": "google.cloud.automl.v1beta1.AutoMl",
+                        "rpcName": "DeleteModel",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeployModel(_BaseAutoMlRestTransport._BaseDeployModel, AutoMlRestStub):
@@ -1352,7 +1610,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the deploy model method over HTTP.
 
@@ -1363,8 +1621,10 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1375,6 +1635,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             """
 
             http_options = _BaseAutoMlRestTransport._BaseDeployModel._get_http_options()
+
             request, metadata = self._interceptor.pre_deploy_model(request, metadata)
             transcoded_request = (
                 _BaseAutoMlRestTransport._BaseDeployModel._get_transcoded_request(
@@ -1392,6 +1653,33 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.automl_v1beta1.AutoMlClient.DeployModel",
+                    extra={
+                        "serviceName": "google.cloud.automl.v1beta1.AutoMl",
+                        "rpcName": "DeployModel",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AutoMlRestTransport._DeployModel._get_response(
@@ -1412,7 +1700,29 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_deploy_model(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.automl_v1beta1.AutoMlClient.deploy_model",
+                    extra={
+                        "serviceName": "google.cloud.automl.v1beta1.AutoMl",
+                        "rpcName": "DeployModel",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ExportData(_BaseAutoMlRestTransport._BaseExportData, AutoMlRestStub):
@@ -1448,7 +1758,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the export data method over HTTP.
 
@@ -1459,8 +1769,10 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1471,6 +1783,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             """
 
             http_options = _BaseAutoMlRestTransport._BaseExportData._get_http_options()
+
             request, metadata = self._interceptor.pre_export_data(request, metadata)
             transcoded_request = (
                 _BaseAutoMlRestTransport._BaseExportData._get_transcoded_request(
@@ -1488,6 +1801,33 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.automl_v1beta1.AutoMlClient.ExportData",
+                    extra={
+                        "serviceName": "google.cloud.automl.v1beta1.AutoMl",
+                        "rpcName": "ExportData",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AutoMlRestTransport._ExportData._get_response(
@@ -1508,7 +1848,29 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_export_data(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.automl_v1beta1.AutoMlClient.export_data",
+                    extra={
+                        "serviceName": "google.cloud.automl.v1beta1.AutoMl",
+                        "rpcName": "ExportData",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ExportEvaluatedExamples(
@@ -1546,7 +1908,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the export evaluated examples method over HTTP.
 
@@ -1557,8 +1919,10 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1571,6 +1935,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             http_options = (
                 _BaseAutoMlRestTransport._BaseExportEvaluatedExamples._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_export_evaluated_examples(
                 request, metadata
             )
@@ -1586,6 +1951,33 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             query_params = _BaseAutoMlRestTransport._BaseExportEvaluatedExamples._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.automl_v1beta1.AutoMlClient.ExportEvaluatedExamples",
+                    extra={
+                        "serviceName": "google.cloud.automl.v1beta1.AutoMl",
+                        "rpcName": "ExportEvaluatedExamples",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AutoMlRestTransport._ExportEvaluatedExamples._get_response(
@@ -1606,7 +1998,29 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_export_evaluated_examples(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.automl_v1beta1.AutoMlClient.export_evaluated_examples",
+                    extra={
+                        "serviceName": "google.cloud.automl.v1beta1.AutoMl",
+                        "rpcName": "ExportEvaluatedExamples",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ExportModel(_BaseAutoMlRestTransport._BaseExportModel, AutoMlRestStub):
@@ -1642,7 +2056,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the export model method over HTTP.
 
@@ -1655,8 +2069,10 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1667,6 +2083,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             """
 
             http_options = _BaseAutoMlRestTransport._BaseExportModel._get_http_options()
+
             request, metadata = self._interceptor.pre_export_model(request, metadata)
             transcoded_request = (
                 _BaseAutoMlRestTransport._BaseExportModel._get_transcoded_request(
@@ -1684,6 +2101,33 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.automl_v1beta1.AutoMlClient.ExportModel",
+                    extra={
+                        "serviceName": "google.cloud.automl.v1beta1.AutoMl",
+                        "rpcName": "ExportModel",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AutoMlRestTransport._ExportModel._get_response(
@@ -1704,7 +2148,29 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_export_model(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.automl_v1beta1.AutoMlClient.export_model",
+                    extra={
+                        "serviceName": "google.cloud.automl.v1beta1.AutoMl",
+                        "rpcName": "ExportModel",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetAnnotationSpec(
@@ -1741,7 +2207,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> annotation_spec.AnnotationSpec:
             r"""Call the get annotation spec method over HTTP.
 
@@ -1752,8 +2218,10 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.annotation_spec.AnnotationSpec:
@@ -1763,6 +2231,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             http_options = (
                 _BaseAutoMlRestTransport._BaseGetAnnotationSpec._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_annotation_spec(
                 request, metadata
             )
@@ -1778,6 +2247,33 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.automl_v1beta1.AutoMlClient.GetAnnotationSpec",
+                    extra={
+                        "serviceName": "google.cloud.automl.v1beta1.AutoMl",
+                        "rpcName": "GetAnnotationSpec",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AutoMlRestTransport._GetAnnotationSpec._get_response(
@@ -1799,7 +2295,29 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             pb_resp = annotation_spec.AnnotationSpec.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_annotation_spec(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = annotation_spec.AnnotationSpec.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.automl_v1beta1.AutoMlClient.get_annotation_spec",
+                    extra={
+                        "serviceName": "google.cloud.automl.v1beta1.AutoMl",
+                        "rpcName": "GetAnnotationSpec",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetColumnSpec(_BaseAutoMlRestTransport._BaseGetColumnSpec, AutoMlRestStub):
@@ -1834,7 +2352,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> column_spec.ColumnSpec:
             r"""Call the get column spec method over HTTP.
 
@@ -1845,8 +2363,10 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.column_spec.ColumnSpec:
@@ -1861,6 +2381,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             http_options = (
                 _BaseAutoMlRestTransport._BaseGetColumnSpec._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_column_spec(request, metadata)
             transcoded_request = (
                 _BaseAutoMlRestTransport._BaseGetColumnSpec._get_transcoded_request(
@@ -1874,6 +2395,33 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.automl_v1beta1.AutoMlClient.GetColumnSpec",
+                    extra={
+                        "serviceName": "google.cloud.automl.v1beta1.AutoMl",
+                        "rpcName": "GetColumnSpec",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AutoMlRestTransport._GetColumnSpec._get_response(
@@ -1895,7 +2443,29 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             pb_resp = column_spec.ColumnSpec.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_column_spec(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = column_spec.ColumnSpec.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.automl_v1beta1.AutoMlClient.get_column_spec",
+                    extra={
+                        "serviceName": "google.cloud.automl.v1beta1.AutoMl",
+                        "rpcName": "GetColumnSpec",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetDataset(_BaseAutoMlRestTransport._BaseGetDataset, AutoMlRestStub):
@@ -1930,7 +2500,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> dataset.Dataset:
             r"""Call the get dataset method over HTTP.
 
@@ -1941,8 +2511,10 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.dataset.Dataset:
@@ -1954,6 +2526,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             """
 
             http_options = _BaseAutoMlRestTransport._BaseGetDataset._get_http_options()
+
             request, metadata = self._interceptor.pre_get_dataset(request, metadata)
             transcoded_request = (
                 _BaseAutoMlRestTransport._BaseGetDataset._get_transcoded_request(
@@ -1967,6 +2540,33 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.automl_v1beta1.AutoMlClient.GetDataset",
+                    extra={
+                        "serviceName": "google.cloud.automl.v1beta1.AutoMl",
+                        "rpcName": "GetDataset",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AutoMlRestTransport._GetDataset._get_response(
@@ -1988,7 +2588,29 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             pb_resp = dataset.Dataset.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_dataset(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = dataset.Dataset.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.automl_v1beta1.AutoMlClient.get_dataset",
+                    extra={
+                        "serviceName": "google.cloud.automl.v1beta1.AutoMl",
+                        "rpcName": "GetDataset",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetModel(_BaseAutoMlRestTransport._BaseGetModel, AutoMlRestStub):
@@ -2023,7 +2645,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> model.Model:
             r"""Call the get model method over HTTP.
 
@@ -2034,8 +2656,10 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.model.Model:
@@ -2045,6 +2669,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             """
 
             http_options = _BaseAutoMlRestTransport._BaseGetModel._get_http_options()
+
             request, metadata = self._interceptor.pre_get_model(request, metadata)
             transcoded_request = (
                 _BaseAutoMlRestTransport._BaseGetModel._get_transcoded_request(
@@ -2058,6 +2683,33 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.automl_v1beta1.AutoMlClient.GetModel",
+                    extra={
+                        "serviceName": "google.cloud.automl.v1beta1.AutoMl",
+                        "rpcName": "GetModel",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AutoMlRestTransport._GetModel._get_response(
@@ -2079,7 +2731,29 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             pb_resp = model.Model.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_model(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = model.Model.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.automl_v1beta1.AutoMlClient.get_model",
+                    extra={
+                        "serviceName": "google.cloud.automl.v1beta1.AutoMl",
+                        "rpcName": "GetModel",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetModelEvaluation(
@@ -2116,7 +2790,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> model_evaluation.ModelEvaluation:
             r"""Call the get model evaluation method over HTTP.
 
@@ -2127,8 +2801,10 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.model_evaluation.ModelEvaluation:
@@ -2138,6 +2814,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             http_options = (
                 _BaseAutoMlRestTransport._BaseGetModelEvaluation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_model_evaluation(
                 request, metadata
             )
@@ -2151,6 +2828,33 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.automl_v1beta1.AutoMlClient.GetModelEvaluation",
+                    extra={
+                        "serviceName": "google.cloud.automl.v1beta1.AutoMl",
+                        "rpcName": "GetModelEvaluation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AutoMlRestTransport._GetModelEvaluation._get_response(
@@ -2172,7 +2876,31 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             pb_resp = model_evaluation.ModelEvaluation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_model_evaluation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = model_evaluation.ModelEvaluation.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.automl_v1beta1.AutoMlClient.get_model_evaluation",
+                    extra={
+                        "serviceName": "google.cloud.automl.v1beta1.AutoMl",
+                        "rpcName": "GetModelEvaluation",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetTableSpec(_BaseAutoMlRestTransport._BaseGetTableSpec, AutoMlRestStub):
@@ -2207,7 +2935,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> table_spec.TableSpec:
             r"""Call the get table spec method over HTTP.
 
@@ -2218,8 +2946,10 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.table_spec.TableSpec:
@@ -2240,6 +2970,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             http_options = (
                 _BaseAutoMlRestTransport._BaseGetTableSpec._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_table_spec(request, metadata)
             transcoded_request = (
                 _BaseAutoMlRestTransport._BaseGetTableSpec._get_transcoded_request(
@@ -2253,6 +2984,33 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.automl_v1beta1.AutoMlClient.GetTableSpec",
+                    extra={
+                        "serviceName": "google.cloud.automl.v1beta1.AutoMl",
+                        "rpcName": "GetTableSpec",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AutoMlRestTransport._GetTableSpec._get_response(
@@ -2274,7 +3032,29 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             pb_resp = table_spec.TableSpec.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_table_spec(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = table_spec.TableSpec.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.automl_v1beta1.AutoMlClient.get_table_spec",
+                    extra={
+                        "serviceName": "google.cloud.automl.v1beta1.AutoMl",
+                        "rpcName": "GetTableSpec",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ImportData(_BaseAutoMlRestTransport._BaseImportData, AutoMlRestStub):
@@ -2310,7 +3090,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the import data method over HTTP.
 
@@ -2321,8 +3101,10 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2333,6 +3115,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             """
 
             http_options = _BaseAutoMlRestTransport._BaseImportData._get_http_options()
+
             request, metadata = self._interceptor.pre_import_data(request, metadata)
             transcoded_request = (
                 _BaseAutoMlRestTransport._BaseImportData._get_transcoded_request(
@@ -2350,6 +3133,33 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.automl_v1beta1.AutoMlClient.ImportData",
+                    extra={
+                        "serviceName": "google.cloud.automl.v1beta1.AutoMl",
+                        "rpcName": "ImportData",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AutoMlRestTransport._ImportData._get_response(
@@ -2370,7 +3180,29 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_import_data(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.automl_v1beta1.AutoMlClient.import_data",
+                    extra={
+                        "serviceName": "google.cloud.automl.v1beta1.AutoMl",
+                        "rpcName": "ImportData",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListColumnSpecs(
@@ -2407,7 +3239,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> service.ListColumnSpecsResponse:
             r"""Call the list column specs method over HTTP.
 
@@ -2418,8 +3250,10 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.service.ListColumnSpecsResponse:
@@ -2431,6 +3265,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             http_options = (
                 _BaseAutoMlRestTransport._BaseListColumnSpecs._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_column_specs(
                 request, metadata
             )
@@ -2446,6 +3281,33 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.automl_v1beta1.AutoMlClient.ListColumnSpecs",
+                    extra={
+                        "serviceName": "google.cloud.automl.v1beta1.AutoMl",
+                        "rpcName": "ListColumnSpecs",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AutoMlRestTransport._ListColumnSpecs._get_response(
@@ -2467,7 +3329,29 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             pb_resp = service.ListColumnSpecsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_column_specs(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = service.ListColumnSpecsResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.automl_v1beta1.AutoMlClient.list_column_specs",
+                    extra={
+                        "serviceName": "google.cloud.automl.v1beta1.AutoMl",
+                        "rpcName": "ListColumnSpecs",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListDatasets(_BaseAutoMlRestTransport._BaseListDatasets, AutoMlRestStub):
@@ -2502,7 +3386,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> service.ListDatasetsResponse:
             r"""Call the list datasets method over HTTP.
 
@@ -2513,8 +3397,10 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.service.ListDatasetsResponse:
@@ -2526,6 +3412,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             http_options = (
                 _BaseAutoMlRestTransport._BaseListDatasets._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_datasets(request, metadata)
             transcoded_request = (
                 _BaseAutoMlRestTransport._BaseListDatasets._get_transcoded_request(
@@ -2539,6 +3426,33 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.automl_v1beta1.AutoMlClient.ListDatasets",
+                    extra={
+                        "serviceName": "google.cloud.automl.v1beta1.AutoMl",
+                        "rpcName": "ListDatasets",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AutoMlRestTransport._ListDatasets._get_response(
@@ -2560,7 +3474,29 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             pb_resp = service.ListDatasetsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_datasets(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = service.ListDatasetsResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.automl_v1beta1.AutoMlClient.list_datasets",
+                    extra={
+                        "serviceName": "google.cloud.automl.v1beta1.AutoMl",
+                        "rpcName": "ListDatasets",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListModelEvaluations(
@@ -2597,7 +3533,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> service.ListModelEvaluationsResponse:
             r"""Call the list model evaluations method over HTTP.
 
@@ -2608,8 +3544,10 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.service.ListModelEvaluationsResponse:
@@ -2621,6 +3559,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             http_options = (
                 _BaseAutoMlRestTransport._BaseListModelEvaluations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_model_evaluations(
                 request, metadata
             )
@@ -2632,6 +3571,33 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             query_params = _BaseAutoMlRestTransport._BaseListModelEvaluations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.automl_v1beta1.AutoMlClient.ListModelEvaluations",
+                    extra={
+                        "serviceName": "google.cloud.automl.v1beta1.AutoMl",
+                        "rpcName": "ListModelEvaluations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AutoMlRestTransport._ListModelEvaluations._get_response(
@@ -2653,7 +3619,31 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             pb_resp = service.ListModelEvaluationsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_model_evaluations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = service.ListModelEvaluationsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.automl_v1beta1.AutoMlClient.list_model_evaluations",
+                    extra={
+                        "serviceName": "google.cloud.automl.v1beta1.AutoMl",
+                        "rpcName": "ListModelEvaluations",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListModels(_BaseAutoMlRestTransport._BaseListModels, AutoMlRestStub):
@@ -2688,7 +3678,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> service.ListModelsResponse:
             r"""Call the list models method over HTTP.
 
@@ -2699,8 +3689,10 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.service.ListModelsResponse:
@@ -2710,6 +3702,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             """
 
             http_options = _BaseAutoMlRestTransport._BaseListModels._get_http_options()
+
             request, metadata = self._interceptor.pre_list_models(request, metadata)
             transcoded_request = (
                 _BaseAutoMlRestTransport._BaseListModels._get_transcoded_request(
@@ -2723,6 +3716,33 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.automl_v1beta1.AutoMlClient.ListModels",
+                    extra={
+                        "serviceName": "google.cloud.automl.v1beta1.AutoMl",
+                        "rpcName": "ListModels",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AutoMlRestTransport._ListModels._get_response(
@@ -2744,7 +3764,29 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             pb_resp = service.ListModelsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_models(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = service.ListModelsResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.automl_v1beta1.AutoMlClient.list_models",
+                    extra={
+                        "serviceName": "google.cloud.automl.v1beta1.AutoMl",
+                        "rpcName": "ListModels",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListTableSpecs(_BaseAutoMlRestTransport._BaseListTableSpecs, AutoMlRestStub):
@@ -2779,7 +3821,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> service.ListTableSpecsResponse:
             r"""Call the list table specs method over HTTP.
 
@@ -2790,8 +3832,10 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.service.ListTableSpecsResponse:
@@ -2803,6 +3847,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             http_options = (
                 _BaseAutoMlRestTransport._BaseListTableSpecs._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_table_specs(
                 request, metadata
             )
@@ -2818,6 +3863,33 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.automl_v1beta1.AutoMlClient.ListTableSpecs",
+                    extra={
+                        "serviceName": "google.cloud.automl.v1beta1.AutoMl",
+                        "rpcName": "ListTableSpecs",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AutoMlRestTransport._ListTableSpecs._get_response(
@@ -2839,7 +3911,29 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             pb_resp = service.ListTableSpecsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_table_specs(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = service.ListTableSpecsResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.automl_v1beta1.AutoMlClient.list_table_specs",
+                    extra={
+                        "serviceName": "google.cloud.automl.v1beta1.AutoMl",
+                        "rpcName": "ListTableSpecs",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UndeployModel(_BaseAutoMlRestTransport._BaseUndeployModel, AutoMlRestStub):
@@ -2875,7 +3969,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the undeploy model method over HTTP.
 
@@ -2886,8 +3980,10 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2900,6 +3996,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             http_options = (
                 _BaseAutoMlRestTransport._BaseUndeployModel._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_undeploy_model(request, metadata)
             transcoded_request = (
                 _BaseAutoMlRestTransport._BaseUndeployModel._get_transcoded_request(
@@ -2917,6 +4014,33 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.automl_v1beta1.AutoMlClient.UndeployModel",
+                    extra={
+                        "serviceName": "google.cloud.automl.v1beta1.AutoMl",
+                        "rpcName": "UndeployModel",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AutoMlRestTransport._UndeployModel._get_response(
@@ -2937,7 +4061,29 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_undeploy_model(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.automl_v1beta1.AutoMlClient.undeploy_model",
+                    extra={
+                        "serviceName": "google.cloud.automl.v1beta1.AutoMl",
+                        "rpcName": "UndeployModel",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateColumnSpec(
@@ -2975,7 +4121,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gca_column_spec.ColumnSpec:
             r"""Call the update column spec method over HTTP.
 
@@ -2986,8 +4132,10 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.gca_column_spec.ColumnSpec:
@@ -3002,6 +4150,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             http_options = (
                 _BaseAutoMlRestTransport._BaseUpdateColumnSpec._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_column_spec(
                 request, metadata
             )
@@ -3024,6 +4173,33 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
                 )
             )
 
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.automl_v1beta1.AutoMlClient.UpdateColumnSpec",
+                    extra={
+                        "serviceName": "google.cloud.automl.v1beta1.AutoMl",
+                        "rpcName": "UpdateColumnSpec",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
             # Send the request
             response = AutoMlRestTransport._UpdateColumnSpec._get_response(
                 self._host,
@@ -3045,7 +4221,29 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             pb_resp = gca_column_spec.ColumnSpec.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_column_spec(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gca_column_spec.ColumnSpec.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.automl_v1beta1.AutoMlClient.update_column_spec",
+                    extra={
+                        "serviceName": "google.cloud.automl.v1beta1.AutoMl",
+                        "rpcName": "UpdateColumnSpec",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateDataset(_BaseAutoMlRestTransport._BaseUpdateDataset, AutoMlRestStub):
@@ -3081,7 +4279,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gca_dataset.Dataset:
             r"""Call the update dataset method over HTTP.
 
@@ -3092,8 +4290,10 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.gca_dataset.Dataset:
@@ -3107,6 +4307,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             http_options = (
                 _BaseAutoMlRestTransport._BaseUpdateDataset._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_dataset(request, metadata)
             transcoded_request = (
                 _BaseAutoMlRestTransport._BaseUpdateDataset._get_transcoded_request(
@@ -3124,6 +4325,33 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.automl_v1beta1.AutoMlClient.UpdateDataset",
+                    extra={
+                        "serviceName": "google.cloud.automl.v1beta1.AutoMl",
+                        "rpcName": "UpdateDataset",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AutoMlRestTransport._UpdateDataset._get_response(
@@ -3146,7 +4374,29 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             pb_resp = gca_dataset.Dataset.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_dataset(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gca_dataset.Dataset.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.automl_v1beta1.AutoMlClient.update_dataset",
+                    extra={
+                        "serviceName": "google.cloud.automl.v1beta1.AutoMl",
+                        "rpcName": "UpdateDataset",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateTableSpec(
@@ -3184,7 +4434,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gca_table_spec.TableSpec:
             r"""Call the update table spec method over HTTP.
 
@@ -3195,8 +4445,10 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.gca_table_spec.TableSpec:
@@ -3217,6 +4469,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             http_options = (
                 _BaseAutoMlRestTransport._BaseUpdateTableSpec._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_table_spec(
                 request, metadata
             )
@@ -3236,6 +4489,33 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.automl_v1beta1.AutoMlClient.UpdateTableSpec",
+                    extra={
+                        "serviceName": "google.cloud.automl.v1beta1.AutoMl",
+                        "rpcName": "UpdateTableSpec",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AutoMlRestTransport._UpdateTableSpec._get_response(
@@ -3258,7 +4538,29 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
             pb_resp = gca_table_spec.TableSpec.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_table_spec(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gca_table_spec.TableSpec.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.automl_v1beta1.AutoMlClient.update_table_spec",
+                    extra={
+                        "serviceName": "google.cloud.automl.v1beta1.AutoMl",
+                        "rpcName": "UpdateTableSpec",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
