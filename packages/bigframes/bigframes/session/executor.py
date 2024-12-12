@@ -393,6 +393,7 @@ class BigQueryCachingExecutor(Executor):
     def head(
         self, array_value: bigframes.core.ArrayValue, n_rows: int
     ) -> ExecuteResult:
+
         maybe_row_count = self._local_get_row_count(array_value)
         if (maybe_row_count is not None) and (maybe_row_count <= n_rows):
             return self.execute(array_value, ordered=True)
@@ -452,7 +453,7 @@ class BigQueryCachingExecutor(Executor):
         # use a heuristic for whether something needs to be cached
         if (not force) and self._is_trivially_executable(array_value):
             return
-        elif use_session:
+        if use_session:
             self._cache_with_session_awareness(array_value)
         else:
             self._cache_with_cluster_cols(array_value, cluster_cols=cluster_cols)
@@ -658,7 +659,7 @@ class BigQueryCachingExecutor(Executor):
     def _validate_result_schema(
         self,
         array_value: bigframes.core.ArrayValue,
-        bq_schema: list[bigquery.schema.SchemaField],
+        bq_schema: list[bigquery.SchemaField],
     ):
         actual_schema = tuple(bq_schema)
         ibis_schema = bigframes.core.compile.test_only_ibis_inferred_schema(
@@ -667,6 +668,7 @@ class BigQueryCachingExecutor(Executor):
         internal_schema = array_value.schema
         if not bigframes.features.PANDAS_VERSIONS.is_arrow_list_dtype_usable:
             return
+
         if internal_schema.to_bigquery() != actual_schema:
             raise ValueError(
                 f"This error should only occur while testing. BigFrames internal schema: {internal_schema.to_bigquery()} does not match actual schema: {actual_schema}"

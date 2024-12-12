@@ -24,7 +24,6 @@ import bigframes_vendored.ibis.expr.datatypes as ibis_dtypes
 from bigframes_vendored.ibis.expr.datatypes.core import (
     dtype as python_type_to_bigquery_type,
 )
-import bigframes_vendored.ibis.expr.operations as ibis_ops
 import bigframes_vendored.ibis.expr.types as ibis_types
 import geopandas as gpd  # type: ignore
 import google.cloud.bigquery as bigquery
@@ -46,6 +45,7 @@ IbisDtype = Union[
     ibis_dtypes.Binary,
     ibis_dtypes.Decimal,
     ibis_dtypes.GeoSpatial,
+    ibis_dtypes.JSON,
 ]
 
 
@@ -74,6 +74,7 @@ BIDIRECTIONAL_MAPPINGS: Iterable[Tuple[IbisDtype, bigframes.dtypes.Dtype]] = (
         ibis_dtypes.GeoSpatial(geotype="geography", srid=4326, nullable=True),
         gpd.array.GeometryDtype(),
     ),
+    (ibis_dtypes.json, pd.ArrowDtype(pa.large_string())),
 )
 
 BIGFRAMES_TO_IBIS: Dict[bigframes.dtypes.Dtype, ibis_dtypes.DataType] = {
@@ -219,12 +220,6 @@ def ibis_value_to_canonical_type(value: ibis_types.Value) -> ibis_types.Value:
     """
     ibis_type = value.type()
     name = value.get_name()
-    if ibis_type.is_json():
-        value = ibis_ops.ToJsonString(value).to_expr()  # type: ignore
-        value = (
-            value.case().when("null", bigframes_vendored.ibis.null()).else_(value).end()
-        )
-        return value.name(name)
     # Allow REQUIRED fields to be joined with NULLABLE fields.
     nullable_type = ibis_type.copy(nullable=True)
     return value.cast(nullable_type).name(name)
@@ -314,7 +309,7 @@ def ibis_dtype_to_bigframes_dtype(
             "Interpreting JSON as string. This behavior may change in future versions.",
             bigframes.exceptions.PreviewWarning,
         )
-        return bigframes.dtypes.STRING_DTYPE
+        return bigframes.dtypes.JSON_DTYPE
 
     if ibis_dtype in IBIS_TO_BIGFRAMES:
         return IBIS_TO_BIGFRAMES[ibis_dtype]

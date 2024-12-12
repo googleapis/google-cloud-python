@@ -59,11 +59,11 @@ class Compiler:
         node = self.set_output_names(node, output_ids)
         if ordered:
             node, limit = rewrites.pullup_limit_from_slice(node)
-            return self.compile_ordered_ir(self._preprocess(node)).to_sql(
-                ordered=True, limit=limit
-            )
+            ir = self.compile_ordered_ir(self._preprocess(node))
+            return ir.to_sql(ordered=True, limit=limit)
         else:
-            return self.compile_unordered_ir(self._preprocess(node)).to_sql()
+            ir = self.compile_unordered_ir(self._preprocess(node))  # type: ignore
+            return ir.to_sql()
 
     def compile_peek_sql(self, node: nodes.BigFrameNode, n_rows: int) -> str:
         return self.compile_unordered_ir(self._preprocess(node)).peek_sql(n_rows)

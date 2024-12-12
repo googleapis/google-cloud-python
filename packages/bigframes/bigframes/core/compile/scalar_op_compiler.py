@@ -1181,7 +1181,10 @@ def json_set_op_impl(x: ibis_types.Value, y: ibis_types.Value, op: ops.JSONSet):
 
 @scalar_op_compiler.register_unary_op(ops.JSONExtract, pass_op=True)
 def json_extract_op_impl(x: ibis_types.Value, op: ops.JSONExtract):
-    return json_extract(json_obj=x, json_path=op.json_path)
+    if x.type().is_json():
+        return json_extract(json_obj=x, json_path=op.json_path)
+    # json string
+    return json_extract_string(json_obj=x, json_path=op.json_path)
 
 
 @scalar_op_compiler.register_unary_op(ops.JSONExtractArray, pass_op=True)
@@ -1845,7 +1848,7 @@ def float_ceil(a: float) -> float:
 
 
 @ibis_udf.scalar.builtin(name="parse_json")
-def parse_json(a: str) -> ibis_dtypes.JSON:  # type: ignore[empty-body]
+def parse_json(json_str: str) -> ibis_dtypes.JSON:  # type: ignore[empty-body]
     """Converts a JSON-formatted STRING value to a JSON value."""
 
 
@@ -1860,7 +1863,14 @@ def json_set(  # type: ignore[empty-body]
 def json_extract(  # type: ignore[empty-body]
     json_obj: ibis_dtypes.JSON, json_path: ibis_dtypes.String
 ) -> ibis_dtypes.JSON:
-    """Extracts a JSON value and converts it to a SQL JSON-formatted STRING or JSON value."""
+    """Extracts a JSON value and converts it to a JSON value."""
+
+
+@ibis_udf.scalar.builtin(name="json_extract")
+def json_extract_string(  # type: ignore[empty-body]
+    json_obj: ibis_dtypes.String, json_path: ibis_dtypes.String
+) -> ibis_dtypes.String:
+    """Extracts a JSON SRING value and converts it to a SQL JSON-formatted STRING."""
 
 
 @ibis_udf.scalar.builtin(name="json_extract_array")

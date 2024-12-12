@@ -464,7 +464,7 @@ class UnorderedIR(BaseIbisIR):
             builder.columns = [*self.columns, new_value.name(id)]
         return builder.build()
 
-    def _select(self, values: typing.Tuple[ibis_types.Value]) -> UnorderedIR:
+    def _select(self, values: typing.Tuple[ibis_types.Value, ...]) -> UnorderedIR:
         builder = self.builder()
         builder.columns = values
         return builder.build()
@@ -1129,7 +1129,7 @@ class OrderedIR(BaseIbisIR):
             builder.columns = [*self.columns, new_value.name(id)]
         return builder.build()
 
-    def _select(self, values: typing.Tuple[ibis_types.Value]) -> OrderedIR:
+    def _select(self, values: typing.Tuple[ibis_types.Value, ...]) -> OrderedIR:
         """Safely assign by id while maintaining ordering integrity."""
         # TODO: Split into explicit set and replace methods
         ordering_col_ids = set(

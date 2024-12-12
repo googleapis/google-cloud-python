@@ -55,6 +55,8 @@ NUMERIC_DTYPE = pd.ArrowDtype(pa.decimal128(38, 9))
 BIGNUMERIC_DTYPE = pd.ArrowDtype(pa.decimal256(76, 38))
 # No arrow equivalent
 GEO_DTYPE = gpd.array.GeometryDtype()
+# JSON
+JSON_DTYPE = pd.ArrowDtype(pa.large_string())
 
 # Used when storing Null expressions
 DEFAULT_DTYPE = FLOAT_DTYPE
@@ -131,6 +133,13 @@ SIMPLE_TYPES = (
         type_kind=("STRING",),
         orderable=True,
         clusterable=True,
+    ),
+    SimpleDtypeInfo(
+        dtype=JSON_DTYPE,
+        arrow_dtype=pa.large_string(),
+        type_kind=("JSON",),
+        orderable=False,
+        clusterable=False,
     ),
     SimpleDtypeInfo(
         dtype=DATE_DTYPE,
@@ -281,7 +290,7 @@ def is_struct_like(type_: ExpressionType) -> bool:
 
 def is_json_like(type_: ExpressionType) -> bool:
     # TODO: Add JSON type support
-    return type_ == STRING_DTYPE
+    return type_ == JSON_DTYPE or type_ == STRING_DTYPE  # Including JSON string
 
 
 def is_json_encoding_type(type_: ExpressionType) -> bool:
@@ -455,8 +464,6 @@ def infer_literal_arrow_type(literal) -> typing.Optional[pa.DataType]:
     return bigframes_dtype_to_arrow_dtype(infer_literal_type(literal))
 
 
-# Don't have dtype for json, so just end up interpreting as STRING
-_REMAPPED_TYPEKINDS = {"JSON": "STRING"}
 _TK_TO_BIGFRAMES = {
     type_kind: mapping.dtype
     for mapping in SIMPLE_TYPES
@@ -480,16 +487,13 @@ def convert_schema_field(
         pa_struct = pa.struct(fields)
         pa_type = pa.list_(pa_struct) if is_repeated else pa_struct
         return field.name, pd.ArrowDtype(pa_type)
-    elif (
-        field.field_type in _TK_TO_BIGFRAMES or field.field_type in _REMAPPED_TYPEKINDS
-    ):
-        singular_type = _TK_TO_BIGFRAMES[
-            _REMAPPED_TYPEKINDS.get(field.field_type, field.field_type)
-        ]
+    elif field.field_type in _TK_TO_BIGFRAMES:
         if is_repeated:
-            pa_type = pa.list_(bigframes_dtype_to_arrow_dtype(singular_type))
+            pa_type = pa.list_(
+                bigframes_dtype_to_arrow_dtype(_TK_TO_BIGFRAMES[field.field_type])
+            )
             return field.name, pd.ArrowDtype(pa_type)
-        return field.name, singular_type
+        return field.name, _TK_TO_BIGFRAMES[field.field_type]
     else:
         raise ValueError(f"Cannot handle type: {field.field_type}")
 
@@ -639,7 +643,7 @@ def can_coerce(source_type: ExpressionType, target_type: ExpressionType) -> bool
         return True  # None can be coerced to any supported type
     else:
         return (source_type == STRING_DTYPE) and (
-            target_type in TEMPORAL_BIGFRAMES_TYPES
+            target_type in TEMPORAL_BIGFRAMES_TYPES + [JSON_DTYPE]
         )
 
 

@@ -107,7 +107,7 @@ class ArrayValue:
             raise ValueError("must set at most one of 'offests', 'primary_key'")
         if any(i.field_type == "JSON" for i in table.schema if i.name in schema.names):
             warnings.warn(
-                "Interpreting JSON column(s) as StringDtype. This behavior may change in future versions.",
+                "Interpreting JSON column(s) as StringDtype and pyarrow.large_string. This behavior may change in future versions.",
                 bigframes.exceptions.PreviewWarning,
             )
         # define data source only for needed columns, this makes row-hashing cheaper

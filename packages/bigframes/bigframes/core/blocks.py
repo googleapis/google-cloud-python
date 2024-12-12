@@ -2564,13 +2564,13 @@ With T0 AS (
 ),
 T1 AS (
     SELECT *,
-           JSON_OBJECT(
+           TO_JSON_STRING(JSON_OBJECT(
                "names", [{column_names_csv}],
                "types", [{column_types_csv}],
                "values", [{column_references_csv}],
                "indexlength", {index_columns_count},
                "dtype", {pandas_row_dtype}
-           ) AS {googlesql.identifier(row_json_column_name)} FROM T0
+           )) AS {googlesql.identifier(row_json_column_name)} FROM T0
 )
 SELECT {select_columns_csv} FROM T1
 """

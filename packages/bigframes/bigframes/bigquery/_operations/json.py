@@ -47,7 +47,7 @@ def json_set(
         >>> s = bpd.read_gbq("SELECT JSON '{\\\"a\\\": 1}' AS data")["data"]
         >>> bbq.json_set(s, json_path_value_pairs=[("$.a", 100), ("$.b", "hi")])
             0    {"a":100,"b":"hi"}
-            Name: data, dtype: string
+            Name: data, dtype: large_string[pyarrow]
 
     Args:
         input (bigframes.series.Series):
