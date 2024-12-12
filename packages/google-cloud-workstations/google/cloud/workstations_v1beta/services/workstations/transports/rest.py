@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -41,6 +41,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -233,8 +241,10 @@ class WorkstationsRestInterceptor:
     def pre_create_workstation(
         self,
         request: workstations.CreateWorkstationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[workstations.CreateWorkstationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        workstations.CreateWorkstationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_workstation
 
         Override in a subclass to manipulate the request or metadata
@@ -256,8 +266,11 @@ class WorkstationsRestInterceptor:
     def pre_create_workstation_cluster(
         self,
         request: workstations.CreateWorkstationClusterRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[workstations.CreateWorkstationClusterRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        workstations.CreateWorkstationClusterRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for create_workstation_cluster
 
         Override in a subclass to manipulate the request or metadata
@@ -279,8 +292,11 @@ class WorkstationsRestInterceptor:
     def pre_create_workstation_config(
         self,
         request: workstations.CreateWorkstationConfigRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[workstations.CreateWorkstationConfigRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        workstations.CreateWorkstationConfigRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for create_workstation_config
 
         Override in a subclass to manipulate the request or metadata
@@ -302,8 +318,10 @@ class WorkstationsRestInterceptor:
     def pre_delete_workstation(
         self,
         request: workstations.DeleteWorkstationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[workstations.DeleteWorkstationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        workstations.DeleteWorkstationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_workstation
 
         Override in a subclass to manipulate the request or metadata
@@ -325,8 +343,11 @@ class WorkstationsRestInterceptor:
     def pre_delete_workstation_cluster(
         self,
         request: workstations.DeleteWorkstationClusterRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[workstations.DeleteWorkstationClusterRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        workstations.DeleteWorkstationClusterRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for delete_workstation_cluster
 
         Override in a subclass to manipulate the request or metadata
@@ -348,8 +369,11 @@ class WorkstationsRestInterceptor:
     def pre_delete_workstation_config(
         self,
         request: workstations.DeleteWorkstationConfigRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[workstations.DeleteWorkstationConfigRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        workstations.DeleteWorkstationConfigRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for delete_workstation_config
 
         Override in a subclass to manipulate the request or metadata
@@ -371,8 +395,10 @@ class WorkstationsRestInterceptor:
     def pre_generate_access_token(
         self,
         request: workstations.GenerateAccessTokenRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[workstations.GenerateAccessTokenRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        workstations.GenerateAccessTokenRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for generate_access_token
 
         Override in a subclass to manipulate the request or metadata
@@ -394,8 +420,10 @@ class WorkstationsRestInterceptor:
     def pre_get_workstation(
         self,
         request: workstations.GetWorkstationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[workstations.GetWorkstationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        workstations.GetWorkstationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_workstation
 
         Override in a subclass to manipulate the request or metadata
@@ -417,8 +445,11 @@ class WorkstationsRestInterceptor:
     def pre_get_workstation_cluster(
         self,
         request: workstations.GetWorkstationClusterRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[workstations.GetWorkstationClusterRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        workstations.GetWorkstationClusterRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for get_workstation_cluster
 
         Override in a subclass to manipulate the request or metadata
@@ -440,8 +471,11 @@ class WorkstationsRestInterceptor:
     def pre_get_workstation_config(
         self,
         request: workstations.GetWorkstationConfigRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[workstations.GetWorkstationConfigRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        workstations.GetWorkstationConfigRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for get_workstation_config
 
         Override in a subclass to manipulate the request or metadata
@@ -463,9 +497,10 @@ class WorkstationsRestInterceptor:
     def pre_list_usable_workstation_configs(
         self,
         request: workstations.ListUsableWorkstationConfigsRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        workstations.ListUsableWorkstationConfigsRequest, Sequence[Tuple[str, str]]
+        workstations.ListUsableWorkstationConfigsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for list_usable_workstation_configs
 
@@ -488,8 +523,11 @@ class WorkstationsRestInterceptor:
     def pre_list_usable_workstations(
         self,
         request: workstations.ListUsableWorkstationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[workstations.ListUsableWorkstationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        workstations.ListUsableWorkstationsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for list_usable_workstations
 
         Override in a subclass to manipulate the request or metadata
@@ -511,8 +549,11 @@ class WorkstationsRestInterceptor:
     def pre_list_workstation_clusters(
         self,
         request: workstations.ListWorkstationClustersRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[workstations.ListWorkstationClustersRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        workstations.ListWorkstationClustersRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for list_workstation_clusters
 
         Override in a subclass to manipulate the request or metadata
@@ -534,8 +575,11 @@ class WorkstationsRestInterceptor:
     def pre_list_workstation_configs(
         self,
         request: workstations.ListWorkstationConfigsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[workstations.ListWorkstationConfigsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        workstations.ListWorkstationConfigsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for list_workstation_configs
 
         Override in a subclass to manipulate the request or metadata
@@ -557,8 +601,10 @@ class WorkstationsRestInterceptor:
     def pre_list_workstations(
         self,
         request: workstations.ListWorkstationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[workstations.ListWorkstationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        workstations.ListWorkstationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_workstations
 
         Override in a subclass to manipulate the request or metadata
@@ -580,8 +626,10 @@ class WorkstationsRestInterceptor:
     def pre_start_workstation(
         self,
         request: workstations.StartWorkstationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[workstations.StartWorkstationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        workstations.StartWorkstationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for start_workstation
 
         Override in a subclass to manipulate the request or metadata
@@ -603,8 +651,10 @@ class WorkstationsRestInterceptor:
     def pre_stop_workstation(
         self,
         request: workstations.StopWorkstationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[workstations.StopWorkstationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        workstations.StopWorkstationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for stop_workstation
 
         Override in a subclass to manipulate the request or metadata
@@ -626,8 +676,10 @@ class WorkstationsRestInterceptor:
     def pre_update_workstation(
         self,
         request: workstations.UpdateWorkstationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[workstations.UpdateWorkstationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        workstations.UpdateWorkstationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_workstation
 
         Override in a subclass to manipulate the request or metadata
@@ -649,8 +701,11 @@ class WorkstationsRestInterceptor:
     def pre_update_workstation_cluster(
         self,
         request: workstations.UpdateWorkstationClusterRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[workstations.UpdateWorkstationClusterRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        workstations.UpdateWorkstationClusterRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for update_workstation_cluster
 
         Override in a subclass to manipulate the request or metadata
@@ -672,8 +727,11 @@ class WorkstationsRestInterceptor:
     def pre_update_workstation_config(
         self,
         request: workstations.UpdateWorkstationConfigRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[workstations.UpdateWorkstationConfigRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        workstations.UpdateWorkstationConfigRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for update_workstation_config
 
         Override in a subclass to manipulate the request or metadata
@@ -695,8 +753,10 @@ class WorkstationsRestInterceptor:
     def pre_get_iam_policy(
         self,
         request: iam_policy_pb2.GetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -716,8 +776,10 @@ class WorkstationsRestInterceptor:
     def pre_set_iam_policy(
         self,
         request: iam_policy_pb2.SetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -737,8 +799,11 @@ class WorkstationsRestInterceptor:
     def pre_test_iam_permissions(
         self,
         request: iam_policy_pb2.TestIamPermissionsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.TestIamPermissionsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -760,8 +825,10 @@ class WorkstationsRestInterceptor:
     def pre_cancel_operation(
         self,
         request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -781,8 +848,10 @@ class WorkstationsRestInterceptor:
     def pre_delete_operation(
         self,
         request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -802,8 +871,10 @@ class WorkstationsRestInterceptor:
     def pre_get_operation(
         self,
         request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -825,8 +896,10 @@ class WorkstationsRestInterceptor:
     def pre_list_operations(
         self,
         request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -1021,7 +1094,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create workstation method over HTTP.
 
@@ -1032,8 +1105,10 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1046,6 +1121,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             http_options = (
                 _BaseWorkstationsRestTransport._BaseCreateWorkstation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_workstation(
                 request, metadata
             )
@@ -1061,6 +1137,33 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             query_params = _BaseWorkstationsRestTransport._BaseCreateWorkstation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.workstations_v1beta.WorkstationsClient.CreateWorkstation",
+                    extra={
+                        "serviceName": "google.cloud.workstations.v1beta.Workstations",
+                        "rpcName": "CreateWorkstation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = WorkstationsRestTransport._CreateWorkstation._get_response(
@@ -1081,7 +1184,29 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_workstation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.workstations_v1beta.WorkstationsClient.create_workstation",
+                    extra={
+                        "serviceName": "google.cloud.workstations.v1beta.Workstations",
+                        "rpcName": "CreateWorkstation",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateWorkstationCluster(
@@ -1120,7 +1245,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create workstation
             cluster method over HTTP.
@@ -1132,8 +1257,10 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.operations_pb2.Operation:
@@ -1146,6 +1273,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             http_options = (
                 _BaseWorkstationsRestTransport._BaseCreateWorkstationCluster._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_workstation_cluster(
                 request, metadata
             )
@@ -1161,6 +1289,33 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             query_params = _BaseWorkstationsRestTransport._BaseCreateWorkstationCluster._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.workstations_v1beta.WorkstationsClient.CreateWorkstationCluster",
+                    extra={
+                        "serviceName": "google.cloud.workstations.v1beta.Workstations",
+                        "rpcName": "CreateWorkstationCluster",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1183,7 +1338,29 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_workstation_cluster(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.workstations_v1beta.WorkstationsClient.create_workstation_cluster",
+                    extra={
+                        "serviceName": "google.cloud.workstations.v1beta.Workstations",
+                        "rpcName": "CreateWorkstationCluster",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateWorkstationConfig(
@@ -1222,7 +1399,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create workstation config method over HTTP.
 
@@ -1233,8 +1410,10 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1247,6 +1426,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             http_options = (
                 _BaseWorkstationsRestTransport._BaseCreateWorkstationConfig._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_workstation_config(
                 request, metadata
             )
@@ -1262,6 +1442,33 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             query_params = _BaseWorkstationsRestTransport._BaseCreateWorkstationConfig._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.workstations_v1beta.WorkstationsClient.CreateWorkstationConfig",
+                    extra={
+                        "serviceName": "google.cloud.workstations.v1beta.Workstations",
+                        "rpcName": "CreateWorkstationConfig",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = WorkstationsRestTransport._CreateWorkstationConfig._get_response(
@@ -1282,7 +1489,29 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_workstation_config(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.workstations_v1beta.WorkstationsClient.create_workstation_config",
+                    extra={
+                        "serviceName": "google.cloud.workstations.v1beta.Workstations",
+                        "rpcName": "CreateWorkstationConfig",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteWorkstation(
@@ -1319,7 +1548,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete workstation method over HTTP.
 
@@ -1330,8 +1559,10 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1344,6 +1575,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             http_options = (
                 _BaseWorkstationsRestTransport._BaseDeleteWorkstation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_workstation(
                 request, metadata
             )
@@ -1355,6 +1587,33 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             query_params = _BaseWorkstationsRestTransport._BaseDeleteWorkstation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.workstations_v1beta.WorkstationsClient.DeleteWorkstation",
+                    extra={
+                        "serviceName": "google.cloud.workstations.v1beta.Workstations",
+                        "rpcName": "DeleteWorkstation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = WorkstationsRestTransport._DeleteWorkstation._get_response(
@@ -1374,7 +1633,29 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_workstation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.workstations_v1beta.WorkstationsClient.delete_workstation",
+                    extra={
+                        "serviceName": "google.cloud.workstations.v1beta.Workstations",
+                        "rpcName": "DeleteWorkstation",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteWorkstationCluster(
@@ -1412,7 +1693,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete workstation
             cluster method over HTTP.
@@ -1424,8 +1705,10 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.operations_pb2.Operation:
@@ -1438,6 +1721,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             http_options = (
                 _BaseWorkstationsRestTransport._BaseDeleteWorkstationCluster._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_workstation_cluster(
                 request, metadata
             )
@@ -1449,6 +1733,33 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             query_params = _BaseWorkstationsRestTransport._BaseDeleteWorkstationCluster._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.workstations_v1beta.WorkstationsClient.DeleteWorkstationCluster",
+                    extra={
+                        "serviceName": "google.cloud.workstations.v1beta.Workstations",
+                        "rpcName": "DeleteWorkstationCluster",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1470,7 +1781,29 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_workstation_cluster(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.workstations_v1beta.WorkstationsClient.delete_workstation_cluster",
+                    extra={
+                        "serviceName": "google.cloud.workstations.v1beta.Workstations",
+                        "rpcName": "DeleteWorkstationCluster",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteWorkstationConfig(
@@ -1508,7 +1841,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete workstation config method over HTTP.
 
@@ -1519,8 +1852,10 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1533,6 +1868,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             http_options = (
                 _BaseWorkstationsRestTransport._BaseDeleteWorkstationConfig._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_workstation_config(
                 request, metadata
             )
@@ -1544,6 +1880,33 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             query_params = _BaseWorkstationsRestTransport._BaseDeleteWorkstationConfig._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.workstations_v1beta.WorkstationsClient.DeleteWorkstationConfig",
+                    extra={
+                        "serviceName": "google.cloud.workstations.v1beta.Workstations",
+                        "rpcName": "DeleteWorkstationConfig",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = WorkstationsRestTransport._DeleteWorkstationConfig._get_response(
@@ -1563,7 +1926,29 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_workstation_config(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.workstations_v1beta.WorkstationsClient.delete_workstation_config",
+                    extra={
+                        "serviceName": "google.cloud.workstations.v1beta.Workstations",
+                        "rpcName": "DeleteWorkstationConfig",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GenerateAccessToken(
@@ -1601,7 +1986,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> workstations.GenerateAccessTokenResponse:
             r"""Call the generate access token method over HTTP.
 
@@ -1612,8 +1997,10 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.workstations.GenerateAccessTokenResponse:
@@ -1625,6 +2012,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             http_options = (
                 _BaseWorkstationsRestTransport._BaseGenerateAccessToken._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_generate_access_token(
                 request, metadata
             )
@@ -1640,6 +2028,33 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             query_params = _BaseWorkstationsRestTransport._BaseGenerateAccessToken._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.workstations_v1beta.WorkstationsClient.GenerateAccessToken",
+                    extra={
+                        "serviceName": "google.cloud.workstations.v1beta.Workstations",
+                        "rpcName": "GenerateAccessToken",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = WorkstationsRestTransport._GenerateAccessToken._get_response(
@@ -1662,7 +2077,31 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             pb_resp = workstations.GenerateAccessTokenResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_generate_access_token(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = workstations.GenerateAccessTokenResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.workstations_v1beta.WorkstationsClient.generate_access_token",
+                    extra={
+                        "serviceName": "google.cloud.workstations.v1beta.Workstations",
+                        "rpcName": "GenerateAccessToken",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetWorkstation(
@@ -1699,7 +2138,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> workstations.Workstation:
             r"""Call the get workstation method over HTTP.
 
@@ -1709,8 +2148,10 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.workstations.Workstation:
@@ -1723,6 +2164,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             http_options = (
                 _BaseWorkstationsRestTransport._BaseGetWorkstation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_workstation(request, metadata)
             transcoded_request = _BaseWorkstationsRestTransport._BaseGetWorkstation._get_transcoded_request(
                 http_options, request
@@ -1732,6 +2174,33 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             query_params = _BaseWorkstationsRestTransport._BaseGetWorkstation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.workstations_v1beta.WorkstationsClient.GetWorkstation",
+                    extra={
+                        "serviceName": "google.cloud.workstations.v1beta.Workstations",
+                        "rpcName": "GetWorkstation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = WorkstationsRestTransport._GetWorkstation._get_response(
@@ -1753,7 +2222,29 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             pb_resp = workstations.Workstation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_workstation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = workstations.Workstation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.workstations_v1beta.WorkstationsClient.get_workstation",
+                    extra={
+                        "serviceName": "google.cloud.workstations.v1beta.Workstations",
+                        "rpcName": "GetWorkstation",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetWorkstationCluster(
@@ -1790,7 +2281,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> workstations.WorkstationCluster:
             r"""Call the get workstation cluster method over HTTP.
 
@@ -1801,8 +2292,10 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.workstations.WorkstationCluster:
@@ -1817,6 +2310,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             http_options = (
                 _BaseWorkstationsRestTransport._BaseGetWorkstationCluster._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_workstation_cluster(
                 request, metadata
             )
@@ -1828,6 +2322,33 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             query_params = _BaseWorkstationsRestTransport._BaseGetWorkstationCluster._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.workstations_v1beta.WorkstationsClient.GetWorkstationCluster",
+                    extra={
+                        "serviceName": "google.cloud.workstations.v1beta.Workstations",
+                        "rpcName": "GetWorkstationCluster",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = WorkstationsRestTransport._GetWorkstationCluster._get_response(
@@ -1849,7 +2370,29 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             pb_resp = workstations.WorkstationCluster.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_workstation_cluster(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = workstations.WorkstationCluster.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.workstations_v1beta.WorkstationsClient.get_workstation_cluster",
+                    extra={
+                        "serviceName": "google.cloud.workstations.v1beta.Workstations",
+                        "rpcName": "GetWorkstationCluster",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetWorkstationConfig(
@@ -1886,7 +2429,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> workstations.WorkstationConfig:
             r"""Call the get workstation config method over HTTP.
 
@@ -1897,8 +2440,10 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.workstations.WorkstationConfig:
@@ -1921,6 +2466,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             http_options = (
                 _BaseWorkstationsRestTransport._BaseGetWorkstationConfig._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_workstation_config(
                 request, metadata
             )
@@ -1932,6 +2478,33 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             query_params = _BaseWorkstationsRestTransport._BaseGetWorkstationConfig._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.workstations_v1beta.WorkstationsClient.GetWorkstationConfig",
+                    extra={
+                        "serviceName": "google.cloud.workstations.v1beta.Workstations",
+                        "rpcName": "GetWorkstationConfig",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = WorkstationsRestTransport._GetWorkstationConfig._get_response(
@@ -1953,7 +2526,29 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             pb_resp = workstations.WorkstationConfig.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_workstation_config(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = workstations.WorkstationConfig.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.workstations_v1beta.WorkstationsClient.get_workstation_config",
+                    extra={
+                        "serviceName": "google.cloud.workstations.v1beta.Workstations",
+                        "rpcName": "GetWorkstationConfig",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListUsableWorkstationConfigs(
@@ -1991,7 +2586,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> workstations.ListUsableWorkstationConfigsResponse:
             r"""Call the list usable workstation
             configs method over HTTP.
@@ -2003,8 +2598,10 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.workstations.ListUsableWorkstationConfigsResponse:
@@ -2016,6 +2613,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             http_options = (
                 _BaseWorkstationsRestTransport._BaseListUsableWorkstationConfigs._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_usable_workstation_configs(
                 request, metadata
             )
@@ -2027,6 +2625,33 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             query_params = _BaseWorkstationsRestTransport._BaseListUsableWorkstationConfigs._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.workstations_v1beta.WorkstationsClient.ListUsableWorkstationConfigs",
+                    extra={
+                        "serviceName": "google.cloud.workstations.v1beta.Workstations",
+                        "rpcName": "ListUsableWorkstationConfigs",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -2050,7 +2675,33 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             pb_resp = workstations.ListUsableWorkstationConfigsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_usable_workstation_configs(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        workstations.ListUsableWorkstationConfigsResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.workstations_v1beta.WorkstationsClient.list_usable_workstation_configs",
+                    extra={
+                        "serviceName": "google.cloud.workstations.v1beta.Workstations",
+                        "rpcName": "ListUsableWorkstationConfigs",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListUsableWorkstations(
@@ -2087,7 +2738,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> workstations.ListUsableWorkstationsResponse:
             r"""Call the list usable workstations method over HTTP.
 
@@ -2098,8 +2749,10 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.workstations.ListUsableWorkstationsResponse:
@@ -2111,6 +2764,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             http_options = (
                 _BaseWorkstationsRestTransport._BaseListUsableWorkstations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_usable_workstations(
                 request, metadata
             )
@@ -2122,6 +2776,33 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             query_params = _BaseWorkstationsRestTransport._BaseListUsableWorkstations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.workstations_v1beta.WorkstationsClient.ListUsableWorkstations",
+                    extra={
+                        "serviceName": "google.cloud.workstations.v1beta.Workstations",
+                        "rpcName": "ListUsableWorkstations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = WorkstationsRestTransport._ListUsableWorkstations._get_response(
@@ -2143,7 +2824,31 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             pb_resp = workstations.ListUsableWorkstationsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_usable_workstations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        workstations.ListUsableWorkstationsResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.workstations_v1beta.WorkstationsClient.list_usable_workstations",
+                    extra={
+                        "serviceName": "google.cloud.workstations.v1beta.Workstations",
+                        "rpcName": "ListUsableWorkstations",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListWorkstationClusters(
@@ -2181,7 +2886,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> workstations.ListWorkstationClustersResponse:
             r"""Call the list workstation clusters method over HTTP.
 
@@ -2192,8 +2897,10 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.workstations.ListWorkstationClustersResponse:
@@ -2205,6 +2912,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             http_options = (
                 _BaseWorkstationsRestTransport._BaseListWorkstationClusters._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_workstation_clusters(
                 request, metadata
             )
@@ -2216,6 +2924,33 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             query_params = _BaseWorkstationsRestTransport._BaseListWorkstationClusters._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.workstations_v1beta.WorkstationsClient.ListWorkstationClusters",
+                    extra={
+                        "serviceName": "google.cloud.workstations.v1beta.Workstations",
+                        "rpcName": "ListWorkstationClusters",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = WorkstationsRestTransport._ListWorkstationClusters._get_response(
@@ -2237,7 +2972,31 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             pb_resp = workstations.ListWorkstationClustersResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_workstation_clusters(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        workstations.ListWorkstationClustersResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.workstations_v1beta.WorkstationsClient.list_workstation_clusters",
+                    extra={
+                        "serviceName": "google.cloud.workstations.v1beta.Workstations",
+                        "rpcName": "ListWorkstationClusters",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListWorkstationConfigs(
@@ -2274,7 +3033,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> workstations.ListWorkstationConfigsResponse:
             r"""Call the list workstation configs method over HTTP.
 
@@ -2285,8 +3044,10 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.workstations.ListWorkstationConfigsResponse:
@@ -2298,6 +3059,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             http_options = (
                 _BaseWorkstationsRestTransport._BaseListWorkstationConfigs._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_workstation_configs(
                 request, metadata
             )
@@ -2309,6 +3071,33 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             query_params = _BaseWorkstationsRestTransport._BaseListWorkstationConfigs._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.workstations_v1beta.WorkstationsClient.ListWorkstationConfigs",
+                    extra={
+                        "serviceName": "google.cloud.workstations.v1beta.Workstations",
+                        "rpcName": "ListWorkstationConfigs",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = WorkstationsRestTransport._ListWorkstationConfigs._get_response(
@@ -2330,7 +3119,31 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             pb_resp = workstations.ListWorkstationConfigsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_workstation_configs(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        workstations.ListWorkstationConfigsResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.workstations_v1beta.WorkstationsClient.list_workstation_configs",
+                    extra={
+                        "serviceName": "google.cloud.workstations.v1beta.Workstations",
+                        "rpcName": "ListWorkstationConfigs",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListWorkstations(
@@ -2367,7 +3180,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> workstations.ListWorkstationsResponse:
             r"""Call the list workstations method over HTTP.
 
@@ -2377,8 +3190,10 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.workstations.ListWorkstationsResponse:
@@ -2390,6 +3205,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             http_options = (
                 _BaseWorkstationsRestTransport._BaseListWorkstations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_workstations(
                 request, metadata
             )
@@ -2401,6 +3217,33 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             query_params = _BaseWorkstationsRestTransport._BaseListWorkstations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.workstations_v1beta.WorkstationsClient.ListWorkstations",
+                    extra={
+                        "serviceName": "google.cloud.workstations.v1beta.Workstations",
+                        "rpcName": "ListWorkstations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = WorkstationsRestTransport._ListWorkstations._get_response(
@@ -2422,7 +3265,31 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             pb_resp = workstations.ListWorkstationsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_workstations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = workstations.ListWorkstationsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.workstations_v1beta.WorkstationsClient.list_workstations",
+                    extra={
+                        "serviceName": "google.cloud.workstations.v1beta.Workstations",
+                        "rpcName": "ListWorkstations",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _StartWorkstation(
@@ -2460,7 +3327,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the start workstation method over HTTP.
 
@@ -2470,8 +3337,10 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2484,6 +3353,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             http_options = (
                 _BaseWorkstationsRestTransport._BaseStartWorkstation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_start_workstation(
                 request, metadata
             )
@@ -2499,6 +3369,33 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             query_params = _BaseWorkstationsRestTransport._BaseStartWorkstation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.workstations_v1beta.WorkstationsClient.StartWorkstation",
+                    extra={
+                        "serviceName": "google.cloud.workstations.v1beta.Workstations",
+                        "rpcName": "StartWorkstation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = WorkstationsRestTransport._StartWorkstation._get_response(
@@ -2519,7 +3416,29 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_start_workstation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.workstations_v1beta.WorkstationsClient.start_workstation",
+                    extra={
+                        "serviceName": "google.cloud.workstations.v1beta.Workstations",
+                        "rpcName": "StartWorkstation",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _StopWorkstation(
@@ -2557,7 +3476,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the stop workstation method over HTTP.
 
@@ -2567,8 +3486,10 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2581,6 +3502,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             http_options = (
                 _BaseWorkstationsRestTransport._BaseStopWorkstation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_stop_workstation(
                 request, metadata
             )
@@ -2596,6 +3518,33 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             query_params = _BaseWorkstationsRestTransport._BaseStopWorkstation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.workstations_v1beta.WorkstationsClient.StopWorkstation",
+                    extra={
+                        "serviceName": "google.cloud.workstations.v1beta.Workstations",
+                        "rpcName": "StopWorkstation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = WorkstationsRestTransport._StopWorkstation._get_response(
@@ -2616,7 +3565,29 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_stop_workstation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.workstations_v1beta.WorkstationsClient.stop_workstation",
+                    extra={
+                        "serviceName": "google.cloud.workstations.v1beta.Workstations",
+                        "rpcName": "StopWorkstation",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateWorkstation(
@@ -2654,7 +3625,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update workstation method over HTTP.
 
@@ -2665,8 +3636,10 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2679,6 +3652,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             http_options = (
                 _BaseWorkstationsRestTransport._BaseUpdateWorkstation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_workstation(
                 request, metadata
             )
@@ -2694,6 +3668,33 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             query_params = _BaseWorkstationsRestTransport._BaseUpdateWorkstation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.workstations_v1beta.WorkstationsClient.UpdateWorkstation",
+                    extra={
+                        "serviceName": "google.cloud.workstations.v1beta.Workstations",
+                        "rpcName": "UpdateWorkstation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = WorkstationsRestTransport._UpdateWorkstation._get_response(
@@ -2714,7 +3715,29 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_workstation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.workstations_v1beta.WorkstationsClient.update_workstation",
+                    extra={
+                        "serviceName": "google.cloud.workstations.v1beta.Workstations",
+                        "rpcName": "UpdateWorkstation",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateWorkstationCluster(
@@ -2753,7 +3776,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update workstation
             cluster method over HTTP.
@@ -2765,8 +3788,10 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.operations_pb2.Operation:
@@ -2779,6 +3804,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             http_options = (
                 _BaseWorkstationsRestTransport._BaseUpdateWorkstationCluster._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_workstation_cluster(
                 request, metadata
             )
@@ -2794,6 +3820,33 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             query_params = _BaseWorkstationsRestTransport._BaseUpdateWorkstationCluster._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.workstations_v1beta.WorkstationsClient.UpdateWorkstationCluster",
+                    extra={
+                        "serviceName": "google.cloud.workstations.v1beta.Workstations",
+                        "rpcName": "UpdateWorkstationCluster",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -2816,7 +3869,29 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_workstation_cluster(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.workstations_v1beta.WorkstationsClient.update_workstation_cluster",
+                    extra={
+                        "serviceName": "google.cloud.workstations.v1beta.Workstations",
+                        "rpcName": "UpdateWorkstationCluster",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateWorkstationConfig(
@@ -2855,7 +3930,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update workstation config method over HTTP.
 
@@ -2866,8 +3941,10 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2880,6 +3957,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             http_options = (
                 _BaseWorkstationsRestTransport._BaseUpdateWorkstationConfig._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_workstation_config(
                 request, metadata
             )
@@ -2895,6 +3973,33 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             query_params = _BaseWorkstationsRestTransport._BaseUpdateWorkstationConfig._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.workstations_v1beta.WorkstationsClient.UpdateWorkstationConfig",
+                    extra={
+                        "serviceName": "google.cloud.workstations.v1beta.Workstations",
+                        "rpcName": "UpdateWorkstationConfig",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = WorkstationsRestTransport._UpdateWorkstationConfig._get_response(
@@ -2915,7 +4020,29 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_workstation_config(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.workstations_v1beta.WorkstationsClient.update_workstation_config",
+                    extra={
+                        "serviceName": "google.cloud.workstations.v1beta.Workstations",
+                        "rpcName": "UpdateWorkstationConfig",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -3149,7 +4276,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> policy_pb2.Policy:
             r"""Call the get iam policy method over HTTP.
 
@@ -3159,8 +4286,10 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 policy_pb2.Policy: Response from GetIamPolicy method.
@@ -3169,6 +4298,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             http_options = (
                 _BaseWorkstationsRestTransport._BaseGetIamPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
             transcoded_request = _BaseWorkstationsRestTransport._BaseGetIamPolicy._get_transcoded_request(
                 http_options, request
@@ -3180,6 +4310,33 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.workstations_v1beta.WorkstationsClient.GetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.workstations.v1beta.Workstations",
+                        "rpcName": "GetIamPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = WorkstationsRestTransport._GetIamPolicy._get_response(
@@ -3200,6 +4357,27 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_iam_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.workstations_v1beta.WorkstationsAsyncClient.GetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.workstations.v1beta.Workstations",
+                        "rpcName": "GetIamPolicy",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -3241,7 +4419,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> policy_pb2.Policy:
             r"""Call the set iam policy method over HTTP.
 
@@ -3251,8 +4429,10 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 policy_pb2.Policy: Response from SetIamPolicy method.
@@ -3261,6 +4441,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             http_options = (
                 _BaseWorkstationsRestTransport._BaseSetIamPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
             transcoded_request = _BaseWorkstationsRestTransport._BaseSetIamPolicy._get_transcoded_request(
                 http_options, request
@@ -3278,6 +4459,33 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.workstations_v1beta.WorkstationsClient.SetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.workstations.v1beta.Workstations",
+                        "rpcName": "SetIamPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = WorkstationsRestTransport._SetIamPolicy._get_response(
@@ -3299,6 +4507,27 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_set_iam_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.workstations_v1beta.WorkstationsAsyncClient.SetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.workstations.v1beta.Workstations",
+                        "rpcName": "SetIamPolicy",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -3340,7 +4569,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> iam_policy_pb2.TestIamPermissionsResponse:
             r"""Call the test iam permissions method over HTTP.
 
@@ -3350,8 +4579,10 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 iam_policy_pb2.TestIamPermissionsResponse: Response from TestIamPermissions method.
@@ -3360,6 +4591,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             http_options = (
                 _BaseWorkstationsRestTransport._BaseTestIamPermissions._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata
             )
@@ -3375,6 +4607,33 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             query_params = _BaseWorkstationsRestTransport._BaseTestIamPermissions._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.workstations_v1beta.WorkstationsClient.TestIamPermissions",
+                    extra={
+                        "serviceName": "google.cloud.workstations.v1beta.Workstations",
+                        "rpcName": "TestIamPermissions",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = WorkstationsRestTransport._TestIamPermissions._get_response(
@@ -3396,6 +4655,27 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             resp = iam_policy_pb2.TestIamPermissionsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_test_iam_permissions(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.workstations_v1beta.WorkstationsAsyncClient.TestIamPermissions",
+                    extra={
+                        "serviceName": "google.cloud.workstations.v1beta.Workstations",
+                        "rpcName": "TestIamPermissions",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -3437,7 +4717,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the cancel operation method over HTTP.
 
@@ -3447,13 +4727,16 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseWorkstationsRestTransport._BaseCancelOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
@@ -3469,6 +4752,33 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             query_params = _BaseWorkstationsRestTransport._BaseCancelOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.workstations_v1beta.WorkstationsClient.CancelOperation",
+                    extra={
+                        "serviceName": "google.cloud.workstations.v1beta.Workstations",
+                        "rpcName": "CancelOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = WorkstationsRestTransport._CancelOperation._get_response(
@@ -3526,7 +4836,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the delete operation method over HTTP.
 
@@ -3536,13 +4846,16 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseWorkstationsRestTransport._BaseDeleteOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
             )
@@ -3554,6 +4867,33 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             query_params = _BaseWorkstationsRestTransport._BaseDeleteOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.workstations_v1beta.WorkstationsClient.DeleteOperation",
+                    extra={
+                        "serviceName": "google.cloud.workstations.v1beta.Workstations",
+                        "rpcName": "DeleteOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = WorkstationsRestTransport._DeleteOperation._get_response(
@@ -3610,7 +4950,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the get operation method over HTTP.
 
@@ -3620,8 +4960,10 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.
@@ -3630,6 +4972,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             http_options = (
                 _BaseWorkstationsRestTransport._BaseGetOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseWorkstationsRestTransport._BaseGetOperation._get_transcoded_request(
                 http_options, request
@@ -3641,6 +4984,33 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.workstations_v1beta.WorkstationsClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.workstations.v1beta.Workstations",
+                        "rpcName": "GetOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = WorkstationsRestTransport._GetOperation._get_response(
@@ -3661,6 +5031,27 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.workstations_v1beta.WorkstationsAsyncClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.workstations.v1beta.Workstations",
+                        "rpcName": "GetOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -3701,7 +5092,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.ListOperationsResponse:
             r"""Call the list operations method over HTTP.
 
@@ -3711,8 +5102,10 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
@@ -3721,6 +5114,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             http_options = (
                 _BaseWorkstationsRestTransport._BaseListOperations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseWorkstationsRestTransport._BaseListOperations._get_transcoded_request(
                 http_options, request
@@ -3730,6 +5124,33 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             query_params = _BaseWorkstationsRestTransport._BaseListOperations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.workstations_v1beta.WorkstationsClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.workstations.v1beta.Workstations",
+                        "rpcName": "ListOperations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = WorkstationsRestTransport._ListOperations._get_response(
@@ -3750,6 +5171,27 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.workstations_v1beta.WorkstationsAsyncClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.workstations.v1beta.Workstations",
+                        "rpcName": "ListOperations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
