@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.6.15](https://github.com/googleapis/google-cloud-python/compare/google-cloud-eventarc-publishing-v0.6.14...google-cloud-eventarc-publishing-v0.6.15) (2024-12-12)
+
+
+### Features
+
+* Add support for opt-in debug logging ([819e8fb](https://github.com/googleapis/google-cloud-python/commit/819e8fb3159c39f6c8eb6d7c0b75927134d6ceb2))
+
+
+### Bug Fixes
+
+* Fix typing issue with gRPC metadata when key ends in -bin ([819e8fb](https://github.com/googleapis/google-cloud-python/commit/819e8fb3159c39f6c8eb6d7c0b75927134d6ceb2))
+
 ## [0.6.14](https://github.com/googleapis/google-cloud-python/compare/google-cloud-eventarc-publishing-v0.6.13...google-cloud-eventarc-publishing-v0.6.14) (2024-11-11)
 
 
