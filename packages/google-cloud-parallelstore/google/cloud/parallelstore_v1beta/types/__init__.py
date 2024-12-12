@@ -16,6 +16,7 @@
 from .parallelstore import (
     CreateInstanceRequest,
     DeleteInstanceRequest,
+    DeploymentType,
     DestinationGcsBucket,
     DestinationParallelstore,
     DirectoryStripeLevel,
@@ -60,6 +61,7 @@ __all__ = (
     "TransferCounters",
     "TransferOperationMetadata",
     "UpdateInstanceRequest",
+    "DeploymentType",
     "DirectoryStripeLevel",
     "FileStripeLevel",
     "TransferType",

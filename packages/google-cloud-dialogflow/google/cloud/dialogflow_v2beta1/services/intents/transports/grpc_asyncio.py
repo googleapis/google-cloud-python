@@ -14,6 +14,9 @@
 # limitations under the License.
 #
 import inspect
+import json
+import logging as std_logging
+import pickle
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -25,14 +28,93 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
+from google.protobuf.json_format import MessageToJson
+import google.protobuf.message
 import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
+import proto  # type: ignore
 
 from google.cloud.dialogflow_v2beta1.types import intent
 from google.cloud.dialogflow_v2beta1.types import intent as gcd_intent
 
 from .base import DEFAULT_CLIENT_INFO, IntentsTransport
 from .grpc import IntentsGrpcTransport
+
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = std_logging.getLogger(__name__)
+
+
+class _LoggingClientAIOInterceptor(
+    grpc.aio.UnaryUnaryClientInterceptor
+):  # pragma: NO COVER
+    async def intercept_unary_unary(self, continuation, client_call_details, request):
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+            std_logging.DEBUG
+        )
+        if logging_enabled:  # pragma: NO COVER
+            request_metadata = client_call_details.metadata
+            if isinstance(request, proto.Message):
+                request_payload = type(request).to_json(request)
+            elif isinstance(request, google.protobuf.message.Message):
+                request_payload = MessageToJson(request)
+            else:
+                request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
+
+            request_metadata = {
+                key: value.decode("utf-8") if isinstance(value, bytes) else value
+                for key, value in request_metadata
+            }
+            grpc_request = {
+                "payload": request_payload,
+                "requestMethod": "grpc",
+                "metadata": dict(request_metadata),
+            }
+            _LOGGER.debug(
+                f"Sending request for {client_call_details.method}",
+                extra={
+                    "serviceName": "google.cloud.dialogflow.v2beta1.Intents",
+                    "rpcName": str(client_call_details.method),
+                    "request": grpc_request,
+                    "metadata": grpc_request["metadata"],
+                },
+            )
+        response = await continuation(client_call_details, request)
+        if logging_enabled:  # pragma: NO COVER
+            response_metadata = await response.trailing_metadata()
+            # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
+            metadata = (
+                dict([(k, str(v)) for k, v in response_metadata])
+                if response_metadata
+                else None
+            )
+            result = await response
+            if isinstance(result, proto.Message):
+                response_payload = type(result).to_json(result)
+            elif isinstance(result, google.protobuf.message.Message):
+                response_payload = MessageToJson(result)
+            else:
+                response_payload = f"{type(result).__name__}: {pickle.dumps(result)}"
+            grpc_response = {
+                "payload": response_payload,
+                "metadata": metadata,
+                "status": "OK",
+            }
+            _LOGGER.debug(
+                f"Received response to rpc {client_call_details.method}.",
+                extra={
+                    "serviceName": "google.cloud.dialogflow.v2beta1.Intents",
+                    "rpcName": str(client_call_details.method),
+                    "response": grpc_response,
+                    "metadata": grpc_response["metadata"],
+                },
+            )
+        return response
 
 
 class IntentsGrpcAsyncIOTransport(IntentsTransport):
@@ -232,10 +314,13 @@ class IntentsGrpcAsyncIOTransport(IntentsTransport):
                 ],
             )
 
-        # Wrap messages. This must be done after self._grpc_channel exists
+        self._interceptor = _LoggingClientAIOInterceptor()
+        self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
+        self._logged_channel = self._grpc_channel
         self._wrap_with_kind = (
             "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         )
+        # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -258,7 +343,7 @@ class IntentsGrpcAsyncIOTransport(IntentsTransport):
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
             self._operations_client = operations_v1.OperationsAsyncClient(
-                self.grpc_channel
+                self._logged_channel
             )
 
         # Return the client from cache.
@@ -284,7 +369,7 @@ class IntentsGrpcAsyncIOTransport(IntentsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_intents" not in self._stubs:
-            self._stubs["list_intents"] = self.grpc_channel.unary_unary(
+            self._stubs["list_intents"] = self._logged_channel.unary_unary(
                 "/google.cloud.dialogflow.v2beta1.Intents/ListIntents",
                 request_serializer=intent.ListIntentsRequest.serialize,
                 response_deserializer=intent.ListIntentsResponse.deserialize,
@@ -310,7 +395,7 @@ class IntentsGrpcAsyncIOTransport(IntentsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_intent" not in self._stubs:
-            self._stubs["get_intent"] = self.grpc_channel.unary_unary(
+            self._stubs["get_intent"] = self._logged_channel.unary_unary(
                 "/google.cloud.dialogflow.v2beta1.Intents/GetIntent",
                 request_serializer=intent.GetIntentRequest.serialize,
                 response_deserializer=intent.Intent.deserialize,
@@ -340,7 +425,7 @@ class IntentsGrpcAsyncIOTransport(IntentsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_intent" not in self._stubs:
-            self._stubs["create_intent"] = self.grpc_channel.unary_unary(
+            self._stubs["create_intent"] = self._logged_channel.unary_unary(
                 "/google.cloud.dialogflow.v2beta1.Intents/CreateIntent",
                 request_serializer=gcd_intent.CreateIntentRequest.serialize,
                 response_deserializer=gcd_intent.Intent.deserialize,
@@ -370,7 +455,7 @@ class IntentsGrpcAsyncIOTransport(IntentsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_intent" not in self._stubs:
-            self._stubs["update_intent"] = self.grpc_channel.unary_unary(
+            self._stubs["update_intent"] = self._logged_channel.unary_unary(
                 "/google.cloud.dialogflow.v2beta1.Intents/UpdateIntent",
                 request_serializer=gcd_intent.UpdateIntentRequest.serialize,
                 response_deserializer=gcd_intent.Intent.deserialize,
@@ -401,7 +486,7 @@ class IntentsGrpcAsyncIOTransport(IntentsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_intent" not in self._stubs:
-            self._stubs["delete_intent"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_intent"] = self._logged_channel.unary_unary(
                 "/google.cloud.dialogflow.v2beta1.Intents/DeleteIntent",
                 request_serializer=intent.DeleteIntentRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -443,7 +528,7 @@ class IntentsGrpcAsyncIOTransport(IntentsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "batch_update_intents" not in self._stubs:
-            self._stubs["batch_update_intents"] = self.grpc_channel.unary_unary(
+            self._stubs["batch_update_intents"] = self._logged_channel.unary_unary(
                 "/google.cloud.dialogflow.v2beta1.Intents/BatchUpdateIntents",
                 request_serializer=intent.BatchUpdateIntentsRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -485,7 +570,7 @@ class IntentsGrpcAsyncIOTransport(IntentsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "batch_delete_intents" not in self._stubs:
-            self._stubs["batch_delete_intents"] = self.grpc_channel.unary_unary(
+            self._stubs["batch_delete_intents"] = self._logged_channel.unary_unary(
                 "/google.cloud.dialogflow.v2beta1.Intents/BatchDeleteIntents",
                 request_serializer=intent.BatchDeleteIntentsRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -563,7 +648,7 @@ class IntentsGrpcAsyncIOTransport(IntentsTransport):
         return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
 
     def close(self):
-        return self.grpc_channel.close()
+        return self._logged_channel.close()
 
     @property
     def kind(self) -> str:
@@ -579,7 +664,7 @@ class IntentsGrpcAsyncIOTransport(IntentsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "cancel_operation" not in self._stubs:
-            self._stubs["cancel_operation"] = self.grpc_channel.unary_unary(
+            self._stubs["cancel_operation"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/CancelOperation",
                 request_serializer=operations_pb2.CancelOperationRequest.SerializeToString,
                 response_deserializer=None,
@@ -596,7 +681,7 @@ class IntentsGrpcAsyncIOTransport(IntentsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_operation" not in self._stubs:
-            self._stubs["get_operation"] = self.grpc_channel.unary_unary(
+            self._stubs["get_operation"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/GetOperation",
                 request_serializer=operations_pb2.GetOperationRequest.SerializeToString,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -615,7 +700,7 @@ class IntentsGrpcAsyncIOTransport(IntentsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_operations" not in self._stubs:
-            self._stubs["list_operations"] = self.grpc_channel.unary_unary(
+            self._stubs["list_operations"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/ListOperations",
                 request_serializer=operations_pb2.ListOperationsRequest.SerializeToString,
                 response_deserializer=operations_pb2.ListOperationsResponse.FromString,
@@ -634,7 +719,7 @@ class IntentsGrpcAsyncIOTransport(IntentsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_locations" not in self._stubs:
-            self._stubs["list_locations"] = self.grpc_channel.unary_unary(
+            self._stubs["list_locations"] = self._logged_channel.unary_unary(
                 "/google.cloud.location.Locations/ListLocations",
                 request_serializer=locations_pb2.ListLocationsRequest.SerializeToString,
                 response_deserializer=locations_pb2.ListLocationsResponse.FromString,
@@ -651,7 +736,7 @@ class IntentsGrpcAsyncIOTransport(IntentsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_location" not in self._stubs:
-            self._stubs["get_location"] = self.grpc_channel.unary_unary(
+            self._stubs["get_location"] = self._logged_channel.unary_unary(
                 "/google.cloud.location.Locations/GetLocation",
                 request_serializer=locations_pb2.GetLocationRequest.SerializeToString,
                 response_deserializer=locations_pb2.Location.FromString,
