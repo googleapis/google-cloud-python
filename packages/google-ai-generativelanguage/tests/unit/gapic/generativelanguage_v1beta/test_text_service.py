@@ -2500,6 +2500,7 @@ def test_generate_text_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.generate_text(request)
 
@@ -2559,6 +2560,7 @@ def test_generate_text_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.generate_text(**mock_args)
 
@@ -2693,6 +2695,7 @@ def test_embed_text_rest_required_fields(request_type=text_service.EmbedTextRequ
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.embed_text(request)
 
@@ -2739,6 +2742,7 @@ def test_embed_text_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.embed_text(**mock_args)
 
@@ -2872,6 +2876,7 @@ def test_batch_embed_text_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.batch_embed_text(request)
 
@@ -2918,6 +2923,7 @@ def test_batch_embed_text_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.batch_embed_text(**mock_args)
 
@@ -3052,6 +3058,7 @@ def test_count_text_tokens_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.count_text_tokens(request)
 
@@ -3106,6 +3113,7 @@ def test_count_text_tokens_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.count_text_tokens(**mock_args)
 
@@ -3471,6 +3479,7 @@ def test_generate_text_rest_bad_request(request_type=text_service.GenerateTextRe
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.generate_text(request)
 
 
@@ -3504,6 +3513,7 @@ def test_generate_text_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.generate_text(request)
 
     # Establish that the response is the type that we expect.
@@ -3543,6 +3553,7 @@ def test_generate_text_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = text_service.GenerateTextResponse.to_json(
             text_service.GenerateTextResponse()
         )
@@ -3587,6 +3598,7 @@ def test_embed_text_rest_bad_request(request_type=text_service.EmbedTextRequest)
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.embed_text(request)
 
 
@@ -3620,6 +3632,7 @@ def test_embed_text_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.embed_text(request)
 
     # Establish that the response is the type that we expect.
@@ -3657,6 +3670,7 @@ def test_embed_text_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = text_service.EmbedTextResponse.to_json(
             text_service.EmbedTextResponse()
         )
@@ -3703,6 +3717,7 @@ def test_batch_embed_text_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.batch_embed_text(request)
 
 
@@ -3736,6 +3751,7 @@ def test_batch_embed_text_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.batch_embed_text(request)
 
     # Establish that the response is the type that we expect.
@@ -3775,6 +3791,7 @@ def test_batch_embed_text_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = text_service.BatchEmbedTextResponse.to_json(
             text_service.BatchEmbedTextResponse()
         )
@@ -3821,6 +3838,7 @@ def test_count_text_tokens_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.count_text_tokens(request)
 
 
@@ -3856,6 +3874,7 @@ def test_count_text_tokens_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.count_text_tokens(request)
 
     # Establish that the response is the type that we expect.
@@ -3896,6 +3915,7 @@ def test_count_text_tokens_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = text_service.CountTextTokensResponse.to_json(
             text_service.CountTextTokensResponse()
         )
@@ -3944,6 +3964,7 @@ def test_get_operation_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_operation(request)
 
 
@@ -3974,6 +3995,7 @@ def test_get_operation_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.get_operation(request)
 
@@ -4002,6 +4024,7 @@ def test_list_operations_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_operations(request)
 
 
@@ -4032,6 +4055,7 @@ def test_list_operations_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.list_operations(request)
 

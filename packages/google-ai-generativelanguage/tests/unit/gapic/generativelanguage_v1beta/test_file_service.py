@@ -2452,6 +2452,7 @@ def test_get_file_rest_required_fields(request_type=file_service.GetFileRequest)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_file(request)
 
@@ -2497,6 +2498,7 @@ def test_get_file_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_file(**mock_args)
 
@@ -2621,6 +2623,7 @@ def test_delete_file_rest_required_fields(request_type=file_service.DeleteFileRe
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_file(request)
 
@@ -2664,6 +2667,7 @@ def test_delete_file_rest_flattened():
         json_return_value = ""
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_file(**mock_args)
 
@@ -3029,6 +3033,7 @@ def test_create_file_rest_bad_request(request_type=file_service.CreateFileReques
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_file(request)
 
 
@@ -3062,6 +3067,7 @@ def test_create_file_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_file(request)
 
     # Establish that the response is the type that we expect.
@@ -3099,6 +3105,7 @@ def test_create_file_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = file_service.CreateFileResponse.to_json(
             file_service.CreateFileResponse()
         )
@@ -3143,6 +3150,7 @@ def test_list_files_rest_bad_request(request_type=file_service.ListFilesRequest)
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_files(request)
 
 
@@ -3178,6 +3186,7 @@ def test_list_files_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_files(request)
 
     # Establish that the response is the type that we expect.
@@ -3216,6 +3225,7 @@ def test_list_files_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = file_service.ListFilesResponse.to_json(
             file_service.ListFilesResponse()
         )
@@ -3260,6 +3270,7 @@ def test_get_file_rest_bad_request(request_type=file_service.GetFileRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_file(request)
 
 
@@ -3301,6 +3312,7 @@ def test_get_file_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_file(request)
 
     # Establish that the response is the type that we expect.
@@ -3345,6 +3357,7 @@ def test_get_file_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = file.File.to_json(file.File())
         req.return_value.content = return_value
 
@@ -3387,6 +3400,7 @@ def test_delete_file_rest_bad_request(request_type=file_service.DeleteFileReques
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_file(request)
 
 
@@ -3417,6 +3431,7 @@ def test_delete_file_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_file(request)
 
     # Establish that the response is the type that we expect.
@@ -3451,6 +3466,7 @@ def test_delete_file_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = file_service.DeleteFileRequest()
         metadata = [
@@ -3493,6 +3509,7 @@ def test_get_operation_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_operation(request)
 
 
@@ -3523,6 +3540,7 @@ def test_get_operation_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.get_operation(request)
 
@@ -3551,6 +3569,7 @@ def test_list_operations_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_operations(request)
 
 
@@ -3581,6 +3600,7 @@ def test_list_operations_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.list_operations(request)
 

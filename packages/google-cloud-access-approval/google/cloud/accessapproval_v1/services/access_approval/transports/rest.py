@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -38,6 +38,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -138,8 +146,11 @@ class AccessApprovalRestInterceptor:
     def pre_approve_approval_request(
         self,
         request: accessapproval.ApproveApprovalRequestMessage,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[accessapproval.ApproveApprovalRequestMessage, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        accessapproval.ApproveApprovalRequestMessage,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for approve_approval_request
 
         Override in a subclass to manipulate the request or metadata
@@ -161,9 +172,10 @@ class AccessApprovalRestInterceptor:
     def pre_delete_access_approval_settings(
         self,
         request: accessapproval.DeleteAccessApprovalSettingsMessage,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        accessapproval.DeleteAccessApprovalSettingsMessage, Sequence[Tuple[str, str]]
+        accessapproval.DeleteAccessApprovalSettingsMessage,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for delete_access_approval_settings
 
@@ -175,8 +187,11 @@ class AccessApprovalRestInterceptor:
     def pre_dismiss_approval_request(
         self,
         request: accessapproval.DismissApprovalRequestMessage,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[accessapproval.DismissApprovalRequestMessage, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        accessapproval.DismissApprovalRequestMessage,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for dismiss_approval_request
 
         Override in a subclass to manipulate the request or metadata
@@ -198,9 +213,10 @@ class AccessApprovalRestInterceptor:
     def pre_get_access_approval_service_account(
         self,
         request: accessapproval.GetAccessApprovalServiceAccountMessage,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        accessapproval.GetAccessApprovalServiceAccountMessage, Sequence[Tuple[str, str]]
+        accessapproval.GetAccessApprovalServiceAccountMessage,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for get_access_approval_service_account
 
@@ -223,9 +239,10 @@ class AccessApprovalRestInterceptor:
     def pre_get_access_approval_settings(
         self,
         request: accessapproval.GetAccessApprovalSettingsMessage,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        accessapproval.GetAccessApprovalSettingsMessage, Sequence[Tuple[str, str]]
+        accessapproval.GetAccessApprovalSettingsMessage,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for get_access_approval_settings
 
@@ -248,8 +265,11 @@ class AccessApprovalRestInterceptor:
     def pre_get_approval_request(
         self,
         request: accessapproval.GetApprovalRequestMessage,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[accessapproval.GetApprovalRequestMessage, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        accessapproval.GetApprovalRequestMessage,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for get_approval_request
 
         Override in a subclass to manipulate the request or metadata
@@ -271,9 +291,10 @@ class AccessApprovalRestInterceptor:
     def pre_invalidate_approval_request(
         self,
         request: accessapproval.InvalidateApprovalRequestMessage,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        accessapproval.InvalidateApprovalRequestMessage, Sequence[Tuple[str, str]]
+        accessapproval.InvalidateApprovalRequestMessage,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for invalidate_approval_request
 
@@ -296,8 +317,11 @@ class AccessApprovalRestInterceptor:
     def pre_list_approval_requests(
         self,
         request: accessapproval.ListApprovalRequestsMessage,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[accessapproval.ListApprovalRequestsMessage, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        accessapproval.ListApprovalRequestsMessage,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for list_approval_requests
 
         Override in a subclass to manipulate the request or metadata
@@ -319,9 +343,10 @@ class AccessApprovalRestInterceptor:
     def pre_update_access_approval_settings(
         self,
         request: accessapproval.UpdateAccessApprovalSettingsMessage,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        accessapproval.UpdateAccessApprovalSettingsMessage, Sequence[Tuple[str, str]]
+        accessapproval.UpdateAccessApprovalSettingsMessage,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for update_access_approval_settings
 
@@ -498,7 +523,7 @@ class AccessApprovalRestTransport(_BaseAccessApprovalRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> accessapproval.ApprovalRequest:
             r"""Call the approve approval request method over HTTP.
 
@@ -509,8 +534,10 @@ class AccessApprovalRestTransport(_BaseAccessApprovalRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.accessapproval.ApprovalRequest:
@@ -522,6 +549,7 @@ class AccessApprovalRestTransport(_BaseAccessApprovalRestTransport):
             http_options = (
                 _BaseAccessApprovalRestTransport._BaseApproveApprovalRequest._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_approve_approval_request(
                 request, metadata
             )
@@ -537,6 +565,33 @@ class AccessApprovalRestTransport(_BaseAccessApprovalRestTransport):
             query_params = _BaseAccessApprovalRestTransport._BaseApproveApprovalRequest._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.accessapproval_v1.AccessApprovalClient.ApproveApprovalRequest",
+                    extra={
+                        "serviceName": "google.cloud.accessapproval.v1.AccessApproval",
+                        "rpcName": "ApproveApprovalRequest",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -561,7 +616,29 @@ class AccessApprovalRestTransport(_BaseAccessApprovalRestTransport):
             pb_resp = accessapproval.ApprovalRequest.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_approve_approval_request(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = accessapproval.ApprovalRequest.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.accessapproval_v1.AccessApprovalClient.approve_approval_request",
+                    extra={
+                        "serviceName": "google.cloud.accessapproval.v1.AccessApproval",
+                        "rpcName": "ApproveApprovalRequest",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteAccessApprovalSettings(
@@ -599,7 +676,7 @@ class AccessApprovalRestTransport(_BaseAccessApprovalRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete access approval
             settings method over HTTP.
@@ -611,13 +688,16 @@ class AccessApprovalRestTransport(_BaseAccessApprovalRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
             """
 
             http_options = (
                 _BaseAccessApprovalRestTransport._BaseDeleteAccessApprovalSettings._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_access_approval_settings(
                 request, metadata
             )
@@ -629,6 +709,33 @@ class AccessApprovalRestTransport(_BaseAccessApprovalRestTransport):
             query_params = _BaseAccessApprovalRestTransport._BaseDeleteAccessApprovalSettings._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.accessapproval_v1.AccessApprovalClient.DeleteAccessApprovalSettings",
+                    extra={
+                        "serviceName": "google.cloud.accessapproval.v1.AccessApproval",
+                        "rpcName": "DeleteAccessApprovalSettings",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -683,7 +790,7 @@ class AccessApprovalRestTransport(_BaseAccessApprovalRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> accessapproval.ApprovalRequest:
             r"""Call the dismiss approval request method over HTTP.
 
@@ -694,8 +801,10 @@ class AccessApprovalRestTransport(_BaseAccessApprovalRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.accessapproval.ApprovalRequest:
@@ -707,6 +816,7 @@ class AccessApprovalRestTransport(_BaseAccessApprovalRestTransport):
             http_options = (
                 _BaseAccessApprovalRestTransport._BaseDismissApprovalRequest._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_dismiss_approval_request(
                 request, metadata
             )
@@ -722,6 +832,33 @@ class AccessApprovalRestTransport(_BaseAccessApprovalRestTransport):
             query_params = _BaseAccessApprovalRestTransport._BaseDismissApprovalRequest._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.accessapproval_v1.AccessApprovalClient.DismissApprovalRequest",
+                    extra={
+                        "serviceName": "google.cloud.accessapproval.v1.AccessApproval",
+                        "rpcName": "DismissApprovalRequest",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -746,7 +883,29 @@ class AccessApprovalRestTransport(_BaseAccessApprovalRestTransport):
             pb_resp = accessapproval.ApprovalRequest.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_dismiss_approval_request(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = accessapproval.ApprovalRequest.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.accessapproval_v1.AccessApprovalClient.dismiss_approval_request",
+                    extra={
+                        "serviceName": "google.cloud.accessapproval.v1.AccessApproval",
+                        "rpcName": "DismissApprovalRequest",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetAccessApprovalServiceAccount(
@@ -784,7 +943,7 @@ class AccessApprovalRestTransport(_BaseAccessApprovalRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> accessapproval.AccessApprovalServiceAccount:
             r"""Call the get access approval
             service account method over HTTP.
@@ -796,8 +955,10 @@ class AccessApprovalRestTransport(_BaseAccessApprovalRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.accessapproval.AccessApprovalServiceAccount:
@@ -810,6 +971,7 @@ class AccessApprovalRestTransport(_BaseAccessApprovalRestTransport):
             http_options = (
                 _BaseAccessApprovalRestTransport._BaseGetAccessApprovalServiceAccount._get_http_options()
             )
+
             (
                 request,
                 metadata,
@@ -824,6 +986,33 @@ class AccessApprovalRestTransport(_BaseAccessApprovalRestTransport):
             query_params = _BaseAccessApprovalRestTransport._BaseGetAccessApprovalServiceAccount._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.accessapproval_v1.AccessApprovalClient.GetAccessApprovalServiceAccount",
+                    extra={
+                        "serviceName": "google.cloud.accessapproval.v1.AccessApproval",
+                        "rpcName": "GetAccessApprovalServiceAccount",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AccessApprovalRestTransport._GetAccessApprovalServiceAccount._get_response(
@@ -845,7 +1034,31 @@ class AccessApprovalRestTransport(_BaseAccessApprovalRestTransport):
             pb_resp = accessapproval.AccessApprovalServiceAccount.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_access_approval_service_account(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        accessapproval.AccessApprovalServiceAccount.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.accessapproval_v1.AccessApprovalClient.get_access_approval_service_account",
+                    extra={
+                        "serviceName": "google.cloud.accessapproval.v1.AccessApproval",
+                        "rpcName": "GetAccessApprovalServiceAccount",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetAccessApprovalSettings(
@@ -883,7 +1096,7 @@ class AccessApprovalRestTransport(_BaseAccessApprovalRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> accessapproval.AccessApprovalSettings:
             r"""Call the get access approval
             settings method over HTTP.
@@ -895,8 +1108,10 @@ class AccessApprovalRestTransport(_BaseAccessApprovalRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.accessapproval.AccessApprovalSettings:
@@ -909,6 +1124,7 @@ class AccessApprovalRestTransport(_BaseAccessApprovalRestTransport):
             http_options = (
                 _BaseAccessApprovalRestTransport._BaseGetAccessApprovalSettings._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_access_approval_settings(
                 request, metadata
             )
@@ -920,6 +1136,33 @@ class AccessApprovalRestTransport(_BaseAccessApprovalRestTransport):
             query_params = _BaseAccessApprovalRestTransport._BaseGetAccessApprovalSettings._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.accessapproval_v1.AccessApprovalClient.GetAccessApprovalSettings",
+                    extra={
+                        "serviceName": "google.cloud.accessapproval.v1.AccessApproval",
+                        "rpcName": "GetAccessApprovalSettings",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -943,7 +1186,31 @@ class AccessApprovalRestTransport(_BaseAccessApprovalRestTransport):
             pb_resp = accessapproval.AccessApprovalSettings.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_access_approval_settings(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = accessapproval.AccessApprovalSettings.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.accessapproval_v1.AccessApprovalClient.get_access_approval_settings",
+                    extra={
+                        "serviceName": "google.cloud.accessapproval.v1.AccessApproval",
+                        "rpcName": "GetAccessApprovalSettings",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetApprovalRequest(
@@ -980,7 +1247,7 @@ class AccessApprovalRestTransport(_BaseAccessApprovalRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> accessapproval.ApprovalRequest:
             r"""Call the get approval request method over HTTP.
 
@@ -990,8 +1257,10 @@ class AccessApprovalRestTransport(_BaseAccessApprovalRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.accessapproval.ApprovalRequest:
@@ -1003,6 +1272,7 @@ class AccessApprovalRestTransport(_BaseAccessApprovalRestTransport):
             http_options = (
                 _BaseAccessApprovalRestTransport._BaseGetApprovalRequest._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_approval_request(
                 request, metadata
             )
@@ -1014,6 +1284,33 @@ class AccessApprovalRestTransport(_BaseAccessApprovalRestTransport):
             query_params = _BaseAccessApprovalRestTransport._BaseGetApprovalRequest._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.accessapproval_v1.AccessApprovalClient.GetApprovalRequest",
+                    extra={
+                        "serviceName": "google.cloud.accessapproval.v1.AccessApproval",
+                        "rpcName": "GetApprovalRequest",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AccessApprovalRestTransport._GetApprovalRequest._get_response(
@@ -1035,7 +1332,29 @@ class AccessApprovalRestTransport(_BaseAccessApprovalRestTransport):
             pb_resp = accessapproval.ApprovalRequest.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_approval_request(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = accessapproval.ApprovalRequest.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.accessapproval_v1.AccessApprovalClient.get_approval_request",
+                    extra={
+                        "serviceName": "google.cloud.accessapproval.v1.AccessApproval",
+                        "rpcName": "GetApprovalRequest",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _InvalidateApprovalRequest(
@@ -1074,7 +1393,7 @@ class AccessApprovalRestTransport(_BaseAccessApprovalRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> accessapproval.ApprovalRequest:
             r"""Call the invalidate approval
             request method over HTTP.
@@ -1086,8 +1405,10 @@ class AccessApprovalRestTransport(_BaseAccessApprovalRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.accessapproval.ApprovalRequest:
@@ -1099,6 +1420,7 @@ class AccessApprovalRestTransport(_BaseAccessApprovalRestTransport):
             http_options = (
                 _BaseAccessApprovalRestTransport._BaseInvalidateApprovalRequest._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_invalidate_approval_request(
                 request, metadata
             )
@@ -1114,6 +1436,33 @@ class AccessApprovalRestTransport(_BaseAccessApprovalRestTransport):
             query_params = _BaseAccessApprovalRestTransport._BaseInvalidateApprovalRequest._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.accessapproval_v1.AccessApprovalClient.InvalidateApprovalRequest",
+                    extra={
+                        "serviceName": "google.cloud.accessapproval.v1.AccessApproval",
+                        "rpcName": "InvalidateApprovalRequest",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1138,7 +1487,29 @@ class AccessApprovalRestTransport(_BaseAccessApprovalRestTransport):
             pb_resp = accessapproval.ApprovalRequest.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_invalidate_approval_request(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = accessapproval.ApprovalRequest.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.accessapproval_v1.AccessApprovalClient.invalidate_approval_request",
+                    extra={
+                        "serviceName": "google.cloud.accessapproval.v1.AccessApproval",
+                        "rpcName": "InvalidateApprovalRequest",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListApprovalRequests(
@@ -1176,7 +1547,7 @@ class AccessApprovalRestTransport(_BaseAccessApprovalRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> accessapproval.ListApprovalRequestsResponse:
             r"""Call the list approval requests method over HTTP.
 
@@ -1186,8 +1557,10 @@ class AccessApprovalRestTransport(_BaseAccessApprovalRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.accessapproval.ListApprovalRequestsResponse:
@@ -1199,6 +1572,7 @@ class AccessApprovalRestTransport(_BaseAccessApprovalRestTransport):
             http_options = (
                 _BaseAccessApprovalRestTransport._BaseListApprovalRequests._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_approval_requests(
                 request, metadata
             )
@@ -1210,6 +1584,33 @@ class AccessApprovalRestTransport(_BaseAccessApprovalRestTransport):
             query_params = _BaseAccessApprovalRestTransport._BaseListApprovalRequests._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.accessapproval_v1.AccessApprovalClient.ListApprovalRequests",
+                    extra={
+                        "serviceName": "google.cloud.accessapproval.v1.AccessApproval",
+                        "rpcName": "ListApprovalRequests",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AccessApprovalRestTransport._ListApprovalRequests._get_response(
@@ -1231,7 +1632,31 @@ class AccessApprovalRestTransport(_BaseAccessApprovalRestTransport):
             pb_resp = accessapproval.ListApprovalRequestsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_approval_requests(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        accessapproval.ListApprovalRequestsResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.accessapproval_v1.AccessApprovalClient.list_approval_requests",
+                    extra={
+                        "serviceName": "google.cloud.accessapproval.v1.AccessApproval",
+                        "rpcName": "ListApprovalRequests",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateAccessApprovalSettings(
@@ -1270,7 +1695,7 @@ class AccessApprovalRestTransport(_BaseAccessApprovalRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> accessapproval.AccessApprovalSettings:
             r"""Call the update access approval
             settings method over HTTP.
@@ -1282,8 +1707,10 @@ class AccessApprovalRestTransport(_BaseAccessApprovalRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.accessapproval.AccessApprovalSettings:
@@ -1296,6 +1723,7 @@ class AccessApprovalRestTransport(_BaseAccessApprovalRestTransport):
             http_options = (
                 _BaseAccessApprovalRestTransport._BaseUpdateAccessApprovalSettings._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_access_approval_settings(
                 request, metadata
             )
@@ -1311,6 +1739,33 @@ class AccessApprovalRestTransport(_BaseAccessApprovalRestTransport):
             query_params = _BaseAccessApprovalRestTransport._BaseUpdateAccessApprovalSettings._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.accessapproval_v1.AccessApprovalClient.UpdateAccessApprovalSettings",
+                    extra={
+                        "serviceName": "google.cloud.accessapproval.v1.AccessApproval",
+                        "rpcName": "UpdateAccessApprovalSettings",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1335,7 +1790,31 @@ class AccessApprovalRestTransport(_BaseAccessApprovalRestTransport):
             pb_resp = accessapproval.AccessApprovalSettings.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_access_approval_settings(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = accessapproval.AccessApprovalSettings.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.accessapproval_v1.AccessApprovalClient.update_access_approval_settings",
+                    extra={
+                        "serviceName": "google.cloud.accessapproval.v1.AccessApproval",
+                        "rpcName": "UpdateAccessApprovalSettings",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property

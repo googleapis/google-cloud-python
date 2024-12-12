@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -40,6 +40,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -108,10 +116,10 @@ class RuntimeProjectAttachmentServiceRestInterceptor:
     def pre_create_runtime_project_attachment(
         self,
         request: runtime_project_attachment_service.CreateRuntimeProjectAttachmentRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         runtime_project_attachment_service.CreateRuntimeProjectAttachmentRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for create_runtime_project_attachment
 
@@ -134,10 +142,10 @@ class RuntimeProjectAttachmentServiceRestInterceptor:
     def pre_delete_runtime_project_attachment(
         self,
         request: runtime_project_attachment_service.DeleteRuntimeProjectAttachmentRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         runtime_project_attachment_service.DeleteRuntimeProjectAttachmentRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for delete_runtime_project_attachment
 
@@ -149,10 +157,10 @@ class RuntimeProjectAttachmentServiceRestInterceptor:
     def pre_get_runtime_project_attachment(
         self,
         request: runtime_project_attachment_service.GetRuntimeProjectAttachmentRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         runtime_project_attachment_service.GetRuntimeProjectAttachmentRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for get_runtime_project_attachment
 
@@ -175,10 +183,10 @@ class RuntimeProjectAttachmentServiceRestInterceptor:
     def pre_list_runtime_project_attachments(
         self,
         request: runtime_project_attachment_service.ListRuntimeProjectAttachmentsRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         runtime_project_attachment_service.ListRuntimeProjectAttachmentsRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for list_runtime_project_attachments
 
@@ -202,10 +210,10 @@ class RuntimeProjectAttachmentServiceRestInterceptor:
     def pre_lookup_runtime_project_attachment(
         self,
         request: runtime_project_attachment_service.LookupRuntimeProjectAttachmentRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         runtime_project_attachment_service.LookupRuntimeProjectAttachmentRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for lookup_runtime_project_attachment
 
@@ -229,8 +237,10 @@ class RuntimeProjectAttachmentServiceRestInterceptor:
     def pre_get_location(
         self,
         request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -252,8 +262,10 @@ class RuntimeProjectAttachmentServiceRestInterceptor:
     def pre_list_locations(
         self,
         request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -275,8 +287,10 @@ class RuntimeProjectAttachmentServiceRestInterceptor:
     def pre_cancel_operation(
         self,
         request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -296,8 +310,10 @@ class RuntimeProjectAttachmentServiceRestInterceptor:
     def pre_delete_operation(
         self,
         request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -317,8 +333,10 @@ class RuntimeProjectAttachmentServiceRestInterceptor:
     def pre_get_operation(
         self,
         request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -340,8 +358,10 @@ class RuntimeProjectAttachmentServiceRestInterceptor:
     def pre_list_operations(
         self,
         request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -490,7 +510,7 @@ class RuntimeProjectAttachmentServiceRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> runtime_project_attachment_service.RuntimeProjectAttachment:
             r"""Call the create runtime project
             attachment method over HTTP.
@@ -503,8 +523,10 @@ class RuntimeProjectAttachmentServiceRestTransport(
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.runtime_project_attachment_service.RuntimeProjectAttachment:
@@ -521,6 +543,7 @@ class RuntimeProjectAttachmentServiceRestTransport(
             http_options = (
                 _BaseRuntimeProjectAttachmentServiceRestTransport._BaseCreateRuntimeProjectAttachment._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_runtime_project_attachment(
                 request, metadata
             )
@@ -536,6 +559,33 @@ class RuntimeProjectAttachmentServiceRestTransport(
             query_params = _BaseRuntimeProjectAttachmentServiceRestTransport._BaseCreateRuntimeProjectAttachment._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apihub_v1.RuntimeProjectAttachmentServiceClient.CreateRuntimeProjectAttachment",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.RuntimeProjectAttachmentService",
+                        "rpcName": "CreateRuntimeProjectAttachment",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RuntimeProjectAttachmentServiceRestTransport._CreateRuntimeProjectAttachment._get_response(
@@ -560,7 +610,31 @@ class RuntimeProjectAttachmentServiceRestTransport(
             )
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_runtime_project_attachment(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = runtime_project_attachment_service.RuntimeProjectAttachment.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apihub_v1.RuntimeProjectAttachmentServiceClient.create_runtime_project_attachment",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.RuntimeProjectAttachmentService",
+                        "rpcName": "CreateRuntimeProjectAttachment",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteRuntimeProjectAttachment(
@@ -600,7 +674,7 @@ class RuntimeProjectAttachmentServiceRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete runtime project
             attachment method over HTTP.
@@ -613,13 +687,16 @@ class RuntimeProjectAttachmentServiceRestTransport(
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
             """
 
             http_options = (
                 _BaseRuntimeProjectAttachmentServiceRestTransport._BaseDeleteRuntimeProjectAttachment._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_runtime_project_attachment(
                 request, metadata
             )
@@ -631,6 +708,33 @@ class RuntimeProjectAttachmentServiceRestTransport(
             query_params = _BaseRuntimeProjectAttachmentServiceRestTransport._BaseDeleteRuntimeProjectAttachment._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apihub_v1.RuntimeProjectAttachmentServiceClient.DeleteRuntimeProjectAttachment",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.RuntimeProjectAttachmentService",
+                        "rpcName": "DeleteRuntimeProjectAttachment",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RuntimeProjectAttachmentServiceRestTransport._DeleteRuntimeProjectAttachment._get_response(
@@ -684,7 +788,7 @@ class RuntimeProjectAttachmentServiceRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> runtime_project_attachment_service.RuntimeProjectAttachment:
             r"""Call the get runtime project
             attachment method over HTTP.
@@ -697,8 +801,10 @@ class RuntimeProjectAttachmentServiceRestTransport(
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.runtime_project_attachment_service.RuntimeProjectAttachment:
@@ -715,6 +821,7 @@ class RuntimeProjectAttachmentServiceRestTransport(
             http_options = (
                 _BaseRuntimeProjectAttachmentServiceRestTransport._BaseGetRuntimeProjectAttachment._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_runtime_project_attachment(
                 request, metadata
             )
@@ -726,6 +833,33 @@ class RuntimeProjectAttachmentServiceRestTransport(
             query_params = _BaseRuntimeProjectAttachmentServiceRestTransport._BaseGetRuntimeProjectAttachment._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apihub_v1.RuntimeProjectAttachmentServiceClient.GetRuntimeProjectAttachment",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.RuntimeProjectAttachmentService",
+                        "rpcName": "GetRuntimeProjectAttachment",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RuntimeProjectAttachmentServiceRestTransport._GetRuntimeProjectAttachment._get_response(
@@ -749,7 +883,31 @@ class RuntimeProjectAttachmentServiceRestTransport(
             )
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_runtime_project_attachment(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = runtime_project_attachment_service.RuntimeProjectAttachment.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apihub_v1.RuntimeProjectAttachmentServiceClient.get_runtime_project_attachment",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.RuntimeProjectAttachmentService",
+                        "rpcName": "GetRuntimeProjectAttachment",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListRuntimeProjectAttachments(
@@ -789,7 +947,7 @@ class RuntimeProjectAttachmentServiceRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> runtime_project_attachment_service.ListRuntimeProjectAttachmentsResponse:
             r"""Call the list runtime project
             attachments method over HTTP.
@@ -802,8 +960,10 @@ class RuntimeProjectAttachmentServiceRestTransport(
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.runtime_project_attachment_service.ListRuntimeProjectAttachmentsResponse:
@@ -816,6 +976,7 @@ class RuntimeProjectAttachmentServiceRestTransport(
             http_options = (
                 _BaseRuntimeProjectAttachmentServiceRestTransport._BaseListRuntimeProjectAttachments._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_runtime_project_attachments(
                 request, metadata
             )
@@ -827,6 +988,33 @@ class RuntimeProjectAttachmentServiceRestTransport(
             query_params = _BaseRuntimeProjectAttachmentServiceRestTransport._BaseListRuntimeProjectAttachments._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apihub_v1.RuntimeProjectAttachmentServiceClient.ListRuntimeProjectAttachments",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.RuntimeProjectAttachmentService",
+                        "rpcName": "ListRuntimeProjectAttachments",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RuntimeProjectAttachmentServiceRestTransport._ListRuntimeProjectAttachments._get_response(
@@ -852,7 +1040,31 @@ class RuntimeProjectAttachmentServiceRestTransport(
             )
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_runtime_project_attachments(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = runtime_project_attachment_service.ListRuntimeProjectAttachmentsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apihub_v1.RuntimeProjectAttachmentServiceClient.list_runtime_project_attachments",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.RuntimeProjectAttachmentService",
+                        "rpcName": "ListRuntimeProjectAttachments",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _LookupRuntimeProjectAttachment(
@@ -892,7 +1104,7 @@ class RuntimeProjectAttachmentServiceRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> runtime_project_attachment_service.LookupRuntimeProjectAttachmentResponse:
             r"""Call the lookup runtime project
             attachment method over HTTP.
@@ -905,8 +1117,10 @@ class RuntimeProjectAttachmentServiceRestTransport(
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.runtime_project_attachment_service.LookupRuntimeProjectAttachmentResponse:
@@ -919,6 +1133,7 @@ class RuntimeProjectAttachmentServiceRestTransport(
             http_options = (
                 _BaseRuntimeProjectAttachmentServiceRestTransport._BaseLookupRuntimeProjectAttachment._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_lookup_runtime_project_attachment(
                 request, metadata
             )
@@ -930,6 +1145,33 @@ class RuntimeProjectAttachmentServiceRestTransport(
             query_params = _BaseRuntimeProjectAttachmentServiceRestTransport._BaseLookupRuntimeProjectAttachment._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apihub_v1.RuntimeProjectAttachmentServiceClient.LookupRuntimeProjectAttachment",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.RuntimeProjectAttachmentService",
+                        "rpcName": "LookupRuntimeProjectAttachment",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RuntimeProjectAttachmentServiceRestTransport._LookupRuntimeProjectAttachment._get_response(
@@ -955,7 +1197,31 @@ class RuntimeProjectAttachmentServiceRestTransport(
             )
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_lookup_runtime_project_attachment(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = runtime_project_attachment_service.LookupRuntimeProjectAttachmentResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apihub_v1.RuntimeProjectAttachmentServiceClient.lookup_runtime_project_attachment",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.RuntimeProjectAttachmentService",
+                        "rpcName": "LookupRuntimeProjectAttachment",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -1052,7 +1318,7 @@ class RuntimeProjectAttachmentServiceRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.Location:
             r"""Call the get location method over HTTP.
 
@@ -1062,8 +1328,10 @@ class RuntimeProjectAttachmentServiceRestTransport(
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.Location: Response from GetLocation method.
@@ -1072,6 +1340,7 @@ class RuntimeProjectAttachmentServiceRestTransport(
             http_options = (
                 _BaseRuntimeProjectAttachmentServiceRestTransport._BaseGetLocation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_location(request, metadata)
             transcoded_request = _BaseRuntimeProjectAttachmentServiceRestTransport._BaseGetLocation._get_transcoded_request(
                 http_options, request
@@ -1081,6 +1350,33 @@ class RuntimeProjectAttachmentServiceRestTransport(
             query_params = _BaseRuntimeProjectAttachmentServiceRestTransport._BaseGetLocation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apihub_v1.RuntimeProjectAttachmentServiceClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.RuntimeProjectAttachmentService",
+                        "rpcName": "GetLocation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1103,6 +1399,27 @@ class RuntimeProjectAttachmentServiceRestTransport(
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apihub_v1.RuntimeProjectAttachmentServiceAsyncClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.RuntimeProjectAttachmentService",
+                        "rpcName": "GetLocation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -1144,7 +1461,7 @@ class RuntimeProjectAttachmentServiceRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.ListLocationsResponse:
             r"""Call the list locations method over HTTP.
 
@@ -1154,8 +1471,10 @@ class RuntimeProjectAttachmentServiceRestTransport(
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
@@ -1164,6 +1483,7 @@ class RuntimeProjectAttachmentServiceRestTransport(
             http_options = (
                 _BaseRuntimeProjectAttachmentServiceRestTransport._BaseListLocations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
             transcoded_request = _BaseRuntimeProjectAttachmentServiceRestTransport._BaseListLocations._get_transcoded_request(
                 http_options, request
@@ -1173,6 +1493,33 @@ class RuntimeProjectAttachmentServiceRestTransport(
             query_params = _BaseRuntimeProjectAttachmentServiceRestTransport._BaseListLocations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apihub_v1.RuntimeProjectAttachmentServiceClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.RuntimeProjectAttachmentService",
+                        "rpcName": "ListLocations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RuntimeProjectAttachmentServiceRestTransport._ListLocations._get_response(
@@ -1193,6 +1540,27 @@ class RuntimeProjectAttachmentServiceRestTransport(
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apihub_v1.RuntimeProjectAttachmentServiceAsyncClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.RuntimeProjectAttachmentService",
+                        "rpcName": "ListLocations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -1235,7 +1603,7 @@ class RuntimeProjectAttachmentServiceRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the cancel operation method over HTTP.
 
@@ -1245,13 +1613,16 @@ class RuntimeProjectAttachmentServiceRestTransport(
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseRuntimeProjectAttachmentServiceRestTransport._BaseCancelOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
@@ -1267,6 +1638,33 @@ class RuntimeProjectAttachmentServiceRestTransport(
             query_params = _BaseRuntimeProjectAttachmentServiceRestTransport._BaseCancelOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apihub_v1.RuntimeProjectAttachmentServiceClient.CancelOperation",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.RuntimeProjectAttachmentService",
+                        "rpcName": "CancelOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RuntimeProjectAttachmentServiceRestTransport._CancelOperation._get_response(
@@ -1325,7 +1723,7 @@ class RuntimeProjectAttachmentServiceRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the delete operation method over HTTP.
 
@@ -1335,13 +1733,16 @@ class RuntimeProjectAttachmentServiceRestTransport(
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseRuntimeProjectAttachmentServiceRestTransport._BaseDeleteOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
             )
@@ -1353,6 +1754,33 @@ class RuntimeProjectAttachmentServiceRestTransport(
             query_params = _BaseRuntimeProjectAttachmentServiceRestTransport._BaseDeleteOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apihub_v1.RuntimeProjectAttachmentServiceClient.DeleteOperation",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.RuntimeProjectAttachmentService",
+                        "rpcName": "DeleteOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RuntimeProjectAttachmentServiceRestTransport._DeleteOperation._get_response(
@@ -1410,7 +1838,7 @@ class RuntimeProjectAttachmentServiceRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the get operation method over HTTP.
 
@@ -1420,8 +1848,10 @@ class RuntimeProjectAttachmentServiceRestTransport(
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.
@@ -1430,6 +1860,7 @@ class RuntimeProjectAttachmentServiceRestTransport(
             http_options = (
                 _BaseRuntimeProjectAttachmentServiceRestTransport._BaseGetOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseRuntimeProjectAttachmentServiceRestTransport._BaseGetOperation._get_transcoded_request(
                 http_options, request
@@ -1439,6 +1870,33 @@ class RuntimeProjectAttachmentServiceRestTransport(
             query_params = _BaseRuntimeProjectAttachmentServiceRestTransport._BaseGetOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apihub_v1.RuntimeProjectAttachmentServiceClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.RuntimeProjectAttachmentService",
+                        "rpcName": "GetOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RuntimeProjectAttachmentServiceRestTransport._GetOperation._get_response(
@@ -1459,6 +1917,27 @@ class RuntimeProjectAttachmentServiceRestTransport(
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apihub_v1.RuntimeProjectAttachmentServiceAsyncClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.RuntimeProjectAttachmentService",
+                        "rpcName": "GetOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -1500,7 +1979,7 @@ class RuntimeProjectAttachmentServiceRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.ListOperationsResponse:
             r"""Call the list operations method over HTTP.
 
@@ -1510,8 +1989,10 @@ class RuntimeProjectAttachmentServiceRestTransport(
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
@@ -1520,6 +2001,7 @@ class RuntimeProjectAttachmentServiceRestTransport(
             http_options = (
                 _BaseRuntimeProjectAttachmentServiceRestTransport._BaseListOperations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseRuntimeProjectAttachmentServiceRestTransport._BaseListOperations._get_transcoded_request(
                 http_options, request
@@ -1529,6 +2011,33 @@ class RuntimeProjectAttachmentServiceRestTransport(
             query_params = _BaseRuntimeProjectAttachmentServiceRestTransport._BaseListOperations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apihub_v1.RuntimeProjectAttachmentServiceClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.RuntimeProjectAttachmentService",
+                        "rpcName": "ListOperations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RuntimeProjectAttachmentServiceRestTransport._ListOperations._get_response(
@@ -1549,6 +2058,27 @@ class RuntimeProjectAttachmentServiceRestTransport(
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apihub_v1.RuntimeProjectAttachmentServiceAsyncClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.RuntimeProjectAttachmentService",
+                        "rpcName": "ListOperations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property

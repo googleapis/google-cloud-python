@@ -4219,6 +4219,7 @@ def test_list_approval_requests_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_approval_requests(**mock_args)
 
@@ -4378,6 +4379,7 @@ def test_get_approval_request_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_approval_request(**mock_args)
 
@@ -4598,6 +4600,7 @@ def test_get_access_approval_settings_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_access_approval_settings(**mock_args)
 
@@ -4698,6 +4701,7 @@ def test_update_access_approval_settings_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_access_approval_settings(**mock_args)
 
@@ -4795,6 +4799,7 @@ def test_delete_access_approval_settings_rest_flattened():
         json_return_value = ""
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_access_approval_settings(**mock_args)
 
@@ -4892,6 +4897,7 @@ def test_get_access_approval_service_account_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_access_approval_service_account(**mock_args)
 
@@ -5548,6 +5554,7 @@ def test_list_approval_requests_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_approval_requests(request)
 
 
@@ -5583,6 +5590,7 @@ def test_list_approval_requests_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_approval_requests(request)
 
     # Establish that the response is the type that we expect.
@@ -5623,6 +5631,7 @@ def test_list_approval_requests_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = accessapproval.ListApprovalRequestsResponse.to_json(
             accessapproval.ListApprovalRequestsResponse()
         )
@@ -5669,6 +5678,7 @@ def test_get_approval_request_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_approval_request(request)
 
 
@@ -5705,6 +5715,7 @@ def test_get_approval_request_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_approval_request(request)
 
     # Establish that the response is the type that we expect.
@@ -5746,6 +5757,7 @@ def test_get_approval_request_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = accessapproval.ApprovalRequest.to_json(
             accessapproval.ApprovalRequest()
         )
@@ -5792,6 +5804,7 @@ def test_approve_approval_request_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.approve_approval_request(request)
 
 
@@ -5828,6 +5841,7 @@ def test_approve_approval_request_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.approve_approval_request(request)
 
     # Establish that the response is the type that we expect.
@@ -5869,6 +5883,7 @@ def test_approve_approval_request_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = accessapproval.ApprovalRequest.to_json(
             accessapproval.ApprovalRequest()
         )
@@ -5915,6 +5930,7 @@ def test_dismiss_approval_request_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.dismiss_approval_request(request)
 
 
@@ -5951,6 +5967,7 @@ def test_dismiss_approval_request_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.dismiss_approval_request(request)
 
     # Establish that the response is the type that we expect.
@@ -5992,6 +6009,7 @@ def test_dismiss_approval_request_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = accessapproval.ApprovalRequest.to_json(
             accessapproval.ApprovalRequest()
         )
@@ -6038,6 +6056,7 @@ def test_invalidate_approval_request_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.invalidate_approval_request(request)
 
 
@@ -6074,6 +6093,7 @@ def test_invalidate_approval_request_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.invalidate_approval_request(request)
 
     # Establish that the response is the type that we expect.
@@ -6115,6 +6135,7 @@ def test_invalidate_approval_request_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = accessapproval.ApprovalRequest.to_json(
             accessapproval.ApprovalRequest()
         )
@@ -6161,6 +6182,7 @@ def test_get_access_approval_settings_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_access_approval_settings(request)
 
 
@@ -6201,6 +6223,7 @@ def test_get_access_approval_settings_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_access_approval_settings(request)
 
     # Establish that the response is the type that we expect.
@@ -6246,6 +6269,7 @@ def test_get_access_approval_settings_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = accessapproval.AccessApprovalSettings.to_json(
             accessapproval.AccessApprovalSettings()
         )
@@ -6292,6 +6316,7 @@ def test_update_access_approval_settings_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_access_approval_settings(request)
 
 
@@ -6415,6 +6440,7 @@ def test_update_access_approval_settings_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_access_approval_settings(request)
 
     # Establish that the response is the type that we expect.
@@ -6460,6 +6486,7 @@ def test_update_access_approval_settings_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = accessapproval.AccessApprovalSettings.to_json(
             accessapproval.AccessApprovalSettings()
         )
@@ -6506,6 +6533,7 @@ def test_delete_access_approval_settings_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_access_approval_settings(request)
 
 
@@ -6536,6 +6564,7 @@ def test_delete_access_approval_settings_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_access_approval_settings(request)
 
     # Establish that the response is the type that we expect.
@@ -6572,6 +6601,7 @@ def test_delete_access_approval_settings_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = accessapproval.DeleteAccessApprovalSettingsMessage()
         metadata = [
@@ -6612,6 +6642,7 @@ def test_get_access_approval_service_account_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_access_approval_service_account(request)
 
 
@@ -6648,6 +6679,7 @@ def test_get_access_approval_service_account_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_access_approval_service_account(request)
 
     # Establish that the response is the type that we expect.
@@ -6691,6 +6723,7 @@ def test_get_access_approval_service_account_rest_interceptors(null_interceptor)
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = accessapproval.AccessApprovalServiceAccount.to_json(
             accessapproval.AccessApprovalServiceAccount()
         )
