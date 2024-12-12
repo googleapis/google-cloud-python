@@ -4309,6 +4309,7 @@ def test_create_job_rest_required_fields(request_type=services.CreateJobRequest)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_job(request)
 
@@ -4363,6 +4364,7 @@ def test_create_job_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_job(**mock_args)
 
@@ -4501,6 +4503,7 @@ def test_list_jobs_rest_required_fields(request_type=services.ListJobsRequest):
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_jobs(request)
 
@@ -4556,6 +4559,7 @@ def test_list_jobs_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_jobs(**mock_args)
 
@@ -4745,6 +4749,7 @@ def test_get_job_rest_required_fields(request_type=services.GetJobRequest):
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_job(request)
 
@@ -4790,6 +4795,7 @@ def test_get_job_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_job(**mock_args)
 
@@ -4917,6 +4923,7 @@ def test_delete_job_rest_required_fields(request_type=services.DeleteJobRequest)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_job(request)
 
@@ -4960,6 +4967,7 @@ def test_delete_job_rest_flattened():
         json_return_value = ""
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_job(**mock_args)
 
@@ -5104,6 +5112,7 @@ def test_create_job_template_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_job_template(request)
 
@@ -5166,6 +5175,7 @@ def test_create_job_template_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_job_template(**mock_args)
 
@@ -5312,6 +5322,7 @@ def test_list_job_templates_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_job_templates(request)
 
@@ -5367,6 +5378,7 @@ def test_list_job_templates_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_job_templates(**mock_args)
 
@@ -5561,6 +5573,7 @@ def test_get_job_template_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_job_template(request)
 
@@ -5608,6 +5621,7 @@ def test_get_job_template_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_job_template(**mock_args)
 
@@ -5742,6 +5756,7 @@ def test_delete_job_template_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_job_template(request)
 
@@ -5787,6 +5802,7 @@ def test_delete_job_template_rest_flattened():
         json_return_value = ""
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_job_template(**mock_args)
 
@@ -6366,6 +6382,7 @@ def test_create_job_rest_bad_request(request_type=services.CreateJobRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_job(request)
 
 
@@ -6728,6 +6745,7 @@ def test_create_job_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_job(request)
 
     # Establish that the response is the type that we expect.
@@ -6773,6 +6791,7 @@ def test_create_job_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = resources.Job.to_json(resources.Job())
         req.return_value.content = return_value
 
@@ -6815,6 +6834,7 @@ def test_list_jobs_rest_bad_request(request_type=services.ListJobsRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_jobs(request)
 
 
@@ -6851,6 +6871,7 @@ def test_list_jobs_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_jobs(request)
 
     # Establish that the response is the type that we expect.
@@ -6890,6 +6911,7 @@ def test_list_jobs_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = services.ListJobsResponse.to_json(services.ListJobsResponse())
         req.return_value.content = return_value
 
@@ -6932,6 +6954,7 @@ def test_get_job_rest_bad_request(request_type=services.GetJobRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_job(request)
 
 
@@ -6975,6 +6998,7 @@ def test_get_job_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_job(request)
 
     # Establish that the response is the type that we expect.
@@ -7020,6 +7044,7 @@ def test_get_job_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = resources.Job.to_json(resources.Job())
         req.return_value.content = return_value
 
@@ -7062,6 +7087,7 @@ def test_delete_job_rest_bad_request(request_type=services.DeleteJobRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_job(request)
 
 
@@ -7092,6 +7118,7 @@ def test_delete_job_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_job(request)
 
     # Establish that the response is the type that we expect.
@@ -7126,6 +7153,7 @@ def test_delete_job_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = services.DeleteJobRequest()
         metadata = [
@@ -7166,6 +7194,7 @@ def test_create_job_template_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_job_template(request)
 
 
@@ -7499,6 +7528,7 @@ def test_create_job_template_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_job_template(request)
 
     # Establish that the response is the type that we expect.
@@ -7539,6 +7569,7 @@ def test_create_job_template_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = resources.JobTemplate.to_json(resources.JobTemplate())
         req.return_value.content = return_value
 
@@ -7583,6 +7614,7 @@ def test_list_job_templates_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_job_templates(request)
 
 
@@ -7619,6 +7651,7 @@ def test_list_job_templates_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_job_templates(request)
 
     # Establish that the response is the type that we expect.
@@ -7660,6 +7693,7 @@ def test_list_job_templates_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = services.ListJobTemplatesResponse.to_json(
             services.ListJobTemplatesResponse()
         )
@@ -7704,6 +7738,7 @@ def test_get_job_template_rest_bad_request(request_type=services.GetJobTemplateR
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_job_template(request)
 
 
@@ -7739,6 +7774,7 @@ def test_get_job_template_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_job_template(request)
 
     # Establish that the response is the type that we expect.
@@ -7777,6 +7813,7 @@ def test_get_job_template_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = resources.JobTemplate.to_json(resources.JobTemplate())
         req.return_value.content = return_value
 
@@ -7821,6 +7858,7 @@ def test_delete_job_template_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_job_template(request)
 
 
@@ -7851,6 +7889,7 @@ def test_delete_job_template_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_job_template(request)
 
     # Establish that the response is the type that we expect.
@@ -7887,6 +7926,7 @@ def test_delete_job_template_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = services.DeleteJobTemplateRequest()
         metadata = [
