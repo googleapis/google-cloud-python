@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.1.5](https://github.com/googleapis/google-cloud-python/compare/google-apps-events-subscriptions-v0.1.4...google-apps-events-subscriptions-v0.1.5) (2024-12-12)
+
+
+### Features
+
+* A new field `dns_endpoint` is added to message `.google.cloud.deploy.v1.GkeCluster` ([917e8d3](https://github.com/googleapis/google-cloud-python/commit/917e8d3d21a4225b27a3c00dec6efd0a28f1cba6))
+* Add support for opt-in debug logging ([917e8d3](https://github.com/googleapis/google-cloud-python/commit/917e8d3d21a4225b27a3c00dec6efd0a28f1cba6))
+
+
+### Bug Fixes
+
+* Fix typing issue with gRPC metadata when key ends in -bin ([917e8d3](https://github.com/googleapis/google-cloud-python/commit/917e8d3d21a4225b27a3c00dec6efd0a28f1cba6))
+
+
+### Documentation
+
+* A comment for field `internal_ip` in message `.google.cloud.deploy.v1.GkeCluster` is changed ([917e8d3](https://github.com/googleapis/google-cloud-python/commit/917e8d3d21a4225b27a3c00dec6efd0a28f1cba6))
+* A comment for field `requested_cancellation` in message `.google.cloud.deploy.v1.OperationMetadata` is changed ([917e8d3](https://github.com/googleapis/google-cloud-python/commit/917e8d3d21a4225b27a3c00dec6efd0a28f1cba6))
+* A comment for field `skaffold_version` in message `.google.cloud.deploy.v1.Release` is changed ([917e8d3](https://github.com/googleapis/google-cloud-python/commit/917e8d3d21a4225b27a3c00dec6efd0a28f1cba6))
+
 ## [0.1.4](https://github.com/googleapis/google-cloud-python/compare/google-apps-events-subscriptions-v0.1.3...google-apps-events-subscriptions-v0.1.4) (2024-10-31)
 
 

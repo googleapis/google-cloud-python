@@ -1,5 +1,28 @@
 # Changelog
 
+## [0.18.16](https://github.com/googleapis/google-cloud-python/compare/google-analytics-data-v0.18.15...google-analytics-data-v0.18.16) (2024-12-12)
+
+
+### Features
+
+* add `EmptyFilter` type to the Data API v1beta ([0dab0e7](https://github.com/googleapis/google-cloud-python/commit/0dab0e7888c085ed658ec2e59779bba0f41f1a79))
+* add `sampling_metadatas` field to the `ResponseMetaData` type ([4035ab8](https://github.com/googleapis/google-cloud-python/commit/4035ab84c5a8d7819634535a90a6e329223839e0))
+* Add support for opt-in debug logging ([b1dfc55](https://github.com/googleapis/google-cloud-python/commit/b1dfc556d4652a48564ff37becb31d5a06ee2b5b))
+* add the `empty_filter` field to the `Filter` type ([4035ab8](https://github.com/googleapis/google-cloud-python/commit/4035ab84c5a8d7819634535a90a6e329223839e0))
+* add the `empty_filter` field to the `Filter` type ([0dab0e7](https://github.com/googleapis/google-cloud-python/commit/0dab0e7888c085ed658ec2e59779bba0f41f1a79))
+* add the `EmptyFilter` type to the Data API v1alpha ([4035ab8](https://github.com/googleapis/google-cloud-python/commit/4035ab84c5a8d7819634535a90a6e329223839e0))
+
+
+### Bug Fixes
+
+* Fix typing issue with gRPC metadata when key ends in -bin ([b1dfc55](https://github.com/googleapis/google-cloud-python/commit/b1dfc556d4652a48564ff37becb31d5a06ee2b5b))
+
+
+### Documentation
+
+* remove all references to 'GA4' in documentation ([0dab0e7](https://github.com/googleapis/google-cloud-python/commit/0dab0e7888c085ed658ec2e59779bba0f41f1a79))
+* update documentation for the`RunReport` method ([0dab0e7](https://github.com/googleapis/google-cloud-python/commit/0dab0e7888c085ed658ec2e59779bba0f41f1a79))
+
 ## [0.18.15](https://github.com/googleapis/google-cloud-python/compare/google-analytics-data-v0.18.14...google-analytics-data-v0.18.15) (2024-10-31)
 
 

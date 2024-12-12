@@ -1,5 +1,27 @@
 # Changelog
 
+## [0.2.0](https://github.com/googleapis/google-cloud-python/compare/google-apps-chat-v0.1.14...google-apps-chat-v0.2.0) (2024-12-12)
+
+
+### ⚠ BREAKING CHANGES
+
+* Changed field behavior for an existing field `update_mask` and `emoji`
+
+### Features
+
+* Add support for opt-in debug logging ([06e3ecc](https://github.com/googleapis/google-cloud-python/commit/06e3ecc2631cd5bf18873cb90c4b5026caf7d9d5))
+* Chat Apps can now retrieve the import mode expire time information to know when to complete the import mode properly ([06e3ecc](https://github.com/googleapis/google-cloud-python/commit/06e3ecc2631cd5bf18873cb90c4b5026caf7d9d5))
+
+
+### Bug Fixes
+
+* Changed field behavior for an existing field `update_mask` and `emoji` ([06e3ecc](https://github.com/googleapis/google-cloud-python/commit/06e3ecc2631cd5bf18873cb90c4b5026caf7d9d5))
+
+
+### Documentation
+
+* Update reference documentation to include import_mode_expire_time field ([06e3ecc](https://github.com/googleapis/google-cloud-python/commit/06e3ecc2631cd5bf18873cb90c4b5026caf7d9d5))
+
 ## [0.1.14](https://github.com/googleapis/google-cloud-python/compare/google-apps-chat-v0.1.13...google-apps-chat-v0.1.14) (2024-10-31)
 
 
