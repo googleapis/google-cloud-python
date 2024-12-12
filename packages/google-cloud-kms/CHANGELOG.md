@@ -4,6 +4,23 @@
 
 [1]: https://pypi.org/project/google-cloud-kms/#history
 
+## [3.2.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-kms-v3.1.1...google-cloud-kms-v3.2.0) (2024-12-12)
+
+
+### Features
+
+* Add support for opt-in debug logging ([feb5c03](https://github.com/googleapis/google-cloud-python/commit/feb5c0348d0efbe5d3c01d5470f2daaef5302842))
+
+
+### Bug Fixes
+
+* Fix typing issue with gRPC metadata when key ends in -bin ([feb5c03](https://github.com/googleapis/google-cloud-python/commit/feb5c0348d0efbe5d3c01d5470f2daaef5302842))
+
+
+### Documentation
+
+* [google-cloud-kms] A comment for enum `CryptoKeyVersionAlgorithm` is changed ([#13305](https://github.com/googleapis/google-cloud-python/issues/13305)) ([028a334](https://github.com/googleapis/google-cloud-python/commit/028a334c383892e50003a8735a050dbabfabdcfc))
+
 ## [3.1.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-kms-v3.1.0...google-cloud-kms-v3.1.1) (2024-11-11)
 
 

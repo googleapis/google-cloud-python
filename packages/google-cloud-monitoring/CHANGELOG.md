@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-monitoring/#history
 
+## [2.24.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-monitoring-v2.23.1...google-cloud-monitoring-v2.24.0) (2024-12-12)
+
+
+### Features
+
+* Added support for notification prompts in AlertPolicy ([d596268](https://github.com/googleapis/google-cloud-python/commit/d596268609066ad822eb4a701903e4223ce21583))
+* Added support for PromQL metric validation opt-out in AlertPolicy ([d596268](https://github.com/googleapis/google-cloud-python/commit/d596268609066ad822eb4a701903e4223ce21583))
+
 ## [2.23.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-monitoring-v2.23.0...google-cloud-monitoring-v2.23.1) (2024-11-11)
 
 
