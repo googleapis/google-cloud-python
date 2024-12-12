@@ -1888,6 +1888,7 @@ def test_check_rest_bad_request(request_type=service_controller.CheckRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.check(request)
 
 
@@ -1921,6 +1922,7 @@ def test_check_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.check(request)
 
     # Establish that the response is the type that we expect.
@@ -1960,6 +1962,7 @@ def test_check_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = service_controller.CheckResponse.to_json(
             service_controller.CheckResponse()
         )
@@ -2004,6 +2007,7 @@ def test_report_rest_bad_request(request_type=service_controller.ReportRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.report(request)
 
 
@@ -2037,6 +2041,7 @@ def test_report_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.report(request)
 
     # Establish that the response is the type that we expect.
@@ -2076,6 +2081,7 @@ def test_report_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = service_controller.ReportResponse.to_json(
             service_controller.ReportResponse()
         )

@@ -13,6 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import json
+import logging as std_logging
+import pickle
 from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -21,7 +24,10 @@ import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf.json_format import MessageToJson
+import google.protobuf.message
 import grpc  # type: ignore
+import proto  # type: ignore
 
 from google.cloud.video.stitcher_v1.types import (
     ad_tag_details,
@@ -35,6 +41,81 @@ from google.cloud.video.stitcher_v1.types import (
 )
 
 from .base import DEFAULT_CLIENT_INFO, VideoStitcherServiceTransport
+
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = std_logging.getLogger(__name__)
+
+
+class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
+    def intercept_unary_unary(self, continuation, client_call_details, request):
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+            std_logging.DEBUG
+        )
+        if logging_enabled:  # pragma: NO COVER
+            request_metadata = client_call_details.metadata
+            if isinstance(request, proto.Message):
+                request_payload = type(request).to_json(request)
+            elif isinstance(request, google.protobuf.message.Message):
+                request_payload = MessageToJson(request)
+            else:
+                request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
+
+            request_metadata = {
+                key: value.decode("utf-8") if isinstance(value, bytes) else value
+                for key, value in request_metadata
+            }
+            grpc_request = {
+                "payload": request_payload,
+                "requestMethod": "grpc",
+                "metadata": dict(request_metadata),
+            }
+            _LOGGER.debug(
+                f"Sending request for {client_call_details.method}",
+                extra={
+                    "serviceName": "google.cloud.video.stitcher.v1.VideoStitcherService",
+                    "rpcName": client_call_details.method,
+                    "request": grpc_request,
+                    "metadata": grpc_request["metadata"],
+                },
+            )
+
+        response = continuation(client_call_details, request)
+        if logging_enabled:  # pragma: NO COVER
+            response_metadata = response.trailing_metadata()
+            # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
+            metadata = (
+                dict([(k, str(v)) for k, v in response_metadata])
+                if response_metadata
+                else None
+            )
+            result = response.result()
+            if isinstance(result, proto.Message):
+                response_payload = type(result).to_json(result)
+            elif isinstance(result, google.protobuf.message.Message):
+                response_payload = MessageToJson(result)
+            else:
+                response_payload = f"{type(result).__name__}: {pickle.dumps(result)}"
+            grpc_response = {
+                "payload": response_payload,
+                "metadata": metadata,
+                "status": "OK",
+            }
+            _LOGGER.debug(
+                f"Received response for {client_call_details.method}.",
+                extra={
+                    "serviceName": "google.cloud.video.stitcher.v1.VideoStitcherService",
+                    "rpcName": client_call_details.method,
+                    "response": grpc_response,
+                    "metadata": grpc_response["metadata"],
+                },
+            )
+        return response
 
 
 class VideoStitcherServiceGrpcTransport(VideoStitcherServiceTransport):
@@ -194,7 +275,12 @@ class VideoStitcherServiceGrpcTransport(VideoStitcherServiceTransport):
                 ],
             )
 
-        # Wrap messages. This must be done after self._grpc_channel exists
+        self._interceptor = _LoggingClientInterceptor()
+        self._logged_channel = grpc.intercept_channel(
+            self._grpc_channel, self._interceptor
+        )
+
+        # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
     @classmethod
@@ -258,7 +344,9 @@ class VideoStitcherServiceGrpcTransport(VideoStitcherServiceTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsClient(self.grpc_channel)
+            self._operations_client = operations_v1.OperationsClient(
+                self._logged_channel
+            )
 
         # Return the client from cache.
         return self._operations_client
@@ -284,7 +372,7 @@ class VideoStitcherServiceGrpcTransport(VideoStitcherServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_cdn_key" not in self._stubs:
-            self._stubs["create_cdn_key"] = self.grpc_channel.unary_unary(
+            self._stubs["create_cdn_key"] = self._logged_channel.unary_unary(
                 "/google.cloud.video.stitcher.v1.VideoStitcherService/CreateCdnKey",
                 request_serializer=video_stitcher_service.CreateCdnKeyRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -314,7 +402,7 @@ class VideoStitcherServiceGrpcTransport(VideoStitcherServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_cdn_keys" not in self._stubs:
-            self._stubs["list_cdn_keys"] = self.grpc_channel.unary_unary(
+            self._stubs["list_cdn_keys"] = self._logged_channel.unary_unary(
                 "/google.cloud.video.stitcher.v1.VideoStitcherService/ListCdnKeys",
                 request_serializer=video_stitcher_service.ListCdnKeysRequest.serialize,
                 response_deserializer=video_stitcher_service.ListCdnKeysResponse.deserialize,
@@ -340,7 +428,7 @@ class VideoStitcherServiceGrpcTransport(VideoStitcherServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_cdn_key" not in self._stubs:
-            self._stubs["get_cdn_key"] = self.grpc_channel.unary_unary(
+            self._stubs["get_cdn_key"] = self._logged_channel.unary_unary(
                 "/google.cloud.video.stitcher.v1.VideoStitcherService/GetCdnKey",
                 request_serializer=video_stitcher_service.GetCdnKeyRequest.serialize,
                 response_deserializer=cdn_keys.CdnKey.deserialize,
@@ -368,7 +456,7 @@ class VideoStitcherServiceGrpcTransport(VideoStitcherServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_cdn_key" not in self._stubs:
-            self._stubs["delete_cdn_key"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_cdn_key"] = self._logged_channel.unary_unary(
                 "/google.cloud.video.stitcher.v1.VideoStitcherService/DeleteCdnKey",
                 request_serializer=video_stitcher_service.DeleteCdnKeyRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -397,7 +485,7 @@ class VideoStitcherServiceGrpcTransport(VideoStitcherServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_cdn_key" not in self._stubs:
-            self._stubs["update_cdn_key"] = self.grpc_channel.unary_unary(
+            self._stubs["update_cdn_key"] = self._logged_channel.unary_unary(
                 "/google.cloud.video.stitcher.v1.VideoStitcherService/UpdateCdnKey",
                 request_serializer=video_stitcher_service.UpdateCdnKeyRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -427,7 +515,7 @@ class VideoStitcherServiceGrpcTransport(VideoStitcherServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_vod_session" not in self._stubs:
-            self._stubs["create_vod_session"] = self.grpc_channel.unary_unary(
+            self._stubs["create_vod_session"] = self._logged_channel.unary_unary(
                 "/google.cloud.video.stitcher.v1.VideoStitcherService/CreateVodSession",
                 request_serializer=video_stitcher_service.CreateVodSessionRequest.serialize,
                 response_deserializer=sessions.VodSession.deserialize,
@@ -454,7 +542,7 @@ class VideoStitcherServiceGrpcTransport(VideoStitcherServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_vod_session" not in self._stubs:
-            self._stubs["get_vod_session"] = self.grpc_channel.unary_unary(
+            self._stubs["get_vod_session"] = self._logged_channel.unary_unary(
                 "/google.cloud.video.stitcher.v1.VideoStitcherService/GetVodSession",
                 request_serializer=video_stitcher_service.GetVodSessionRequest.serialize,
                 response_deserializer=sessions.VodSession.deserialize,
@@ -484,7 +572,7 @@ class VideoStitcherServiceGrpcTransport(VideoStitcherServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_vod_stitch_details" not in self._stubs:
-            self._stubs["list_vod_stitch_details"] = self.grpc_channel.unary_unary(
+            self._stubs["list_vod_stitch_details"] = self._logged_channel.unary_unary(
                 "/google.cloud.video.stitcher.v1.VideoStitcherService/ListVodStitchDetails",
                 request_serializer=video_stitcher_service.ListVodStitchDetailsRequest.serialize,
                 response_deserializer=video_stitcher_service.ListVodStitchDetailsResponse.deserialize,
@@ -514,7 +602,7 @@ class VideoStitcherServiceGrpcTransport(VideoStitcherServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_vod_stitch_detail" not in self._stubs:
-            self._stubs["get_vod_stitch_detail"] = self.grpc_channel.unary_unary(
+            self._stubs["get_vod_stitch_detail"] = self._logged_channel.unary_unary(
                 "/google.cloud.video.stitcher.v1.VideoStitcherService/GetVodStitchDetail",
                 request_serializer=video_stitcher_service.GetVodStitchDetailRequest.serialize,
                 response_deserializer=stitch_details.VodStitchDetail.deserialize,
@@ -544,7 +632,7 @@ class VideoStitcherServiceGrpcTransport(VideoStitcherServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_vod_ad_tag_details" not in self._stubs:
-            self._stubs["list_vod_ad_tag_details"] = self.grpc_channel.unary_unary(
+            self._stubs["list_vod_ad_tag_details"] = self._logged_channel.unary_unary(
                 "/google.cloud.video.stitcher.v1.VideoStitcherService/ListVodAdTagDetails",
                 request_serializer=video_stitcher_service.ListVodAdTagDetailsRequest.serialize,
                 response_deserializer=video_stitcher_service.ListVodAdTagDetailsResponse.deserialize,
@@ -573,7 +661,7 @@ class VideoStitcherServiceGrpcTransport(VideoStitcherServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_vod_ad_tag_detail" not in self._stubs:
-            self._stubs["get_vod_ad_tag_detail"] = self.grpc_channel.unary_unary(
+            self._stubs["get_vod_ad_tag_detail"] = self._logged_channel.unary_unary(
                 "/google.cloud.video.stitcher.v1.VideoStitcherService/GetVodAdTagDetail",
                 request_serializer=video_stitcher_service.GetVodAdTagDetailRequest.serialize,
                 response_deserializer=ad_tag_details.VodAdTagDetail.deserialize,
@@ -603,7 +691,7 @@ class VideoStitcherServiceGrpcTransport(VideoStitcherServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_live_ad_tag_details" not in self._stubs:
-            self._stubs["list_live_ad_tag_details"] = self.grpc_channel.unary_unary(
+            self._stubs["list_live_ad_tag_details"] = self._logged_channel.unary_unary(
                 "/google.cloud.video.stitcher.v1.VideoStitcherService/ListLiveAdTagDetails",
                 request_serializer=video_stitcher_service.ListLiveAdTagDetailsRequest.serialize,
                 response_deserializer=video_stitcher_service.ListLiveAdTagDetailsResponse.deserialize,
@@ -633,7 +721,7 @@ class VideoStitcherServiceGrpcTransport(VideoStitcherServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_live_ad_tag_detail" not in self._stubs:
-            self._stubs["get_live_ad_tag_detail"] = self.grpc_channel.unary_unary(
+            self._stubs["get_live_ad_tag_detail"] = self._logged_channel.unary_unary(
                 "/google.cloud.video.stitcher.v1.VideoStitcherService/GetLiveAdTagDetail",
                 request_serializer=video_stitcher_service.GetLiveAdTagDetailRequest.serialize,
                 response_deserializer=ad_tag_details.LiveAdTagDetail.deserialize,
@@ -661,7 +749,7 @@ class VideoStitcherServiceGrpcTransport(VideoStitcherServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_slate" not in self._stubs:
-            self._stubs["create_slate"] = self.grpc_channel.unary_unary(
+            self._stubs["create_slate"] = self._logged_channel.unary_unary(
                 "/google.cloud.video.stitcher.v1.VideoStitcherService/CreateSlate",
                 request_serializer=video_stitcher_service.CreateSlateRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -691,7 +779,7 @@ class VideoStitcherServiceGrpcTransport(VideoStitcherServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_slates" not in self._stubs:
-            self._stubs["list_slates"] = self.grpc_channel.unary_unary(
+            self._stubs["list_slates"] = self._logged_channel.unary_unary(
                 "/google.cloud.video.stitcher.v1.VideoStitcherService/ListSlates",
                 request_serializer=video_stitcher_service.ListSlatesRequest.serialize,
                 response_deserializer=video_stitcher_service.ListSlatesResponse.deserialize,
@@ -717,7 +805,7 @@ class VideoStitcherServiceGrpcTransport(VideoStitcherServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_slate" not in self._stubs:
-            self._stubs["get_slate"] = self.grpc_channel.unary_unary(
+            self._stubs["get_slate"] = self._logged_channel.unary_unary(
                 "/google.cloud.video.stitcher.v1.VideoStitcherService/GetSlate",
                 request_serializer=video_stitcher_service.GetSlateRequest.serialize,
                 response_deserializer=slates.Slate.deserialize,
@@ -745,7 +833,7 @@ class VideoStitcherServiceGrpcTransport(VideoStitcherServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_slate" not in self._stubs:
-            self._stubs["update_slate"] = self.grpc_channel.unary_unary(
+            self._stubs["update_slate"] = self._logged_channel.unary_unary(
                 "/google.cloud.video.stitcher.v1.VideoStitcherService/UpdateSlate",
                 request_serializer=video_stitcher_service.UpdateSlateRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -773,7 +861,7 @@ class VideoStitcherServiceGrpcTransport(VideoStitcherServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_slate" not in self._stubs:
-            self._stubs["delete_slate"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_slate"] = self._logged_channel.unary_unary(
                 "/google.cloud.video.stitcher.v1.VideoStitcherService/DeleteSlate",
                 request_serializer=video_stitcher_service.DeleteSlateRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -801,7 +889,7 @@ class VideoStitcherServiceGrpcTransport(VideoStitcherServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_live_session" not in self._stubs:
-            self._stubs["create_live_session"] = self.grpc_channel.unary_unary(
+            self._stubs["create_live_session"] = self._logged_channel.unary_unary(
                 "/google.cloud.video.stitcher.v1.VideoStitcherService/CreateLiveSession",
                 request_serializer=video_stitcher_service.CreateLiveSessionRequest.serialize,
                 response_deserializer=sessions.LiveSession.deserialize,
@@ -827,7 +915,7 @@ class VideoStitcherServiceGrpcTransport(VideoStitcherServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_live_session" not in self._stubs:
-            self._stubs["get_live_session"] = self.grpc_channel.unary_unary(
+            self._stubs["get_live_session"] = self._logged_channel.unary_unary(
                 "/google.cloud.video.stitcher.v1.VideoStitcherService/GetLiveSession",
                 request_serializer=video_stitcher_service.GetLiveSessionRequest.serialize,
                 response_deserializer=sessions.LiveSession.deserialize,
@@ -856,7 +944,7 @@ class VideoStitcherServiceGrpcTransport(VideoStitcherServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_live_config" not in self._stubs:
-            self._stubs["create_live_config"] = self.grpc_channel.unary_unary(
+            self._stubs["create_live_config"] = self._logged_channel.unary_unary(
                 "/google.cloud.video.stitcher.v1.VideoStitcherService/CreateLiveConfig",
                 request_serializer=video_stitcher_service.CreateLiveConfigRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -886,7 +974,7 @@ class VideoStitcherServiceGrpcTransport(VideoStitcherServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_live_configs" not in self._stubs:
-            self._stubs["list_live_configs"] = self.grpc_channel.unary_unary(
+            self._stubs["list_live_configs"] = self._logged_channel.unary_unary(
                 "/google.cloud.video.stitcher.v1.VideoStitcherService/ListLiveConfigs",
                 request_serializer=video_stitcher_service.ListLiveConfigsRequest.serialize,
                 response_deserializer=video_stitcher_service.ListLiveConfigsResponse.deserialize,
@@ -915,7 +1003,7 @@ class VideoStitcherServiceGrpcTransport(VideoStitcherServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_live_config" not in self._stubs:
-            self._stubs["get_live_config"] = self.grpc_channel.unary_unary(
+            self._stubs["get_live_config"] = self._logged_channel.unary_unary(
                 "/google.cloud.video.stitcher.v1.VideoStitcherService/GetLiveConfig",
                 request_serializer=video_stitcher_service.GetLiveConfigRequest.serialize,
                 response_deserializer=live_configs.LiveConfig.deserialize,
@@ -943,7 +1031,7 @@ class VideoStitcherServiceGrpcTransport(VideoStitcherServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_live_config" not in self._stubs:
-            self._stubs["delete_live_config"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_live_config"] = self._logged_channel.unary_unary(
                 "/google.cloud.video.stitcher.v1.VideoStitcherService/DeleteLiveConfig",
                 request_serializer=video_stitcher_service.DeleteLiveConfigRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -972,7 +1060,7 @@ class VideoStitcherServiceGrpcTransport(VideoStitcherServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_live_config" not in self._stubs:
-            self._stubs["update_live_config"] = self.grpc_channel.unary_unary(
+            self._stubs["update_live_config"] = self._logged_channel.unary_unary(
                 "/google.cloud.video.stitcher.v1.VideoStitcherService/UpdateLiveConfig",
                 request_serializer=video_stitcher_service.UpdateLiveConfigRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1001,7 +1089,7 @@ class VideoStitcherServiceGrpcTransport(VideoStitcherServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_vod_config" not in self._stubs:
-            self._stubs["create_vod_config"] = self.grpc_channel.unary_unary(
+            self._stubs["create_vod_config"] = self._logged_channel.unary_unary(
                 "/google.cloud.video.stitcher.v1.VideoStitcherService/CreateVodConfig",
                 request_serializer=video_stitcher_service.CreateVodConfigRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1031,7 +1119,7 @@ class VideoStitcherServiceGrpcTransport(VideoStitcherServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_vod_configs" not in self._stubs:
-            self._stubs["list_vod_configs"] = self.grpc_channel.unary_unary(
+            self._stubs["list_vod_configs"] = self._logged_channel.unary_unary(
                 "/google.cloud.video.stitcher.v1.VideoStitcherService/ListVodConfigs",
                 request_serializer=video_stitcher_service.ListVodConfigsRequest.serialize,
                 response_deserializer=video_stitcher_service.ListVodConfigsResponse.deserialize,
@@ -1058,7 +1146,7 @@ class VideoStitcherServiceGrpcTransport(VideoStitcherServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_vod_config" not in self._stubs:
-            self._stubs["get_vod_config"] = self.grpc_channel.unary_unary(
+            self._stubs["get_vod_config"] = self._logged_channel.unary_unary(
                 "/google.cloud.video.stitcher.v1.VideoStitcherService/GetVodConfig",
                 request_serializer=video_stitcher_service.GetVodConfigRequest.serialize,
                 response_deserializer=vod_configs.VodConfig.deserialize,
@@ -1086,7 +1174,7 @@ class VideoStitcherServiceGrpcTransport(VideoStitcherServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_vod_config" not in self._stubs:
-            self._stubs["delete_vod_config"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_vod_config"] = self._logged_channel.unary_unary(
                 "/google.cloud.video.stitcher.v1.VideoStitcherService/DeleteVodConfig",
                 request_serializer=video_stitcher_service.DeleteVodConfigRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1115,7 +1203,7 @@ class VideoStitcherServiceGrpcTransport(VideoStitcherServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_vod_config" not in self._stubs:
-            self._stubs["update_vod_config"] = self.grpc_channel.unary_unary(
+            self._stubs["update_vod_config"] = self._logged_channel.unary_unary(
                 "/google.cloud.video.stitcher.v1.VideoStitcherService/UpdateVodConfig",
                 request_serializer=video_stitcher_service.UpdateVodConfigRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1123,7 +1211,7 @@ class VideoStitcherServiceGrpcTransport(VideoStitcherServiceTransport):
         return self._stubs["update_vod_config"]
 
     def close(self):
-        self.grpc_channel.close()
+        self._logged_channel.close()
 
     @property
     def delete_operation(
@@ -1135,7 +1223,7 @@ class VideoStitcherServiceGrpcTransport(VideoStitcherServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_operation" not in self._stubs:
-            self._stubs["delete_operation"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_operation"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/DeleteOperation",
                 request_serializer=operations_pb2.DeleteOperationRequest.SerializeToString,
                 response_deserializer=None,
@@ -1152,7 +1240,7 @@ class VideoStitcherServiceGrpcTransport(VideoStitcherServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "cancel_operation" not in self._stubs:
-            self._stubs["cancel_operation"] = self.grpc_channel.unary_unary(
+            self._stubs["cancel_operation"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/CancelOperation",
                 request_serializer=operations_pb2.CancelOperationRequest.SerializeToString,
                 response_deserializer=None,
@@ -1169,7 +1257,7 @@ class VideoStitcherServiceGrpcTransport(VideoStitcherServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_operation" not in self._stubs:
-            self._stubs["get_operation"] = self.grpc_channel.unary_unary(
+            self._stubs["get_operation"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/GetOperation",
                 request_serializer=operations_pb2.GetOperationRequest.SerializeToString,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1188,7 +1276,7 @@ class VideoStitcherServiceGrpcTransport(VideoStitcherServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_operations" not in self._stubs:
-            self._stubs["list_operations"] = self.grpc_channel.unary_unary(
+            self._stubs["list_operations"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/ListOperations",
                 request_serializer=operations_pb2.ListOperationsRequest.SerializeToString,
                 response_deserializer=operations_pb2.ListOperationsResponse.FromString,

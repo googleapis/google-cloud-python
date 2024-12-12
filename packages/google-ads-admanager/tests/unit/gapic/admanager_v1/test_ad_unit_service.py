@@ -1001,6 +1001,7 @@ def test_get_ad_unit_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_ad_unit(request)
 
@@ -1046,6 +1047,7 @@ def test_get_ad_unit_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_ad_unit(**mock_args)
 
@@ -1185,6 +1187,7 @@ def test_list_ad_units_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_ad_units(request)
 
@@ -1241,6 +1244,7 @@ def test_list_ad_units_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_ad_units(**mock_args)
 
@@ -1447,6 +1451,7 @@ def test_list_ad_unit_sizes_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_ad_unit_sizes(request)
 
@@ -1503,6 +1508,7 @@ def test_list_ad_unit_sizes_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_ad_unit_sizes(**mock_args)
 
@@ -1694,6 +1700,7 @@ def test_get_ad_unit_rest_bad_request(request_type=ad_unit_service.GetAdUnitRequ
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_ad_unit(request)
 
 
@@ -1745,6 +1752,7 @@ def test_get_ad_unit_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_ad_unit(request)
 
     # Establish that the response is the type that we expect.
@@ -1812,6 +1820,7 @@ def test_get_ad_unit_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = ad_unit_messages.AdUnit.to_json(ad_unit_messages.AdUnit())
         req.return_value.content = return_value
 
@@ -1856,6 +1865,7 @@ def test_list_ad_units_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_ad_units(request)
 
 
@@ -1892,6 +1902,7 @@ def test_list_ad_units_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_ad_units(request)
 
     # Establish that the response is the type that we expect.
@@ -1933,6 +1944,7 @@ def test_list_ad_units_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = ad_unit_service.ListAdUnitsResponse.to_json(
             ad_unit_service.ListAdUnitsResponse()
         )
@@ -1979,6 +1991,7 @@ def test_list_ad_unit_sizes_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_ad_unit_sizes(request)
 
 
@@ -2015,6 +2028,7 @@ def test_list_ad_unit_sizes_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_ad_unit_sizes(request)
 
     # Establish that the response is the type that we expect.
@@ -2056,6 +2070,7 @@ def test_list_ad_unit_sizes_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = ad_unit_service.ListAdUnitSizesResponse.to_json(
             ad_unit_service.ListAdUnitSizesResponse()
         )
@@ -2104,6 +2119,7 @@ def test_get_operation_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_operation(request)
 
 
@@ -2134,6 +2150,7 @@ def test_get_operation_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.get_operation(request)
 

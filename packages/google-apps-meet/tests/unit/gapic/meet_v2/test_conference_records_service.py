@@ -6328,6 +6328,7 @@ def test_get_conference_record_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_conference_record(request)
 
@@ -6373,6 +6374,7 @@ def test_get_conference_record_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_conference_record(**mock_args)
 
@@ -6606,6 +6608,7 @@ def test_get_participant_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_participant(request)
 
@@ -6651,6 +6654,7 @@ def test_get_participant_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_participant(**mock_args)
 
@@ -6791,6 +6795,7 @@ def test_list_participants_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_participants(request)
 
@@ -6845,6 +6850,7 @@ def test_list_participants_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_participants(**mock_args)
 
@@ -7041,6 +7047,7 @@ def test_get_participant_session_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_participant_session(request)
 
@@ -7088,6 +7095,7 @@ def test_get_participant_session_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_participant_session(**mock_args)
 
@@ -7232,6 +7240,7 @@ def test_list_participant_sessions_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_participant_sessions(request)
 
@@ -7286,6 +7295,7 @@ def test_list_participant_sessions_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_participant_sessions(**mock_args)
 
@@ -7478,6 +7488,7 @@ def test_get_recording_rest_required_fields(request_type=service.GetRecordingReq
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_recording(request)
 
@@ -7523,6 +7534,7 @@ def test_get_recording_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_recording(**mock_args)
 
@@ -7660,6 +7672,7 @@ def test_list_recordings_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_recordings(request)
 
@@ -7713,6 +7726,7 @@ def test_list_recordings_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_recordings(**mock_args)
 
@@ -7902,6 +7916,7 @@ def test_get_transcript_rest_required_fields(request_type=service.GetTranscriptR
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_transcript(request)
 
@@ -7947,6 +7962,7 @@ def test_get_transcript_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_transcript(**mock_args)
 
@@ -8086,6 +8102,7 @@ def test_list_transcripts_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_transcripts(request)
 
@@ -8139,6 +8156,7 @@ def test_list_transcripts_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_transcripts(**mock_args)
 
@@ -8334,6 +8352,7 @@ def test_get_transcript_entry_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_transcript_entry(request)
 
@@ -8381,6 +8400,7 @@ def test_get_transcript_entry_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_transcript_entry(**mock_args)
 
@@ -8524,6 +8544,7 @@ def test_list_transcript_entries_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_transcript_entries(request)
 
@@ -8577,6 +8598,7 @@ def test_list_transcript_entries_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_transcript_entries(**mock_args)
 
@@ -9428,6 +9450,7 @@ def test_get_conference_record_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_conference_record(request)
 
 
@@ -9464,6 +9487,7 @@ def test_get_conference_record_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_conference_record(request)
 
     # Establish that the response is the type that we expect.
@@ -9505,6 +9529,7 @@ def test_get_conference_record_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = resource.ConferenceRecord.to_json(resource.ConferenceRecord())
         req.return_value.content = return_value
 
@@ -9549,6 +9574,7 @@ def test_list_conference_records_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_conference_records(request)
 
 
@@ -9584,6 +9610,7 @@ def test_list_conference_records_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_conference_records(request)
 
     # Establish that the response is the type that we expect.
@@ -9626,6 +9653,7 @@ def test_list_conference_records_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = service.ListConferenceRecordsResponse.to_json(
             service.ListConferenceRecordsResponse()
         )
@@ -9670,6 +9698,7 @@ def test_get_participant_rest_bad_request(request_type=service.GetParticipantReq
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_participant(request)
 
 
@@ -9705,6 +9734,7 @@ def test_get_participant_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_participant(request)
 
     # Establish that the response is the type that we expect.
@@ -9743,6 +9773,7 @@ def test_get_participant_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = resource.Participant.to_json(resource.Participant())
         req.return_value.content = return_value
 
@@ -9787,6 +9818,7 @@ def test_list_participants_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_participants(request)
 
 
@@ -9823,6 +9855,7 @@ def test_list_participants_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_participants(request)
 
     # Establish that the response is the type that we expect.
@@ -9864,6 +9897,7 @@ def test_list_participants_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = service.ListParticipantsResponse.to_json(
             service.ListParticipantsResponse()
         )
@@ -9912,6 +9946,7 @@ def test_get_participant_session_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_participant_session(request)
 
 
@@ -9949,6 +9984,7 @@ def test_get_participant_session_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_participant_session(request)
 
     # Establish that the response is the type that we expect.
@@ -9991,6 +10027,7 @@ def test_get_participant_session_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = resource.ParticipantSession.to_json(
             resource.ParticipantSession()
         )
@@ -10037,6 +10074,7 @@ def test_list_participant_sessions_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_participant_sessions(request)
 
 
@@ -10072,6 +10110,7 @@ def test_list_participant_sessions_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_participant_sessions(request)
 
     # Establish that the response is the type that we expect.
@@ -10114,6 +10153,7 @@ def test_list_participant_sessions_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = service.ListParticipantSessionsResponse.to_json(
             service.ListParticipantSessionsResponse()
         )
@@ -10158,6 +10198,7 @@ def test_get_recording_rest_bad_request(request_type=service.GetRecordingRequest
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_recording(request)
 
 
@@ -10194,6 +10235,7 @@ def test_get_recording_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_recording(request)
 
     # Establish that the response is the type that we expect.
@@ -10233,6 +10275,7 @@ def test_get_recording_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = resource.Recording.to_json(resource.Recording())
         req.return_value.content = return_value
 
@@ -10275,6 +10318,7 @@ def test_list_recordings_rest_bad_request(request_type=service.ListRecordingsReq
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_recordings(request)
 
 
@@ -10310,6 +10354,7 @@ def test_list_recordings_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_recordings(request)
 
     # Establish that the response is the type that we expect.
@@ -10348,6 +10393,7 @@ def test_list_recordings_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = service.ListRecordingsResponse.to_json(
             service.ListRecordingsResponse()
         )
@@ -10392,6 +10438,7 @@ def test_get_transcript_rest_bad_request(request_type=service.GetTranscriptReque
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_transcript(request)
 
 
@@ -10428,6 +10475,7 @@ def test_get_transcript_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_transcript(request)
 
     # Establish that the response is the type that we expect.
@@ -10467,6 +10515,7 @@ def test_get_transcript_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = resource.Transcript.to_json(resource.Transcript())
         req.return_value.content = return_value
 
@@ -10509,6 +10558,7 @@ def test_list_transcripts_rest_bad_request(request_type=service.ListTranscriptsR
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_transcripts(request)
 
 
@@ -10544,6 +10594,7 @@ def test_list_transcripts_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_transcripts(request)
 
     # Establish that the response is the type that we expect.
@@ -10582,6 +10633,7 @@ def test_list_transcripts_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = service.ListTranscriptsResponse.to_json(
             service.ListTranscriptsResponse()
         )
@@ -10630,6 +10682,7 @@ def test_get_transcript_entry_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_transcript_entry(request)
 
 
@@ -10670,6 +10723,7 @@ def test_get_transcript_entry_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_transcript_entry(request)
 
     # Establish that the response is the type that we expect.
@@ -10713,6 +10767,7 @@ def test_get_transcript_entry_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = resource.TranscriptEntry.to_json(resource.TranscriptEntry())
         req.return_value.content = return_value
 
@@ -10757,6 +10812,7 @@ def test_list_transcript_entries_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_transcript_entries(request)
 
 
@@ -10792,6 +10848,7 @@ def test_list_transcript_entries_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_transcript_entries(request)
 
     # Establish that the response is the type that we expect.
@@ -10834,6 +10891,7 @@ def test_list_transcript_entries_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = service.ListTranscriptEntriesResponse.to_json(
             service.ListTranscriptEntriesResponse()
         )

@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -39,6 +39,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -99,8 +107,8 @@ class FileServiceRestInterceptor:
     def pre_create_file(
         self,
         request: file_service.CreateFileRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[file_service.CreateFileRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[file_service.CreateFileRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_file
 
         Override in a subclass to manipulate the request or metadata
@@ -122,8 +130,8 @@ class FileServiceRestInterceptor:
     def pre_delete_file(
         self,
         request: file_service.DeleteFileRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[file_service.DeleteFileRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[file_service.DeleteFileRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_file
 
         Override in a subclass to manipulate the request or metadata
@@ -132,8 +140,10 @@ class FileServiceRestInterceptor:
         return request, metadata
 
     def pre_get_file(
-        self, request: file_service.GetFileRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[file_service.GetFileRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: file_service.GetFileRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[file_service.GetFileRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_file
 
         Override in a subclass to manipulate the request or metadata
@@ -153,8 +163,8 @@ class FileServiceRestInterceptor:
     def pre_list_files(
         self,
         request: file_service.ListFilesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[file_service.ListFilesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[file_service.ListFilesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_files
 
         Override in a subclass to manipulate the request or metadata
@@ -176,8 +186,10 @@ class FileServiceRestInterceptor:
     def pre_get_operation(
         self,
         request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -199,8 +211,10 @@ class FileServiceRestInterceptor:
     def pre_list_operations(
         self,
         request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -341,7 +355,7 @@ class FileServiceRestTransport(_BaseFileServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> file_service.CreateFileResponse:
             r"""Call the create file method over HTTP.
 
@@ -351,8 +365,10 @@ class FileServiceRestTransport(_BaseFileServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.file_service.CreateFileResponse:
@@ -362,6 +378,7 @@ class FileServiceRestTransport(_BaseFileServiceRestTransport):
             http_options = (
                 _BaseFileServiceRestTransport._BaseCreateFile._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_file(request, metadata)
             transcoded_request = (
                 _BaseFileServiceRestTransport._BaseCreateFile._get_transcoded_request(
@@ -379,6 +396,33 @@ class FileServiceRestTransport(_BaseFileServiceRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.ai.generativelanguage_v1beta.FileServiceClient.CreateFile",
+                    extra={
+                        "serviceName": "google.ai.generativelanguage.v1beta.FileService",
+                        "rpcName": "CreateFile",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = FileServiceRestTransport._CreateFile._get_response(
@@ -401,7 +445,29 @@ class FileServiceRestTransport(_BaseFileServiceRestTransport):
             pb_resp = file_service.CreateFileResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_file(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = file_service.CreateFileResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.ai.generativelanguage_v1beta.FileServiceClient.create_file",
+                    extra={
+                        "serviceName": "google.ai.generativelanguage.v1beta.FileService",
+                        "rpcName": "CreateFile",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteFile(
@@ -438,7 +504,7 @@ class FileServiceRestTransport(_BaseFileServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete file method over HTTP.
 
@@ -448,13 +514,16 @@ class FileServiceRestTransport(_BaseFileServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseFileServiceRestTransport._BaseDeleteFile._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_file(request, metadata)
             transcoded_request = (
                 _BaseFileServiceRestTransport._BaseDeleteFile._get_transcoded_request(
@@ -468,6 +537,33 @@ class FileServiceRestTransport(_BaseFileServiceRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.ai.generativelanguage_v1beta.FileServiceClient.DeleteFile",
+                    extra={
+                        "serviceName": "google.ai.generativelanguage.v1beta.FileService",
+                        "rpcName": "DeleteFile",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = FileServiceRestTransport._DeleteFile._get_response(
@@ -516,7 +612,7 @@ class FileServiceRestTransport(_BaseFileServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> file.File:
             r"""Call the get file method over HTTP.
 
@@ -526,8 +622,10 @@ class FileServiceRestTransport(_BaseFileServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.file.File:
@@ -537,6 +635,7 @@ class FileServiceRestTransport(_BaseFileServiceRestTransport):
             http_options = (
                 _BaseFileServiceRestTransport._BaseGetFile._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_file(request, metadata)
             transcoded_request = (
                 _BaseFileServiceRestTransport._BaseGetFile._get_transcoded_request(
@@ -550,6 +649,33 @@ class FileServiceRestTransport(_BaseFileServiceRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.ai.generativelanguage_v1beta.FileServiceClient.GetFile",
+                    extra={
+                        "serviceName": "google.ai.generativelanguage.v1beta.FileService",
+                        "rpcName": "GetFile",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = FileServiceRestTransport._GetFile._get_response(
@@ -571,7 +697,29 @@ class FileServiceRestTransport(_BaseFileServiceRestTransport):
             pb_resp = file.File.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_file(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = file.File.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.ai.generativelanguage_v1beta.FileServiceClient.get_file",
+                    extra={
+                        "serviceName": "google.ai.generativelanguage.v1beta.FileService",
+                        "rpcName": "GetFile",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListFiles(_BaseFileServiceRestTransport._BaseListFiles, FileServiceRestStub):
@@ -606,7 +754,7 @@ class FileServiceRestTransport(_BaseFileServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> file_service.ListFilesResponse:
             r"""Call the list files method over HTTP.
 
@@ -616,8 +764,10 @@ class FileServiceRestTransport(_BaseFileServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.file_service.ListFilesResponse:
@@ -627,6 +777,7 @@ class FileServiceRestTransport(_BaseFileServiceRestTransport):
             http_options = (
                 _BaseFileServiceRestTransport._BaseListFiles._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_files(request, metadata)
             transcoded_request = (
                 _BaseFileServiceRestTransport._BaseListFiles._get_transcoded_request(
@@ -640,6 +791,33 @@ class FileServiceRestTransport(_BaseFileServiceRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.ai.generativelanguage_v1beta.FileServiceClient.ListFiles",
+                    extra={
+                        "serviceName": "google.ai.generativelanguage.v1beta.FileService",
+                        "rpcName": "ListFiles",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = FileServiceRestTransport._ListFiles._get_response(
@@ -661,7 +839,29 @@ class FileServiceRestTransport(_BaseFileServiceRestTransport):
             pb_resp = file_service.ListFilesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_files(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = file_service.ListFilesResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.ai.generativelanguage_v1beta.FileServiceClient.list_files",
+                    extra={
+                        "serviceName": "google.ai.generativelanguage.v1beta.FileService",
+                        "rpcName": "ListFiles",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -732,7 +932,7 @@ class FileServiceRestTransport(_BaseFileServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the get operation method over HTTP.
 
@@ -742,8 +942,10 @@ class FileServiceRestTransport(_BaseFileServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.
@@ -752,6 +954,7 @@ class FileServiceRestTransport(_BaseFileServiceRestTransport):
             http_options = (
                 _BaseFileServiceRestTransport._BaseGetOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = (
                 _BaseFileServiceRestTransport._BaseGetOperation._get_transcoded_request(
@@ -765,6 +968,33 @@ class FileServiceRestTransport(_BaseFileServiceRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.ai.generativelanguage_v1beta.FileServiceClient.GetOperation",
+                    extra={
+                        "serviceName": "google.ai.generativelanguage.v1beta.FileService",
+                        "rpcName": "GetOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = FileServiceRestTransport._GetOperation._get_response(
@@ -785,6 +1015,27 @@ class FileServiceRestTransport(_BaseFileServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.ai.generativelanguage_v1beta.FileServiceAsyncClient.GetOperation",
+                    extra={
+                        "serviceName": "google.ai.generativelanguage.v1beta.FileService",
+                        "rpcName": "GetOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -825,7 +1076,7 @@ class FileServiceRestTransport(_BaseFileServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.ListOperationsResponse:
             r"""Call the list operations method over HTTP.
 
@@ -835,8 +1086,10 @@ class FileServiceRestTransport(_BaseFileServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
@@ -845,6 +1098,7 @@ class FileServiceRestTransport(_BaseFileServiceRestTransport):
             http_options = (
                 _BaseFileServiceRestTransport._BaseListOperations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseFileServiceRestTransport._BaseListOperations._get_transcoded_request(
                 http_options, request
@@ -854,6 +1108,33 @@ class FileServiceRestTransport(_BaseFileServiceRestTransport):
             query_params = _BaseFileServiceRestTransport._BaseListOperations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.ai.generativelanguage_v1beta.FileServiceClient.ListOperations",
+                    extra={
+                        "serviceName": "google.ai.generativelanguage.v1beta.FileService",
+                        "rpcName": "ListOperations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = FileServiceRestTransport._ListOperations._get_response(
@@ -874,6 +1155,27 @@ class FileServiceRestTransport(_BaseFileServiceRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.ai.generativelanguage_v1beta.FileServiceAsyncClient.ListOperations",
+                    extra={
+                        "serviceName": "google.ai.generativelanguage.v1beta.FileService",
+                        "rpcName": "ListOperations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property

@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -39,6 +39,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -167,8 +175,10 @@ class StorageTransferServiceRestInterceptor:
     def pre_create_agent_pool(
         self,
         request: transfer.CreateAgentPoolRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[transfer.CreateAgentPoolRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        transfer.CreateAgentPoolRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_agent_pool
 
         Override in a subclass to manipulate the request or metadata
@@ -190,8 +200,10 @@ class StorageTransferServiceRestInterceptor:
     def pre_create_transfer_job(
         self,
         request: transfer.CreateTransferJobRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[transfer.CreateTransferJobRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        transfer.CreateTransferJobRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_transfer_job
 
         Override in a subclass to manipulate the request or metadata
@@ -213,8 +225,10 @@ class StorageTransferServiceRestInterceptor:
     def pre_delete_agent_pool(
         self,
         request: transfer.DeleteAgentPoolRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[transfer.DeleteAgentPoolRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        transfer.DeleteAgentPoolRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_agent_pool
 
         Override in a subclass to manipulate the request or metadata
@@ -225,8 +239,10 @@ class StorageTransferServiceRestInterceptor:
     def pre_delete_transfer_job(
         self,
         request: transfer.DeleteTransferJobRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[transfer.DeleteTransferJobRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        transfer.DeleteTransferJobRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_transfer_job
 
         Override in a subclass to manipulate the request or metadata
@@ -235,8 +251,10 @@ class StorageTransferServiceRestInterceptor:
         return request, metadata
 
     def pre_get_agent_pool(
-        self, request: transfer.GetAgentPoolRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[transfer.GetAgentPoolRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: transfer.GetAgentPoolRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[transfer.GetAgentPoolRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_agent_pool
 
         Override in a subclass to manipulate the request or metadata
@@ -258,8 +276,10 @@ class StorageTransferServiceRestInterceptor:
     def pre_get_google_service_account(
         self,
         request: transfer.GetGoogleServiceAccountRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[transfer.GetGoogleServiceAccountRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        transfer.GetGoogleServiceAccountRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_google_service_account
 
         Override in a subclass to manipulate the request or metadata
@@ -281,8 +301,8 @@ class StorageTransferServiceRestInterceptor:
     def pre_get_transfer_job(
         self,
         request: transfer.GetTransferJobRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[transfer.GetTransferJobRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[transfer.GetTransferJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_transfer_job
 
         Override in a subclass to manipulate the request or metadata
@@ -304,8 +324,8 @@ class StorageTransferServiceRestInterceptor:
     def pre_list_agent_pools(
         self,
         request: transfer.ListAgentPoolsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[transfer.ListAgentPoolsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[transfer.ListAgentPoolsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_agent_pools
 
         Override in a subclass to manipulate the request or metadata
@@ -327,8 +347,10 @@ class StorageTransferServiceRestInterceptor:
     def pre_list_transfer_jobs(
         self,
         request: transfer.ListTransferJobsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[transfer.ListTransferJobsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        transfer.ListTransferJobsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_transfer_jobs
 
         Override in a subclass to manipulate the request or metadata
@@ -350,8 +372,10 @@ class StorageTransferServiceRestInterceptor:
     def pre_pause_transfer_operation(
         self,
         request: transfer.PauseTransferOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[transfer.PauseTransferOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        transfer.PauseTransferOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for pause_transfer_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -362,8 +386,10 @@ class StorageTransferServiceRestInterceptor:
     def pre_resume_transfer_operation(
         self,
         request: transfer.ResumeTransferOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[transfer.ResumeTransferOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        transfer.ResumeTransferOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for resume_transfer_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -374,8 +400,8 @@ class StorageTransferServiceRestInterceptor:
     def pre_run_transfer_job(
         self,
         request: transfer.RunTransferJobRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[transfer.RunTransferJobRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[transfer.RunTransferJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for run_transfer_job
 
         Override in a subclass to manipulate the request or metadata
@@ -397,8 +423,10 @@ class StorageTransferServiceRestInterceptor:
     def pre_update_agent_pool(
         self,
         request: transfer.UpdateAgentPoolRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[transfer.UpdateAgentPoolRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        transfer.UpdateAgentPoolRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_agent_pool
 
         Override in a subclass to manipulate the request or metadata
@@ -420,8 +448,10 @@ class StorageTransferServiceRestInterceptor:
     def pre_update_transfer_job(
         self,
         request: transfer.UpdateTransferJobRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[transfer.UpdateTransferJobRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        transfer.UpdateTransferJobRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_transfer_job
 
         Override in a subclass to manipulate the request or metadata
@@ -443,8 +473,10 @@ class StorageTransferServiceRestInterceptor:
     def pre_cancel_operation(
         self,
         request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -464,8 +496,10 @@ class StorageTransferServiceRestInterceptor:
     def pre_get_operation(
         self,
         request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -487,8 +521,10 @@ class StorageTransferServiceRestInterceptor:
     def pre_list_operations(
         self,
         request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -680,7 +716,7 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> transfer_types.AgentPool:
             r"""Call the create agent pool method over HTTP.
 
@@ -691,8 +727,10 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.transfer_types.AgentPool:
@@ -702,6 +740,7 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
             http_options = (
                 _BaseStorageTransferServiceRestTransport._BaseCreateAgentPool._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_agent_pool(
                 request, metadata
             )
@@ -717,6 +756,33 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
             query_params = _BaseStorageTransferServiceRestTransport._BaseCreateAgentPool._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.storagetransfer_v1.StorageTransferServiceClient.CreateAgentPool",
+                    extra={
+                        "serviceName": "google.storagetransfer.v1.StorageTransferService",
+                        "rpcName": "CreateAgentPool",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -741,7 +807,29 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
             pb_resp = transfer_types.AgentPool.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_agent_pool(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = transfer_types.AgentPool.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.storagetransfer_v1.StorageTransferServiceClient.create_agent_pool",
+                    extra={
+                        "serviceName": "google.storagetransfer.v1.StorageTransferService",
+                        "rpcName": "CreateAgentPool",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateTransferJob(
@@ -780,7 +868,7 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> transfer_types.TransferJob:
             r"""Call the create transfer job method over HTTP.
 
@@ -790,8 +878,10 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.transfer_types.TransferJob:
@@ -804,6 +894,7 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
             http_options = (
                 _BaseStorageTransferServiceRestTransport._BaseCreateTransferJob._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_transfer_job(
                 request, metadata
             )
@@ -819,6 +910,33 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
             query_params = _BaseStorageTransferServiceRestTransport._BaseCreateTransferJob._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.storagetransfer_v1.StorageTransferServiceClient.CreateTransferJob",
+                    extra={
+                        "serviceName": "google.storagetransfer.v1.StorageTransferService",
+                        "rpcName": "CreateTransferJob",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -843,7 +961,29 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
             pb_resp = transfer_types.TransferJob.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_transfer_job(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = transfer_types.TransferJob.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.storagetransfer_v1.StorageTransferServiceClient.create_transfer_job",
+                    extra={
+                        "serviceName": "google.storagetransfer.v1.StorageTransferService",
+                        "rpcName": "CreateTransferJob",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteAgentPool(
@@ -881,7 +1021,7 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete agent pool method over HTTP.
 
@@ -892,13 +1032,16 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseStorageTransferServiceRestTransport._BaseDeleteAgentPool._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_agent_pool(
                 request, metadata
             )
@@ -910,6 +1053,33 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
             query_params = _BaseStorageTransferServiceRestTransport._BaseDeleteAgentPool._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.storagetransfer_v1.StorageTransferServiceClient.DeleteAgentPool",
+                    extra={
+                        "serviceName": "google.storagetransfer.v1.StorageTransferService",
+                        "rpcName": "DeleteAgentPool",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -963,7 +1133,7 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete transfer job method over HTTP.
 
@@ -973,13 +1143,16 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseStorageTransferServiceRestTransport._BaseDeleteTransferJob._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_transfer_job(
                 request, metadata
             )
@@ -991,6 +1164,33 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
             query_params = _BaseStorageTransferServiceRestTransport._BaseDeleteTransferJob._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.storagetransfer_v1.StorageTransferServiceClient.DeleteTransferJob",
+                    extra={
+                        "serviceName": "google.storagetransfer.v1.StorageTransferService",
+                        "rpcName": "DeleteTransferJob",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1044,7 +1244,7 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> transfer_types.AgentPool:
             r"""Call the get agent pool method over HTTP.
 
@@ -1055,8 +1255,10 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.transfer_types.AgentPool:
@@ -1066,6 +1268,7 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
             http_options = (
                 _BaseStorageTransferServiceRestTransport._BaseGetAgentPool._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_agent_pool(request, metadata)
             transcoded_request = _BaseStorageTransferServiceRestTransport._BaseGetAgentPool._get_transcoded_request(
                 http_options, request
@@ -1075,6 +1278,33 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
             query_params = _BaseStorageTransferServiceRestTransport._BaseGetAgentPool._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.storagetransfer_v1.StorageTransferServiceClient.GetAgentPool",
+                    extra={
+                        "serviceName": "google.storagetransfer.v1.StorageTransferService",
+                        "rpcName": "GetAgentPool",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = StorageTransferServiceRestTransport._GetAgentPool._get_response(
@@ -1096,7 +1326,29 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
             pb_resp = transfer_types.AgentPool.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_agent_pool(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = transfer_types.AgentPool.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.storagetransfer_v1.StorageTransferServiceClient.get_agent_pool",
+                    extra={
+                        "serviceName": "google.storagetransfer.v1.StorageTransferService",
+                        "rpcName": "GetAgentPool",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetGoogleServiceAccount(
@@ -1134,7 +1386,7 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> transfer_types.GoogleServiceAccount:
             r"""Call the get google service
             account method over HTTP.
@@ -1146,8 +1398,10 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.transfer_types.GoogleServiceAccount:
@@ -1157,6 +1411,7 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
             http_options = (
                 _BaseStorageTransferServiceRestTransport._BaseGetGoogleServiceAccount._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_google_service_account(
                 request, metadata
             )
@@ -1168,6 +1423,33 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
             query_params = _BaseStorageTransferServiceRestTransport._BaseGetGoogleServiceAccount._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.storagetransfer_v1.StorageTransferServiceClient.GetGoogleServiceAccount",
+                    extra={
+                        "serviceName": "google.storagetransfer.v1.StorageTransferService",
+                        "rpcName": "GetGoogleServiceAccount",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = StorageTransferServiceRestTransport._GetGoogleServiceAccount._get_response(
@@ -1189,7 +1471,31 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
             pb_resp = transfer_types.GoogleServiceAccount.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_google_service_account(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = transfer_types.GoogleServiceAccount.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.storagetransfer_v1.StorageTransferServiceClient.get_google_service_account",
+                    extra={
+                        "serviceName": "google.storagetransfer.v1.StorageTransferService",
+                        "rpcName": "GetGoogleServiceAccount",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetTransferJob(
@@ -1227,7 +1533,7 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> transfer_types.TransferJob:
             r"""Call the get transfer job method over HTTP.
 
@@ -1237,8 +1543,10 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.transfer_types.TransferJob:
@@ -1251,6 +1559,7 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
             http_options = (
                 _BaseStorageTransferServiceRestTransport._BaseGetTransferJob._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_transfer_job(
                 request, metadata
             )
@@ -1262,6 +1571,33 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
             query_params = _BaseStorageTransferServiceRestTransport._BaseGetTransferJob._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.storagetransfer_v1.StorageTransferServiceClient.GetTransferJob",
+                    extra={
+                        "serviceName": "google.storagetransfer.v1.StorageTransferService",
+                        "rpcName": "GetTransferJob",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1285,7 +1621,29 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
             pb_resp = transfer_types.TransferJob.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_transfer_job(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = transfer_types.TransferJob.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.storagetransfer_v1.StorageTransferServiceClient.get_transfer_job",
+                    extra={
+                        "serviceName": "google.storagetransfer.v1.StorageTransferService",
+                        "rpcName": "GetTransferJob",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListAgentPools(
@@ -1323,7 +1681,7 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> transfer.ListAgentPoolsResponse:
             r"""Call the list agent pools method over HTTP.
 
@@ -1333,8 +1691,10 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.transfer.ListAgentPoolsResponse:
@@ -1344,6 +1704,7 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
             http_options = (
                 _BaseStorageTransferServiceRestTransport._BaseListAgentPools._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_agent_pools(
                 request, metadata
             )
@@ -1355,6 +1716,33 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
             query_params = _BaseStorageTransferServiceRestTransport._BaseListAgentPools._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.storagetransfer_v1.StorageTransferServiceClient.ListAgentPools",
+                    extra={
+                        "serviceName": "google.storagetransfer.v1.StorageTransferService",
+                        "rpcName": "ListAgentPools",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1378,7 +1766,29 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
             pb_resp = transfer.ListAgentPoolsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_agent_pools(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = transfer.ListAgentPoolsResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.storagetransfer_v1.StorageTransferServiceClient.list_agent_pools",
+                    extra={
+                        "serviceName": "google.storagetransfer.v1.StorageTransferService",
+                        "rpcName": "ListAgentPools",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListTransferJobs(
@@ -1416,7 +1826,7 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> transfer.ListTransferJobsResponse:
             r"""Call the list transfer jobs method over HTTP.
 
@@ -1428,8 +1838,10 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.transfer.ListTransferJobsResponse:
@@ -1439,6 +1851,7 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
             http_options = (
                 _BaseStorageTransferServiceRestTransport._BaseListTransferJobs._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_transfer_jobs(
                 request, metadata
             )
@@ -1450,6 +1863,33 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
             query_params = _BaseStorageTransferServiceRestTransport._BaseListTransferJobs._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.storagetransfer_v1.StorageTransferServiceClient.ListTransferJobs",
+                    extra={
+                        "serviceName": "google.storagetransfer.v1.StorageTransferService",
+                        "rpcName": "ListTransferJobs",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1473,7 +1913,31 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
             pb_resp = transfer.ListTransferJobsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_transfer_jobs(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = transfer.ListTransferJobsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.storagetransfer_v1.StorageTransferServiceClient.list_transfer_jobs",
+                    extra={
+                        "serviceName": "google.storagetransfer.v1.StorageTransferService",
+                        "rpcName": "ListTransferJobs",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _PauseTransferOperation(
@@ -1512,7 +1976,7 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the pause transfer operation method over HTTP.
 
@@ -1523,13 +1987,16 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseStorageTransferServiceRestTransport._BasePauseTransferOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_pause_transfer_operation(
                 request, metadata
             )
@@ -1545,6 +2012,33 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
             query_params = _BaseStorageTransferServiceRestTransport._BasePauseTransferOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.storagetransfer_v1.StorageTransferServiceClient.PauseTransferOperation",
+                    extra={
+                        "serviceName": "google.storagetransfer.v1.StorageTransferService",
+                        "rpcName": "PauseTransferOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = StorageTransferServiceRestTransport._PauseTransferOperation._get_response(
@@ -1598,7 +2092,7 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the resume transfer operation method over HTTP.
 
@@ -1609,13 +2103,16 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseStorageTransferServiceRestTransport._BaseResumeTransferOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_resume_transfer_operation(
                 request, metadata
             )
@@ -1631,6 +2128,33 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
             query_params = _BaseStorageTransferServiceRestTransport._BaseResumeTransferOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.storagetransfer_v1.StorageTransferServiceClient.ResumeTransferOperation",
+                    extra={
+                        "serviceName": "google.storagetransfer.v1.StorageTransferService",
+                        "rpcName": "ResumeTransferOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = StorageTransferServiceRestTransport._ResumeTransferOperation._get_response(
@@ -1684,7 +2208,7 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the run transfer job method over HTTP.
 
@@ -1694,8 +2218,10 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1708,6 +2234,7 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
             http_options = (
                 _BaseStorageTransferServiceRestTransport._BaseRunTransferJob._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_run_transfer_job(
                 request, metadata
             )
@@ -1723,6 +2250,33 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
             query_params = _BaseStorageTransferServiceRestTransport._BaseRunTransferJob._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.storagetransfer_v1.StorageTransferServiceClient.RunTransferJob",
+                    extra={
+                        "serviceName": "google.storagetransfer.v1.StorageTransferService",
+                        "rpcName": "RunTransferJob",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1745,7 +2299,29 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_run_transfer_job(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.storagetransfer_v1.StorageTransferServiceClient.run_transfer_job",
+                    extra={
+                        "serviceName": "google.storagetransfer.v1.StorageTransferService",
+                        "rpcName": "RunTransferJob",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateAgentPool(
@@ -1784,7 +2360,7 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> transfer_types.AgentPool:
             r"""Call the update agent pool method over HTTP.
 
@@ -1795,8 +2371,10 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.transfer_types.AgentPool:
@@ -1806,6 +2384,7 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
             http_options = (
                 _BaseStorageTransferServiceRestTransport._BaseUpdateAgentPool._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_agent_pool(
                 request, metadata
             )
@@ -1821,6 +2400,33 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
             query_params = _BaseStorageTransferServiceRestTransport._BaseUpdateAgentPool._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.storagetransfer_v1.StorageTransferServiceClient.UpdateAgentPool",
+                    extra={
+                        "serviceName": "google.storagetransfer.v1.StorageTransferService",
+                        "rpcName": "UpdateAgentPool",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1845,7 +2451,29 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
             pb_resp = transfer_types.AgentPool.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_agent_pool(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = transfer_types.AgentPool.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.storagetransfer_v1.StorageTransferServiceClient.update_agent_pool",
+                    extra={
+                        "serviceName": "google.storagetransfer.v1.StorageTransferService",
+                        "rpcName": "UpdateAgentPool",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateTransferJob(
@@ -1884,7 +2512,7 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> transfer_types.TransferJob:
             r"""Call the update transfer job method over HTTP.
 
@@ -1894,8 +2522,10 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.transfer_types.TransferJob:
@@ -1908,6 +2538,7 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
             http_options = (
                 _BaseStorageTransferServiceRestTransport._BaseUpdateTransferJob._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_transfer_job(
                 request, metadata
             )
@@ -1923,6 +2554,33 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
             query_params = _BaseStorageTransferServiceRestTransport._BaseUpdateTransferJob._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.storagetransfer_v1.StorageTransferServiceClient.UpdateTransferJob",
+                    extra={
+                        "serviceName": "google.storagetransfer.v1.StorageTransferService",
+                        "rpcName": "UpdateTransferJob",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1947,7 +2605,29 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
             pb_resp = transfer_types.TransferJob.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_transfer_job(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = transfer_types.TransferJob.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.storagetransfer_v1.StorageTransferServiceClient.update_transfer_job",
+                    extra={
+                        "serviceName": "google.storagetransfer.v1.StorageTransferService",
+                        "rpcName": "UpdateTransferJob",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -2106,7 +2786,7 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the cancel operation method over HTTP.
 
@@ -2116,13 +2796,16 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseStorageTransferServiceRestTransport._BaseCancelOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
@@ -2138,6 +2821,33 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
             query_params = _BaseStorageTransferServiceRestTransport._BaseCancelOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.storagetransfer_v1.StorageTransferServiceClient.CancelOperation",
+                    extra={
+                        "serviceName": "google.storagetransfer.v1.StorageTransferService",
+                        "rpcName": "CancelOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -2198,7 +2908,7 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the get operation method over HTTP.
 
@@ -2208,8 +2918,10 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.
@@ -2218,6 +2930,7 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
             http_options = (
                 _BaseStorageTransferServiceRestTransport._BaseGetOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseStorageTransferServiceRestTransport._BaseGetOperation._get_transcoded_request(
                 http_options, request
@@ -2227,6 +2940,33 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
             query_params = _BaseStorageTransferServiceRestTransport._BaseGetOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.storagetransfer_v1.StorageTransferServiceClient.GetOperation",
+                    extra={
+                        "serviceName": "google.storagetransfer.v1.StorageTransferService",
+                        "rpcName": "GetOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = StorageTransferServiceRestTransport._GetOperation._get_response(
@@ -2247,6 +2987,27 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.storagetransfer_v1.StorageTransferServiceAsyncClient.GetOperation",
+                    extra={
+                        "serviceName": "google.storagetransfer.v1.StorageTransferService",
+                        "rpcName": "GetOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -2288,7 +3049,7 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.ListOperationsResponse:
             r"""Call the list operations method over HTTP.
 
@@ -2298,8 +3059,10 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
@@ -2308,6 +3071,7 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
             http_options = (
                 _BaseStorageTransferServiceRestTransport._BaseListOperations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseStorageTransferServiceRestTransport._BaseListOperations._get_transcoded_request(
                 http_options, request
@@ -2317,6 +3081,33 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
             query_params = _BaseStorageTransferServiceRestTransport._BaseListOperations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.storagetransfer_v1.StorageTransferServiceClient.ListOperations",
+                    extra={
+                        "serviceName": "google.storagetransfer.v1.StorageTransferService",
+                        "rpcName": "ListOperations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -2339,6 +3130,27 @@ class StorageTransferServiceRestTransport(_BaseStorageTransferServiceRestTranspo
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.storagetransfer_v1.StorageTransferServiceAsyncClient.ListOperations",
+                    extra={
+                        "serviceName": "google.storagetransfer.v1.StorageTransferService",
+                        "rpcName": "ListOperations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property

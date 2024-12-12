@@ -13,6 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import json
+import logging as std_logging
+import pickle
 from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -22,7 +25,10 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf.json_format import MessageToJson
+import google.protobuf.message
 import grpc  # type: ignore
+import proto  # type: ignore
 
 from google.cloud.certificate_manager_v1.types import certificate_issuance_config
 from google.cloud.certificate_manager_v1.types import (
@@ -33,6 +39,81 @@ from google.cloud.certificate_manager_v1.types import certificate_manager
 from google.cloud.certificate_manager_v1.types import trust_config
 
 from .base import DEFAULT_CLIENT_INFO, CertificateManagerTransport
+
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = std_logging.getLogger(__name__)
+
+
+class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
+    def intercept_unary_unary(self, continuation, client_call_details, request):
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+            std_logging.DEBUG
+        )
+        if logging_enabled:  # pragma: NO COVER
+            request_metadata = client_call_details.metadata
+            if isinstance(request, proto.Message):
+                request_payload = type(request).to_json(request)
+            elif isinstance(request, google.protobuf.message.Message):
+                request_payload = MessageToJson(request)
+            else:
+                request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
+
+            request_metadata = {
+                key: value.decode("utf-8") if isinstance(value, bytes) else value
+                for key, value in request_metadata
+            }
+            grpc_request = {
+                "payload": request_payload,
+                "requestMethod": "grpc",
+                "metadata": dict(request_metadata),
+            }
+            _LOGGER.debug(
+                f"Sending request for {client_call_details.method}",
+                extra={
+                    "serviceName": "google.cloud.certificatemanager.v1.CertificateManager",
+                    "rpcName": client_call_details.method,
+                    "request": grpc_request,
+                    "metadata": grpc_request["metadata"],
+                },
+            )
+
+        response = continuation(client_call_details, request)
+        if logging_enabled:  # pragma: NO COVER
+            response_metadata = response.trailing_metadata()
+            # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
+            metadata = (
+                dict([(k, str(v)) for k, v in response_metadata])
+                if response_metadata
+                else None
+            )
+            result = response.result()
+            if isinstance(result, proto.Message):
+                response_payload = type(result).to_json(result)
+            elif isinstance(result, google.protobuf.message.Message):
+                response_payload = MessageToJson(result)
+            else:
+                response_payload = f"{type(result).__name__}: {pickle.dumps(result)}"
+            grpc_response = {
+                "payload": response_payload,
+                "metadata": metadata,
+                "status": "OK",
+            }
+            _LOGGER.debug(
+                f"Received response for {client_call_details.method}.",
+                extra={
+                    "serviceName": "google.cloud.certificatemanager.v1.CertificateManager",
+                    "rpcName": client_call_details.method,
+                    "response": grpc_response,
+                    "metadata": grpc_response["metadata"],
+                },
+            )
+        return response
 
 
 class CertificateManagerGrpcTransport(CertificateManagerTransport):
@@ -215,7 +296,12 @@ class CertificateManagerGrpcTransport(CertificateManagerTransport):
                 ],
             )
 
-        # Wrap messages. This must be done after self._grpc_channel exists
+        self._interceptor = _LoggingClientInterceptor()
+        self._logged_channel = grpc.intercept_channel(
+            self._grpc_channel, self._interceptor
+        )
+
+        # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
     @classmethod
@@ -279,7 +365,9 @@ class CertificateManagerGrpcTransport(CertificateManagerTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsClient(self.grpc_channel)
+            self._operations_client = operations_v1.OperationsClient(
+                self._logged_channel
+            )
 
         # Return the client from cache.
         return self._operations_client
@@ -306,7 +394,7 @@ class CertificateManagerGrpcTransport(CertificateManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_certificates" not in self._stubs:
-            self._stubs["list_certificates"] = self.grpc_channel.unary_unary(
+            self._stubs["list_certificates"] = self._logged_channel.unary_unary(
                 "/google.cloud.certificatemanager.v1.CertificateManager/ListCertificates",
                 request_serializer=certificate_manager.ListCertificatesRequest.serialize,
                 response_deserializer=certificate_manager.ListCertificatesResponse.deserialize,
@@ -334,7 +422,7 @@ class CertificateManagerGrpcTransport(CertificateManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_certificate" not in self._stubs:
-            self._stubs["get_certificate"] = self.grpc_channel.unary_unary(
+            self._stubs["get_certificate"] = self._logged_channel.unary_unary(
                 "/google.cloud.certificatemanager.v1.CertificateManager/GetCertificate",
                 request_serializer=certificate_manager.GetCertificateRequest.serialize,
                 response_deserializer=certificate_manager.Certificate.deserialize,
@@ -363,7 +451,7 @@ class CertificateManagerGrpcTransport(CertificateManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_certificate" not in self._stubs:
-            self._stubs["create_certificate"] = self.grpc_channel.unary_unary(
+            self._stubs["create_certificate"] = self._logged_channel.unary_unary(
                 "/google.cloud.certificatemanager.v1.CertificateManager/CreateCertificate",
                 request_serializer=certificate_manager.CreateCertificateRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -391,7 +479,7 @@ class CertificateManagerGrpcTransport(CertificateManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_certificate" not in self._stubs:
-            self._stubs["update_certificate"] = self.grpc_channel.unary_unary(
+            self._stubs["update_certificate"] = self._logged_channel.unary_unary(
                 "/google.cloud.certificatemanager.v1.CertificateManager/UpdateCertificate",
                 request_serializer=certificate_manager.UpdateCertificateRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -419,7 +507,7 @@ class CertificateManagerGrpcTransport(CertificateManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_certificate" not in self._stubs:
-            self._stubs["delete_certificate"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_certificate"] = self._logged_channel.unary_unary(
                 "/google.cloud.certificatemanager.v1.CertificateManager/DeleteCertificate",
                 request_serializer=certificate_manager.DeleteCertificateRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -449,7 +537,7 @@ class CertificateManagerGrpcTransport(CertificateManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_certificate_maps" not in self._stubs:
-            self._stubs["list_certificate_maps"] = self.grpc_channel.unary_unary(
+            self._stubs["list_certificate_maps"] = self._logged_channel.unary_unary(
                 "/google.cloud.certificatemanager.v1.CertificateManager/ListCertificateMaps",
                 request_serializer=certificate_manager.ListCertificateMapsRequest.serialize,
                 response_deserializer=certificate_manager.ListCertificateMapsResponse.deserialize,
@@ -478,7 +566,7 @@ class CertificateManagerGrpcTransport(CertificateManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_certificate_map" not in self._stubs:
-            self._stubs["get_certificate_map"] = self.grpc_channel.unary_unary(
+            self._stubs["get_certificate_map"] = self._logged_channel.unary_unary(
                 "/google.cloud.certificatemanager.v1.CertificateManager/GetCertificateMap",
                 request_serializer=certificate_manager.GetCertificateMapRequest.serialize,
                 response_deserializer=certificate_manager.CertificateMap.deserialize,
@@ -507,7 +595,7 @@ class CertificateManagerGrpcTransport(CertificateManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_certificate_map" not in self._stubs:
-            self._stubs["create_certificate_map"] = self.grpc_channel.unary_unary(
+            self._stubs["create_certificate_map"] = self._logged_channel.unary_unary(
                 "/google.cloud.certificatemanager.v1.CertificateManager/CreateCertificateMap",
                 request_serializer=certificate_manager.CreateCertificateMapRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -535,7 +623,7 @@ class CertificateManagerGrpcTransport(CertificateManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_certificate_map" not in self._stubs:
-            self._stubs["update_certificate_map"] = self.grpc_channel.unary_unary(
+            self._stubs["update_certificate_map"] = self._logged_channel.unary_unary(
                 "/google.cloud.certificatemanager.v1.CertificateManager/UpdateCertificateMap",
                 request_serializer=certificate_manager.UpdateCertificateMapRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -566,7 +654,7 @@ class CertificateManagerGrpcTransport(CertificateManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_certificate_map" not in self._stubs:
-            self._stubs["delete_certificate_map"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_certificate_map"] = self._logged_channel.unary_unary(
                 "/google.cloud.certificatemanager.v1.CertificateManager/DeleteCertificateMap",
                 request_serializer=certificate_manager.DeleteCertificateMapRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -596,7 +684,9 @@ class CertificateManagerGrpcTransport(CertificateManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_certificate_map_entries" not in self._stubs:
-            self._stubs["list_certificate_map_entries"] = self.grpc_channel.unary_unary(
+            self._stubs[
+                "list_certificate_map_entries"
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.certificatemanager.v1.CertificateManager/ListCertificateMapEntries",
                 request_serializer=certificate_manager.ListCertificateMapEntriesRequest.serialize,
                 response_deserializer=certificate_manager.ListCertificateMapEntriesResponse.deserialize,
@@ -625,7 +715,7 @@ class CertificateManagerGrpcTransport(CertificateManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_certificate_map_entry" not in self._stubs:
-            self._stubs["get_certificate_map_entry"] = self.grpc_channel.unary_unary(
+            self._stubs["get_certificate_map_entry"] = self._logged_channel.unary_unary(
                 "/google.cloud.certificatemanager.v1.CertificateManager/GetCertificateMapEntry",
                 request_serializer=certificate_manager.GetCertificateMapEntryRequest.serialize,
                 response_deserializer=certificate_manager.CertificateMapEntry.deserialize,
@@ -654,7 +744,9 @@ class CertificateManagerGrpcTransport(CertificateManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_certificate_map_entry" not in self._stubs:
-            self._stubs["create_certificate_map_entry"] = self.grpc_channel.unary_unary(
+            self._stubs[
+                "create_certificate_map_entry"
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.certificatemanager.v1.CertificateManager/CreateCertificateMapEntry",
                 request_serializer=certificate_manager.CreateCertificateMapEntryRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -682,7 +774,9 @@ class CertificateManagerGrpcTransport(CertificateManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_certificate_map_entry" not in self._stubs:
-            self._stubs["update_certificate_map_entry"] = self.grpc_channel.unary_unary(
+            self._stubs[
+                "update_certificate_map_entry"
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.certificatemanager.v1.CertificateManager/UpdateCertificateMapEntry",
                 request_serializer=certificate_manager.UpdateCertificateMapEntryRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -710,7 +804,9 @@ class CertificateManagerGrpcTransport(CertificateManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_certificate_map_entry" not in self._stubs:
-            self._stubs["delete_certificate_map_entry"] = self.grpc_channel.unary_unary(
+            self._stubs[
+                "delete_certificate_map_entry"
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.certificatemanager.v1.CertificateManager/DeleteCertificateMapEntry",
                 request_serializer=certificate_manager.DeleteCertificateMapEntryRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -740,7 +836,7 @@ class CertificateManagerGrpcTransport(CertificateManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_dns_authorizations" not in self._stubs:
-            self._stubs["list_dns_authorizations"] = self.grpc_channel.unary_unary(
+            self._stubs["list_dns_authorizations"] = self._logged_channel.unary_unary(
                 "/google.cloud.certificatemanager.v1.CertificateManager/ListDnsAuthorizations",
                 request_serializer=certificate_manager.ListDnsAuthorizationsRequest.serialize,
                 response_deserializer=certificate_manager.ListDnsAuthorizationsResponse.deserialize,
@@ -769,7 +865,7 @@ class CertificateManagerGrpcTransport(CertificateManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_dns_authorization" not in self._stubs:
-            self._stubs["get_dns_authorization"] = self.grpc_channel.unary_unary(
+            self._stubs["get_dns_authorization"] = self._logged_channel.unary_unary(
                 "/google.cloud.certificatemanager.v1.CertificateManager/GetDnsAuthorization",
                 request_serializer=certificate_manager.GetDnsAuthorizationRequest.serialize,
                 response_deserializer=certificate_manager.DnsAuthorization.deserialize,
@@ -798,7 +894,7 @@ class CertificateManagerGrpcTransport(CertificateManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_dns_authorization" not in self._stubs:
-            self._stubs["create_dns_authorization"] = self.grpc_channel.unary_unary(
+            self._stubs["create_dns_authorization"] = self._logged_channel.unary_unary(
                 "/google.cloud.certificatemanager.v1.CertificateManager/CreateDnsAuthorization",
                 request_serializer=certificate_manager.CreateDnsAuthorizationRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -826,7 +922,7 @@ class CertificateManagerGrpcTransport(CertificateManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_dns_authorization" not in self._stubs:
-            self._stubs["update_dns_authorization"] = self.grpc_channel.unary_unary(
+            self._stubs["update_dns_authorization"] = self._logged_channel.unary_unary(
                 "/google.cloud.certificatemanager.v1.CertificateManager/UpdateDnsAuthorization",
                 request_serializer=certificate_manager.UpdateDnsAuthorizationRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -854,7 +950,7 @@ class CertificateManagerGrpcTransport(CertificateManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_dns_authorization" not in self._stubs:
-            self._stubs["delete_dns_authorization"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_dns_authorization"] = self._logged_channel.unary_unary(
                 "/google.cloud.certificatemanager.v1.CertificateManager/DeleteDnsAuthorization",
                 request_serializer=certificate_manager.DeleteDnsAuthorizationRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -887,7 +983,7 @@ class CertificateManagerGrpcTransport(CertificateManagerTransport):
         if "list_certificate_issuance_configs" not in self._stubs:
             self._stubs[
                 "list_certificate_issuance_configs"
-            ] = self.grpc_channel.unary_unary(
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.certificatemanager.v1.CertificateManager/ListCertificateIssuanceConfigs",
                 request_serializer=certificate_issuance_config.ListCertificateIssuanceConfigsRequest.serialize,
                 response_deserializer=certificate_issuance_config.ListCertificateIssuanceConfigsResponse.deserialize,
@@ -919,7 +1015,7 @@ class CertificateManagerGrpcTransport(CertificateManagerTransport):
         if "get_certificate_issuance_config" not in self._stubs:
             self._stubs[
                 "get_certificate_issuance_config"
-            ] = self.grpc_channel.unary_unary(
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.certificatemanager.v1.CertificateManager/GetCertificateIssuanceConfig",
                 request_serializer=certificate_issuance_config.GetCertificateIssuanceConfigRequest.serialize,
                 response_deserializer=certificate_issuance_config.CertificateIssuanceConfig.deserialize,
@@ -952,7 +1048,7 @@ class CertificateManagerGrpcTransport(CertificateManagerTransport):
         if "create_certificate_issuance_config" not in self._stubs:
             self._stubs[
                 "create_certificate_issuance_config"
-            ] = self.grpc_channel.unary_unary(
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.certificatemanager.v1.CertificateManager/CreateCertificateIssuanceConfig",
                 request_serializer=gcc_certificate_issuance_config.CreateCertificateIssuanceConfigRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -984,7 +1080,7 @@ class CertificateManagerGrpcTransport(CertificateManagerTransport):
         if "delete_certificate_issuance_config" not in self._stubs:
             self._stubs[
                 "delete_certificate_issuance_config"
-            ] = self.grpc_channel.unary_unary(
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.certificatemanager.v1.CertificateManager/DeleteCertificateIssuanceConfig",
                 request_serializer=certificate_issuance_config.DeleteCertificateIssuanceConfigRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1012,7 +1108,7 @@ class CertificateManagerGrpcTransport(CertificateManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_trust_configs" not in self._stubs:
-            self._stubs["list_trust_configs"] = self.grpc_channel.unary_unary(
+            self._stubs["list_trust_configs"] = self._logged_channel.unary_unary(
                 "/google.cloud.certificatemanager.v1.CertificateManager/ListTrustConfigs",
                 request_serializer=trust_config.ListTrustConfigsRequest.serialize,
                 response_deserializer=trust_config.ListTrustConfigsResponse.deserialize,
@@ -1038,7 +1134,7 @@ class CertificateManagerGrpcTransport(CertificateManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_trust_config" not in self._stubs:
-            self._stubs["get_trust_config"] = self.grpc_channel.unary_unary(
+            self._stubs["get_trust_config"] = self._logged_channel.unary_unary(
                 "/google.cloud.certificatemanager.v1.CertificateManager/GetTrustConfig",
                 request_serializer=trust_config.GetTrustConfigRequest.serialize,
                 response_deserializer=trust_config.TrustConfig.deserialize,
@@ -1067,7 +1163,7 @@ class CertificateManagerGrpcTransport(CertificateManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_trust_config" not in self._stubs:
-            self._stubs["create_trust_config"] = self.grpc_channel.unary_unary(
+            self._stubs["create_trust_config"] = self._logged_channel.unary_unary(
                 "/google.cloud.certificatemanager.v1.CertificateManager/CreateTrustConfig",
                 request_serializer=gcc_trust_config.CreateTrustConfigRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1095,7 +1191,7 @@ class CertificateManagerGrpcTransport(CertificateManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_trust_config" not in self._stubs:
-            self._stubs["update_trust_config"] = self.grpc_channel.unary_unary(
+            self._stubs["update_trust_config"] = self._logged_channel.unary_unary(
                 "/google.cloud.certificatemanager.v1.CertificateManager/UpdateTrustConfig",
                 request_serializer=gcc_trust_config.UpdateTrustConfigRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1121,7 +1217,7 @@ class CertificateManagerGrpcTransport(CertificateManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_trust_config" not in self._stubs:
-            self._stubs["delete_trust_config"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_trust_config"] = self._logged_channel.unary_unary(
                 "/google.cloud.certificatemanager.v1.CertificateManager/DeleteTrustConfig",
                 request_serializer=trust_config.DeleteTrustConfigRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1129,7 +1225,7 @@ class CertificateManagerGrpcTransport(CertificateManagerTransport):
         return self._stubs["delete_trust_config"]
 
     def close(self):
-        self.grpc_channel.close()
+        self._logged_channel.close()
 
     @property
     def delete_operation(
@@ -1141,7 +1237,7 @@ class CertificateManagerGrpcTransport(CertificateManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_operation" not in self._stubs:
-            self._stubs["delete_operation"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_operation"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/DeleteOperation",
                 request_serializer=operations_pb2.DeleteOperationRequest.SerializeToString,
                 response_deserializer=None,
@@ -1158,7 +1254,7 @@ class CertificateManagerGrpcTransport(CertificateManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "cancel_operation" not in self._stubs:
-            self._stubs["cancel_operation"] = self.grpc_channel.unary_unary(
+            self._stubs["cancel_operation"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/CancelOperation",
                 request_serializer=operations_pb2.CancelOperationRequest.SerializeToString,
                 response_deserializer=None,
@@ -1175,7 +1271,7 @@ class CertificateManagerGrpcTransport(CertificateManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_operation" not in self._stubs:
-            self._stubs["get_operation"] = self.grpc_channel.unary_unary(
+            self._stubs["get_operation"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/GetOperation",
                 request_serializer=operations_pb2.GetOperationRequest.SerializeToString,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1194,7 +1290,7 @@ class CertificateManagerGrpcTransport(CertificateManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_operations" not in self._stubs:
-            self._stubs["list_operations"] = self.grpc_channel.unary_unary(
+            self._stubs["list_operations"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/ListOperations",
                 request_serializer=operations_pb2.ListOperationsRequest.SerializeToString,
                 response_deserializer=operations_pb2.ListOperationsResponse.FromString,
@@ -1213,7 +1309,7 @@ class CertificateManagerGrpcTransport(CertificateManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_locations" not in self._stubs:
-            self._stubs["list_locations"] = self.grpc_channel.unary_unary(
+            self._stubs["list_locations"] = self._logged_channel.unary_unary(
                 "/google.cloud.location.Locations/ListLocations",
                 request_serializer=locations_pb2.ListLocationsRequest.SerializeToString,
                 response_deserializer=locations_pb2.ListLocationsResponse.FromString,
@@ -1230,7 +1326,7 @@ class CertificateManagerGrpcTransport(CertificateManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_location" not in self._stubs:
-            self._stubs["get_location"] = self.grpc_channel.unary_unary(
+            self._stubs["get_location"] = self._logged_channel.unary_unary(
                 "/google.cloud.location.Locations/GetLocation",
                 request_serializer=locations_pb2.GetLocationRequest.SerializeToString,
                 response_deserializer=locations_pb2.Location.FromString,

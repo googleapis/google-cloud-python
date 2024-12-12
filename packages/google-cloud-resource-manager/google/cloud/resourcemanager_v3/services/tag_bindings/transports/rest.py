@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -38,6 +38,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -102,8 +110,10 @@ class TagBindingsRestInterceptor:
     def pre_create_tag_binding(
         self,
         request: tag_bindings.CreateTagBindingRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[tag_bindings.CreateTagBindingRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        tag_bindings.CreateTagBindingRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_tag_binding
 
         Override in a subclass to manipulate the request or metadata
@@ -125,8 +135,10 @@ class TagBindingsRestInterceptor:
     def pre_delete_tag_binding(
         self,
         request: tag_bindings.DeleteTagBindingRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[tag_bindings.DeleteTagBindingRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        tag_bindings.DeleteTagBindingRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_tag_binding
 
         Override in a subclass to manipulate the request or metadata
@@ -148,8 +160,10 @@ class TagBindingsRestInterceptor:
     def pre_list_effective_tags(
         self,
         request: tag_bindings.ListEffectiveTagsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[tag_bindings.ListEffectiveTagsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        tag_bindings.ListEffectiveTagsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_effective_tags
 
         Override in a subclass to manipulate the request or metadata
@@ -171,8 +185,10 @@ class TagBindingsRestInterceptor:
     def pre_list_tag_bindings(
         self,
         request: tag_bindings.ListTagBindingsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[tag_bindings.ListTagBindingsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        tag_bindings.ListTagBindingsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_tag_bindings
 
         Override in a subclass to manipulate the request or metadata
@@ -194,8 +210,10 @@ class TagBindingsRestInterceptor:
     def pre_get_operation(
         self,
         request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -373,7 +391,7 @@ class TagBindingsRestTransport(_BaseTagBindingsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create tag binding method over HTTP.
 
@@ -384,8 +402,10 @@ class TagBindingsRestTransport(_BaseTagBindingsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -398,6 +418,7 @@ class TagBindingsRestTransport(_BaseTagBindingsRestTransport):
             http_options = (
                 _BaseTagBindingsRestTransport._BaseCreateTagBinding._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_tag_binding(
                 request, metadata
             )
@@ -413,6 +434,33 @@ class TagBindingsRestTransport(_BaseTagBindingsRestTransport):
             query_params = _BaseTagBindingsRestTransport._BaseCreateTagBinding._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.resourcemanager_v3.TagBindingsClient.CreateTagBinding",
+                    extra={
+                        "serviceName": "google.cloud.resourcemanager.v3.TagBindings",
+                        "rpcName": "CreateTagBinding",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TagBindingsRestTransport._CreateTagBinding._get_response(
@@ -433,7 +481,29 @@ class TagBindingsRestTransport(_BaseTagBindingsRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_tag_binding(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.resourcemanager_v3.TagBindingsClient.create_tag_binding",
+                    extra={
+                        "serviceName": "google.cloud.resourcemanager.v3.TagBindings",
+                        "rpcName": "CreateTagBinding",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteTagBinding(
@@ -470,7 +540,7 @@ class TagBindingsRestTransport(_BaseTagBindingsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete tag binding method over HTTP.
 
@@ -481,8 +551,10 @@ class TagBindingsRestTransport(_BaseTagBindingsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -495,6 +567,7 @@ class TagBindingsRestTransport(_BaseTagBindingsRestTransport):
             http_options = (
                 _BaseTagBindingsRestTransport._BaseDeleteTagBinding._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_tag_binding(
                 request, metadata
             )
@@ -506,6 +579,33 @@ class TagBindingsRestTransport(_BaseTagBindingsRestTransport):
             query_params = _BaseTagBindingsRestTransport._BaseDeleteTagBinding._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.resourcemanager_v3.TagBindingsClient.DeleteTagBinding",
+                    extra={
+                        "serviceName": "google.cloud.resourcemanager.v3.TagBindings",
+                        "rpcName": "DeleteTagBinding",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TagBindingsRestTransport._DeleteTagBinding._get_response(
@@ -525,7 +625,29 @@ class TagBindingsRestTransport(_BaseTagBindingsRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_tag_binding(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.resourcemanager_v3.TagBindingsClient.delete_tag_binding",
+                    extra={
+                        "serviceName": "google.cloud.resourcemanager.v3.TagBindings",
+                        "rpcName": "DeleteTagBinding",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListEffectiveTags(
@@ -562,7 +684,7 @@ class TagBindingsRestTransport(_BaseTagBindingsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> tag_bindings.ListEffectiveTagsResponse:
             r"""Call the list effective tags method over HTTP.
 
@@ -573,8 +695,10 @@ class TagBindingsRestTransport(_BaseTagBindingsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.tag_bindings.ListEffectiveTagsResponse:
@@ -584,6 +708,7 @@ class TagBindingsRestTransport(_BaseTagBindingsRestTransport):
             http_options = (
                 _BaseTagBindingsRestTransport._BaseListEffectiveTags._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_effective_tags(
                 request, metadata
             )
@@ -595,6 +720,33 @@ class TagBindingsRestTransport(_BaseTagBindingsRestTransport):
             query_params = _BaseTagBindingsRestTransport._BaseListEffectiveTags._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.resourcemanager_v3.TagBindingsClient.ListEffectiveTags",
+                    extra={
+                        "serviceName": "google.cloud.resourcemanager.v3.TagBindings",
+                        "rpcName": "ListEffectiveTags",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TagBindingsRestTransport._ListEffectiveTags._get_response(
@@ -616,7 +768,31 @@ class TagBindingsRestTransport(_BaseTagBindingsRestTransport):
             pb_resp = tag_bindings.ListEffectiveTagsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_effective_tags(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = tag_bindings.ListEffectiveTagsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.resourcemanager_v3.TagBindingsClient.list_effective_tags",
+                    extra={
+                        "serviceName": "google.cloud.resourcemanager.v3.TagBindings",
+                        "rpcName": "ListEffectiveTags",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListTagBindings(
@@ -653,7 +829,7 @@ class TagBindingsRestTransport(_BaseTagBindingsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> tag_bindings.ListTagBindingsResponse:
             r"""Call the list tag bindings method over HTTP.
 
@@ -664,8 +840,10 @@ class TagBindingsRestTransport(_BaseTagBindingsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.tag_bindings.ListTagBindingsResponse:
@@ -675,6 +853,7 @@ class TagBindingsRestTransport(_BaseTagBindingsRestTransport):
             http_options = (
                 _BaseTagBindingsRestTransport._BaseListTagBindings._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_tag_bindings(
                 request, metadata
             )
@@ -686,6 +865,33 @@ class TagBindingsRestTransport(_BaseTagBindingsRestTransport):
             query_params = _BaseTagBindingsRestTransport._BaseListTagBindings._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.resourcemanager_v3.TagBindingsClient.ListTagBindings",
+                    extra={
+                        "serviceName": "google.cloud.resourcemanager.v3.TagBindings",
+                        "rpcName": "ListTagBindings",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TagBindingsRestTransport._ListTagBindings._get_response(
@@ -707,7 +913,31 @@ class TagBindingsRestTransport(_BaseTagBindingsRestTransport):
             pb_resp = tag_bindings.ListTagBindingsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_tag_bindings(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = tag_bindings.ListTagBindingsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.resourcemanager_v3.TagBindingsClient.list_tag_bindings",
+                    extra={
+                        "serviceName": "google.cloud.resourcemanager.v3.TagBindings",
+                        "rpcName": "ListTagBindings",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -784,7 +1014,7 @@ class TagBindingsRestTransport(_BaseTagBindingsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the get operation method over HTTP.
 
@@ -794,8 +1024,10 @@ class TagBindingsRestTransport(_BaseTagBindingsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.
@@ -804,6 +1036,7 @@ class TagBindingsRestTransport(_BaseTagBindingsRestTransport):
             http_options = (
                 _BaseTagBindingsRestTransport._BaseGetOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = (
                 _BaseTagBindingsRestTransport._BaseGetOperation._get_transcoded_request(
@@ -817,6 +1050,33 @@ class TagBindingsRestTransport(_BaseTagBindingsRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.resourcemanager_v3.TagBindingsClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.resourcemanager.v3.TagBindings",
+                        "rpcName": "GetOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TagBindingsRestTransport._GetOperation._get_response(
@@ -837,6 +1097,27 @@ class TagBindingsRestTransport(_BaseTagBindingsRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.resourcemanager_v3.TagBindingsAsyncClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.resourcemanager.v3.TagBindings",
+                        "rpcName": "GetOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property

@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -45,6 +45,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -309,8 +317,11 @@ class CertificateManagerRestInterceptor:
     def pre_create_certificate(
         self,
         request: certificate_manager.CreateCertificateRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[certificate_manager.CreateCertificateRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        certificate_manager.CreateCertificateRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for create_certificate
 
         Override in a subclass to manipulate the request or metadata
@@ -332,10 +343,10 @@ class CertificateManagerRestInterceptor:
     def pre_create_certificate_issuance_config(
         self,
         request: gcc_certificate_issuance_config.CreateCertificateIssuanceConfigRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         gcc_certificate_issuance_config.CreateCertificateIssuanceConfigRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for create_certificate_issuance_config
 
@@ -358,9 +369,10 @@ class CertificateManagerRestInterceptor:
     def pre_create_certificate_map(
         self,
         request: certificate_manager.CreateCertificateMapRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        certificate_manager.CreateCertificateMapRequest, Sequence[Tuple[str, str]]
+        certificate_manager.CreateCertificateMapRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for create_certificate_map
 
@@ -383,9 +395,10 @@ class CertificateManagerRestInterceptor:
     def pre_create_certificate_map_entry(
         self,
         request: certificate_manager.CreateCertificateMapEntryRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        certificate_manager.CreateCertificateMapEntryRequest, Sequence[Tuple[str, str]]
+        certificate_manager.CreateCertificateMapEntryRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for create_certificate_map_entry
 
@@ -408,9 +421,10 @@ class CertificateManagerRestInterceptor:
     def pre_create_dns_authorization(
         self,
         request: certificate_manager.CreateDnsAuthorizationRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        certificate_manager.CreateDnsAuthorizationRequest, Sequence[Tuple[str, str]]
+        certificate_manager.CreateDnsAuthorizationRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for create_dns_authorization
 
@@ -433,8 +447,11 @@ class CertificateManagerRestInterceptor:
     def pre_create_trust_config(
         self,
         request: gcc_trust_config.CreateTrustConfigRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[gcc_trust_config.CreateTrustConfigRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gcc_trust_config.CreateTrustConfigRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for create_trust_config
 
         Override in a subclass to manipulate the request or metadata
@@ -456,8 +473,11 @@ class CertificateManagerRestInterceptor:
     def pre_delete_certificate(
         self,
         request: certificate_manager.DeleteCertificateRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[certificate_manager.DeleteCertificateRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        certificate_manager.DeleteCertificateRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for delete_certificate
 
         Override in a subclass to manipulate the request or metadata
@@ -479,10 +499,10 @@ class CertificateManagerRestInterceptor:
     def pre_delete_certificate_issuance_config(
         self,
         request: certificate_issuance_config.DeleteCertificateIssuanceConfigRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         certificate_issuance_config.DeleteCertificateIssuanceConfigRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for delete_certificate_issuance_config
 
@@ -505,9 +525,10 @@ class CertificateManagerRestInterceptor:
     def pre_delete_certificate_map(
         self,
         request: certificate_manager.DeleteCertificateMapRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        certificate_manager.DeleteCertificateMapRequest, Sequence[Tuple[str, str]]
+        certificate_manager.DeleteCertificateMapRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for delete_certificate_map
 
@@ -530,9 +551,10 @@ class CertificateManagerRestInterceptor:
     def pre_delete_certificate_map_entry(
         self,
         request: certificate_manager.DeleteCertificateMapEntryRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        certificate_manager.DeleteCertificateMapEntryRequest, Sequence[Tuple[str, str]]
+        certificate_manager.DeleteCertificateMapEntryRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for delete_certificate_map_entry
 
@@ -555,9 +577,10 @@ class CertificateManagerRestInterceptor:
     def pre_delete_dns_authorization(
         self,
         request: certificate_manager.DeleteDnsAuthorizationRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        certificate_manager.DeleteDnsAuthorizationRequest, Sequence[Tuple[str, str]]
+        certificate_manager.DeleteDnsAuthorizationRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for delete_dns_authorization
 
@@ -580,8 +603,10 @@ class CertificateManagerRestInterceptor:
     def pre_delete_trust_config(
         self,
         request: trust_config.DeleteTrustConfigRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[trust_config.DeleteTrustConfigRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        trust_config.DeleteTrustConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_trust_config
 
         Override in a subclass to manipulate the request or metadata
@@ -603,8 +628,11 @@ class CertificateManagerRestInterceptor:
     def pre_get_certificate(
         self,
         request: certificate_manager.GetCertificateRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[certificate_manager.GetCertificateRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        certificate_manager.GetCertificateRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for get_certificate
 
         Override in a subclass to manipulate the request or metadata
@@ -626,10 +654,10 @@ class CertificateManagerRestInterceptor:
     def pre_get_certificate_issuance_config(
         self,
         request: certificate_issuance_config.GetCertificateIssuanceConfigRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         certificate_issuance_config.GetCertificateIssuanceConfigRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for get_certificate_issuance_config
 
@@ -652,8 +680,11 @@ class CertificateManagerRestInterceptor:
     def pre_get_certificate_map(
         self,
         request: certificate_manager.GetCertificateMapRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[certificate_manager.GetCertificateMapRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        certificate_manager.GetCertificateMapRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for get_certificate_map
 
         Override in a subclass to manipulate the request or metadata
@@ -675,9 +706,10 @@ class CertificateManagerRestInterceptor:
     def pre_get_certificate_map_entry(
         self,
         request: certificate_manager.GetCertificateMapEntryRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        certificate_manager.GetCertificateMapEntryRequest, Sequence[Tuple[str, str]]
+        certificate_manager.GetCertificateMapEntryRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for get_certificate_map_entry
 
@@ -700,9 +732,10 @@ class CertificateManagerRestInterceptor:
     def pre_get_dns_authorization(
         self,
         request: certificate_manager.GetDnsAuthorizationRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        certificate_manager.GetDnsAuthorizationRequest, Sequence[Tuple[str, str]]
+        certificate_manager.GetDnsAuthorizationRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for get_dns_authorization
 
@@ -725,8 +758,10 @@ class CertificateManagerRestInterceptor:
     def pre_get_trust_config(
         self,
         request: trust_config.GetTrustConfigRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[trust_config.GetTrustConfigRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        trust_config.GetTrustConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_trust_config
 
         Override in a subclass to manipulate the request or metadata
@@ -748,10 +783,10 @@ class CertificateManagerRestInterceptor:
     def pre_list_certificate_issuance_configs(
         self,
         request: certificate_issuance_config.ListCertificateIssuanceConfigsRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         certificate_issuance_config.ListCertificateIssuanceConfigsRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for list_certificate_issuance_configs
 
@@ -775,9 +810,10 @@ class CertificateManagerRestInterceptor:
     def pre_list_certificate_map_entries(
         self,
         request: certificate_manager.ListCertificateMapEntriesRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        certificate_manager.ListCertificateMapEntriesRequest, Sequence[Tuple[str, str]]
+        certificate_manager.ListCertificateMapEntriesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for list_certificate_map_entries
 
@@ -800,9 +836,10 @@ class CertificateManagerRestInterceptor:
     def pre_list_certificate_maps(
         self,
         request: certificate_manager.ListCertificateMapsRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        certificate_manager.ListCertificateMapsRequest, Sequence[Tuple[str, str]]
+        certificate_manager.ListCertificateMapsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for list_certificate_maps
 
@@ -825,8 +862,11 @@ class CertificateManagerRestInterceptor:
     def pre_list_certificates(
         self,
         request: certificate_manager.ListCertificatesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[certificate_manager.ListCertificatesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        certificate_manager.ListCertificatesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for list_certificates
 
         Override in a subclass to manipulate the request or metadata
@@ -848,9 +888,10 @@ class CertificateManagerRestInterceptor:
     def pre_list_dns_authorizations(
         self,
         request: certificate_manager.ListDnsAuthorizationsRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        certificate_manager.ListDnsAuthorizationsRequest, Sequence[Tuple[str, str]]
+        certificate_manager.ListDnsAuthorizationsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for list_dns_authorizations
 
@@ -873,8 +914,10 @@ class CertificateManagerRestInterceptor:
     def pre_list_trust_configs(
         self,
         request: trust_config.ListTrustConfigsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[trust_config.ListTrustConfigsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        trust_config.ListTrustConfigsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_trust_configs
 
         Override in a subclass to manipulate the request or metadata
@@ -896,8 +939,11 @@ class CertificateManagerRestInterceptor:
     def pre_update_certificate(
         self,
         request: certificate_manager.UpdateCertificateRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[certificate_manager.UpdateCertificateRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        certificate_manager.UpdateCertificateRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for update_certificate
 
         Override in a subclass to manipulate the request or metadata
@@ -919,9 +965,10 @@ class CertificateManagerRestInterceptor:
     def pre_update_certificate_map(
         self,
         request: certificate_manager.UpdateCertificateMapRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        certificate_manager.UpdateCertificateMapRequest, Sequence[Tuple[str, str]]
+        certificate_manager.UpdateCertificateMapRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for update_certificate_map
 
@@ -944,9 +991,10 @@ class CertificateManagerRestInterceptor:
     def pre_update_certificate_map_entry(
         self,
         request: certificate_manager.UpdateCertificateMapEntryRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        certificate_manager.UpdateCertificateMapEntryRequest, Sequence[Tuple[str, str]]
+        certificate_manager.UpdateCertificateMapEntryRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for update_certificate_map_entry
 
@@ -969,9 +1017,10 @@ class CertificateManagerRestInterceptor:
     def pre_update_dns_authorization(
         self,
         request: certificate_manager.UpdateDnsAuthorizationRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        certificate_manager.UpdateDnsAuthorizationRequest, Sequence[Tuple[str, str]]
+        certificate_manager.UpdateDnsAuthorizationRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for update_dns_authorization
 
@@ -994,8 +1043,11 @@ class CertificateManagerRestInterceptor:
     def pre_update_trust_config(
         self,
         request: gcc_trust_config.UpdateTrustConfigRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[gcc_trust_config.UpdateTrustConfigRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gcc_trust_config.UpdateTrustConfigRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for update_trust_config
 
         Override in a subclass to manipulate the request or metadata
@@ -1017,8 +1069,10 @@ class CertificateManagerRestInterceptor:
     def pre_get_location(
         self,
         request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -1040,8 +1094,10 @@ class CertificateManagerRestInterceptor:
     def pre_list_locations(
         self,
         request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -1063,8 +1119,10 @@ class CertificateManagerRestInterceptor:
     def pre_cancel_operation(
         self,
         request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1084,8 +1142,10 @@ class CertificateManagerRestInterceptor:
     def pre_delete_operation(
         self,
         request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1105,8 +1165,10 @@ class CertificateManagerRestInterceptor:
     def pre_get_operation(
         self,
         request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1128,8 +1190,10 @@ class CertificateManagerRestInterceptor:
     def pre_list_operations(
         self,
         request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -1352,7 +1416,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create certificate method over HTTP.
 
@@ -1362,8 +1426,10 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1376,6 +1442,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             http_options = (
                 _BaseCertificateManagerRestTransport._BaseCreateCertificate._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_certificate(
                 request, metadata
             )
@@ -1391,6 +1458,33 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             query_params = _BaseCertificateManagerRestTransport._BaseCreateCertificate._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.certificatemanager_v1.CertificateManagerClient.CreateCertificate",
+                    extra={
+                        "serviceName": "google.cloud.certificatemanager.v1.CertificateManager",
+                        "rpcName": "CreateCertificate",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CertificateManagerRestTransport._CreateCertificate._get_response(
@@ -1411,7 +1505,29 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_certificate(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.certificatemanager_v1.CertificateManagerClient.create_certificate",
+                    extra={
+                        "serviceName": "google.cloud.certificatemanager.v1.CertificateManager",
+                        "rpcName": "CreateCertificate",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateCertificateIssuanceConfig(
@@ -1452,7 +1568,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create certificate
             issuance config method over HTTP.
@@ -1464,8 +1580,10 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.operations_pb2.Operation:
@@ -1478,6 +1596,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             http_options = (
                 _BaseCertificateManagerRestTransport._BaseCreateCertificateIssuanceConfig._get_http_options()
             )
+
             (
                 request,
                 metadata,
@@ -1496,6 +1615,33 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             query_params = _BaseCertificateManagerRestTransport._BaseCreateCertificateIssuanceConfig._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.certificatemanager_v1.CertificateManagerClient.CreateCertificateIssuanceConfig",
+                    extra={
+                        "serviceName": "google.cloud.certificatemanager.v1.CertificateManager",
+                        "rpcName": "CreateCertificateIssuanceConfig",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CertificateManagerRestTransport._CreateCertificateIssuanceConfig._get_response(
@@ -1516,7 +1662,29 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_certificate_issuance_config(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.certificatemanager_v1.CertificateManagerClient.create_certificate_issuance_config",
+                    extra={
+                        "serviceName": "google.cloud.certificatemanager.v1.CertificateManager",
+                        "rpcName": "CreateCertificateIssuanceConfig",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateCertificateMap(
@@ -1555,7 +1723,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create certificate map method over HTTP.
 
@@ -1565,8 +1733,10 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1579,6 +1749,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             http_options = (
                 _BaseCertificateManagerRestTransport._BaseCreateCertificateMap._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_certificate_map(
                 request, metadata
             )
@@ -1594,6 +1765,33 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             query_params = _BaseCertificateManagerRestTransport._BaseCreateCertificateMap._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.certificatemanager_v1.CertificateManagerClient.CreateCertificateMap",
+                    extra={
+                        "serviceName": "google.cloud.certificatemanager.v1.CertificateManager",
+                        "rpcName": "CreateCertificateMap",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1616,7 +1814,29 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_certificate_map(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.certificatemanager_v1.CertificateManagerClient.create_certificate_map",
+                    extra={
+                        "serviceName": "google.cloud.certificatemanager.v1.CertificateManager",
+                        "rpcName": "CreateCertificateMap",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateCertificateMapEntry(
@@ -1655,7 +1875,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create certificate map
             entry method over HTTP.
@@ -1666,8 +1886,10 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.operations_pb2.Operation:
@@ -1680,6 +1902,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             http_options = (
                 _BaseCertificateManagerRestTransport._BaseCreateCertificateMapEntry._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_certificate_map_entry(
                 request, metadata
             )
@@ -1695,6 +1918,33 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             query_params = _BaseCertificateManagerRestTransport._BaseCreateCertificateMapEntry._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.certificatemanager_v1.CertificateManagerClient.CreateCertificateMapEntry",
+                    extra={
+                        "serviceName": "google.cloud.certificatemanager.v1.CertificateManager",
+                        "rpcName": "CreateCertificateMapEntry",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CertificateManagerRestTransport._CreateCertificateMapEntry._get_response(
@@ -1715,7 +1965,29 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_certificate_map_entry(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.certificatemanager_v1.CertificateManagerClient.create_certificate_map_entry",
+                    extra={
+                        "serviceName": "google.cloud.certificatemanager.v1.CertificateManager",
+                        "rpcName": "CreateCertificateMapEntry",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateDnsAuthorization(
@@ -1754,7 +2026,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create dns authorization method over HTTP.
 
@@ -1764,8 +2036,10 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1778,6 +2052,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             http_options = (
                 _BaseCertificateManagerRestTransport._BaseCreateDnsAuthorization._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_dns_authorization(
                 request, metadata
             )
@@ -1793,6 +2068,33 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             query_params = _BaseCertificateManagerRestTransport._BaseCreateDnsAuthorization._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.certificatemanager_v1.CertificateManagerClient.CreateDnsAuthorization",
+                    extra={
+                        "serviceName": "google.cloud.certificatemanager.v1.CertificateManager",
+                        "rpcName": "CreateDnsAuthorization",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1815,7 +2117,29 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_dns_authorization(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.certificatemanager_v1.CertificateManagerClient.create_dns_authorization",
+                    extra={
+                        "serviceName": "google.cloud.certificatemanager.v1.CertificateManager",
+                        "rpcName": "CreateDnsAuthorization",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateTrustConfig(
@@ -1854,7 +2178,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create trust config method over HTTP.
 
@@ -1864,8 +2188,10 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1878,6 +2204,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             http_options = (
                 _BaseCertificateManagerRestTransport._BaseCreateTrustConfig._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_trust_config(
                 request, metadata
             )
@@ -1893,6 +2220,33 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             query_params = _BaseCertificateManagerRestTransport._BaseCreateTrustConfig._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.certificatemanager_v1.CertificateManagerClient.CreateTrustConfig",
+                    extra={
+                        "serviceName": "google.cloud.certificatemanager.v1.CertificateManager",
+                        "rpcName": "CreateTrustConfig",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CertificateManagerRestTransport._CreateTrustConfig._get_response(
@@ -1913,7 +2267,29 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_trust_config(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.certificatemanager_v1.CertificateManagerClient.create_trust_config",
+                    extra={
+                        "serviceName": "google.cloud.certificatemanager.v1.CertificateManager",
+                        "rpcName": "CreateTrustConfig",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteCertificate(
@@ -1951,7 +2327,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete certificate method over HTTP.
 
@@ -1961,8 +2337,10 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1975,6 +2353,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             http_options = (
                 _BaseCertificateManagerRestTransport._BaseDeleteCertificate._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_certificate(
                 request, metadata
             )
@@ -1986,6 +2365,33 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             query_params = _BaseCertificateManagerRestTransport._BaseDeleteCertificate._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.certificatemanager_v1.CertificateManagerClient.DeleteCertificate",
+                    extra={
+                        "serviceName": "google.cloud.certificatemanager.v1.CertificateManager",
+                        "rpcName": "DeleteCertificate",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CertificateManagerRestTransport._DeleteCertificate._get_response(
@@ -2005,7 +2411,29 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_certificate(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.certificatemanager_v1.CertificateManagerClient.delete_certificate",
+                    extra={
+                        "serviceName": "google.cloud.certificatemanager.v1.CertificateManager",
+                        "rpcName": "DeleteCertificate",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteCertificateIssuanceConfig(
@@ -2045,7 +2473,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete certificate
             issuance config method over HTTP.
@@ -2057,8 +2485,10 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.operations_pb2.Operation:
@@ -2071,6 +2501,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             http_options = (
                 _BaseCertificateManagerRestTransport._BaseDeleteCertificateIssuanceConfig._get_http_options()
             )
+
             (
                 request,
                 metadata,
@@ -2085,6 +2516,33 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             query_params = _BaseCertificateManagerRestTransport._BaseDeleteCertificateIssuanceConfig._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.certificatemanager_v1.CertificateManagerClient.DeleteCertificateIssuanceConfig",
+                    extra={
+                        "serviceName": "google.cloud.certificatemanager.v1.CertificateManager",
+                        "rpcName": "DeleteCertificateIssuanceConfig",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CertificateManagerRestTransport._DeleteCertificateIssuanceConfig._get_response(
@@ -2104,7 +2562,29 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_certificate_issuance_config(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.certificatemanager_v1.CertificateManagerClient.delete_certificate_issuance_config",
+                    extra={
+                        "serviceName": "google.cloud.certificatemanager.v1.CertificateManager",
+                        "rpcName": "DeleteCertificateIssuanceConfig",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteCertificateMap(
@@ -2142,7 +2622,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete certificate map method over HTTP.
 
@@ -2152,8 +2632,10 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2166,6 +2648,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             http_options = (
                 _BaseCertificateManagerRestTransport._BaseDeleteCertificateMap._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_certificate_map(
                 request, metadata
             )
@@ -2177,6 +2660,33 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             query_params = _BaseCertificateManagerRestTransport._BaseDeleteCertificateMap._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.certificatemanager_v1.CertificateManagerClient.DeleteCertificateMap",
+                    extra={
+                        "serviceName": "google.cloud.certificatemanager.v1.CertificateManager",
+                        "rpcName": "DeleteCertificateMap",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -2198,7 +2708,29 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_certificate_map(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.certificatemanager_v1.CertificateManagerClient.delete_certificate_map",
+                    extra={
+                        "serviceName": "google.cloud.certificatemanager.v1.CertificateManager",
+                        "rpcName": "DeleteCertificateMap",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteCertificateMapEntry(
@@ -2236,7 +2768,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete certificate map
             entry method over HTTP.
@@ -2247,8 +2779,10 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.operations_pb2.Operation:
@@ -2261,6 +2795,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             http_options = (
                 _BaseCertificateManagerRestTransport._BaseDeleteCertificateMapEntry._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_certificate_map_entry(
                 request, metadata
             )
@@ -2272,6 +2807,33 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             query_params = _BaseCertificateManagerRestTransport._BaseDeleteCertificateMapEntry._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.certificatemanager_v1.CertificateManagerClient.DeleteCertificateMapEntry",
+                    extra={
+                        "serviceName": "google.cloud.certificatemanager.v1.CertificateManager",
+                        "rpcName": "DeleteCertificateMapEntry",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CertificateManagerRestTransport._DeleteCertificateMapEntry._get_response(
@@ -2291,7 +2853,29 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_certificate_map_entry(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.certificatemanager_v1.CertificateManagerClient.delete_certificate_map_entry",
+                    extra={
+                        "serviceName": "google.cloud.certificatemanager.v1.CertificateManager",
+                        "rpcName": "DeleteCertificateMapEntry",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteDnsAuthorization(
@@ -2329,7 +2913,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete dns authorization method over HTTP.
 
@@ -2339,8 +2923,10 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2353,6 +2939,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             http_options = (
                 _BaseCertificateManagerRestTransport._BaseDeleteDnsAuthorization._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_dns_authorization(
                 request, metadata
             )
@@ -2364,6 +2951,33 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             query_params = _BaseCertificateManagerRestTransport._BaseDeleteDnsAuthorization._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.certificatemanager_v1.CertificateManagerClient.DeleteDnsAuthorization",
+                    extra={
+                        "serviceName": "google.cloud.certificatemanager.v1.CertificateManager",
+                        "rpcName": "DeleteDnsAuthorization",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -2385,7 +2999,29 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_dns_authorization(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.certificatemanager_v1.CertificateManagerClient.delete_dns_authorization",
+                    extra={
+                        "serviceName": "google.cloud.certificatemanager.v1.CertificateManager",
+                        "rpcName": "DeleteDnsAuthorization",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteTrustConfig(
@@ -2423,7 +3059,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete trust config method over HTTP.
 
@@ -2433,8 +3069,10 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2447,6 +3085,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             http_options = (
                 _BaseCertificateManagerRestTransport._BaseDeleteTrustConfig._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_trust_config(
                 request, metadata
             )
@@ -2458,6 +3097,33 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             query_params = _BaseCertificateManagerRestTransport._BaseDeleteTrustConfig._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.certificatemanager_v1.CertificateManagerClient.DeleteTrustConfig",
+                    extra={
+                        "serviceName": "google.cloud.certificatemanager.v1.CertificateManager",
+                        "rpcName": "DeleteTrustConfig",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CertificateManagerRestTransport._DeleteTrustConfig._get_response(
@@ -2477,7 +3143,29 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_trust_config(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.certificatemanager_v1.CertificateManagerClient.delete_trust_config",
+                    extra={
+                        "serviceName": "google.cloud.certificatemanager.v1.CertificateManager",
+                        "rpcName": "DeleteTrustConfig",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetCertificate(
@@ -2515,7 +3203,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> certificate_manager.Certificate:
             r"""Call the get certificate method over HTTP.
 
@@ -2525,8 +3213,10 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.certificate_manager.Certificate:
@@ -2536,6 +3226,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             http_options = (
                 _BaseCertificateManagerRestTransport._BaseGetCertificate._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_certificate(request, metadata)
             transcoded_request = _BaseCertificateManagerRestTransport._BaseGetCertificate._get_transcoded_request(
                 http_options, request
@@ -2545,6 +3236,33 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             query_params = _BaseCertificateManagerRestTransport._BaseGetCertificate._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.certificatemanager_v1.CertificateManagerClient.GetCertificate",
+                    extra={
+                        "serviceName": "google.cloud.certificatemanager.v1.CertificateManager",
+                        "rpcName": "GetCertificate",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CertificateManagerRestTransport._GetCertificate._get_response(
@@ -2566,7 +3284,29 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             pb_resp = certificate_manager.Certificate.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_certificate(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = certificate_manager.Certificate.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.certificatemanager_v1.CertificateManagerClient.get_certificate",
+                    extra={
+                        "serviceName": "google.cloud.certificatemanager.v1.CertificateManager",
+                        "rpcName": "GetCertificate",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetCertificateIssuanceConfig(
@@ -2604,7 +3344,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> certificate_issuance_config.CertificateIssuanceConfig:
             r"""Call the get certificate issuance
             config method over HTTP.
@@ -2615,8 +3355,10 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.certificate_issuance_config.CertificateIssuanceConfig:
@@ -2628,6 +3370,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             http_options = (
                 _BaseCertificateManagerRestTransport._BaseGetCertificateIssuanceConfig._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_certificate_issuance_config(
                 request, metadata
             )
@@ -2639,6 +3382,33 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             query_params = _BaseCertificateManagerRestTransport._BaseGetCertificateIssuanceConfig._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.certificatemanager_v1.CertificateManagerClient.GetCertificateIssuanceConfig",
+                    extra={
+                        "serviceName": "google.cloud.certificatemanager.v1.CertificateManager",
+                        "rpcName": "GetCertificateIssuanceConfig",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CertificateManagerRestTransport._GetCertificateIssuanceConfig._get_response(
@@ -2660,7 +3430,33 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             pb_resp = certificate_issuance_config.CertificateIssuanceConfig.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_certificate_issuance_config(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        certificate_issuance_config.CertificateIssuanceConfig.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.certificatemanager_v1.CertificateManagerClient.get_certificate_issuance_config",
+                    extra={
+                        "serviceName": "google.cloud.certificatemanager.v1.CertificateManager",
+                        "rpcName": "GetCertificateIssuanceConfig",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetCertificateMap(
@@ -2698,7 +3494,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> certificate_manager.CertificateMap:
             r"""Call the get certificate map method over HTTP.
 
@@ -2708,8 +3504,10 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.certificate_manager.CertificateMap:
@@ -2721,6 +3519,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             http_options = (
                 _BaseCertificateManagerRestTransport._BaseGetCertificateMap._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_certificate_map(
                 request, metadata
             )
@@ -2732,6 +3531,33 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             query_params = _BaseCertificateManagerRestTransport._BaseGetCertificateMap._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.certificatemanager_v1.CertificateManagerClient.GetCertificateMap",
+                    extra={
+                        "serviceName": "google.cloud.certificatemanager.v1.CertificateManager",
+                        "rpcName": "GetCertificateMap",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CertificateManagerRestTransport._GetCertificateMap._get_response(
@@ -2753,7 +3579,31 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             pb_resp = certificate_manager.CertificateMap.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_certificate_map(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = certificate_manager.CertificateMap.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.certificatemanager_v1.CertificateManagerClient.get_certificate_map",
+                    extra={
+                        "serviceName": "google.cloud.certificatemanager.v1.CertificateManager",
+                        "rpcName": "GetCertificateMap",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetCertificateMapEntry(
@@ -2791,7 +3641,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> certificate_manager.CertificateMapEntry:
             r"""Call the get certificate map entry method over HTTP.
 
@@ -2801,8 +3651,10 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.certificate_manager.CertificateMapEntry:
@@ -2812,6 +3664,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             http_options = (
                 _BaseCertificateManagerRestTransport._BaseGetCertificateMapEntry._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_certificate_map_entry(
                 request, metadata
             )
@@ -2823,6 +3676,33 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             query_params = _BaseCertificateManagerRestTransport._BaseGetCertificateMapEntry._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.certificatemanager_v1.CertificateManagerClient.GetCertificateMapEntry",
+                    extra={
+                        "serviceName": "google.cloud.certificatemanager.v1.CertificateManager",
+                        "rpcName": "GetCertificateMapEntry",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -2846,7 +3726,31 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             pb_resp = certificate_manager.CertificateMapEntry.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_certificate_map_entry(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = certificate_manager.CertificateMapEntry.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.certificatemanager_v1.CertificateManagerClient.get_certificate_map_entry",
+                    extra={
+                        "serviceName": "google.cloud.certificatemanager.v1.CertificateManager",
+                        "rpcName": "GetCertificateMapEntry",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetDnsAuthorization(
@@ -2884,7 +3788,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> certificate_manager.DnsAuthorization:
             r"""Call the get dns authorization method over HTTP.
 
@@ -2894,8 +3798,10 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.certificate_manager.DnsAuthorization:
@@ -2908,6 +3814,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             http_options = (
                 _BaseCertificateManagerRestTransport._BaseGetDnsAuthorization._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_dns_authorization(
                 request, metadata
             )
@@ -2919,6 +3826,33 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             query_params = _BaseCertificateManagerRestTransport._BaseGetDnsAuthorization._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.certificatemanager_v1.CertificateManagerClient.GetDnsAuthorization",
+                    extra={
+                        "serviceName": "google.cloud.certificatemanager.v1.CertificateManager",
+                        "rpcName": "GetDnsAuthorization",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -2942,7 +3876,31 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             pb_resp = certificate_manager.DnsAuthorization.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_dns_authorization(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = certificate_manager.DnsAuthorization.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.certificatemanager_v1.CertificateManagerClient.get_dns_authorization",
+                    extra={
+                        "serviceName": "google.cloud.certificatemanager.v1.CertificateManager",
+                        "rpcName": "GetDnsAuthorization",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetTrustConfig(
@@ -2980,7 +3938,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> trust_config.TrustConfig:
             r"""Call the get trust config method over HTTP.
 
@@ -2990,8 +3948,10 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.trust_config.TrustConfig:
@@ -3001,6 +3961,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             http_options = (
                 _BaseCertificateManagerRestTransport._BaseGetTrustConfig._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_trust_config(
                 request, metadata
             )
@@ -3012,6 +3973,33 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             query_params = _BaseCertificateManagerRestTransport._BaseGetTrustConfig._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.certificatemanager_v1.CertificateManagerClient.GetTrustConfig",
+                    extra={
+                        "serviceName": "google.cloud.certificatemanager.v1.CertificateManager",
+                        "rpcName": "GetTrustConfig",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CertificateManagerRestTransport._GetTrustConfig._get_response(
@@ -3033,7 +4021,29 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             pb_resp = trust_config.TrustConfig.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_trust_config(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = trust_config.TrustConfig.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.certificatemanager_v1.CertificateManagerClient.get_trust_config",
+                    extra={
+                        "serviceName": "google.cloud.certificatemanager.v1.CertificateManager",
+                        "rpcName": "GetTrustConfig",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListCertificateIssuanceConfigs(
@@ -3073,7 +4083,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> certificate_issuance_config.ListCertificateIssuanceConfigsResponse:
             r"""Call the list certificate issuance
             configs method over HTTP.
@@ -3085,8 +4095,10 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.certificate_issuance_config.ListCertificateIssuanceConfigsResponse:
@@ -3098,6 +4110,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             http_options = (
                 _BaseCertificateManagerRestTransport._BaseListCertificateIssuanceConfigs._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_certificate_issuance_configs(
                 request, metadata
             )
@@ -3109,6 +4122,33 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             query_params = _BaseCertificateManagerRestTransport._BaseListCertificateIssuanceConfigs._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.certificatemanager_v1.CertificateManagerClient.ListCertificateIssuanceConfigs",
+                    extra={
+                        "serviceName": "google.cloud.certificatemanager.v1.CertificateManager",
+                        "rpcName": "ListCertificateIssuanceConfigs",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CertificateManagerRestTransport._ListCertificateIssuanceConfigs._get_response(
@@ -3134,7 +4174,31 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             )
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_certificate_issuance_configs(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = certificate_issuance_config.ListCertificateIssuanceConfigsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.certificatemanager_v1.CertificateManagerClient.list_certificate_issuance_configs",
+                    extra={
+                        "serviceName": "google.cloud.certificatemanager.v1.CertificateManager",
+                        "rpcName": "ListCertificateIssuanceConfigs",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListCertificateMapEntries(
@@ -3172,7 +4236,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> certificate_manager.ListCertificateMapEntriesResponse:
             r"""Call the list certificate map
             entries method over HTTP.
@@ -3183,8 +4247,10 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.certificate_manager.ListCertificateMapEntriesResponse:
@@ -3194,6 +4260,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             http_options = (
                 _BaseCertificateManagerRestTransport._BaseListCertificateMapEntries._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_certificate_map_entries(
                 request, metadata
             )
@@ -3205,6 +4272,33 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             query_params = _BaseCertificateManagerRestTransport._BaseListCertificateMapEntries._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.certificatemanager_v1.CertificateManagerClient.ListCertificateMapEntries",
+                    extra={
+                        "serviceName": "google.cloud.certificatemanager.v1.CertificateManager",
+                        "rpcName": "ListCertificateMapEntries",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CertificateManagerRestTransport._ListCertificateMapEntries._get_response(
@@ -3226,7 +4320,33 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             pb_resp = certificate_manager.ListCertificateMapEntriesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_certificate_map_entries(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        certificate_manager.ListCertificateMapEntriesResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.certificatemanager_v1.CertificateManagerClient.list_certificate_map_entries",
+                    extra={
+                        "serviceName": "google.cloud.certificatemanager.v1.CertificateManager",
+                        "rpcName": "ListCertificateMapEntries",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListCertificateMaps(
@@ -3264,7 +4384,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> certificate_manager.ListCertificateMapsResponse:
             r"""Call the list certificate maps method over HTTP.
 
@@ -3274,8 +4394,10 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.certificate_manager.ListCertificateMapsResponse:
@@ -3285,6 +4407,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             http_options = (
                 _BaseCertificateManagerRestTransport._BaseListCertificateMaps._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_certificate_maps(
                 request, metadata
             )
@@ -3296,6 +4419,33 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             query_params = _BaseCertificateManagerRestTransport._BaseListCertificateMaps._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.certificatemanager_v1.CertificateManagerClient.ListCertificateMaps",
+                    extra={
+                        "serviceName": "google.cloud.certificatemanager.v1.CertificateManager",
+                        "rpcName": "ListCertificateMaps",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -3319,7 +4469,33 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             pb_resp = certificate_manager.ListCertificateMapsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_certificate_maps(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        certificate_manager.ListCertificateMapsResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.certificatemanager_v1.CertificateManagerClient.list_certificate_maps",
+                    extra={
+                        "serviceName": "google.cloud.certificatemanager.v1.CertificateManager",
+                        "rpcName": "ListCertificateMaps",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListCertificates(
@@ -3357,7 +4533,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> certificate_manager.ListCertificatesResponse:
             r"""Call the list certificates method over HTTP.
 
@@ -3367,8 +4543,10 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.certificate_manager.ListCertificatesResponse:
@@ -3378,6 +4556,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             http_options = (
                 _BaseCertificateManagerRestTransport._BaseListCertificates._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_certificates(
                 request, metadata
             )
@@ -3389,6 +4568,33 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             query_params = _BaseCertificateManagerRestTransport._BaseListCertificates._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.certificatemanager_v1.CertificateManagerClient.ListCertificates",
+                    extra={
+                        "serviceName": "google.cloud.certificatemanager.v1.CertificateManager",
+                        "rpcName": "ListCertificates",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CertificateManagerRestTransport._ListCertificates._get_response(
@@ -3410,7 +4616,31 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             pb_resp = certificate_manager.ListCertificatesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_certificates(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        certificate_manager.ListCertificatesResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.certificatemanager_v1.CertificateManagerClient.list_certificates",
+                    extra={
+                        "serviceName": "google.cloud.certificatemanager.v1.CertificateManager",
+                        "rpcName": "ListCertificates",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListDnsAuthorizations(
@@ -3448,7 +4678,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> certificate_manager.ListDnsAuthorizationsResponse:
             r"""Call the list dns authorizations method over HTTP.
 
@@ -3458,8 +4688,10 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.certificate_manager.ListDnsAuthorizationsResponse:
@@ -3469,6 +4701,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             http_options = (
                 _BaseCertificateManagerRestTransport._BaseListDnsAuthorizations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_dns_authorizations(
                 request, metadata
             )
@@ -3480,6 +4713,33 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             query_params = _BaseCertificateManagerRestTransport._BaseListDnsAuthorizations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.certificatemanager_v1.CertificateManagerClient.ListDnsAuthorizations",
+                    extra={
+                        "serviceName": "google.cloud.certificatemanager.v1.CertificateManager",
+                        "rpcName": "ListDnsAuthorizations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -3503,7 +4763,33 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             pb_resp = certificate_manager.ListDnsAuthorizationsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_dns_authorizations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        certificate_manager.ListDnsAuthorizationsResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.certificatemanager_v1.CertificateManagerClient.list_dns_authorizations",
+                    extra={
+                        "serviceName": "google.cloud.certificatemanager.v1.CertificateManager",
+                        "rpcName": "ListDnsAuthorizations",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListTrustConfigs(
@@ -3541,7 +4827,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> trust_config.ListTrustConfigsResponse:
             r"""Call the list trust configs method over HTTP.
 
@@ -3551,8 +4837,10 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.trust_config.ListTrustConfigsResponse:
@@ -3562,6 +4850,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             http_options = (
                 _BaseCertificateManagerRestTransport._BaseListTrustConfigs._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_trust_configs(
                 request, metadata
             )
@@ -3573,6 +4862,33 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             query_params = _BaseCertificateManagerRestTransport._BaseListTrustConfigs._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.certificatemanager_v1.CertificateManagerClient.ListTrustConfigs",
+                    extra={
+                        "serviceName": "google.cloud.certificatemanager.v1.CertificateManager",
+                        "rpcName": "ListTrustConfigs",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CertificateManagerRestTransport._ListTrustConfigs._get_response(
@@ -3594,7 +4910,31 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             pb_resp = trust_config.ListTrustConfigsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_trust_configs(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = trust_config.ListTrustConfigsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.certificatemanager_v1.CertificateManagerClient.list_trust_configs",
+                    extra={
+                        "serviceName": "google.cloud.certificatemanager.v1.CertificateManager",
+                        "rpcName": "ListTrustConfigs",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateCertificate(
@@ -3633,7 +4973,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update certificate method over HTTP.
 
@@ -3643,8 +4983,10 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -3657,6 +4999,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             http_options = (
                 _BaseCertificateManagerRestTransport._BaseUpdateCertificate._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_certificate(
                 request, metadata
             )
@@ -3672,6 +5015,33 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             query_params = _BaseCertificateManagerRestTransport._BaseUpdateCertificate._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.certificatemanager_v1.CertificateManagerClient.UpdateCertificate",
+                    extra={
+                        "serviceName": "google.cloud.certificatemanager.v1.CertificateManager",
+                        "rpcName": "UpdateCertificate",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CertificateManagerRestTransport._UpdateCertificate._get_response(
@@ -3692,7 +5062,29 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_certificate(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.certificatemanager_v1.CertificateManagerClient.update_certificate",
+                    extra={
+                        "serviceName": "google.cloud.certificatemanager.v1.CertificateManager",
+                        "rpcName": "UpdateCertificate",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateCertificateMap(
@@ -3731,7 +5123,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update certificate map method over HTTP.
 
@@ -3741,8 +5133,10 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -3755,6 +5149,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             http_options = (
                 _BaseCertificateManagerRestTransport._BaseUpdateCertificateMap._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_certificate_map(
                 request, metadata
             )
@@ -3770,6 +5165,33 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             query_params = _BaseCertificateManagerRestTransport._BaseUpdateCertificateMap._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.certificatemanager_v1.CertificateManagerClient.UpdateCertificateMap",
+                    extra={
+                        "serviceName": "google.cloud.certificatemanager.v1.CertificateManager",
+                        "rpcName": "UpdateCertificateMap",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -3792,7 +5214,29 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_certificate_map(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.certificatemanager_v1.CertificateManagerClient.update_certificate_map",
+                    extra={
+                        "serviceName": "google.cloud.certificatemanager.v1.CertificateManager",
+                        "rpcName": "UpdateCertificateMap",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateCertificateMapEntry(
@@ -3831,7 +5275,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update certificate map
             entry method over HTTP.
@@ -3842,8 +5286,10 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.operations_pb2.Operation:
@@ -3856,6 +5302,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             http_options = (
                 _BaseCertificateManagerRestTransport._BaseUpdateCertificateMapEntry._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_certificate_map_entry(
                 request, metadata
             )
@@ -3871,6 +5318,33 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             query_params = _BaseCertificateManagerRestTransport._BaseUpdateCertificateMapEntry._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.certificatemanager_v1.CertificateManagerClient.UpdateCertificateMapEntry",
+                    extra={
+                        "serviceName": "google.cloud.certificatemanager.v1.CertificateManager",
+                        "rpcName": "UpdateCertificateMapEntry",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CertificateManagerRestTransport._UpdateCertificateMapEntry._get_response(
@@ -3891,7 +5365,29 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_certificate_map_entry(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.certificatemanager_v1.CertificateManagerClient.update_certificate_map_entry",
+                    extra={
+                        "serviceName": "google.cloud.certificatemanager.v1.CertificateManager",
+                        "rpcName": "UpdateCertificateMapEntry",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateDnsAuthorization(
@@ -3930,7 +5426,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update dns authorization method over HTTP.
 
@@ -3940,8 +5436,10 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -3954,6 +5452,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             http_options = (
                 _BaseCertificateManagerRestTransport._BaseUpdateDnsAuthorization._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_dns_authorization(
                 request, metadata
             )
@@ -3969,6 +5468,33 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             query_params = _BaseCertificateManagerRestTransport._BaseUpdateDnsAuthorization._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.certificatemanager_v1.CertificateManagerClient.UpdateDnsAuthorization",
+                    extra={
+                        "serviceName": "google.cloud.certificatemanager.v1.CertificateManager",
+                        "rpcName": "UpdateDnsAuthorization",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -3991,7 +5517,29 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_dns_authorization(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.certificatemanager_v1.CertificateManagerClient.update_dns_authorization",
+                    extra={
+                        "serviceName": "google.cloud.certificatemanager.v1.CertificateManager",
+                        "rpcName": "UpdateDnsAuthorization",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateTrustConfig(
@@ -4030,7 +5578,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update trust config method over HTTP.
 
@@ -4040,8 +5588,10 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -4054,6 +5604,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             http_options = (
                 _BaseCertificateManagerRestTransport._BaseUpdateTrustConfig._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_trust_config(
                 request, metadata
             )
@@ -4069,6 +5620,33 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             query_params = _BaseCertificateManagerRestTransport._BaseUpdateTrustConfig._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.certificatemanager_v1.CertificateManagerClient.UpdateTrustConfig",
+                    extra={
+                        "serviceName": "google.cloud.certificatemanager.v1.CertificateManager",
+                        "rpcName": "UpdateTrustConfig",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CertificateManagerRestTransport._UpdateTrustConfig._get_response(
@@ -4089,7 +5667,29 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_trust_config(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.certificatemanager_v1.CertificateManagerClient.update_trust_config",
+                    extra={
+                        "serviceName": "google.cloud.certificatemanager.v1.CertificateManager",
+                        "rpcName": "UpdateTrustConfig",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -4428,7 +6028,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.Location:
             r"""Call the get location method over HTTP.
 
@@ -4438,8 +6038,10 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.Location: Response from GetLocation method.
@@ -4448,6 +6050,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             http_options = (
                 _BaseCertificateManagerRestTransport._BaseGetLocation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_location(request, metadata)
             transcoded_request = _BaseCertificateManagerRestTransport._BaseGetLocation._get_transcoded_request(
                 http_options, request
@@ -4457,6 +6060,33 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             query_params = _BaseCertificateManagerRestTransport._BaseGetLocation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.certificatemanager_v1.CertificateManagerClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.certificatemanager.v1.CertificateManager",
+                        "rpcName": "GetLocation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CertificateManagerRestTransport._GetLocation._get_response(
@@ -4477,6 +6107,27 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.certificatemanager_v1.CertificateManagerAsyncClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.certificatemanager.v1.CertificateManager",
+                        "rpcName": "GetLocation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -4518,7 +6169,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.ListLocationsResponse:
             r"""Call the list locations method over HTTP.
 
@@ -4528,8 +6179,10 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
@@ -4538,6 +6191,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             http_options = (
                 _BaseCertificateManagerRestTransport._BaseListLocations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
             transcoded_request = _BaseCertificateManagerRestTransport._BaseListLocations._get_transcoded_request(
                 http_options, request
@@ -4547,6 +6201,33 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             query_params = _BaseCertificateManagerRestTransport._BaseListLocations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.certificatemanager_v1.CertificateManagerClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.certificatemanager.v1.CertificateManager",
+                        "rpcName": "ListLocations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CertificateManagerRestTransport._ListLocations._get_response(
@@ -4567,6 +6248,27 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.certificatemanager_v1.CertificateManagerAsyncClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.certificatemanager.v1.CertificateManager",
+                        "rpcName": "ListLocations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -4609,7 +6311,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the cancel operation method over HTTP.
 
@@ -4619,13 +6321,16 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseCertificateManagerRestTransport._BaseCancelOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
@@ -4641,6 +6346,33 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             query_params = _BaseCertificateManagerRestTransport._BaseCancelOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.certificatemanager_v1.CertificateManagerClient.CancelOperation",
+                    extra={
+                        "serviceName": "google.cloud.certificatemanager.v1.CertificateManager",
+                        "rpcName": "CancelOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CertificateManagerRestTransport._CancelOperation._get_response(
@@ -4699,7 +6431,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the delete operation method over HTTP.
 
@@ -4709,13 +6441,16 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseCertificateManagerRestTransport._BaseDeleteOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
             )
@@ -4727,6 +6462,33 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             query_params = _BaseCertificateManagerRestTransport._BaseDeleteOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.certificatemanager_v1.CertificateManagerClient.DeleteOperation",
+                    extra={
+                        "serviceName": "google.cloud.certificatemanager.v1.CertificateManager",
+                        "rpcName": "DeleteOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CertificateManagerRestTransport._DeleteOperation._get_response(
@@ -4784,7 +6546,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the get operation method over HTTP.
 
@@ -4794,8 +6556,10 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.
@@ -4804,6 +6568,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             http_options = (
                 _BaseCertificateManagerRestTransport._BaseGetOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseCertificateManagerRestTransport._BaseGetOperation._get_transcoded_request(
                 http_options, request
@@ -4813,6 +6578,33 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             query_params = _BaseCertificateManagerRestTransport._BaseGetOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.certificatemanager_v1.CertificateManagerClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.certificatemanager.v1.CertificateManager",
+                        "rpcName": "GetOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CertificateManagerRestTransport._GetOperation._get_response(
@@ -4833,6 +6625,27 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.certificatemanager_v1.CertificateManagerAsyncClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.certificatemanager.v1.CertificateManager",
+                        "rpcName": "GetOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -4874,7 +6687,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.ListOperationsResponse:
             r"""Call the list operations method over HTTP.
 
@@ -4884,8 +6697,10 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
@@ -4894,6 +6709,7 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             http_options = (
                 _BaseCertificateManagerRestTransport._BaseListOperations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseCertificateManagerRestTransport._BaseListOperations._get_transcoded_request(
                 http_options, request
@@ -4903,6 +6719,33 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             query_params = _BaseCertificateManagerRestTransport._BaseListOperations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.certificatemanager_v1.CertificateManagerClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.certificatemanager.v1.CertificateManager",
+                        "rpcName": "ListOperations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CertificateManagerRestTransport._ListOperations._get_response(
@@ -4923,6 +6766,27 @@ class CertificateManagerRestTransport(_BaseCertificateManagerRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.certificatemanager_v1.CertificateManagerAsyncClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.certificatemanager.v1.CertificateManager",
+                        "rpcName": "ListOperations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property

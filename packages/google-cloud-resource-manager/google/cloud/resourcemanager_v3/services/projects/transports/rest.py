@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -40,6 +40,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -160,8 +168,8 @@ class ProjectsRestInterceptor:
     def pre_create_project(
         self,
         request: projects.CreateProjectRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[projects.CreateProjectRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[projects.CreateProjectRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_project
 
         Override in a subclass to manipulate the request or metadata
@@ -183,8 +191,8 @@ class ProjectsRestInterceptor:
     def pre_delete_project(
         self,
         request: projects.DeleteProjectRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[projects.DeleteProjectRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[projects.DeleteProjectRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_project
 
         Override in a subclass to manipulate the request or metadata
@@ -206,8 +214,10 @@ class ProjectsRestInterceptor:
     def pre_get_iam_policy(
         self,
         request: iam_policy_pb2.GetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -225,8 +235,10 @@ class ProjectsRestInterceptor:
         return response
 
     def pre_get_project(
-        self, request: projects.GetProjectRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[projects.GetProjectRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: projects.GetProjectRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[projects.GetProjectRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_project
 
         Override in a subclass to manipulate the request or metadata
@@ -244,8 +256,10 @@ class ProjectsRestInterceptor:
         return response
 
     def pre_list_projects(
-        self, request: projects.ListProjectsRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[projects.ListProjectsRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: projects.ListProjectsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[projects.ListProjectsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_projects
 
         Override in a subclass to manipulate the request or metadata
@@ -265,8 +279,10 @@ class ProjectsRestInterceptor:
         return response
 
     def pre_move_project(
-        self, request: projects.MoveProjectRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[projects.MoveProjectRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: projects.MoveProjectRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[projects.MoveProjectRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for move_project
 
         Override in a subclass to manipulate the request or metadata
@@ -288,8 +304,8 @@ class ProjectsRestInterceptor:
     def pre_search_projects(
         self,
         request: projects.SearchProjectsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[projects.SearchProjectsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[projects.SearchProjectsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for search_projects
 
         Override in a subclass to manipulate the request or metadata
@@ -311,8 +327,10 @@ class ProjectsRestInterceptor:
     def pre_set_iam_policy(
         self,
         request: iam_policy_pb2.SetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -332,8 +350,11 @@ class ProjectsRestInterceptor:
     def pre_test_iam_permissions(
         self,
         request: iam_policy_pb2.TestIamPermissionsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.TestIamPermissionsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -355,8 +376,10 @@ class ProjectsRestInterceptor:
     def pre_undelete_project(
         self,
         request: projects.UndeleteProjectRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[projects.UndeleteProjectRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        projects.UndeleteProjectRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for undelete_project
 
         Override in a subclass to manipulate the request or metadata
@@ -378,8 +401,8 @@ class ProjectsRestInterceptor:
     def pre_update_project(
         self,
         request: projects.UpdateProjectRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[projects.UpdateProjectRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[projects.UpdateProjectRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_project
 
         Override in a subclass to manipulate the request or metadata
@@ -401,8 +424,10 @@ class ProjectsRestInterceptor:
     def pre_get_operation(
         self,
         request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -578,7 +603,7 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create project method over HTTP.
 
@@ -590,8 +615,10 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -604,6 +631,7 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
             http_options = (
                 _BaseProjectsRestTransport._BaseCreateProject._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_project(request, metadata)
             transcoded_request = (
                 _BaseProjectsRestTransport._BaseCreateProject._get_transcoded_request(
@@ -621,6 +649,33 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.resourcemanager_v3.ProjectsClient.CreateProject",
+                    extra={
+                        "serviceName": "google.cloud.resourcemanager.v3.Projects",
+                        "rpcName": "CreateProject",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ProjectsRestTransport._CreateProject._get_response(
@@ -641,7 +696,29 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_project(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.resourcemanager_v3.ProjectsClient.create_project",
+                    extra={
+                        "serviceName": "google.cloud.resourcemanager.v3.Projects",
+                        "rpcName": "CreateProject",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteProject(
@@ -678,7 +755,7 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete project method over HTTP.
 
@@ -689,8 +766,10 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -703,6 +782,7 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
             http_options = (
                 _BaseProjectsRestTransport._BaseDeleteProject._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_project(request, metadata)
             transcoded_request = (
                 _BaseProjectsRestTransport._BaseDeleteProject._get_transcoded_request(
@@ -716,6 +796,33 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.resourcemanager_v3.ProjectsClient.DeleteProject",
+                    extra={
+                        "serviceName": "google.cloud.resourcemanager.v3.Projects",
+                        "rpcName": "DeleteProject",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ProjectsRestTransport._DeleteProject._get_response(
@@ -735,7 +842,29 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_project(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.resourcemanager_v3.ProjectsClient.delete_project",
+                    extra={
+                        "serviceName": "google.cloud.resourcemanager.v3.Projects",
+                        "rpcName": "DeleteProject",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetIamPolicy(_BaseProjectsRestTransport._BaseGetIamPolicy, ProjectsRestStub):
@@ -771,7 +900,7 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> policy_pb2.Policy:
             r"""Call the get iam policy method over HTTP.
 
@@ -781,8 +910,10 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.policy_pb2.Policy:
@@ -867,6 +998,7 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
             http_options = (
                 _BaseProjectsRestTransport._BaseGetIamPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
             transcoded_request = (
                 _BaseProjectsRestTransport._BaseGetIamPolicy._get_transcoded_request(
@@ -884,6 +1016,33 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.resourcemanager_v3.ProjectsClient.GetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.resourcemanager.v3.Projects",
+                        "rpcName": "GetIamPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ProjectsRestTransport._GetIamPolicy._get_response(
@@ -906,7 +1065,29 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
             pb_resp = resp
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_iam_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.resourcemanager_v3.ProjectsClient.get_iam_policy",
+                    extra={
+                        "serviceName": "google.cloud.resourcemanager.v3.Projects",
+                        "rpcName": "GetIamPolicy",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetProject(_BaseProjectsRestTransport._BaseGetProject, ProjectsRestStub):
@@ -941,7 +1122,7 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> projects.Project:
             r"""Call the get project method over HTTP.
 
@@ -953,8 +1134,10 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.projects.Project:
@@ -968,6 +1151,7 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
             http_options = (
                 _BaseProjectsRestTransport._BaseGetProject._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_project(request, metadata)
             transcoded_request = (
                 _BaseProjectsRestTransport._BaseGetProject._get_transcoded_request(
@@ -981,6 +1165,33 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.resourcemanager_v3.ProjectsClient.GetProject",
+                    extra={
+                        "serviceName": "google.cloud.resourcemanager.v3.Projects",
+                        "rpcName": "GetProject",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ProjectsRestTransport._GetProject._get_response(
@@ -1002,7 +1213,29 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
             pb_resp = projects.Project.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_project(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = projects.Project.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.resourcemanager_v3.ProjectsClient.get_project",
+                    extra={
+                        "serviceName": "google.cloud.resourcemanager.v3.Projects",
+                        "rpcName": "GetProject",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListProjects(_BaseProjectsRestTransport._BaseListProjects, ProjectsRestStub):
@@ -1037,7 +1270,7 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> projects.ListProjectsResponse:
             r"""Call the list projects method over HTTP.
 
@@ -1049,8 +1282,10 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.projects.ListProjectsResponse:
@@ -1071,6 +1306,7 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
             http_options = (
                 _BaseProjectsRestTransport._BaseListProjects._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_projects(request, metadata)
             transcoded_request = (
                 _BaseProjectsRestTransport._BaseListProjects._get_transcoded_request(
@@ -1084,6 +1320,33 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.resourcemanager_v3.ProjectsClient.ListProjects",
+                    extra={
+                        "serviceName": "google.cloud.resourcemanager.v3.Projects",
+                        "rpcName": "ListProjects",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ProjectsRestTransport._ListProjects._get_response(
@@ -1105,7 +1368,29 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
             pb_resp = projects.ListProjectsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_projects(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = projects.ListProjectsResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.resourcemanager_v3.ProjectsClient.list_projects",
+                    extra={
+                        "serviceName": "google.cloud.resourcemanager.v3.Projects",
+                        "rpcName": "ListProjects",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _MoveProject(_BaseProjectsRestTransport._BaseMoveProject, ProjectsRestStub):
@@ -1141,7 +1426,7 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the move project method over HTTP.
 
@@ -1153,8 +1438,10 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1167,6 +1454,7 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
             http_options = (
                 _BaseProjectsRestTransport._BaseMoveProject._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_move_project(request, metadata)
             transcoded_request = (
                 _BaseProjectsRestTransport._BaseMoveProject._get_transcoded_request(
@@ -1184,6 +1472,33 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.resourcemanager_v3.ProjectsClient.MoveProject",
+                    extra={
+                        "serviceName": "google.cloud.resourcemanager.v3.Projects",
+                        "rpcName": "MoveProject",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ProjectsRestTransport._MoveProject._get_response(
@@ -1204,7 +1519,29 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_move_project(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.resourcemanager_v3.ProjectsClient.move_project",
+                    extra={
+                        "serviceName": "google.cloud.resourcemanager.v3.Projects",
+                        "rpcName": "MoveProject",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _SearchProjects(
@@ -1241,7 +1578,7 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> projects.SearchProjectsResponse:
             r"""Call the search projects method over HTTP.
 
@@ -1253,8 +1590,10 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.projects.SearchProjectsResponse:
@@ -1271,6 +1610,7 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
             http_options = (
                 _BaseProjectsRestTransport._BaseSearchProjects._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_search_projects(request, metadata)
             transcoded_request = (
                 _BaseProjectsRestTransport._BaseSearchProjects._get_transcoded_request(
@@ -1284,6 +1624,33 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.resourcemanager_v3.ProjectsClient.SearchProjects",
+                    extra={
+                        "serviceName": "google.cloud.resourcemanager.v3.Projects",
+                        "rpcName": "SearchProjects",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ProjectsRestTransport._SearchProjects._get_response(
@@ -1305,7 +1672,29 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
             pb_resp = projects.SearchProjectsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_search_projects(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = projects.SearchProjectsResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.resourcemanager_v3.ProjectsClient.search_projects",
+                    extra={
+                        "serviceName": "google.cloud.resourcemanager.v3.Projects",
+                        "rpcName": "SearchProjects",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _SetIamPolicy(_BaseProjectsRestTransport._BaseSetIamPolicy, ProjectsRestStub):
@@ -1341,7 +1730,7 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> policy_pb2.Policy:
             r"""Call the set iam policy method over HTTP.
 
@@ -1351,8 +1740,10 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.policy_pb2.Policy:
@@ -1437,6 +1828,7 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
             http_options = (
                 _BaseProjectsRestTransport._BaseSetIamPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
             transcoded_request = (
                 _BaseProjectsRestTransport._BaseSetIamPolicy._get_transcoded_request(
@@ -1454,6 +1846,33 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.resourcemanager_v3.ProjectsClient.SetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.resourcemanager.v3.Projects",
+                        "rpcName": "SetIamPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ProjectsRestTransport._SetIamPolicy._get_response(
@@ -1476,7 +1895,29 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
             pb_resp = resp
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_set_iam_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.resourcemanager_v3.ProjectsClient.set_iam_policy",
+                    extra={
+                        "serviceName": "google.cloud.resourcemanager.v3.Projects",
+                        "rpcName": "SetIamPolicy",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _TestIamPermissions(
@@ -1514,7 +1955,7 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> iam_policy_pb2.TestIamPermissionsResponse:
             r"""Call the test iam permissions method over HTTP.
 
@@ -1524,8 +1965,10 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.iam_policy_pb2.TestIamPermissionsResponse:
@@ -1535,6 +1978,7 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
             http_options = (
                 _BaseProjectsRestTransport._BaseTestIamPermissions._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata
             )
@@ -1550,6 +1994,33 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
             query_params = _BaseProjectsRestTransport._BaseTestIamPermissions._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.resourcemanager_v3.ProjectsClient.TestIamPermissions",
+                    extra={
+                        "serviceName": "google.cloud.resourcemanager.v3.Projects",
+                        "rpcName": "TestIamPermissions",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ProjectsRestTransport._TestIamPermissions._get_response(
@@ -1572,7 +2043,29 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
             pb_resp = resp
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_test_iam_permissions(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.resourcemanager_v3.ProjectsClient.test_iam_permissions",
+                    extra={
+                        "serviceName": "google.cloud.resourcemanager.v3.Projects",
+                        "rpcName": "TestIamPermissions",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UndeleteProject(
@@ -1610,7 +2103,7 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the undelete project method over HTTP.
 
@@ -1622,8 +2115,10 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1636,6 +2131,7 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
             http_options = (
                 _BaseProjectsRestTransport._BaseUndeleteProject._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_undelete_project(
                 request, metadata
             )
@@ -1658,6 +2154,33 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
                 )
             )
 
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.resourcemanager_v3.ProjectsClient.UndeleteProject",
+                    extra={
+                        "serviceName": "google.cloud.resourcemanager.v3.Projects",
+                        "rpcName": "UndeleteProject",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
             # Send the request
             response = ProjectsRestTransport._UndeleteProject._get_response(
                 self._host,
@@ -1677,7 +2200,29 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_undelete_project(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.resourcemanager_v3.ProjectsClient.undelete_project",
+                    extra={
+                        "serviceName": "google.cloud.resourcemanager.v3.Projects",
+                        "rpcName": "UndeleteProject",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateProject(
@@ -1715,7 +2260,7 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update project method over HTTP.
 
@@ -1732,8 +2277,10 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1746,6 +2293,7 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
             http_options = (
                 _BaseProjectsRestTransport._BaseUpdateProject._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_project(request, metadata)
             transcoded_request = (
                 _BaseProjectsRestTransport._BaseUpdateProject._get_transcoded_request(
@@ -1763,6 +2311,33 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.resourcemanager_v3.ProjectsClient.UpdateProject",
+                    extra={
+                        "serviceName": "google.cloud.resourcemanager.v3.Projects",
+                        "rpcName": "UpdateProject",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ProjectsRestTransport._UpdateProject._get_response(
@@ -1783,7 +2358,29 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_project(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.resourcemanager_v3.ProjectsClient.update_project",
+                    extra={
+                        "serviceName": "google.cloud.resourcemanager.v3.Projects",
+                        "rpcName": "UpdateProject",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -1911,7 +2508,7 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the get operation method over HTTP.
 
@@ -1921,8 +2518,10 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.
@@ -1931,6 +2530,7 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
             http_options = (
                 _BaseProjectsRestTransport._BaseGetOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = (
                 _BaseProjectsRestTransport._BaseGetOperation._get_transcoded_request(
@@ -1944,6 +2544,33 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.resourcemanager_v3.ProjectsClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.resourcemanager.v3.Projects",
+                        "rpcName": "GetOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ProjectsRestTransport._GetOperation._get_response(
@@ -1964,6 +2591,27 @@ class ProjectsRestTransport(_BaseProjectsRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.resourcemanager_v3.ProjectsAsyncClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.resourcemanager.v3.Projects",
+                        "rpcName": "GetOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property

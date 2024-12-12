@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -46,6 +46,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -294,8 +302,10 @@ class BackupDRRestInterceptor:
     def pre_create_backup_plan(
         self,
         request: backupplan.CreateBackupPlanRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[backupplan.CreateBackupPlanRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        backupplan.CreateBackupPlanRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_backup_plan
 
         Override in a subclass to manipulate the request or metadata
@@ -317,10 +327,10 @@ class BackupDRRestInterceptor:
     def pre_create_backup_plan_association(
         self,
         request: backupplanassociation.CreateBackupPlanAssociationRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         backupplanassociation.CreateBackupPlanAssociationRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for create_backup_plan_association
 
@@ -343,8 +353,10 @@ class BackupDRRestInterceptor:
     def pre_create_backup_vault(
         self,
         request: backupvault.CreateBackupVaultRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[backupvault.CreateBackupVaultRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        backupvault.CreateBackupVaultRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_backup_vault
 
         Override in a subclass to manipulate the request or metadata
@@ -366,8 +378,10 @@ class BackupDRRestInterceptor:
     def pre_create_management_server(
         self,
         request: backupdr.CreateManagementServerRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[backupdr.CreateManagementServerRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        backupdr.CreateManagementServerRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_management_server
 
         Override in a subclass to manipulate the request or metadata
@@ -389,8 +403,10 @@ class BackupDRRestInterceptor:
     def pre_delete_backup(
         self,
         request: backupvault.DeleteBackupRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[backupvault.DeleteBackupRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        backupvault.DeleteBackupRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_backup
 
         Override in a subclass to manipulate the request or metadata
@@ -412,8 +428,10 @@ class BackupDRRestInterceptor:
     def pre_delete_backup_plan(
         self,
         request: backupplan.DeleteBackupPlanRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[backupplan.DeleteBackupPlanRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        backupplan.DeleteBackupPlanRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_backup_plan
 
         Override in a subclass to manipulate the request or metadata
@@ -435,10 +453,10 @@ class BackupDRRestInterceptor:
     def pre_delete_backup_plan_association(
         self,
         request: backupplanassociation.DeleteBackupPlanAssociationRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         backupplanassociation.DeleteBackupPlanAssociationRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for delete_backup_plan_association
 
@@ -461,8 +479,10 @@ class BackupDRRestInterceptor:
     def pre_delete_backup_vault(
         self,
         request: backupvault.DeleteBackupVaultRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[backupvault.DeleteBackupVaultRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        backupvault.DeleteBackupVaultRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_backup_vault
 
         Override in a subclass to manipulate the request or metadata
@@ -484,8 +504,10 @@ class BackupDRRestInterceptor:
     def pre_delete_management_server(
         self,
         request: backupdr.DeleteManagementServerRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[backupdr.DeleteManagementServerRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        backupdr.DeleteManagementServerRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_management_server
 
         Override in a subclass to manipulate the request or metadata
@@ -507,8 +529,11 @@ class BackupDRRestInterceptor:
     def pre_fetch_usable_backup_vaults(
         self,
         request: backupvault.FetchUsableBackupVaultsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[backupvault.FetchUsableBackupVaultsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        backupvault.FetchUsableBackupVaultsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for fetch_usable_backup_vaults
 
         Override in a subclass to manipulate the request or metadata
@@ -528,8 +553,10 @@ class BackupDRRestInterceptor:
         return response
 
     def pre_get_backup(
-        self, request: backupvault.GetBackupRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[backupvault.GetBackupRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: backupvault.GetBackupRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[backupvault.GetBackupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_backup
 
         Override in a subclass to manipulate the request or metadata
@@ -549,8 +576,10 @@ class BackupDRRestInterceptor:
     def pre_get_backup_plan(
         self,
         request: backupplan.GetBackupPlanRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[backupplan.GetBackupPlanRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        backupplan.GetBackupPlanRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_backup_plan
 
         Override in a subclass to manipulate the request or metadata
@@ -572,9 +601,10 @@ class BackupDRRestInterceptor:
     def pre_get_backup_plan_association(
         self,
         request: backupplanassociation.GetBackupPlanAssociationRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        backupplanassociation.GetBackupPlanAssociationRequest, Sequence[Tuple[str, str]]
+        backupplanassociation.GetBackupPlanAssociationRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for get_backup_plan_association
 
@@ -597,8 +627,10 @@ class BackupDRRestInterceptor:
     def pre_get_backup_vault(
         self,
         request: backupvault.GetBackupVaultRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[backupvault.GetBackupVaultRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        backupvault.GetBackupVaultRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_backup_vault
 
         Override in a subclass to manipulate the request or metadata
@@ -620,8 +652,10 @@ class BackupDRRestInterceptor:
     def pre_get_data_source(
         self,
         request: backupvault.GetDataSourceRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[backupvault.GetDataSourceRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        backupvault.GetDataSourceRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_data_source
 
         Override in a subclass to manipulate the request or metadata
@@ -643,8 +677,10 @@ class BackupDRRestInterceptor:
     def pre_get_management_server(
         self,
         request: backupdr.GetManagementServerRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[backupdr.GetManagementServerRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        backupdr.GetManagementServerRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_management_server
 
         Override in a subclass to manipulate the request or metadata
@@ -666,10 +702,10 @@ class BackupDRRestInterceptor:
     def pre_list_backup_plan_associations(
         self,
         request: backupplanassociation.ListBackupPlanAssociationsRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         backupplanassociation.ListBackupPlanAssociationsRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for list_backup_plan_associations
 
@@ -692,8 +728,10 @@ class BackupDRRestInterceptor:
     def pre_list_backup_plans(
         self,
         request: backupplan.ListBackupPlansRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[backupplan.ListBackupPlansRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        backupplan.ListBackupPlansRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_backup_plans
 
         Override in a subclass to manipulate the request or metadata
@@ -715,8 +753,8 @@ class BackupDRRestInterceptor:
     def pre_list_backups(
         self,
         request: backupvault.ListBackupsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[backupvault.ListBackupsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[backupvault.ListBackupsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_backups
 
         Override in a subclass to manipulate the request or metadata
@@ -738,8 +776,10 @@ class BackupDRRestInterceptor:
     def pre_list_backup_vaults(
         self,
         request: backupvault.ListBackupVaultsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[backupvault.ListBackupVaultsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        backupvault.ListBackupVaultsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_backup_vaults
 
         Override in a subclass to manipulate the request or metadata
@@ -761,8 +801,10 @@ class BackupDRRestInterceptor:
     def pre_list_data_sources(
         self,
         request: backupvault.ListDataSourcesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[backupvault.ListDataSourcesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        backupvault.ListDataSourcesRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_data_sources
 
         Override in a subclass to manipulate the request or metadata
@@ -784,8 +826,10 @@ class BackupDRRestInterceptor:
     def pre_list_management_servers(
         self,
         request: backupdr.ListManagementServersRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[backupdr.ListManagementServersRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        backupdr.ListManagementServersRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_management_servers
 
         Override in a subclass to manipulate the request or metadata
@@ -807,8 +851,10 @@ class BackupDRRestInterceptor:
     def pre_restore_backup(
         self,
         request: backupvault.RestoreBackupRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[backupvault.RestoreBackupRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        backupvault.RestoreBackupRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for restore_backup
 
         Override in a subclass to manipulate the request or metadata
@@ -830,8 +876,11 @@ class BackupDRRestInterceptor:
     def pre_trigger_backup(
         self,
         request: backupplanassociation.TriggerBackupRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[backupplanassociation.TriggerBackupRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        backupplanassociation.TriggerBackupRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for trigger_backup
 
         Override in a subclass to manipulate the request or metadata
@@ -853,8 +902,10 @@ class BackupDRRestInterceptor:
     def pre_update_backup(
         self,
         request: backupvault.UpdateBackupRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[backupvault.UpdateBackupRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        backupvault.UpdateBackupRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_backup
 
         Override in a subclass to manipulate the request or metadata
@@ -876,8 +927,10 @@ class BackupDRRestInterceptor:
     def pre_update_backup_vault(
         self,
         request: backupvault.UpdateBackupVaultRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[backupvault.UpdateBackupVaultRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        backupvault.UpdateBackupVaultRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_backup_vault
 
         Override in a subclass to manipulate the request or metadata
@@ -899,8 +952,10 @@ class BackupDRRestInterceptor:
     def pre_update_data_source(
         self,
         request: backupvault.UpdateDataSourceRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[backupvault.UpdateDataSourceRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        backupvault.UpdateDataSourceRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_data_source
 
         Override in a subclass to manipulate the request or metadata
@@ -922,8 +977,10 @@ class BackupDRRestInterceptor:
     def pre_get_location(
         self,
         request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -945,8 +1002,10 @@ class BackupDRRestInterceptor:
     def pre_list_locations(
         self,
         request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -968,8 +1027,10 @@ class BackupDRRestInterceptor:
     def pre_get_iam_policy(
         self,
         request: iam_policy_pb2.GetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -989,8 +1050,10 @@ class BackupDRRestInterceptor:
     def pre_set_iam_policy(
         self,
         request: iam_policy_pb2.SetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -1010,8 +1073,11 @@ class BackupDRRestInterceptor:
     def pre_test_iam_permissions(
         self,
         request: iam_policy_pb2.TestIamPermissionsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.TestIamPermissionsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -1033,8 +1099,10 @@ class BackupDRRestInterceptor:
     def pre_cancel_operation(
         self,
         request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1054,8 +1122,10 @@ class BackupDRRestInterceptor:
     def pre_delete_operation(
         self,
         request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1075,8 +1145,10 @@ class BackupDRRestInterceptor:
     def pre_get_operation(
         self,
         request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1098,8 +1170,10 @@ class BackupDRRestInterceptor:
     def pre_list_operations(
         self,
         request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -1294,7 +1368,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create backup plan method over HTTP.
 
@@ -1304,8 +1378,10 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1318,6 +1394,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             http_options = (
                 _BaseBackupDRRestTransport._BaseCreateBackupPlan._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_backup_plan(
                 request, metadata
             )
@@ -1338,6 +1415,33 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 )
             )
 
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.backupdr_v1.BackupDRClient.CreateBackupPlan",
+                    extra={
+                        "serviceName": "google.cloud.backupdr.v1.BackupDR",
+                        "rpcName": "CreateBackupPlan",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
             # Send the request
             response = BackupDRRestTransport._CreateBackupPlan._get_response(
                 self._host,
@@ -1357,7 +1461,29 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_backup_plan(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.backupdr_v1.BackupDRClient.create_backup_plan",
+                    extra={
+                        "serviceName": "google.cloud.backupdr.v1.BackupDR",
+                        "rpcName": "CreateBackupPlan",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateBackupPlanAssociation(
@@ -1395,7 +1521,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create backup plan
             association method over HTTP.
@@ -1407,8 +1533,10 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.operations_pb2.Operation:
@@ -1421,6 +1549,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             http_options = (
                 _BaseBackupDRRestTransport._BaseCreateBackupPlanAssociation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_backup_plan_association(
                 request, metadata
             )
@@ -1436,6 +1565,33 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             query_params = _BaseBackupDRRestTransport._BaseCreateBackupPlanAssociation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.backupdr_v1.BackupDRClient.CreateBackupPlanAssociation",
+                    extra={
+                        "serviceName": "google.cloud.backupdr.v1.BackupDR",
+                        "rpcName": "CreateBackupPlanAssociation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BackupDRRestTransport._CreateBackupPlanAssociation._get_response(
@@ -1456,7 +1612,29 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_backup_plan_association(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.backupdr_v1.BackupDRClient.create_backup_plan_association",
+                    extra={
+                        "serviceName": "google.cloud.backupdr.v1.BackupDR",
+                        "rpcName": "CreateBackupPlanAssociation",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateBackupVault(
@@ -1494,7 +1672,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create backup vault method over HTTP.
 
@@ -1504,8 +1682,10 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1518,6 +1698,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             http_options = (
                 _BaseBackupDRRestTransport._BaseCreateBackupVault._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_backup_vault(
                 request, metadata
             )
@@ -1533,6 +1714,33 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             query_params = _BaseBackupDRRestTransport._BaseCreateBackupVault._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.backupdr_v1.BackupDRClient.CreateBackupVault",
+                    extra={
+                        "serviceName": "google.cloud.backupdr.v1.BackupDR",
+                        "rpcName": "CreateBackupVault",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BackupDRRestTransport._CreateBackupVault._get_response(
@@ -1553,7 +1761,29 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_backup_vault(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.backupdr_v1.BackupDRClient.create_backup_vault",
+                    extra={
+                        "serviceName": "google.cloud.backupdr.v1.BackupDR",
+                        "rpcName": "CreateBackupVault",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateManagementServer(
@@ -1591,7 +1821,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create management server method over HTTP.
 
@@ -1602,8 +1832,10 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1616,6 +1848,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             http_options = (
                 _BaseBackupDRRestTransport._BaseCreateManagementServer._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_management_server(
                 request, metadata
             )
@@ -1631,6 +1864,33 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             query_params = _BaseBackupDRRestTransport._BaseCreateManagementServer._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.backupdr_v1.BackupDRClient.CreateManagementServer",
+                    extra={
+                        "serviceName": "google.cloud.backupdr.v1.BackupDR",
+                        "rpcName": "CreateManagementServer",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BackupDRRestTransport._CreateManagementServer._get_response(
@@ -1651,7 +1911,29 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_management_server(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.backupdr_v1.BackupDRClient.create_management_server",
+                    extra={
+                        "serviceName": "google.cloud.backupdr.v1.BackupDR",
+                        "rpcName": "CreateManagementServer",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteBackup(_BaseBackupDRRestTransport._BaseDeleteBackup, BackupDRRestStub):
@@ -1686,7 +1968,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete backup method over HTTP.
 
@@ -1696,8 +1978,10 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1710,6 +1994,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             http_options = (
                 _BaseBackupDRRestTransport._BaseDeleteBackup._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_backup(request, metadata)
             transcoded_request = (
                 _BaseBackupDRRestTransport._BaseDeleteBackup._get_transcoded_request(
@@ -1723,6 +2008,33 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.backupdr_v1.BackupDRClient.DeleteBackup",
+                    extra={
+                        "serviceName": "google.cloud.backupdr.v1.BackupDR",
+                        "rpcName": "DeleteBackup",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BackupDRRestTransport._DeleteBackup._get_response(
@@ -1742,7 +2054,29 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_backup(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.backupdr_v1.BackupDRClient.delete_backup",
+                    extra={
+                        "serviceName": "google.cloud.backupdr.v1.BackupDR",
+                        "rpcName": "DeleteBackup",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteBackupPlan(
@@ -1779,7 +2113,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete backup plan method over HTTP.
 
@@ -1789,8 +2123,10 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1803,6 +2139,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             http_options = (
                 _BaseBackupDRRestTransport._BaseDeleteBackupPlan._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_backup_plan(
                 request, metadata
             )
@@ -1816,6 +2153,33 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.backupdr_v1.BackupDRClient.DeleteBackupPlan",
+                    extra={
+                        "serviceName": "google.cloud.backupdr.v1.BackupDR",
+                        "rpcName": "DeleteBackupPlan",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BackupDRRestTransport._DeleteBackupPlan._get_response(
@@ -1835,7 +2199,29 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_backup_plan(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.backupdr_v1.BackupDRClient.delete_backup_plan",
+                    extra={
+                        "serviceName": "google.cloud.backupdr.v1.BackupDR",
+                        "rpcName": "DeleteBackupPlan",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteBackupPlanAssociation(
@@ -1872,7 +2258,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete backup plan
             association method over HTTP.
@@ -1884,8 +2270,10 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.operations_pb2.Operation:
@@ -1898,6 +2286,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             http_options = (
                 _BaseBackupDRRestTransport._BaseDeleteBackupPlanAssociation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_backup_plan_association(
                 request, metadata
             )
@@ -1909,6 +2298,33 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             query_params = _BaseBackupDRRestTransport._BaseDeleteBackupPlanAssociation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.backupdr_v1.BackupDRClient.DeleteBackupPlanAssociation",
+                    extra={
+                        "serviceName": "google.cloud.backupdr.v1.BackupDR",
+                        "rpcName": "DeleteBackupPlanAssociation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BackupDRRestTransport._DeleteBackupPlanAssociation._get_response(
@@ -1928,7 +2344,29 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_backup_plan_association(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.backupdr_v1.BackupDRClient.delete_backup_plan_association",
+                    extra={
+                        "serviceName": "google.cloud.backupdr.v1.BackupDR",
+                        "rpcName": "DeleteBackupPlanAssociation",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteBackupVault(
@@ -1965,7 +2403,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete backup vault method over HTTP.
 
@@ -1975,8 +2413,10 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1989,6 +2429,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             http_options = (
                 _BaseBackupDRRestTransport._BaseDeleteBackupVault._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_backup_vault(
                 request, metadata
             )
@@ -2000,6 +2441,33 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             query_params = _BaseBackupDRRestTransport._BaseDeleteBackupVault._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.backupdr_v1.BackupDRClient.DeleteBackupVault",
+                    extra={
+                        "serviceName": "google.cloud.backupdr.v1.BackupDR",
+                        "rpcName": "DeleteBackupVault",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BackupDRRestTransport._DeleteBackupVault._get_response(
@@ -2019,7 +2487,29 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_backup_vault(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.backupdr_v1.BackupDRClient.delete_backup_vault",
+                    extra={
+                        "serviceName": "google.cloud.backupdr.v1.BackupDR",
+                        "rpcName": "DeleteBackupVault",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteManagementServer(
@@ -2056,7 +2546,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete management server method over HTTP.
 
@@ -2067,8 +2557,10 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2081,6 +2573,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             http_options = (
                 _BaseBackupDRRestTransport._BaseDeleteManagementServer._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_management_server(
                 request, metadata
             )
@@ -2092,6 +2585,33 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             query_params = _BaseBackupDRRestTransport._BaseDeleteManagementServer._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.backupdr_v1.BackupDRClient.DeleteManagementServer",
+                    extra={
+                        "serviceName": "google.cloud.backupdr.v1.BackupDR",
+                        "rpcName": "DeleteManagementServer",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BackupDRRestTransport._DeleteManagementServer._get_response(
@@ -2111,7 +2631,29 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_management_server(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.backupdr_v1.BackupDRClient.delete_management_server",
+                    extra={
+                        "serviceName": "google.cloud.backupdr.v1.BackupDR",
+                        "rpcName": "DeleteManagementServer",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _FetchUsableBackupVaults(
@@ -2148,7 +2690,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> backupvault.FetchUsableBackupVaultsResponse:
             r"""Call the fetch usable backup
             vaults method over HTTP.
@@ -2160,8 +2702,10 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.backupvault.FetchUsableBackupVaultsResponse:
@@ -2173,6 +2717,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             http_options = (
                 _BaseBackupDRRestTransport._BaseFetchUsableBackupVaults._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_fetch_usable_backup_vaults(
                 request, metadata
             )
@@ -2184,6 +2729,33 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             query_params = _BaseBackupDRRestTransport._BaseFetchUsableBackupVaults._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.backupdr_v1.BackupDRClient.FetchUsableBackupVaults",
+                    extra={
+                        "serviceName": "google.cloud.backupdr.v1.BackupDR",
+                        "rpcName": "FetchUsableBackupVaults",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BackupDRRestTransport._FetchUsableBackupVaults._get_response(
@@ -2205,7 +2777,31 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             pb_resp = backupvault.FetchUsableBackupVaultsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_fetch_usable_backup_vaults(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        backupvault.FetchUsableBackupVaultsResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.backupdr_v1.BackupDRClient.fetch_usable_backup_vaults",
+                    extra={
+                        "serviceName": "google.cloud.backupdr.v1.BackupDR",
+                        "rpcName": "FetchUsableBackupVaults",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetBackup(_BaseBackupDRRestTransport._BaseGetBackup, BackupDRRestStub):
@@ -2240,7 +2836,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> backupvault.Backup:
             r"""Call the get backup method over HTTP.
 
@@ -2250,8 +2846,10 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.backupvault.Backup:
@@ -2259,6 +2857,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             """
 
             http_options = _BaseBackupDRRestTransport._BaseGetBackup._get_http_options()
+
             request, metadata = self._interceptor.pre_get_backup(request, metadata)
             transcoded_request = (
                 _BaseBackupDRRestTransport._BaseGetBackup._get_transcoded_request(
@@ -2272,6 +2871,33 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.backupdr_v1.BackupDRClient.GetBackup",
+                    extra={
+                        "serviceName": "google.cloud.backupdr.v1.BackupDR",
+                        "rpcName": "GetBackup",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BackupDRRestTransport._GetBackup._get_response(
@@ -2293,7 +2919,29 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             pb_resp = backupvault.Backup.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_backup(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = backupvault.Backup.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.backupdr_v1.BackupDRClient.get_backup",
+                    extra={
+                        "serviceName": "google.cloud.backupdr.v1.BackupDR",
+                        "rpcName": "GetBackup",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetBackupPlan(
@@ -2330,7 +2978,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> backupplan.BackupPlan:
             r"""Call the get backup plan method over HTTP.
 
@@ -2340,8 +2988,10 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.backupplan.BackupPlan:
@@ -2356,6 +3006,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             http_options = (
                 _BaseBackupDRRestTransport._BaseGetBackupPlan._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_backup_plan(request, metadata)
             transcoded_request = (
                 _BaseBackupDRRestTransport._BaseGetBackupPlan._get_transcoded_request(
@@ -2369,6 +3020,33 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.backupdr_v1.BackupDRClient.GetBackupPlan",
+                    extra={
+                        "serviceName": "google.cloud.backupdr.v1.BackupDR",
+                        "rpcName": "GetBackupPlan",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BackupDRRestTransport._GetBackupPlan._get_response(
@@ -2390,7 +3068,29 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             pb_resp = backupplan.BackupPlan.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_backup_plan(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = backupplan.BackupPlan.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.backupdr_v1.BackupDRClient.get_backup_plan",
+                    extra={
+                        "serviceName": "google.cloud.backupdr.v1.BackupDR",
+                        "rpcName": "GetBackupPlan",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetBackupPlanAssociation(
@@ -2427,7 +3127,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> backupplanassociation.BackupPlanAssociation:
             r"""Call the get backup plan
             association method over HTTP.
@@ -2439,8 +3139,10 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.backupplanassociation.BackupPlanAssociation:
@@ -2454,6 +3156,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             http_options = (
                 _BaseBackupDRRestTransport._BaseGetBackupPlanAssociation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_backup_plan_association(
                 request, metadata
             )
@@ -2465,6 +3168,33 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             query_params = _BaseBackupDRRestTransport._BaseGetBackupPlanAssociation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.backupdr_v1.BackupDRClient.GetBackupPlanAssociation",
+                    extra={
+                        "serviceName": "google.cloud.backupdr.v1.BackupDR",
+                        "rpcName": "GetBackupPlanAssociation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BackupDRRestTransport._GetBackupPlanAssociation._get_response(
@@ -2486,7 +3216,31 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             pb_resp = backupplanassociation.BackupPlanAssociation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_backup_plan_association(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        backupplanassociation.BackupPlanAssociation.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.backupdr_v1.BackupDRClient.get_backup_plan_association",
+                    extra={
+                        "serviceName": "google.cloud.backupdr.v1.BackupDR",
+                        "rpcName": "GetBackupPlanAssociation",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetBackupVault(
@@ -2523,7 +3277,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> backupvault.BackupVault:
             r"""Call the get backup vault method over HTTP.
 
@@ -2534,8 +3288,10 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.backupvault.BackupVault:
@@ -2547,6 +3303,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             http_options = (
                 _BaseBackupDRRestTransport._BaseGetBackupVault._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_backup_vault(
                 request, metadata
             )
@@ -2562,6 +3319,33 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.backupdr_v1.BackupDRClient.GetBackupVault",
+                    extra={
+                        "serviceName": "google.cloud.backupdr.v1.BackupDR",
+                        "rpcName": "GetBackupVault",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BackupDRRestTransport._GetBackupVault._get_response(
@@ -2583,7 +3367,29 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             pb_resp = backupvault.BackupVault.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_backup_vault(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = backupvault.BackupVault.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.backupdr_v1.BackupDRClient.get_backup_vault",
+                    extra={
+                        "serviceName": "google.cloud.backupdr.v1.BackupDR",
+                        "rpcName": "GetBackupVault",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetDataSource(
@@ -2620,7 +3426,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> backupvault.DataSource:
             r"""Call the get data source method over HTTP.
 
@@ -2631,8 +3437,10 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.backupvault.DataSource:
@@ -2646,6 +3454,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             http_options = (
                 _BaseBackupDRRestTransport._BaseGetDataSource._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_data_source(request, metadata)
             transcoded_request = (
                 _BaseBackupDRRestTransport._BaseGetDataSource._get_transcoded_request(
@@ -2659,6 +3468,33 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.backupdr_v1.BackupDRClient.GetDataSource",
+                    extra={
+                        "serviceName": "google.cloud.backupdr.v1.BackupDR",
+                        "rpcName": "GetDataSource",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BackupDRRestTransport._GetDataSource._get_response(
@@ -2680,7 +3516,29 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             pb_resp = backupvault.DataSource.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_data_source(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = backupvault.DataSource.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.backupdr_v1.BackupDRClient.get_data_source",
+                    extra={
+                        "serviceName": "google.cloud.backupdr.v1.BackupDR",
+                        "rpcName": "GetDataSource",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetManagementServer(
@@ -2717,7 +3575,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> backupdr.ManagementServer:
             r"""Call the get management server method over HTTP.
 
@@ -2728,8 +3586,10 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.backupdr.ManagementServer:
@@ -2741,6 +3601,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             http_options = (
                 _BaseBackupDRRestTransport._BaseGetManagementServer._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_management_server(
                 request, metadata
             )
@@ -2752,6 +3613,33 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             query_params = _BaseBackupDRRestTransport._BaseGetManagementServer._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.backupdr_v1.BackupDRClient.GetManagementServer",
+                    extra={
+                        "serviceName": "google.cloud.backupdr.v1.BackupDR",
+                        "rpcName": "GetManagementServer",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BackupDRRestTransport._GetManagementServer._get_response(
@@ -2773,7 +3661,29 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             pb_resp = backupdr.ManagementServer.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_management_server(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = backupdr.ManagementServer.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.backupdr_v1.BackupDRClient.get_management_server",
+                    extra={
+                        "serviceName": "google.cloud.backupdr.v1.BackupDR",
+                        "rpcName": "GetManagementServer",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListBackupPlanAssociations(
@@ -2810,7 +3720,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> backupplanassociation.ListBackupPlanAssociationsResponse:
             r"""Call the list backup plan
             associations method over HTTP.
@@ -2822,8 +3732,10 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.backupplanassociation.ListBackupPlanAssociationsResponse:
@@ -2835,6 +3747,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             http_options = (
                 _BaseBackupDRRestTransport._BaseListBackupPlanAssociations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_backup_plan_associations(
                 request, metadata
             )
@@ -2846,6 +3759,33 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             query_params = _BaseBackupDRRestTransport._BaseListBackupPlanAssociations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.backupdr_v1.BackupDRClient.ListBackupPlanAssociations",
+                    extra={
+                        "serviceName": "google.cloud.backupdr.v1.BackupDR",
+                        "rpcName": "ListBackupPlanAssociations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BackupDRRestTransport._ListBackupPlanAssociations._get_response(
@@ -2867,7 +3807,31 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             pb_resp = backupplanassociation.ListBackupPlanAssociationsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_backup_plan_associations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = backupplanassociation.ListBackupPlanAssociationsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.backupdr_v1.BackupDRClient.list_backup_plan_associations",
+                    extra={
+                        "serviceName": "google.cloud.backupdr.v1.BackupDR",
+                        "rpcName": "ListBackupPlanAssociations",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListBackupPlans(
@@ -2904,7 +3868,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> backupplan.ListBackupPlansResponse:
             r"""Call the list backup plans method over HTTP.
 
@@ -2914,8 +3878,10 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.backupplan.ListBackupPlansResponse:
@@ -2927,6 +3893,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             http_options = (
                 _BaseBackupDRRestTransport._BaseListBackupPlans._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_backup_plans(
                 request, metadata
             )
@@ -2942,6 +3909,33 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.backupdr_v1.BackupDRClient.ListBackupPlans",
+                    extra={
+                        "serviceName": "google.cloud.backupdr.v1.BackupDR",
+                        "rpcName": "ListBackupPlans",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BackupDRRestTransport._ListBackupPlans._get_response(
@@ -2963,7 +3957,31 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             pb_resp = backupplan.ListBackupPlansResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_backup_plans(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = backupplan.ListBackupPlansResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.backupdr_v1.BackupDRClient.list_backup_plans",
+                    extra={
+                        "serviceName": "google.cloud.backupdr.v1.BackupDR",
+                        "rpcName": "ListBackupPlans",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListBackups(_BaseBackupDRRestTransport._BaseListBackups, BackupDRRestStub):
@@ -2998,7 +4016,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> backupvault.ListBackupsResponse:
             r"""Call the list backups method over HTTP.
 
@@ -3008,8 +4026,10 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.backupvault.ListBackupsResponse:
@@ -3019,6 +4039,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             http_options = (
                 _BaseBackupDRRestTransport._BaseListBackups._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_backups(request, metadata)
             transcoded_request = (
                 _BaseBackupDRRestTransport._BaseListBackups._get_transcoded_request(
@@ -3032,6 +4053,33 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.backupdr_v1.BackupDRClient.ListBackups",
+                    extra={
+                        "serviceName": "google.cloud.backupdr.v1.BackupDR",
+                        "rpcName": "ListBackups",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BackupDRRestTransport._ListBackups._get_response(
@@ -3053,7 +4101,29 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             pb_resp = backupvault.ListBackupsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_backups(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = backupvault.ListBackupsResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.backupdr_v1.BackupDRClient.list_backups",
+                    extra={
+                        "serviceName": "google.cloud.backupdr.v1.BackupDR",
+                        "rpcName": "ListBackups",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListBackupVaults(
@@ -3090,7 +4160,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> backupvault.ListBackupVaultsResponse:
             r"""Call the list backup vaults method over HTTP.
 
@@ -3101,8 +4171,10 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.backupvault.ListBackupVaultsResponse:
@@ -3114,6 +4186,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             http_options = (
                 _BaseBackupDRRestTransport._BaseListBackupVaults._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_backup_vaults(
                 request, metadata
             )
@@ -3127,6 +4200,33 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.backupdr_v1.BackupDRClient.ListBackupVaults",
+                    extra={
+                        "serviceName": "google.cloud.backupdr.v1.BackupDR",
+                        "rpcName": "ListBackupVaults",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BackupDRRestTransport._ListBackupVaults._get_response(
@@ -3148,7 +4248,31 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             pb_resp = backupvault.ListBackupVaultsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_backup_vaults(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = backupvault.ListBackupVaultsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.backupdr_v1.BackupDRClient.list_backup_vaults",
+                    extra={
+                        "serviceName": "google.cloud.backupdr.v1.BackupDR",
+                        "rpcName": "ListBackupVaults",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListDataSources(
@@ -3185,7 +4309,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> backupvault.ListDataSourcesResponse:
             r"""Call the list data sources method over HTTP.
 
@@ -3196,8 +4320,10 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.backupvault.ListDataSourcesResponse:
@@ -3209,6 +4335,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             http_options = (
                 _BaseBackupDRRestTransport._BaseListDataSources._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_data_sources(
                 request, metadata
             )
@@ -3224,6 +4351,33 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.backupdr_v1.BackupDRClient.ListDataSources",
+                    extra={
+                        "serviceName": "google.cloud.backupdr.v1.BackupDR",
+                        "rpcName": "ListDataSources",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BackupDRRestTransport._ListDataSources._get_response(
@@ -3245,7 +4399,31 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             pb_resp = backupvault.ListDataSourcesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_data_sources(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = backupvault.ListDataSourcesResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.backupdr_v1.BackupDRClient.list_data_sources",
+                    extra={
+                        "serviceName": "google.cloud.backupdr.v1.BackupDR",
+                        "rpcName": "ListDataSources",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListManagementServers(
@@ -3282,7 +4460,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> backupdr.ListManagementServersResponse:
             r"""Call the list management servers method over HTTP.
 
@@ -3293,8 +4471,10 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.backupdr.ListManagementServersResponse:
@@ -3306,6 +4486,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             http_options = (
                 _BaseBackupDRRestTransport._BaseListManagementServers._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_management_servers(
                 request, metadata
             )
@@ -3317,6 +4498,33 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             query_params = _BaseBackupDRRestTransport._BaseListManagementServers._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.backupdr_v1.BackupDRClient.ListManagementServers",
+                    extra={
+                        "serviceName": "google.cloud.backupdr.v1.BackupDR",
+                        "rpcName": "ListManagementServers",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BackupDRRestTransport._ListManagementServers._get_response(
@@ -3338,7 +4546,31 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             pb_resp = backupdr.ListManagementServersResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_management_servers(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = backupdr.ListManagementServersResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.backupdr_v1.BackupDRClient.list_management_servers",
+                    extra={
+                        "serviceName": "google.cloud.backupdr.v1.BackupDR",
+                        "rpcName": "ListManagementServers",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _RestoreBackup(
@@ -3376,7 +4608,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the restore backup method over HTTP.
 
@@ -3387,8 +4619,10 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -3401,6 +4635,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             http_options = (
                 _BaseBackupDRRestTransport._BaseRestoreBackup._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_restore_backup(request, metadata)
             transcoded_request = (
                 _BaseBackupDRRestTransport._BaseRestoreBackup._get_transcoded_request(
@@ -3418,6 +4653,33 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.backupdr_v1.BackupDRClient.RestoreBackup",
+                    extra={
+                        "serviceName": "google.cloud.backupdr.v1.BackupDR",
+                        "rpcName": "RestoreBackup",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BackupDRRestTransport._RestoreBackup._get_response(
@@ -3438,7 +4700,29 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_restore_backup(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.backupdr_v1.BackupDRClient.restore_backup",
+                    extra={
+                        "serviceName": "google.cloud.backupdr.v1.BackupDR",
+                        "rpcName": "RestoreBackup",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _TriggerBackup(
@@ -3476,7 +4760,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the trigger backup method over HTTP.
 
@@ -3487,8 +4771,10 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -3501,6 +4787,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             http_options = (
                 _BaseBackupDRRestTransport._BaseTriggerBackup._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_trigger_backup(request, metadata)
             transcoded_request = (
                 _BaseBackupDRRestTransport._BaseTriggerBackup._get_transcoded_request(
@@ -3518,6 +4805,33 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.backupdr_v1.BackupDRClient.TriggerBackup",
+                    extra={
+                        "serviceName": "google.cloud.backupdr.v1.BackupDR",
+                        "rpcName": "TriggerBackup",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BackupDRRestTransport._TriggerBackup._get_response(
@@ -3538,7 +4852,29 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_trigger_backup(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.backupdr_v1.BackupDRClient.trigger_backup",
+                    extra={
+                        "serviceName": "google.cloud.backupdr.v1.BackupDR",
+                        "rpcName": "TriggerBackup",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateBackup(_BaseBackupDRRestTransport._BaseUpdateBackup, BackupDRRestStub):
@@ -3574,7 +4910,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update backup method over HTTP.
 
@@ -3585,8 +4921,10 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -3599,6 +4937,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             http_options = (
                 _BaseBackupDRRestTransport._BaseUpdateBackup._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_backup(request, metadata)
             transcoded_request = (
                 _BaseBackupDRRestTransport._BaseUpdateBackup._get_transcoded_request(
@@ -3616,6 +4955,33 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.backupdr_v1.BackupDRClient.UpdateBackup",
+                    extra={
+                        "serviceName": "google.cloud.backupdr.v1.BackupDR",
+                        "rpcName": "UpdateBackup",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BackupDRRestTransport._UpdateBackup._get_response(
@@ -3636,7 +5002,29 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_backup(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.backupdr_v1.BackupDRClient.update_backup",
+                    extra={
+                        "serviceName": "google.cloud.backupdr.v1.BackupDR",
+                        "rpcName": "UpdateBackup",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateBackupVault(
@@ -3674,7 +5062,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update backup vault method over HTTP.
 
@@ -3685,8 +5073,10 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -3699,6 +5089,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             http_options = (
                 _BaseBackupDRRestTransport._BaseUpdateBackupVault._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_backup_vault(
                 request, metadata
             )
@@ -3714,6 +5105,33 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             query_params = _BaseBackupDRRestTransport._BaseUpdateBackupVault._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.backupdr_v1.BackupDRClient.UpdateBackupVault",
+                    extra={
+                        "serviceName": "google.cloud.backupdr.v1.BackupDR",
+                        "rpcName": "UpdateBackupVault",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BackupDRRestTransport._UpdateBackupVault._get_response(
@@ -3734,7 +5152,29 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_backup_vault(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.backupdr_v1.BackupDRClient.update_backup_vault",
+                    extra={
+                        "serviceName": "google.cloud.backupdr.v1.BackupDR",
+                        "rpcName": "UpdateBackupVault",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateDataSource(
@@ -3772,7 +5212,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update data source method over HTTP.
 
@@ -3783,8 +5223,10 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -3797,6 +5239,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             http_options = (
                 _BaseBackupDRRestTransport._BaseUpdateDataSource._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_data_source(
                 request, metadata
             )
@@ -3817,6 +5260,33 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 )
             )
 
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.backupdr_v1.BackupDRClient.UpdateDataSource",
+                    extra={
+                        "serviceName": "google.cloud.backupdr.v1.BackupDR",
+                        "rpcName": "UpdateDataSource",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
             # Send the request
             response = BackupDRRestTransport._UpdateDataSource._get_response(
                 self._host,
@@ -3836,7 +5306,29 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_data_source(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.backupdr_v1.BackupDRClient.update_data_source",
+                    extra={
+                        "serviceName": "google.cloud.backupdr.v1.BackupDR",
+                        "rpcName": "UpdateDataSource",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -4116,7 +5608,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.Location:
             r"""Call the get location method over HTTP.
 
@@ -4126,8 +5618,10 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.Location: Response from GetLocation method.
@@ -4136,6 +5630,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             http_options = (
                 _BaseBackupDRRestTransport._BaseGetLocation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_location(request, metadata)
             transcoded_request = (
                 _BaseBackupDRRestTransport._BaseGetLocation._get_transcoded_request(
@@ -4149,6 +5644,33 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.backupdr_v1.BackupDRClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.backupdr.v1.BackupDR",
+                        "rpcName": "GetLocation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BackupDRRestTransport._GetLocation._get_response(
@@ -4169,6 +5691,27 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.backupdr_v1.BackupDRAsyncClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.backupdr.v1.BackupDR",
+                        "rpcName": "GetLocation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -4209,7 +5752,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.ListLocationsResponse:
             r"""Call the list locations method over HTTP.
 
@@ -4219,8 +5762,10 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
@@ -4229,6 +5774,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             http_options = (
                 _BaseBackupDRRestTransport._BaseListLocations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
             transcoded_request = (
                 _BaseBackupDRRestTransport._BaseListLocations._get_transcoded_request(
@@ -4242,6 +5788,33 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.backupdr_v1.BackupDRClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.backupdr.v1.BackupDR",
+                        "rpcName": "ListLocations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BackupDRRestTransport._ListLocations._get_response(
@@ -4262,6 +5835,27 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.backupdr_v1.BackupDRAsyncClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.backupdr.v1.BackupDR",
+                        "rpcName": "ListLocations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -4300,7 +5894,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> policy_pb2.Policy:
             r"""Call the get iam policy method over HTTP.
 
@@ -4310,8 +5904,10 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 policy_pb2.Policy: Response from GetIamPolicy method.
@@ -4320,6 +5916,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             http_options = (
                 _BaseBackupDRRestTransport._BaseGetIamPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
             transcoded_request = (
                 _BaseBackupDRRestTransport._BaseGetIamPolicy._get_transcoded_request(
@@ -4333,6 +5930,33 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.backupdr_v1.BackupDRClient.GetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.backupdr.v1.BackupDR",
+                        "rpcName": "GetIamPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BackupDRRestTransport._GetIamPolicy._get_response(
@@ -4353,6 +5977,27 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_iam_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.backupdr_v1.BackupDRAsyncClient.GetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.backupdr.v1.BackupDR",
+                        "rpcName": "GetIamPolicy",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -4392,7 +6037,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> policy_pb2.Policy:
             r"""Call the set iam policy method over HTTP.
 
@@ -4402,8 +6047,10 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 policy_pb2.Policy: Response from SetIamPolicy method.
@@ -4412,6 +6059,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             http_options = (
                 _BaseBackupDRRestTransport._BaseSetIamPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
             transcoded_request = (
                 _BaseBackupDRRestTransport._BaseSetIamPolicy._get_transcoded_request(
@@ -4429,6 +6077,33 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.backupdr_v1.BackupDRClient.SetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.backupdr.v1.BackupDR",
+                        "rpcName": "SetIamPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BackupDRRestTransport._SetIamPolicy._get_response(
@@ -4450,6 +6125,27 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_set_iam_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.backupdr_v1.BackupDRAsyncClient.SetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.backupdr.v1.BackupDR",
+                        "rpcName": "SetIamPolicy",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -4491,7 +6187,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> iam_policy_pb2.TestIamPermissionsResponse:
             r"""Call the test iam permissions method over HTTP.
 
@@ -4501,8 +6197,10 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 iam_policy_pb2.TestIamPermissionsResponse: Response from TestIamPermissions method.
@@ -4511,6 +6209,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             http_options = (
                 _BaseBackupDRRestTransport._BaseTestIamPermissions._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata
             )
@@ -4526,6 +6225,33 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             query_params = _BaseBackupDRRestTransport._BaseTestIamPermissions._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.backupdr_v1.BackupDRClient.TestIamPermissions",
+                    extra={
+                        "serviceName": "google.cloud.backupdr.v1.BackupDR",
+                        "rpcName": "TestIamPermissions",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BackupDRRestTransport._TestIamPermissions._get_response(
@@ -4547,6 +6273,27 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             resp = iam_policy_pb2.TestIamPermissionsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_test_iam_permissions(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.backupdr_v1.BackupDRAsyncClient.TestIamPermissions",
+                    extra={
+                        "serviceName": "google.cloud.backupdr.v1.BackupDR",
+                        "rpcName": "TestIamPermissions",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -4588,7 +6335,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the cancel operation method over HTTP.
 
@@ -4598,13 +6345,16 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseBackupDRRestTransport._BaseCancelOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
@@ -4626,6 +6376,33 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.backupdr_v1.BackupDRClient.CancelOperation",
+                    extra={
+                        "serviceName": "google.cloud.backupdr.v1.BackupDR",
+                        "rpcName": "CancelOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BackupDRRestTransport._CancelOperation._get_response(
@@ -4683,7 +6460,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the delete operation method over HTTP.
 
@@ -4693,13 +6470,16 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseBackupDRRestTransport._BaseDeleteOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
             )
@@ -4715,6 +6495,33 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.backupdr_v1.BackupDRClient.DeleteOperation",
+                    extra={
+                        "serviceName": "google.cloud.backupdr.v1.BackupDR",
+                        "rpcName": "DeleteOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BackupDRRestTransport._DeleteOperation._get_response(
@@ -4769,7 +6576,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the get operation method over HTTP.
 
@@ -4779,8 +6586,10 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.
@@ -4789,6 +6598,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             http_options = (
                 _BaseBackupDRRestTransport._BaseGetOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = (
                 _BaseBackupDRRestTransport._BaseGetOperation._get_transcoded_request(
@@ -4802,6 +6612,33 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.backupdr_v1.BackupDRClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.backupdr.v1.BackupDR",
+                        "rpcName": "GetOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BackupDRRestTransport._GetOperation._get_response(
@@ -4822,6 +6659,27 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.backupdr_v1.BackupDRAsyncClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.backupdr.v1.BackupDR",
+                        "rpcName": "GetOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -4862,7 +6720,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.ListOperationsResponse:
             r"""Call the list operations method over HTTP.
 
@@ -4872,8 +6730,10 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
@@ -4882,6 +6742,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             http_options = (
                 _BaseBackupDRRestTransport._BaseListOperations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = (
                 _BaseBackupDRRestTransport._BaseListOperations._get_transcoded_request(
@@ -4895,6 +6756,33 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.backupdr_v1.BackupDRClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.backupdr.v1.BackupDR",
+                        "rpcName": "ListOperations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = BackupDRRestTransport._ListOperations._get_response(
@@ -4915,6 +6803,27 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.backupdr_v1.BackupDRAsyncClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.backupdr.v1.BackupDR",
+                        "rpcName": "ListOperations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property

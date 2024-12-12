@@ -14,6 +14,9 @@
 # limitations under the License.
 #
 import inspect
+import json
+import logging as std_logging
+import pickle
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -24,13 +27,92 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
+from google.protobuf.json_format import MessageToJson
+import google.protobuf.message
 import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
+import proto  # type: ignore
 
 from google.cloud.devtools.cloudbuild_v1.types import cloudbuild
 
 from .base import DEFAULT_CLIENT_INFO, CloudBuildTransport
 from .grpc import CloudBuildGrpcTransport
+
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = std_logging.getLogger(__name__)
+
+
+class _LoggingClientAIOInterceptor(
+    grpc.aio.UnaryUnaryClientInterceptor
+):  # pragma: NO COVER
+    async def intercept_unary_unary(self, continuation, client_call_details, request):
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+            std_logging.DEBUG
+        )
+        if logging_enabled:  # pragma: NO COVER
+            request_metadata = client_call_details.metadata
+            if isinstance(request, proto.Message):
+                request_payload = type(request).to_json(request)
+            elif isinstance(request, google.protobuf.message.Message):
+                request_payload = MessageToJson(request)
+            else:
+                request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
+
+            request_metadata = {
+                key: value.decode("utf-8") if isinstance(value, bytes) else value
+                for key, value in request_metadata
+            }
+            grpc_request = {
+                "payload": request_payload,
+                "requestMethod": "grpc",
+                "metadata": dict(request_metadata),
+            }
+            _LOGGER.debug(
+                f"Sending request for {client_call_details.method}",
+                extra={
+                    "serviceName": "google.devtools.cloudbuild.v1.CloudBuild",
+                    "rpcName": str(client_call_details.method),
+                    "request": grpc_request,
+                    "metadata": grpc_request["metadata"],
+                },
+            )
+        response = await continuation(client_call_details, request)
+        if logging_enabled:  # pragma: NO COVER
+            response_metadata = await response.trailing_metadata()
+            # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
+            metadata = (
+                dict([(k, str(v)) for k, v in response_metadata])
+                if response_metadata
+                else None
+            )
+            result = await response
+            if isinstance(result, proto.Message):
+                response_payload = type(result).to_json(result)
+            elif isinstance(result, google.protobuf.message.Message):
+                response_payload = MessageToJson(result)
+            else:
+                response_payload = f"{type(result).__name__}: {pickle.dumps(result)}"
+            grpc_response = {
+                "payload": response_payload,
+                "metadata": metadata,
+                "status": "OK",
+            }
+            _LOGGER.debug(
+                f"Received response to rpc {client_call_details.method}.",
+                extra={
+                    "serviceName": "google.devtools.cloudbuild.v1.CloudBuild",
+                    "rpcName": str(client_call_details.method),
+                    "response": grpc_response,
+                    "metadata": grpc_response["metadata"],
+                },
+            )
+        return response
 
 
 class CloudBuildGrpcAsyncIOTransport(CloudBuildTransport):
@@ -236,10 +318,13 @@ class CloudBuildGrpcAsyncIOTransport(CloudBuildTransport):
                 ],
             )
 
-        # Wrap messages. This must be done after self._grpc_channel exists
+        self._interceptor = _LoggingClientAIOInterceptor()
+        self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
+        self._logged_channel = self._grpc_channel
         self._wrap_with_kind = (
             "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         )
+        # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -262,7 +347,7 @@ class CloudBuildGrpcAsyncIOTransport(CloudBuildTransport):
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
             self._operations_client = operations_v1.OperationsAsyncClient(
-                self.grpc_channel
+                self._logged_channel
             )
 
         # Return the client from cache.
@@ -291,7 +376,7 @@ class CloudBuildGrpcAsyncIOTransport(CloudBuildTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_build" not in self._stubs:
-            self._stubs["create_build"] = self.grpc_channel.unary_unary(
+            self._stubs["create_build"] = self._logged_channel.unary_unary(
                 "/google.devtools.cloudbuild.v1.CloudBuild/CreateBuild",
                 request_serializer=cloudbuild.CreateBuildRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -321,7 +406,7 @@ class CloudBuildGrpcAsyncIOTransport(CloudBuildTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_build" not in self._stubs:
-            self._stubs["get_build"] = self.grpc_channel.unary_unary(
+            self._stubs["get_build"] = self._logged_channel.unary_unary(
                 "/google.devtools.cloudbuild.v1.CloudBuild/GetBuild",
                 request_serializer=cloudbuild.GetBuildRequest.serialize,
                 response_deserializer=cloudbuild.Build.deserialize,
@@ -352,7 +437,7 @@ class CloudBuildGrpcAsyncIOTransport(CloudBuildTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_builds" not in self._stubs:
-            self._stubs["list_builds"] = self.grpc_channel.unary_unary(
+            self._stubs["list_builds"] = self._logged_channel.unary_unary(
                 "/google.devtools.cloudbuild.v1.CloudBuild/ListBuilds",
                 request_serializer=cloudbuild.ListBuildsRequest.serialize,
                 response_deserializer=cloudbuild.ListBuildsResponse.deserialize,
@@ -378,7 +463,7 @@ class CloudBuildGrpcAsyncIOTransport(CloudBuildTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "cancel_build" not in self._stubs:
-            self._stubs["cancel_build"] = self.grpc_channel.unary_unary(
+            self._stubs["cancel_build"] = self._logged_channel.unary_unary(
                 "/google.devtools.cloudbuild.v1.CloudBuild/CancelBuild",
                 request_serializer=cloudbuild.CancelBuildRequest.serialize,
                 response_deserializer=cloudbuild.Build.deserialize,
@@ -433,7 +518,7 @@ class CloudBuildGrpcAsyncIOTransport(CloudBuildTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "retry_build" not in self._stubs:
-            self._stubs["retry_build"] = self.grpc_channel.unary_unary(
+            self._stubs["retry_build"] = self._logged_channel.unary_unary(
                 "/google.devtools.cloudbuild.v1.CloudBuild/RetryBuild",
                 request_serializer=cloudbuild.RetryBuildRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -466,7 +551,7 @@ class CloudBuildGrpcAsyncIOTransport(CloudBuildTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "approve_build" not in self._stubs:
-            self._stubs["approve_build"] = self.grpc_channel.unary_unary(
+            self._stubs["approve_build"] = self._logged_channel.unary_unary(
                 "/google.devtools.cloudbuild.v1.CloudBuild/ApproveBuild",
                 request_serializer=cloudbuild.ApproveBuildRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -496,7 +581,7 @@ class CloudBuildGrpcAsyncIOTransport(CloudBuildTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_build_trigger" not in self._stubs:
-            self._stubs["create_build_trigger"] = self.grpc_channel.unary_unary(
+            self._stubs["create_build_trigger"] = self._logged_channel.unary_unary(
                 "/google.devtools.cloudbuild.v1.CloudBuild/CreateBuildTrigger",
                 request_serializer=cloudbuild.CreateBuildTriggerRequest.serialize,
                 response_deserializer=cloudbuild.BuildTrigger.deserialize,
@@ -526,7 +611,7 @@ class CloudBuildGrpcAsyncIOTransport(CloudBuildTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_build_trigger" not in self._stubs:
-            self._stubs["get_build_trigger"] = self.grpc_channel.unary_unary(
+            self._stubs["get_build_trigger"] = self._logged_channel.unary_unary(
                 "/google.devtools.cloudbuild.v1.CloudBuild/GetBuildTrigger",
                 request_serializer=cloudbuild.GetBuildTriggerRequest.serialize,
                 response_deserializer=cloudbuild.BuildTrigger.deserialize,
@@ -557,7 +642,7 @@ class CloudBuildGrpcAsyncIOTransport(CloudBuildTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_build_triggers" not in self._stubs:
-            self._stubs["list_build_triggers"] = self.grpc_channel.unary_unary(
+            self._stubs["list_build_triggers"] = self._logged_channel.unary_unary(
                 "/google.devtools.cloudbuild.v1.CloudBuild/ListBuildTriggers",
                 request_serializer=cloudbuild.ListBuildTriggersRequest.serialize,
                 response_deserializer=cloudbuild.ListBuildTriggersResponse.deserialize,
@@ -585,7 +670,7 @@ class CloudBuildGrpcAsyncIOTransport(CloudBuildTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_build_trigger" not in self._stubs:
-            self._stubs["delete_build_trigger"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_build_trigger"] = self._logged_channel.unary_unary(
                 "/google.devtools.cloudbuild.v1.CloudBuild/DeleteBuildTrigger",
                 request_serializer=cloudbuild.DeleteBuildTriggerRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -615,7 +700,7 @@ class CloudBuildGrpcAsyncIOTransport(CloudBuildTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_build_trigger" not in self._stubs:
-            self._stubs["update_build_trigger"] = self.grpc_channel.unary_unary(
+            self._stubs["update_build_trigger"] = self._logged_channel.unary_unary(
                 "/google.devtools.cloudbuild.v1.CloudBuild/UpdateBuildTrigger",
                 request_serializer=cloudbuild.UpdateBuildTriggerRequest.serialize,
                 response_deserializer=cloudbuild.BuildTrigger.deserialize,
@@ -649,7 +734,7 @@ class CloudBuildGrpcAsyncIOTransport(CloudBuildTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "run_build_trigger" not in self._stubs:
-            self._stubs["run_build_trigger"] = self.grpc_channel.unary_unary(
+            self._stubs["run_build_trigger"] = self._logged_channel.unary_unary(
                 "/google.devtools.cloudbuild.v1.CloudBuild/RunBuildTrigger",
                 request_serializer=cloudbuild.RunBuildTriggerRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -679,7 +764,7 @@ class CloudBuildGrpcAsyncIOTransport(CloudBuildTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "receive_trigger_webhook" not in self._stubs:
-            self._stubs["receive_trigger_webhook"] = self.grpc_channel.unary_unary(
+            self._stubs["receive_trigger_webhook"] = self._logged_channel.unary_unary(
                 "/google.devtools.cloudbuild.v1.CloudBuild/ReceiveTriggerWebhook",
                 request_serializer=cloudbuild.ReceiveTriggerWebhookRequest.serialize,
                 response_deserializer=cloudbuild.ReceiveTriggerWebhookResponse.deserialize,
@@ -707,7 +792,7 @@ class CloudBuildGrpcAsyncIOTransport(CloudBuildTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_worker_pool" not in self._stubs:
-            self._stubs["create_worker_pool"] = self.grpc_channel.unary_unary(
+            self._stubs["create_worker_pool"] = self._logged_channel.unary_unary(
                 "/google.devtools.cloudbuild.v1.CloudBuild/CreateWorkerPool",
                 request_serializer=cloudbuild.CreateWorkerPoolRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -733,7 +818,7 @@ class CloudBuildGrpcAsyncIOTransport(CloudBuildTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_worker_pool" not in self._stubs:
-            self._stubs["get_worker_pool"] = self.grpc_channel.unary_unary(
+            self._stubs["get_worker_pool"] = self._logged_channel.unary_unary(
                 "/google.devtools.cloudbuild.v1.CloudBuild/GetWorkerPool",
                 request_serializer=cloudbuild.GetWorkerPoolRequest.serialize,
                 response_deserializer=cloudbuild.WorkerPool.deserialize,
@@ -761,7 +846,7 @@ class CloudBuildGrpcAsyncIOTransport(CloudBuildTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_worker_pool" not in self._stubs:
-            self._stubs["delete_worker_pool"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_worker_pool"] = self._logged_channel.unary_unary(
                 "/google.devtools.cloudbuild.v1.CloudBuild/DeleteWorkerPool",
                 request_serializer=cloudbuild.DeleteWorkerPoolRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -789,7 +874,7 @@ class CloudBuildGrpcAsyncIOTransport(CloudBuildTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_worker_pool" not in self._stubs:
-            self._stubs["update_worker_pool"] = self.grpc_channel.unary_unary(
+            self._stubs["update_worker_pool"] = self._logged_channel.unary_unary(
                 "/google.devtools.cloudbuild.v1.CloudBuild/UpdateWorkerPool",
                 request_serializer=cloudbuild.UpdateWorkerPoolRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -818,7 +903,7 @@ class CloudBuildGrpcAsyncIOTransport(CloudBuildTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_worker_pools" not in self._stubs:
-            self._stubs["list_worker_pools"] = self.grpc_channel.unary_unary(
+            self._stubs["list_worker_pools"] = self._logged_channel.unary_unary(
                 "/google.devtools.cloudbuild.v1.CloudBuild/ListWorkerPools",
                 request_serializer=cloudbuild.ListWorkerPoolsRequest.serialize,
                 response_deserializer=cloudbuild.ListWorkerPoolsResponse.deserialize,
@@ -996,7 +1081,7 @@ class CloudBuildGrpcAsyncIOTransport(CloudBuildTransport):
         return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
 
     def close(self):
-        return self.grpc_channel.close()
+        return self._logged_channel.close()
 
     @property
     def kind(self) -> str:

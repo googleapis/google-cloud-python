@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -37,6 +37,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -77,8 +85,11 @@ class AreaInsightsRestInterceptor:
     def pre_compute_insights(
         self,
         request: area_insights_service.ComputeInsightsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[area_insights_service.ComputeInsightsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        area_insights_service.ComputeInsightsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for compute_insights
 
         Override in a subclass to manipulate the request or metadata
@@ -219,7 +230,7 @@ class AreaInsightsRestTransport(_BaseAreaInsightsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> area_insights_service.ComputeInsightsResponse:
             r"""Call the compute insights method over HTTP.
 
@@ -229,8 +240,10 @@ class AreaInsightsRestTransport(_BaseAreaInsightsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.area_insights_service.ComputeInsightsResponse:
@@ -240,6 +253,7 @@ class AreaInsightsRestTransport(_BaseAreaInsightsRestTransport):
             http_options = (
                 _BaseAreaInsightsRestTransport._BaseComputeInsights._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_compute_insights(
                 request, metadata
             )
@@ -255,6 +269,33 @@ class AreaInsightsRestTransport(_BaseAreaInsightsRestTransport):
             query_params = _BaseAreaInsightsRestTransport._BaseComputeInsights._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.maps.areainsights_v1.AreaInsightsClient.ComputeInsights",
+                    extra={
+                        "serviceName": "google.maps.areainsights.v1.AreaInsights",
+                        "rpcName": "ComputeInsights",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AreaInsightsRestTransport._ComputeInsights._get_response(
@@ -277,7 +318,31 @@ class AreaInsightsRestTransport(_BaseAreaInsightsRestTransport):
             pb_resp = area_insights_service.ComputeInsightsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_compute_insights(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        area_insights_service.ComputeInsightsResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.maps.areainsights_v1.AreaInsightsClient.compute_insights",
+                    extra={
+                        "serviceName": "google.maps.areainsights.v1.AreaInsights",
+                        "rpcName": "ComputeInsights",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property

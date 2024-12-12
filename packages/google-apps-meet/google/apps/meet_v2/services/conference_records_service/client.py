@@ -14,6 +14,7 @@
 # limitations under the License.
 #
 from collections import OrderedDict
+import logging as std_logging
 import os
 import re
 from typing import (
@@ -47,6 +48,15 @@ try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
+
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = std_logging.getLogger(__name__)
 
 from google.protobuf import timestamp_pb2  # type: ignore
 
@@ -702,6 +712,10 @@ class ConferenceRecordsServiceClient(metaclass=ConferenceRecordsServiceClientMet
         # Initialize the universe domain validation.
         self._is_universe_domain_valid = False
 
+        if CLIENT_LOGGING_SUPPORTED:  # pragma: NO COVER
+            # Setup logging.
+            client_logging.initialize_logging()
+
         api_key_value = getattr(self._client_options, "api_key", None)
         if api_key_value and credentials:
             raise ValueError(
@@ -768,6 +782,29 @@ class ConferenceRecordsServiceClient(metaclass=ConferenceRecordsServiceClientMet
                 api_audience=self._client_options.api_audience,
             )
 
+        if "async" not in str(self._transport):
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                std_logging.DEBUG
+            ):  # pragma: NO COVER
+                _LOGGER.debug(
+                    "Created client `google.apps.meet_v2.ConferenceRecordsServiceClient`.",
+                    extra={
+                        "serviceName": "google.apps.meet.v2.ConferenceRecordsService",
+                        "universeDomain": getattr(
+                            self._transport._credentials, "universe_domain", ""
+                        ),
+                        "credentialsType": f"{type(self._transport._credentials).__module__}.{type(self._transport._credentials).__qualname__}",
+                        "credentialsInfo": getattr(
+                            self.transport._credentials, "get_cred_info", lambda: None
+                        )(),
+                    }
+                    if hasattr(self._transport, "_credentials")
+                    else {
+                        "serviceName": "google.apps.meet.v2.ConferenceRecordsService",
+                        "credentialsType": None,
+                    },
+                )
+
     def get_conference_record(
         self,
         request: Optional[Union[service.GetConferenceRecordRequest, dict]] = None,
@@ -775,7 +812,7 @@ class ConferenceRecordsServiceClient(metaclass=ConferenceRecordsServiceClientMet
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> resource.ConferenceRecord:
         r"""Gets a conference record by conference ID.
 
@@ -818,8 +855,10 @@ class ConferenceRecordsServiceClient(metaclass=ConferenceRecordsServiceClientMet
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.apps.meet_v2.types.ConferenceRecord:
@@ -876,7 +915,7 @@ class ConferenceRecordsServiceClient(metaclass=ConferenceRecordsServiceClientMet
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListConferenceRecordsPager:
         r"""Lists the conference records. By default, ordered by
         start time and in descending order.
@@ -914,8 +953,10 @@ class ConferenceRecordsServiceClient(metaclass=ConferenceRecordsServiceClientMet
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.apps.meet_v2.services.conference_records_service.pagers.ListConferenceRecordsPager:
@@ -968,7 +1009,7 @@ class ConferenceRecordsServiceClient(metaclass=ConferenceRecordsServiceClientMet
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> resource.Participant:
         r"""Gets a participant by participant ID.
 
@@ -1011,8 +1052,10 @@ class ConferenceRecordsServiceClient(metaclass=ConferenceRecordsServiceClientMet
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.apps.meet_v2.types.Participant:
@@ -1070,7 +1113,7 @@ class ConferenceRecordsServiceClient(metaclass=ConferenceRecordsServiceClientMet
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListParticipantsPager:
         r"""Lists the participants in a conference record. By default,
         ordered by join time and in descending order. This API supports
@@ -1119,8 +1162,10 @@ class ConferenceRecordsServiceClient(metaclass=ConferenceRecordsServiceClientMet
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.apps.meet_v2.services.conference_records_service.pagers.ListParticipantsPager:
@@ -1192,7 +1237,7 @@ class ConferenceRecordsServiceClient(metaclass=ConferenceRecordsServiceClientMet
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> resource.ParticipantSession:
         r"""Gets a participant session by participant session ID.
 
@@ -1235,8 +1280,10 @@ class ConferenceRecordsServiceClient(metaclass=ConferenceRecordsServiceClientMet
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.apps.meet_v2.types.ParticipantSession:
@@ -1301,7 +1348,7 @@ class ConferenceRecordsServiceClient(metaclass=ConferenceRecordsServiceClientMet
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListParticipantSessionsPager:
         r"""Lists the participant sessions of a participant in a conference
         record. By default, ordered by join time and in descending
@@ -1352,8 +1399,10 @@ class ConferenceRecordsServiceClient(metaclass=ConferenceRecordsServiceClientMet
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.apps.meet_v2.services.conference_records_service.pagers.ListParticipantSessionsPager:
@@ -1427,7 +1476,7 @@ class ConferenceRecordsServiceClient(metaclass=ConferenceRecordsServiceClientMet
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> resource.Recording:
         r"""Gets a recording by recording ID.
 
@@ -1471,8 +1520,10 @@ class ConferenceRecordsServiceClient(metaclass=ConferenceRecordsServiceClientMet
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.apps.meet_v2.types.Recording:
@@ -1530,7 +1581,7 @@ class ConferenceRecordsServiceClient(metaclass=ConferenceRecordsServiceClientMet
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListRecordingsPager:
         r"""Lists the recording resources from the conference
         record. By default, ordered by start time and in
@@ -1576,8 +1627,10 @@ class ConferenceRecordsServiceClient(metaclass=ConferenceRecordsServiceClientMet
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.apps.meet_v2.services.conference_records_service.pagers.ListRecordingsPager:
@@ -1649,7 +1702,7 @@ class ConferenceRecordsServiceClient(metaclass=ConferenceRecordsServiceClientMet
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> resource.Transcript:
         r"""Gets a transcript by transcript ID.
 
@@ -1692,8 +1745,10 @@ class ConferenceRecordsServiceClient(metaclass=ConferenceRecordsServiceClientMet
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.apps.meet_v2.types.Transcript:
@@ -1753,7 +1808,7 @@ class ConferenceRecordsServiceClient(metaclass=ConferenceRecordsServiceClientMet
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListTranscriptsPager:
         r"""Lists the set of transcripts from the conference
         record. By default, ordered by start time and in
@@ -1799,8 +1854,10 @@ class ConferenceRecordsServiceClient(metaclass=ConferenceRecordsServiceClientMet
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.apps.meet_v2.services.conference_records_service.pagers.ListTranscriptsPager:
@@ -1872,7 +1929,7 @@ class ConferenceRecordsServiceClient(metaclass=ConferenceRecordsServiceClientMet
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> resource.TranscriptEntry:
         r"""Gets a ``TranscriptEntry`` resource by entry ID.
 
@@ -1919,8 +1976,10 @@ class ConferenceRecordsServiceClient(metaclass=ConferenceRecordsServiceClientMet
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.apps.meet_v2.types.TranscriptEntry:
@@ -1978,7 +2037,7 @@ class ConferenceRecordsServiceClient(metaclass=ConferenceRecordsServiceClientMet
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListTranscriptEntriesPager:
         r"""Lists the structured transcript entries per
         transcript. By default, ordered by start time and in
@@ -2031,8 +2090,10 @@ class ConferenceRecordsServiceClient(metaclass=ConferenceRecordsServiceClientMet
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.apps.meet_v2.services.conference_records_service.pagers.ListTranscriptEntriesPager:
