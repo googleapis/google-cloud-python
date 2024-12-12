@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -41,6 +41,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -189,8 +197,10 @@ class SecretManagerServiceRestInterceptor:
     def pre_access_secret_version(
         self,
         request: service.AccessSecretVersionRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[service.AccessSecretVersionRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.AccessSecretVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for access_secret_version
 
         Override in a subclass to manipulate the request or metadata
@@ -212,8 +222,10 @@ class SecretManagerServiceRestInterceptor:
     def pre_add_secret_version(
         self,
         request: service.AddSecretVersionRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[service.AddSecretVersionRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.AddSecretVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for add_secret_version
 
         Override in a subclass to manipulate the request or metadata
@@ -233,8 +245,10 @@ class SecretManagerServiceRestInterceptor:
         return response
 
     def pre_create_secret(
-        self, request: service.CreateSecretRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.CreateSecretRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.CreateSecretRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.CreateSecretRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_secret
 
         Override in a subclass to manipulate the request or metadata
@@ -252,8 +266,10 @@ class SecretManagerServiceRestInterceptor:
         return response
 
     def pre_delete_secret(
-        self, request: service.DeleteSecretRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.DeleteSecretRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.DeleteSecretRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.DeleteSecretRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_secret
 
         Override in a subclass to manipulate the request or metadata
@@ -264,8 +280,10 @@ class SecretManagerServiceRestInterceptor:
     def pre_destroy_secret_version(
         self,
         request: service.DestroySecretVersionRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[service.DestroySecretVersionRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.DestroySecretVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for destroy_secret_version
 
         Override in a subclass to manipulate the request or metadata
@@ -287,8 +305,10 @@ class SecretManagerServiceRestInterceptor:
     def pre_disable_secret_version(
         self,
         request: service.DisableSecretVersionRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[service.DisableSecretVersionRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.DisableSecretVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for disable_secret_version
 
         Override in a subclass to manipulate the request or metadata
@@ -310,8 +330,10 @@ class SecretManagerServiceRestInterceptor:
     def pre_enable_secret_version(
         self,
         request: service.EnableSecretVersionRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[service.EnableSecretVersionRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.EnableSecretVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for enable_secret_version
 
         Override in a subclass to manipulate the request or metadata
@@ -333,8 +355,10 @@ class SecretManagerServiceRestInterceptor:
     def pre_get_iam_policy(
         self,
         request: iam_policy_pb2.GetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -352,8 +376,10 @@ class SecretManagerServiceRestInterceptor:
         return response
 
     def pre_get_secret(
-        self, request: service.GetSecretRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.GetSecretRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.GetSecretRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.GetSecretRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_secret
 
         Override in a subclass to manipulate the request or metadata
@@ -373,8 +399,10 @@ class SecretManagerServiceRestInterceptor:
     def pre_get_secret_version(
         self,
         request: service.GetSecretVersionRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[service.GetSecretVersionRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.GetSecretVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_secret_version
 
         Override in a subclass to manipulate the request or metadata
@@ -394,8 +422,10 @@ class SecretManagerServiceRestInterceptor:
         return response
 
     def pre_list_secrets(
-        self, request: service.ListSecretsRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.ListSecretsRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.ListSecretsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.ListSecretsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_secrets
 
         Override in a subclass to manipulate the request or metadata
@@ -417,8 +447,10 @@ class SecretManagerServiceRestInterceptor:
     def pre_list_secret_versions(
         self,
         request: service.ListSecretVersionsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[service.ListSecretVersionsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        service.ListSecretVersionsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_secret_versions
 
         Override in a subclass to manipulate the request or metadata
@@ -440,8 +472,10 @@ class SecretManagerServiceRestInterceptor:
     def pre_set_iam_policy(
         self,
         request: iam_policy_pb2.SetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -461,8 +495,11 @@ class SecretManagerServiceRestInterceptor:
     def pre_test_iam_permissions(
         self,
         request: iam_policy_pb2.TestIamPermissionsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.TestIamPermissionsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -482,8 +519,10 @@ class SecretManagerServiceRestInterceptor:
         return response
 
     def pre_update_secret(
-        self, request: service.UpdateSecretRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[service.UpdateSecretRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: service.UpdateSecretRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.UpdateSecretRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_secret
 
         Override in a subclass to manipulate the request or metadata
@@ -503,8 +542,10 @@ class SecretManagerServiceRestInterceptor:
     def pre_get_location(
         self,
         request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -526,8 +567,10 @@ class SecretManagerServiceRestInterceptor:
     def pre_list_locations(
         self,
         request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -674,7 +717,7 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> service.AccessSecretVersionResponse:
             r"""Call the access secret version method over HTTP.
 
@@ -685,8 +728,10 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.service.AccessSecretVersionResponse:
@@ -698,6 +743,7 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
             http_options = (
                 _BaseSecretManagerServiceRestTransport._BaseAccessSecretVersion._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_access_secret_version(
                 request, metadata
             )
@@ -709,6 +755,33 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
             query_params = _BaseSecretManagerServiceRestTransport._BaseAccessSecretVersion._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.secretmanager_v1beta2.SecretManagerServiceClient.AccessSecretVersion",
+                    extra={
+                        "serviceName": "google.cloud.secretmanager.v1beta2.SecretManagerService",
+                        "rpcName": "AccessSecretVersion",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -732,7 +805,31 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
             pb_resp = service.AccessSecretVersionResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_access_secret_version(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = service.AccessSecretVersionResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.secretmanager_v1beta2.SecretManagerServiceClient.access_secret_version",
+                    extra={
+                        "serviceName": "google.cloud.secretmanager.v1beta2.SecretManagerService",
+                        "rpcName": "AccessSecretVersion",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _AddSecretVersion(
@@ -771,7 +868,7 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.SecretVersion:
             r"""Call the add secret version method over HTTP.
 
@@ -782,8 +879,10 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.SecretVersion:
@@ -795,6 +894,7 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
             http_options = (
                 _BaseSecretManagerServiceRestTransport._BaseAddSecretVersion._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_add_secret_version(
                 request, metadata
             )
@@ -810,6 +910,33 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
             query_params = _BaseSecretManagerServiceRestTransport._BaseAddSecretVersion._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.secretmanager_v1beta2.SecretManagerServiceClient.AddSecretVersion",
+                    extra={
+                        "serviceName": "google.cloud.secretmanager.v1beta2.SecretManagerService",
+                        "rpcName": "AddSecretVersion",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -834,7 +961,29 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
             pb_resp = resources.SecretVersion.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_add_secret_version(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.SecretVersion.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.secretmanager_v1beta2.SecretManagerServiceClient.add_secret_version",
+                    extra={
+                        "serviceName": "google.cloud.secretmanager.v1beta2.SecretManagerService",
+                        "rpcName": "AddSecretVersion",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateSecret(
@@ -873,7 +1022,7 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.Secret:
             r"""Call the create secret method over HTTP.
 
@@ -884,8 +1033,10 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.Secret:
@@ -903,6 +1054,7 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
             http_options = (
                 _BaseSecretManagerServiceRestTransport._BaseCreateSecret._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_secret(request, metadata)
             transcoded_request = _BaseSecretManagerServiceRestTransport._BaseCreateSecret._get_transcoded_request(
                 http_options, request
@@ -916,6 +1068,33 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
             query_params = _BaseSecretManagerServiceRestTransport._BaseCreateSecret._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.secretmanager_v1beta2.SecretManagerServiceClient.CreateSecret",
+                    extra={
+                        "serviceName": "google.cloud.secretmanager.v1beta2.SecretManagerService",
+                        "rpcName": "CreateSecret",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SecretManagerServiceRestTransport._CreateSecret._get_response(
@@ -938,7 +1117,29 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
             pb_resp = resources.Secret.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_secret(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.Secret.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.secretmanager_v1beta2.SecretManagerServiceClient.create_secret",
+                    extra={
+                        "serviceName": "google.cloud.secretmanager.v1beta2.SecretManagerService",
+                        "rpcName": "CreateSecret",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteSecret(
@@ -976,7 +1177,7 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete secret method over HTTP.
 
@@ -987,13 +1188,16 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseSecretManagerServiceRestTransport._BaseDeleteSecret._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_secret(request, metadata)
             transcoded_request = _BaseSecretManagerServiceRestTransport._BaseDeleteSecret._get_transcoded_request(
                 http_options, request
@@ -1003,6 +1207,33 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
             query_params = _BaseSecretManagerServiceRestTransport._BaseDeleteSecret._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.secretmanager_v1beta2.SecretManagerServiceClient.DeleteSecret",
+                    extra={
+                        "serviceName": "google.cloud.secretmanager.v1beta2.SecretManagerService",
+                        "rpcName": "DeleteSecret",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SecretManagerServiceRestTransport._DeleteSecret._get_response(
@@ -1055,7 +1286,7 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.SecretVersion:
             r"""Call the destroy secret version method over HTTP.
 
@@ -1066,8 +1297,10 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.SecretVersion:
@@ -1079,6 +1312,7 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
             http_options = (
                 _BaseSecretManagerServiceRestTransport._BaseDestroySecretVersion._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_destroy_secret_version(
                 request, metadata
             )
@@ -1094,6 +1328,33 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
             query_params = _BaseSecretManagerServiceRestTransport._BaseDestroySecretVersion._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.secretmanager_v1beta2.SecretManagerServiceClient.DestroySecretVersion",
+                    extra={
+                        "serviceName": "google.cloud.secretmanager.v1beta2.SecretManagerService",
+                        "rpcName": "DestroySecretVersion",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1118,7 +1379,29 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
             pb_resp = resources.SecretVersion.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_destroy_secret_version(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.SecretVersion.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.secretmanager_v1beta2.SecretManagerServiceClient.destroy_secret_version",
+                    extra={
+                        "serviceName": "google.cloud.secretmanager.v1beta2.SecretManagerService",
+                        "rpcName": "DestroySecretVersion",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DisableSecretVersion(
@@ -1157,7 +1440,7 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.SecretVersion:
             r"""Call the disable secret version method over HTTP.
 
@@ -1168,8 +1451,10 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.SecretVersion:
@@ -1181,6 +1466,7 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
             http_options = (
                 _BaseSecretManagerServiceRestTransport._BaseDisableSecretVersion._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_disable_secret_version(
                 request, metadata
             )
@@ -1196,6 +1482,33 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
             query_params = _BaseSecretManagerServiceRestTransport._BaseDisableSecretVersion._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.secretmanager_v1beta2.SecretManagerServiceClient.DisableSecretVersion",
+                    extra={
+                        "serviceName": "google.cloud.secretmanager.v1beta2.SecretManagerService",
+                        "rpcName": "DisableSecretVersion",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1220,7 +1533,29 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
             pb_resp = resources.SecretVersion.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_disable_secret_version(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.SecretVersion.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.secretmanager_v1beta2.SecretManagerServiceClient.disable_secret_version",
+                    extra={
+                        "serviceName": "google.cloud.secretmanager.v1beta2.SecretManagerService",
+                        "rpcName": "DisableSecretVersion",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _EnableSecretVersion(
@@ -1259,7 +1594,7 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.SecretVersion:
             r"""Call the enable secret version method over HTTP.
 
@@ -1270,8 +1605,10 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.SecretVersion:
@@ -1283,6 +1620,7 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
             http_options = (
                 _BaseSecretManagerServiceRestTransport._BaseEnableSecretVersion._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_enable_secret_version(
                 request, metadata
             )
@@ -1298,6 +1636,33 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
             query_params = _BaseSecretManagerServiceRestTransport._BaseEnableSecretVersion._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.secretmanager_v1beta2.SecretManagerServiceClient.EnableSecretVersion",
+                    extra={
+                        "serviceName": "google.cloud.secretmanager.v1beta2.SecretManagerService",
+                        "rpcName": "EnableSecretVersion",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1322,7 +1687,29 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
             pb_resp = resources.SecretVersion.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_enable_secret_version(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.SecretVersion.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.secretmanager_v1beta2.SecretManagerServiceClient.enable_secret_version",
+                    extra={
+                        "serviceName": "google.cloud.secretmanager.v1beta2.SecretManagerService",
+                        "rpcName": "EnableSecretVersion",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetIamPolicy(
@@ -1360,7 +1747,7 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> policy_pb2.Policy:
             r"""Call the get iam policy method over HTTP.
 
@@ -1370,8 +1757,10 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.policy_pb2.Policy:
@@ -1456,6 +1845,7 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
             http_options = (
                 _BaseSecretManagerServiceRestTransport._BaseGetIamPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
             transcoded_request = _BaseSecretManagerServiceRestTransport._BaseGetIamPolicy._get_transcoded_request(
                 http_options, request
@@ -1465,6 +1855,33 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
             query_params = _BaseSecretManagerServiceRestTransport._BaseGetIamPolicy._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.secretmanager_v1beta2.SecretManagerServiceClient.GetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.secretmanager.v1beta2.SecretManagerService",
+                        "rpcName": "GetIamPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SecretManagerServiceRestTransport._GetIamPolicy._get_response(
@@ -1486,7 +1903,29 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
             pb_resp = resp
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_iam_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.secretmanager_v1beta2.SecretManagerServiceClient.get_iam_policy",
+                    extra={
+                        "serviceName": "google.cloud.secretmanager.v1beta2.SecretManagerService",
+                        "rpcName": "GetIamPolicy",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetSecret(
@@ -1524,7 +1963,7 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.Secret:
             r"""Call the get secret method over HTTP.
 
@@ -1535,8 +1974,10 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.Secret:
@@ -1554,6 +1995,7 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
             http_options = (
                 _BaseSecretManagerServiceRestTransport._BaseGetSecret._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_secret(request, metadata)
             transcoded_request = _BaseSecretManagerServiceRestTransport._BaseGetSecret._get_transcoded_request(
                 http_options, request
@@ -1563,6 +2005,33 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
             query_params = _BaseSecretManagerServiceRestTransport._BaseGetSecret._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.secretmanager_v1beta2.SecretManagerServiceClient.GetSecret",
+                    extra={
+                        "serviceName": "google.cloud.secretmanager.v1beta2.SecretManagerService",
+                        "rpcName": "GetSecret",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SecretManagerServiceRestTransport._GetSecret._get_response(
@@ -1584,7 +2053,29 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
             pb_resp = resources.Secret.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_secret(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.Secret.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.secretmanager_v1beta2.SecretManagerServiceClient.get_secret",
+                    extra={
+                        "serviceName": "google.cloud.secretmanager.v1beta2.SecretManagerService",
+                        "rpcName": "GetSecret",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetSecretVersion(
@@ -1622,7 +2113,7 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.SecretVersion:
             r"""Call the get secret version method over HTTP.
 
@@ -1633,8 +2124,10 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.SecretVersion:
@@ -1646,6 +2139,7 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
             http_options = (
                 _BaseSecretManagerServiceRestTransport._BaseGetSecretVersion._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_secret_version(
                 request, metadata
             )
@@ -1657,6 +2151,33 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
             query_params = _BaseSecretManagerServiceRestTransport._BaseGetSecretVersion._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.secretmanager_v1beta2.SecretManagerServiceClient.GetSecretVersion",
+                    extra={
+                        "serviceName": "google.cloud.secretmanager.v1beta2.SecretManagerService",
+                        "rpcName": "GetSecretVersion",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1680,7 +2201,29 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
             pb_resp = resources.SecretVersion.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_secret_version(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.SecretVersion.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.secretmanager_v1beta2.SecretManagerServiceClient.get_secret_version",
+                    extra={
+                        "serviceName": "google.cloud.secretmanager.v1beta2.SecretManagerService",
+                        "rpcName": "GetSecretVersion",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListSecrets(
@@ -1718,7 +2261,7 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> service.ListSecretsResponse:
             r"""Call the list secrets method over HTTP.
 
@@ -1729,8 +2272,10 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.service.ListSecretsResponse:
@@ -1742,6 +2287,7 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
             http_options = (
                 _BaseSecretManagerServiceRestTransport._BaseListSecrets._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_secrets(request, metadata)
             transcoded_request = _BaseSecretManagerServiceRestTransport._BaseListSecrets._get_transcoded_request(
                 http_options, request
@@ -1751,6 +2297,33 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
             query_params = _BaseSecretManagerServiceRestTransport._BaseListSecrets._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.secretmanager_v1beta2.SecretManagerServiceClient.ListSecrets",
+                    extra={
+                        "serviceName": "google.cloud.secretmanager.v1beta2.SecretManagerService",
+                        "rpcName": "ListSecrets",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SecretManagerServiceRestTransport._ListSecrets._get_response(
@@ -1772,7 +2345,29 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
             pb_resp = service.ListSecretsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_secrets(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = service.ListSecretsResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.secretmanager_v1beta2.SecretManagerServiceClient.list_secrets",
+                    extra={
+                        "serviceName": "google.cloud.secretmanager.v1beta2.SecretManagerService",
+                        "rpcName": "ListSecrets",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListSecretVersions(
@@ -1810,7 +2405,7 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> service.ListSecretVersionsResponse:
             r"""Call the list secret versions method over HTTP.
 
@@ -1821,8 +2416,10 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.service.ListSecretVersionsResponse:
@@ -1834,6 +2431,7 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
             http_options = (
                 _BaseSecretManagerServiceRestTransport._BaseListSecretVersions._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_secret_versions(
                 request, metadata
             )
@@ -1845,6 +2443,33 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
             query_params = _BaseSecretManagerServiceRestTransport._BaseListSecretVersions._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.secretmanager_v1beta2.SecretManagerServiceClient.ListSecretVersions",
+                    extra={
+                        "serviceName": "google.cloud.secretmanager.v1beta2.SecretManagerService",
+                        "rpcName": "ListSecretVersions",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1868,7 +2493,31 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
             pb_resp = service.ListSecretVersionsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_secret_versions(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = service.ListSecretVersionsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.secretmanager_v1beta2.SecretManagerServiceClient.list_secret_versions",
+                    extra={
+                        "serviceName": "google.cloud.secretmanager.v1beta2.SecretManagerService",
+                        "rpcName": "ListSecretVersions",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _SetIamPolicy(
@@ -1907,7 +2556,7 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> policy_pb2.Policy:
             r"""Call the set iam policy method over HTTP.
 
@@ -1917,8 +2566,10 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.policy_pb2.Policy:
@@ -2003,6 +2654,7 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
             http_options = (
                 _BaseSecretManagerServiceRestTransport._BaseSetIamPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
             transcoded_request = _BaseSecretManagerServiceRestTransport._BaseSetIamPolicy._get_transcoded_request(
                 http_options, request
@@ -2016,6 +2668,33 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
             query_params = _BaseSecretManagerServiceRestTransport._BaseSetIamPolicy._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.secretmanager_v1beta2.SecretManagerServiceClient.SetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.secretmanager.v1beta2.SecretManagerService",
+                        "rpcName": "SetIamPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SecretManagerServiceRestTransport._SetIamPolicy._get_response(
@@ -2038,7 +2717,29 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
             pb_resp = resp
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_set_iam_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.secretmanager_v1beta2.SecretManagerServiceClient.set_iam_policy",
+                    extra={
+                        "serviceName": "google.cloud.secretmanager.v1beta2.SecretManagerService",
+                        "rpcName": "SetIamPolicy",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _TestIamPermissions(
@@ -2077,7 +2778,7 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> iam_policy_pb2.TestIamPermissionsResponse:
             r"""Call the test iam permissions method over HTTP.
 
@@ -2087,8 +2788,10 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.iam_policy_pb2.TestIamPermissionsResponse:
@@ -2098,6 +2801,7 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
             http_options = (
                 _BaseSecretManagerServiceRestTransport._BaseTestIamPermissions._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata
             )
@@ -2113,6 +2817,33 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
             query_params = _BaseSecretManagerServiceRestTransport._BaseTestIamPermissions._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.secretmanager_v1beta2.SecretManagerServiceClient.TestIamPermissions",
+                    extra={
+                        "serviceName": "google.cloud.secretmanager.v1beta2.SecretManagerService",
+                        "rpcName": "TestIamPermissions",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -2137,7 +2868,29 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
             pb_resp = resp
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_test_iam_permissions(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.secretmanager_v1beta2.SecretManagerServiceClient.test_iam_permissions",
+                    extra={
+                        "serviceName": "google.cloud.secretmanager.v1beta2.SecretManagerService",
+                        "rpcName": "TestIamPermissions",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateSecret(
@@ -2176,7 +2929,7 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.Secret:
             r"""Call the update secret method over HTTP.
 
@@ -2187,8 +2940,10 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.Secret:
@@ -2206,6 +2961,7 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
             http_options = (
                 _BaseSecretManagerServiceRestTransport._BaseUpdateSecret._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_secret(request, metadata)
             transcoded_request = _BaseSecretManagerServiceRestTransport._BaseUpdateSecret._get_transcoded_request(
                 http_options, request
@@ -2219,6 +2975,33 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
             query_params = _BaseSecretManagerServiceRestTransport._BaseUpdateSecret._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.secretmanager_v1beta2.SecretManagerServiceClient.UpdateSecret",
+                    extra={
+                        "serviceName": "google.cloud.secretmanager.v1beta2.SecretManagerService",
+                        "rpcName": "UpdateSecret",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SecretManagerServiceRestTransport._UpdateSecret._get_response(
@@ -2241,7 +3024,29 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
             pb_resp = resources.Secret.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_secret(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.Secret.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.secretmanager_v1beta2.SecretManagerServiceClient.update_secret",
+                    extra={
+                        "serviceName": "google.cloud.secretmanager.v1beta2.SecretManagerService",
+                        "rpcName": "UpdateSecret",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -2406,7 +3211,7 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.Location:
             r"""Call the get location method over HTTP.
 
@@ -2416,8 +3221,10 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.Location: Response from GetLocation method.
@@ -2426,6 +3233,7 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
             http_options = (
                 _BaseSecretManagerServiceRestTransport._BaseGetLocation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_location(request, metadata)
             transcoded_request = _BaseSecretManagerServiceRestTransport._BaseGetLocation._get_transcoded_request(
                 http_options, request
@@ -2435,6 +3243,33 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
             query_params = _BaseSecretManagerServiceRestTransport._BaseGetLocation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.secretmanager_v1beta2.SecretManagerServiceClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.secretmanager.v1beta2.SecretManagerService",
+                        "rpcName": "GetLocation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SecretManagerServiceRestTransport._GetLocation._get_response(
@@ -2455,6 +3290,27 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.secretmanager_v1beta2.SecretManagerServiceAsyncClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.secretmanager.v1beta2.SecretManagerService",
+                        "rpcName": "GetLocation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -2496,7 +3352,7 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.ListLocationsResponse:
             r"""Call the list locations method over HTTP.
 
@@ -2506,8 +3362,10 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
@@ -2516,6 +3374,7 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
             http_options = (
                 _BaseSecretManagerServiceRestTransport._BaseListLocations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
             transcoded_request = _BaseSecretManagerServiceRestTransport._BaseListLocations._get_transcoded_request(
                 http_options, request
@@ -2525,6 +3384,33 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
             query_params = _BaseSecretManagerServiceRestTransport._BaseListLocations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.secretmanager_v1beta2.SecretManagerServiceClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.secretmanager.v1beta2.SecretManagerService",
+                        "rpcName": "ListLocations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SecretManagerServiceRestTransport._ListLocations._get_response(
@@ -2545,6 +3431,27 @@ class SecretManagerServiceRestTransport(_BaseSecretManagerServiceRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.secretmanager_v1beta2.SecretManagerServiceAsyncClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.secretmanager.v1beta2.SecretManagerService",
+                        "rpcName": "ListLocations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property

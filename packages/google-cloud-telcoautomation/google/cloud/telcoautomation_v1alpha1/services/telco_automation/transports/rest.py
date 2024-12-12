@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -40,6 +40,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -352,8 +360,10 @@ class TelcoAutomationRestInterceptor:
     def pre_apply_deployment(
         self,
         request: telcoautomation.ApplyDeploymentRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[telcoautomation.ApplyDeploymentRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        telcoautomation.ApplyDeploymentRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for apply_deployment
 
         Override in a subclass to manipulate the request or metadata
@@ -375,9 +385,10 @@ class TelcoAutomationRestInterceptor:
     def pre_apply_hydrated_deployment(
         self,
         request: telcoautomation.ApplyHydratedDeploymentRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        telcoautomation.ApplyHydratedDeploymentRequest, Sequence[Tuple[str, str]]
+        telcoautomation.ApplyHydratedDeploymentRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for apply_hydrated_deployment
 
@@ -400,8 +411,10 @@ class TelcoAutomationRestInterceptor:
     def pre_approve_blueprint(
         self,
         request: telcoautomation.ApproveBlueprintRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[telcoautomation.ApproveBlueprintRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        telcoautomation.ApproveBlueprintRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for approve_blueprint
 
         Override in a subclass to manipulate the request or metadata
@@ -423,9 +436,10 @@ class TelcoAutomationRestInterceptor:
     def pre_compute_deployment_status(
         self,
         request: telcoautomation.ComputeDeploymentStatusRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        telcoautomation.ComputeDeploymentStatusRequest, Sequence[Tuple[str, str]]
+        telcoautomation.ComputeDeploymentStatusRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for compute_deployment_status
 
@@ -448,8 +462,10 @@ class TelcoAutomationRestInterceptor:
     def pre_create_blueprint(
         self,
         request: telcoautomation.CreateBlueprintRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[telcoautomation.CreateBlueprintRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        telcoautomation.CreateBlueprintRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_blueprint
 
         Override in a subclass to manipulate the request or metadata
@@ -471,8 +487,10 @@ class TelcoAutomationRestInterceptor:
     def pre_create_deployment(
         self,
         request: telcoautomation.CreateDeploymentRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[telcoautomation.CreateDeploymentRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        telcoautomation.CreateDeploymentRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_deployment
 
         Override in a subclass to manipulate the request or metadata
@@ -494,8 +512,10 @@ class TelcoAutomationRestInterceptor:
     def pre_create_edge_slm(
         self,
         request: telcoautomation.CreateEdgeSlmRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[telcoautomation.CreateEdgeSlmRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        telcoautomation.CreateEdgeSlmRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_edge_slm
 
         Override in a subclass to manipulate the request or metadata
@@ -517,9 +537,10 @@ class TelcoAutomationRestInterceptor:
     def pre_create_orchestration_cluster(
         self,
         request: telcoautomation.CreateOrchestrationClusterRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        telcoautomation.CreateOrchestrationClusterRequest, Sequence[Tuple[str, str]]
+        telcoautomation.CreateOrchestrationClusterRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for create_orchestration_cluster
 
@@ -542,8 +563,10 @@ class TelcoAutomationRestInterceptor:
     def pre_delete_blueprint(
         self,
         request: telcoautomation.DeleteBlueprintRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[telcoautomation.DeleteBlueprintRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        telcoautomation.DeleteBlueprintRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_blueprint
 
         Override in a subclass to manipulate the request or metadata
@@ -554,8 +577,10 @@ class TelcoAutomationRestInterceptor:
     def pre_delete_edge_slm(
         self,
         request: telcoautomation.DeleteEdgeSlmRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[telcoautomation.DeleteEdgeSlmRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        telcoautomation.DeleteEdgeSlmRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_edge_slm
 
         Override in a subclass to manipulate the request or metadata
@@ -577,9 +602,10 @@ class TelcoAutomationRestInterceptor:
     def pre_delete_orchestration_cluster(
         self,
         request: telcoautomation.DeleteOrchestrationClusterRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        telcoautomation.DeleteOrchestrationClusterRequest, Sequence[Tuple[str, str]]
+        telcoautomation.DeleteOrchestrationClusterRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for delete_orchestration_cluster
 
@@ -602,9 +628,10 @@ class TelcoAutomationRestInterceptor:
     def pre_discard_blueprint_changes(
         self,
         request: telcoautomation.DiscardBlueprintChangesRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        telcoautomation.DiscardBlueprintChangesRequest, Sequence[Tuple[str, str]]
+        telcoautomation.DiscardBlueprintChangesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for discard_blueprint_changes
 
@@ -627,9 +654,10 @@ class TelcoAutomationRestInterceptor:
     def pre_discard_deployment_changes(
         self,
         request: telcoautomation.DiscardDeploymentChangesRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        telcoautomation.DiscardDeploymentChangesRequest, Sequence[Tuple[str, str]]
+        telcoautomation.DiscardDeploymentChangesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for discard_deployment_changes
 
@@ -652,8 +680,10 @@ class TelcoAutomationRestInterceptor:
     def pre_get_blueprint(
         self,
         request: telcoautomation.GetBlueprintRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[telcoautomation.GetBlueprintRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        telcoautomation.GetBlueprintRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_blueprint
 
         Override in a subclass to manipulate the request or metadata
@@ -675,8 +705,10 @@ class TelcoAutomationRestInterceptor:
     def pre_get_deployment(
         self,
         request: telcoautomation.GetDeploymentRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[telcoautomation.GetDeploymentRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        telcoautomation.GetDeploymentRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_deployment
 
         Override in a subclass to manipulate the request or metadata
@@ -698,8 +730,10 @@ class TelcoAutomationRestInterceptor:
     def pre_get_edge_slm(
         self,
         request: telcoautomation.GetEdgeSlmRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[telcoautomation.GetEdgeSlmRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        telcoautomation.GetEdgeSlmRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_edge_slm
 
         Override in a subclass to manipulate the request or metadata
@@ -721,8 +755,11 @@ class TelcoAutomationRestInterceptor:
     def pre_get_hydrated_deployment(
         self,
         request: telcoautomation.GetHydratedDeploymentRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[telcoautomation.GetHydratedDeploymentRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        telcoautomation.GetHydratedDeploymentRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for get_hydrated_deployment
 
         Override in a subclass to manipulate the request or metadata
@@ -744,9 +781,10 @@ class TelcoAutomationRestInterceptor:
     def pre_get_orchestration_cluster(
         self,
         request: telcoautomation.GetOrchestrationClusterRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        telcoautomation.GetOrchestrationClusterRequest, Sequence[Tuple[str, str]]
+        telcoautomation.GetOrchestrationClusterRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for get_orchestration_cluster
 
@@ -769,8 +807,11 @@ class TelcoAutomationRestInterceptor:
     def pre_get_public_blueprint(
         self,
         request: telcoautomation.GetPublicBlueprintRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[telcoautomation.GetPublicBlueprintRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        telcoautomation.GetPublicBlueprintRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for get_public_blueprint
 
         Override in a subclass to manipulate the request or metadata
@@ -792,9 +833,10 @@ class TelcoAutomationRestInterceptor:
     def pre_list_blueprint_revisions(
         self,
         request: telcoautomation.ListBlueprintRevisionsRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        telcoautomation.ListBlueprintRevisionsRequest, Sequence[Tuple[str, str]]
+        telcoautomation.ListBlueprintRevisionsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for list_blueprint_revisions
 
@@ -817,8 +859,10 @@ class TelcoAutomationRestInterceptor:
     def pre_list_blueprints(
         self,
         request: telcoautomation.ListBlueprintsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[telcoautomation.ListBlueprintsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        telcoautomation.ListBlueprintsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_blueprints
 
         Override in a subclass to manipulate the request or metadata
@@ -840,9 +884,10 @@ class TelcoAutomationRestInterceptor:
     def pre_list_deployment_revisions(
         self,
         request: telcoautomation.ListDeploymentRevisionsRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        telcoautomation.ListDeploymentRevisionsRequest, Sequence[Tuple[str, str]]
+        telcoautomation.ListDeploymentRevisionsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for list_deployment_revisions
 
@@ -865,8 +910,10 @@ class TelcoAutomationRestInterceptor:
     def pre_list_deployments(
         self,
         request: telcoautomation.ListDeploymentsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[telcoautomation.ListDeploymentsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        telcoautomation.ListDeploymentsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_deployments
 
         Override in a subclass to manipulate the request or metadata
@@ -888,8 +935,10 @@ class TelcoAutomationRestInterceptor:
     def pre_list_edge_slms(
         self,
         request: telcoautomation.ListEdgeSlmsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[telcoautomation.ListEdgeSlmsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        telcoautomation.ListEdgeSlmsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_edge_slms
 
         Override in a subclass to manipulate the request or metadata
@@ -911,9 +960,10 @@ class TelcoAutomationRestInterceptor:
     def pre_list_hydrated_deployments(
         self,
         request: telcoautomation.ListHydratedDeploymentsRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        telcoautomation.ListHydratedDeploymentsRequest, Sequence[Tuple[str, str]]
+        telcoautomation.ListHydratedDeploymentsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for list_hydrated_deployments
 
@@ -936,9 +986,10 @@ class TelcoAutomationRestInterceptor:
     def pre_list_orchestration_clusters(
         self,
         request: telcoautomation.ListOrchestrationClustersRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        telcoautomation.ListOrchestrationClustersRequest, Sequence[Tuple[str, str]]
+        telcoautomation.ListOrchestrationClustersRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for list_orchestration_clusters
 
@@ -961,8 +1012,11 @@ class TelcoAutomationRestInterceptor:
     def pre_list_public_blueprints(
         self,
         request: telcoautomation.ListPublicBlueprintsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[telcoautomation.ListPublicBlueprintsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        telcoautomation.ListPublicBlueprintsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for list_public_blueprints
 
         Override in a subclass to manipulate the request or metadata
@@ -984,8 +1038,10 @@ class TelcoAutomationRestInterceptor:
     def pre_propose_blueprint(
         self,
         request: telcoautomation.ProposeBlueprintRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[telcoautomation.ProposeBlueprintRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        telcoautomation.ProposeBlueprintRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for propose_blueprint
 
         Override in a subclass to manipulate the request or metadata
@@ -1007,8 +1063,10 @@ class TelcoAutomationRestInterceptor:
     def pre_reject_blueprint(
         self,
         request: telcoautomation.RejectBlueprintRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[telcoautomation.RejectBlueprintRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        telcoautomation.RejectBlueprintRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for reject_blueprint
 
         Override in a subclass to manipulate the request or metadata
@@ -1030,8 +1088,10 @@ class TelcoAutomationRestInterceptor:
     def pre_remove_deployment(
         self,
         request: telcoautomation.RemoveDeploymentRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[telcoautomation.RemoveDeploymentRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        telcoautomation.RemoveDeploymentRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for remove_deployment
 
         Override in a subclass to manipulate the request or metadata
@@ -1042,8 +1102,11 @@ class TelcoAutomationRestInterceptor:
     def pre_rollback_deployment(
         self,
         request: telcoautomation.RollbackDeploymentRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[telcoautomation.RollbackDeploymentRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        telcoautomation.RollbackDeploymentRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for rollback_deployment
 
         Override in a subclass to manipulate the request or metadata
@@ -1065,9 +1128,10 @@ class TelcoAutomationRestInterceptor:
     def pre_search_blueprint_revisions(
         self,
         request: telcoautomation.SearchBlueprintRevisionsRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        telcoautomation.SearchBlueprintRevisionsRequest, Sequence[Tuple[str, str]]
+        telcoautomation.SearchBlueprintRevisionsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for search_blueprint_revisions
 
@@ -1090,9 +1154,10 @@ class TelcoAutomationRestInterceptor:
     def pre_search_deployment_revisions(
         self,
         request: telcoautomation.SearchDeploymentRevisionsRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        telcoautomation.SearchDeploymentRevisionsRequest, Sequence[Tuple[str, str]]
+        telcoautomation.SearchDeploymentRevisionsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for search_deployment_revisions
 
@@ -1115,8 +1180,10 @@ class TelcoAutomationRestInterceptor:
     def pre_update_blueprint(
         self,
         request: telcoautomation.UpdateBlueprintRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[telcoautomation.UpdateBlueprintRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        telcoautomation.UpdateBlueprintRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_blueprint
 
         Override in a subclass to manipulate the request or metadata
@@ -1138,8 +1205,10 @@ class TelcoAutomationRestInterceptor:
     def pre_update_deployment(
         self,
         request: telcoautomation.UpdateDeploymentRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[telcoautomation.UpdateDeploymentRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        telcoautomation.UpdateDeploymentRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_deployment
 
         Override in a subclass to manipulate the request or metadata
@@ -1161,9 +1230,10 @@ class TelcoAutomationRestInterceptor:
     def pre_update_hydrated_deployment(
         self,
         request: telcoautomation.UpdateHydratedDeploymentRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        telcoautomation.UpdateHydratedDeploymentRequest, Sequence[Tuple[str, str]]
+        telcoautomation.UpdateHydratedDeploymentRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for update_hydrated_deployment
 
@@ -1186,8 +1256,10 @@ class TelcoAutomationRestInterceptor:
     def pre_get_location(
         self,
         request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -1209,8 +1281,10 @@ class TelcoAutomationRestInterceptor:
     def pre_list_locations(
         self,
         request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -1232,8 +1306,10 @@ class TelcoAutomationRestInterceptor:
     def pre_cancel_operation(
         self,
         request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1253,8 +1329,10 @@ class TelcoAutomationRestInterceptor:
     def pre_delete_operation(
         self,
         request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1274,8 +1352,10 @@ class TelcoAutomationRestInterceptor:
     def pre_get_operation(
         self,
         request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1297,8 +1377,10 @@ class TelcoAutomationRestInterceptor:
     def pre_list_operations(
         self,
         request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -1497,7 +1579,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> telcoautomation.Deployment:
             r"""Call the apply deployment method over HTTP.
 
@@ -1509,8 +1591,10 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.telcoautomation.Deployment:
@@ -1525,6 +1609,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             http_options = (
                 _BaseTelcoAutomationRestTransport._BaseApplyDeployment._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_apply_deployment(
                 request, metadata
             )
@@ -1540,6 +1625,33 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             query_params = _BaseTelcoAutomationRestTransport._BaseApplyDeployment._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.telcoautomation_v1alpha1.TelcoAutomationClient.ApplyDeployment",
+                    extra={
+                        "serviceName": "google.cloud.telcoautomation.v1alpha1.TelcoAutomation",
+                        "rpcName": "ApplyDeployment",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TelcoAutomationRestTransport._ApplyDeployment._get_response(
@@ -1562,7 +1674,29 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             pb_resp = telcoautomation.Deployment.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_apply_deployment(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = telcoautomation.Deployment.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.telcoautomation_v1alpha1.TelcoAutomationClient.apply_deployment",
+                    extra={
+                        "serviceName": "google.cloud.telcoautomation.v1alpha1.TelcoAutomation",
+                        "rpcName": "ApplyDeployment",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ApplyHydratedDeployment(
@@ -1601,7 +1735,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> telcoautomation.HydratedDeployment:
             r"""Call the apply hydrated deployment method over HTTP.
 
@@ -1612,8 +1746,10 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.telcoautomation.HydratedDeployment:
@@ -1627,6 +1763,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             http_options = (
                 _BaseTelcoAutomationRestTransport._BaseApplyHydratedDeployment._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_apply_hydrated_deployment(
                 request, metadata
             )
@@ -1642,6 +1779,33 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             query_params = _BaseTelcoAutomationRestTransport._BaseApplyHydratedDeployment._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.telcoautomation_v1alpha1.TelcoAutomationClient.ApplyHydratedDeployment",
+                    extra={
+                        "serviceName": "google.cloud.telcoautomation.v1alpha1.TelcoAutomation",
+                        "rpcName": "ApplyHydratedDeployment",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1666,7 +1830,31 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             pb_resp = telcoautomation.HydratedDeployment.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_apply_hydrated_deployment(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = telcoautomation.HydratedDeployment.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.telcoautomation_v1alpha1.TelcoAutomationClient.apply_hydrated_deployment",
+                    extra={
+                        "serviceName": "google.cloud.telcoautomation.v1alpha1.TelcoAutomation",
+                        "rpcName": "ApplyHydratedDeployment",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ApproveBlueprint(
@@ -1704,7 +1892,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> telcoautomation.Blueprint:
             r"""Call the approve blueprint method over HTTP.
 
@@ -1714,8 +1902,10 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.telcoautomation.Blueprint:
@@ -1737,6 +1927,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             http_options = (
                 _BaseTelcoAutomationRestTransport._BaseApproveBlueprint._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_approve_blueprint(
                 request, metadata
             )
@@ -1752,6 +1943,33 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             query_params = _BaseTelcoAutomationRestTransport._BaseApproveBlueprint._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.telcoautomation_v1alpha1.TelcoAutomationClient.ApproveBlueprint",
+                    extra={
+                        "serviceName": "google.cloud.telcoautomation.v1alpha1.TelcoAutomation",
+                        "rpcName": "ApproveBlueprint",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TelcoAutomationRestTransport._ApproveBlueprint._get_response(
@@ -1774,7 +1992,29 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             pb_resp = telcoautomation.Blueprint.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_approve_blueprint(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = telcoautomation.Blueprint.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.telcoautomation_v1alpha1.TelcoAutomationClient.approve_blueprint",
+                    extra={
+                        "serviceName": "google.cloud.telcoautomation.v1alpha1.TelcoAutomation",
+                        "rpcName": "ApproveBlueprint",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ComputeDeploymentStatus(
@@ -1812,7 +2052,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> telcoautomation.ComputeDeploymentStatusResponse:
             r"""Call the compute deployment status method over HTTP.
 
@@ -1822,8 +2062,10 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.telcoautomation.ComputeDeploymentStatusResponse:
@@ -1833,6 +2075,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             http_options = (
                 _BaseTelcoAutomationRestTransport._BaseComputeDeploymentStatus._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_compute_deployment_status(
                 request, metadata
             )
@@ -1844,6 +2087,33 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             query_params = _BaseTelcoAutomationRestTransport._BaseComputeDeploymentStatus._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.telcoautomation_v1alpha1.TelcoAutomationClient.ComputeDeploymentStatus",
+                    extra={
+                        "serviceName": "google.cloud.telcoautomation.v1alpha1.TelcoAutomation",
+                        "rpcName": "ComputeDeploymentStatus",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1867,7 +2137,33 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             pb_resp = telcoautomation.ComputeDeploymentStatusResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_compute_deployment_status(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        telcoautomation.ComputeDeploymentStatusResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.telcoautomation_v1alpha1.TelcoAutomationClient.compute_deployment_status",
+                    extra={
+                        "serviceName": "google.cloud.telcoautomation.v1alpha1.TelcoAutomation",
+                        "rpcName": "ComputeDeploymentStatus",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateBlueprint(
@@ -1905,7 +2201,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> telcoautomation.Blueprint:
             r"""Call the create blueprint method over HTTP.
 
@@ -1915,8 +2211,10 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.telcoautomation.Blueprint:
@@ -1938,6 +2236,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             http_options = (
                 _BaseTelcoAutomationRestTransport._BaseCreateBlueprint._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_blueprint(
                 request, metadata
             )
@@ -1953,6 +2252,33 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             query_params = _BaseTelcoAutomationRestTransport._BaseCreateBlueprint._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.telcoautomation_v1alpha1.TelcoAutomationClient.CreateBlueprint",
+                    extra={
+                        "serviceName": "google.cloud.telcoautomation.v1alpha1.TelcoAutomation",
+                        "rpcName": "CreateBlueprint",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TelcoAutomationRestTransport._CreateBlueprint._get_response(
@@ -1975,7 +2301,29 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             pb_resp = telcoautomation.Blueprint.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_blueprint(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = telcoautomation.Blueprint.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.telcoautomation_v1alpha1.TelcoAutomationClient.create_blueprint",
+                    extra={
+                        "serviceName": "google.cloud.telcoautomation.v1alpha1.TelcoAutomation",
+                        "rpcName": "CreateBlueprint",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateDeployment(
@@ -2013,7 +2361,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> telcoautomation.Deployment:
             r"""Call the create deployment method over HTTP.
 
@@ -2023,8 +2371,10 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.telcoautomation.Deployment:
@@ -2039,6 +2389,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             http_options = (
                 _BaseTelcoAutomationRestTransport._BaseCreateDeployment._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_deployment(
                 request, metadata
             )
@@ -2054,6 +2405,33 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             query_params = _BaseTelcoAutomationRestTransport._BaseCreateDeployment._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.telcoautomation_v1alpha1.TelcoAutomationClient.CreateDeployment",
+                    extra={
+                        "serviceName": "google.cloud.telcoautomation.v1alpha1.TelcoAutomation",
+                        "rpcName": "CreateDeployment",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TelcoAutomationRestTransport._CreateDeployment._get_response(
@@ -2076,7 +2454,29 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             pb_resp = telcoautomation.Deployment.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_deployment(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = telcoautomation.Deployment.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.telcoautomation_v1alpha1.TelcoAutomationClient.create_deployment",
+                    extra={
+                        "serviceName": "google.cloud.telcoautomation.v1alpha1.TelcoAutomation",
+                        "rpcName": "CreateDeployment",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateEdgeSlm(
@@ -2114,7 +2514,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create edge slm method over HTTP.
 
@@ -2124,8 +2524,10 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2138,6 +2540,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             http_options = (
                 _BaseTelcoAutomationRestTransport._BaseCreateEdgeSlm._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_edge_slm(request, metadata)
             transcoded_request = _BaseTelcoAutomationRestTransport._BaseCreateEdgeSlm._get_transcoded_request(
                 http_options, request
@@ -2151,6 +2554,33 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             query_params = _BaseTelcoAutomationRestTransport._BaseCreateEdgeSlm._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.telcoautomation_v1alpha1.TelcoAutomationClient.CreateEdgeSlm",
+                    extra={
+                        "serviceName": "google.cloud.telcoautomation.v1alpha1.TelcoAutomation",
+                        "rpcName": "CreateEdgeSlm",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TelcoAutomationRestTransport._CreateEdgeSlm._get_response(
@@ -2171,7 +2601,29 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_edge_slm(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.telcoautomation_v1alpha1.TelcoAutomationClient.create_edge_slm",
+                    extra={
+                        "serviceName": "google.cloud.telcoautomation.v1alpha1.TelcoAutomation",
+                        "rpcName": "CreateEdgeSlm",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateOrchestrationCluster(
@@ -2210,7 +2662,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create orchestration
             cluster method over HTTP.
@@ -2222,8 +2674,10 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.operations_pb2.Operation:
@@ -2236,6 +2690,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             http_options = (
                 _BaseTelcoAutomationRestTransport._BaseCreateOrchestrationCluster._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_orchestration_cluster(
                 request, metadata
             )
@@ -2251,6 +2706,33 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             query_params = _BaseTelcoAutomationRestTransport._BaseCreateOrchestrationCluster._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.telcoautomation_v1alpha1.TelcoAutomationClient.CreateOrchestrationCluster",
+                    extra={
+                        "serviceName": "google.cloud.telcoautomation.v1alpha1.TelcoAutomation",
+                        "rpcName": "CreateOrchestrationCluster",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -2273,7 +2755,29 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_orchestration_cluster(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.telcoautomation_v1alpha1.TelcoAutomationClient.create_orchestration_cluster",
+                    extra={
+                        "serviceName": "google.cloud.telcoautomation.v1alpha1.TelcoAutomation",
+                        "rpcName": "CreateOrchestrationCluster",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteBlueprint(
@@ -2310,7 +2814,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete blueprint method over HTTP.
 
@@ -2320,13 +2824,16 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseTelcoAutomationRestTransport._BaseDeleteBlueprint._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_blueprint(
                 request, metadata
             )
@@ -2338,6 +2845,33 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             query_params = _BaseTelcoAutomationRestTransport._BaseDeleteBlueprint._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.telcoautomation_v1alpha1.TelcoAutomationClient.DeleteBlueprint",
+                    extra={
+                        "serviceName": "google.cloud.telcoautomation.v1alpha1.TelcoAutomation",
+                        "rpcName": "DeleteBlueprint",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TelcoAutomationRestTransport._DeleteBlueprint._get_response(
@@ -2388,7 +2922,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete edge slm method over HTTP.
 
@@ -2398,8 +2932,10 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2412,6 +2948,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             http_options = (
                 _BaseTelcoAutomationRestTransport._BaseDeleteEdgeSlm._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_edge_slm(request, metadata)
             transcoded_request = _BaseTelcoAutomationRestTransport._BaseDeleteEdgeSlm._get_transcoded_request(
                 http_options, request
@@ -2421,6 +2958,33 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             query_params = _BaseTelcoAutomationRestTransport._BaseDeleteEdgeSlm._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.telcoautomation_v1alpha1.TelcoAutomationClient.DeleteEdgeSlm",
+                    extra={
+                        "serviceName": "google.cloud.telcoautomation.v1alpha1.TelcoAutomation",
+                        "rpcName": "DeleteEdgeSlm",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TelcoAutomationRestTransport._DeleteEdgeSlm._get_response(
@@ -2440,7 +3004,29 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_edge_slm(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.telcoautomation_v1alpha1.TelcoAutomationClient.delete_edge_slm",
+                    extra={
+                        "serviceName": "google.cloud.telcoautomation.v1alpha1.TelcoAutomation",
+                        "rpcName": "DeleteEdgeSlm",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteOrchestrationCluster(
@@ -2478,7 +3064,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete orchestration
             cluster method over HTTP.
@@ -2490,8 +3076,10 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.operations_pb2.Operation:
@@ -2504,6 +3092,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             http_options = (
                 _BaseTelcoAutomationRestTransport._BaseDeleteOrchestrationCluster._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_orchestration_cluster(
                 request, metadata
             )
@@ -2515,6 +3104,33 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             query_params = _BaseTelcoAutomationRestTransport._BaseDeleteOrchestrationCluster._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.telcoautomation_v1alpha1.TelcoAutomationClient.DeleteOrchestrationCluster",
+                    extra={
+                        "serviceName": "google.cloud.telcoautomation.v1alpha1.TelcoAutomation",
+                        "rpcName": "DeleteOrchestrationCluster",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -2536,7 +3152,29 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_orchestration_cluster(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.telcoautomation_v1alpha1.TelcoAutomationClient.delete_orchestration_cluster",
+                    extra={
+                        "serviceName": "google.cloud.telcoautomation.v1alpha1.TelcoAutomation",
+                        "rpcName": "DeleteOrchestrationCluster",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DiscardBlueprintChanges(
@@ -2575,7 +3213,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> telcoautomation.DiscardBlueprintChangesResponse:
             r"""Call the discard blueprint changes method over HTTP.
 
@@ -2585,8 +3223,10 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.telcoautomation.DiscardBlueprintChangesResponse:
@@ -2596,6 +3236,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             http_options = (
                 _BaseTelcoAutomationRestTransport._BaseDiscardBlueprintChanges._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_discard_blueprint_changes(
                 request, metadata
             )
@@ -2611,6 +3252,33 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             query_params = _BaseTelcoAutomationRestTransport._BaseDiscardBlueprintChanges._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.telcoautomation_v1alpha1.TelcoAutomationClient.DiscardBlueprintChanges",
+                    extra={
+                        "serviceName": "google.cloud.telcoautomation.v1alpha1.TelcoAutomation",
+                        "rpcName": "DiscardBlueprintChanges",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -2635,7 +3303,33 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             pb_resp = telcoautomation.DiscardBlueprintChangesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_discard_blueprint_changes(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        telcoautomation.DiscardBlueprintChangesResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.telcoautomation_v1alpha1.TelcoAutomationClient.discard_blueprint_changes",
+                    extra={
+                        "serviceName": "google.cloud.telcoautomation.v1alpha1.TelcoAutomation",
+                        "rpcName": "DiscardBlueprintChanges",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DiscardDeploymentChanges(
@@ -2674,7 +3368,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> telcoautomation.DiscardDeploymentChangesResponse:
             r"""Call the discard deployment
             changes method over HTTP.
@@ -2685,8 +3379,10 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.telcoautomation.DiscardDeploymentChangesResponse:
@@ -2696,6 +3392,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             http_options = (
                 _BaseTelcoAutomationRestTransport._BaseDiscardDeploymentChanges._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_discard_deployment_changes(
                 request, metadata
             )
@@ -2711,6 +3408,33 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             query_params = _BaseTelcoAutomationRestTransport._BaseDiscardDeploymentChanges._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.telcoautomation_v1alpha1.TelcoAutomationClient.DiscardDeploymentChanges",
+                    extra={
+                        "serviceName": "google.cloud.telcoautomation.v1alpha1.TelcoAutomation",
+                        "rpcName": "DiscardDeploymentChanges",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -2735,7 +3459,33 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             pb_resp = telcoautomation.DiscardDeploymentChangesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_discard_deployment_changes(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        telcoautomation.DiscardDeploymentChangesResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.telcoautomation_v1alpha1.TelcoAutomationClient.discard_deployment_changes",
+                    extra={
+                        "serviceName": "google.cloud.telcoautomation.v1alpha1.TelcoAutomation",
+                        "rpcName": "DiscardDeploymentChanges",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetBlueprint(
@@ -2772,7 +3522,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> telcoautomation.Blueprint:
             r"""Call the get blueprint method over HTTP.
 
@@ -2782,8 +3532,10 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.telcoautomation.Blueprint:
@@ -2805,6 +3557,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             http_options = (
                 _BaseTelcoAutomationRestTransport._BaseGetBlueprint._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_blueprint(request, metadata)
             transcoded_request = _BaseTelcoAutomationRestTransport._BaseGetBlueprint._get_transcoded_request(
                 http_options, request
@@ -2814,6 +3567,33 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             query_params = _BaseTelcoAutomationRestTransport._BaseGetBlueprint._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.telcoautomation_v1alpha1.TelcoAutomationClient.GetBlueprint",
+                    extra={
+                        "serviceName": "google.cloud.telcoautomation.v1alpha1.TelcoAutomation",
+                        "rpcName": "GetBlueprint",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TelcoAutomationRestTransport._GetBlueprint._get_response(
@@ -2835,7 +3615,29 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             pb_resp = telcoautomation.Blueprint.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_blueprint(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = telcoautomation.Blueprint.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.telcoautomation_v1alpha1.TelcoAutomationClient.get_blueprint",
+                    extra={
+                        "serviceName": "google.cloud.telcoautomation.v1alpha1.TelcoAutomation",
+                        "rpcName": "GetBlueprint",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetDeployment(
@@ -2872,7 +3674,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> telcoautomation.Deployment:
             r"""Call the get deployment method over HTTP.
 
@@ -2882,8 +3684,10 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.telcoautomation.Deployment:
@@ -2898,6 +3702,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             http_options = (
                 _BaseTelcoAutomationRestTransport._BaseGetDeployment._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_deployment(request, metadata)
             transcoded_request = _BaseTelcoAutomationRestTransport._BaseGetDeployment._get_transcoded_request(
                 http_options, request
@@ -2907,6 +3712,33 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             query_params = _BaseTelcoAutomationRestTransport._BaseGetDeployment._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.telcoautomation_v1alpha1.TelcoAutomationClient.GetDeployment",
+                    extra={
+                        "serviceName": "google.cloud.telcoautomation.v1alpha1.TelcoAutomation",
+                        "rpcName": "GetDeployment",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TelcoAutomationRestTransport._GetDeployment._get_response(
@@ -2928,7 +3760,29 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             pb_resp = telcoautomation.Deployment.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_deployment(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = telcoautomation.Deployment.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.telcoautomation_v1alpha1.TelcoAutomationClient.get_deployment",
+                    extra={
+                        "serviceName": "google.cloud.telcoautomation.v1alpha1.TelcoAutomation",
+                        "rpcName": "GetDeployment",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetEdgeSlm(
@@ -2965,7 +3819,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> telcoautomation.EdgeSlm:
             r"""Call the get edge slm method over HTTP.
 
@@ -2975,8 +3829,10 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.telcoautomation.EdgeSlm:
@@ -2991,6 +3847,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             http_options = (
                 _BaseTelcoAutomationRestTransport._BaseGetEdgeSlm._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_edge_slm(request, metadata)
             transcoded_request = _BaseTelcoAutomationRestTransport._BaseGetEdgeSlm._get_transcoded_request(
                 http_options, request
@@ -3000,6 +3857,33 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             query_params = _BaseTelcoAutomationRestTransport._BaseGetEdgeSlm._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.telcoautomation_v1alpha1.TelcoAutomationClient.GetEdgeSlm",
+                    extra={
+                        "serviceName": "google.cloud.telcoautomation.v1alpha1.TelcoAutomation",
+                        "rpcName": "GetEdgeSlm",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TelcoAutomationRestTransport._GetEdgeSlm._get_response(
@@ -3021,7 +3905,29 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             pb_resp = telcoautomation.EdgeSlm.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_edge_slm(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = telcoautomation.EdgeSlm.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.telcoautomation_v1alpha1.TelcoAutomationClient.get_edge_slm",
+                    extra={
+                        "serviceName": "google.cloud.telcoautomation.v1alpha1.TelcoAutomation",
+                        "rpcName": "GetEdgeSlm",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetHydratedDeployment(
@@ -3059,7 +3965,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> telcoautomation.HydratedDeployment:
             r"""Call the get hydrated deployment method over HTTP.
 
@@ -3069,8 +3975,10 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.telcoautomation.HydratedDeployment:
@@ -3084,6 +3992,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             http_options = (
                 _BaseTelcoAutomationRestTransport._BaseGetHydratedDeployment._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_hydrated_deployment(
                 request, metadata
             )
@@ -3095,6 +4004,33 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             query_params = _BaseTelcoAutomationRestTransport._BaseGetHydratedDeployment._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.telcoautomation_v1alpha1.TelcoAutomationClient.GetHydratedDeployment",
+                    extra={
+                        "serviceName": "google.cloud.telcoautomation.v1alpha1.TelcoAutomation",
+                        "rpcName": "GetHydratedDeployment",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -3118,7 +4054,31 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             pb_resp = telcoautomation.HydratedDeployment.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_hydrated_deployment(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = telcoautomation.HydratedDeployment.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.telcoautomation_v1alpha1.TelcoAutomationClient.get_hydrated_deployment",
+                    extra={
+                        "serviceName": "google.cloud.telcoautomation.v1alpha1.TelcoAutomation",
+                        "rpcName": "GetHydratedDeployment",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetOrchestrationCluster(
@@ -3156,7 +4116,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> telcoautomation.OrchestrationCluster:
             r"""Call the get orchestration cluster method over HTTP.
 
@@ -3167,8 +4127,10 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.telcoautomation.OrchestrationCluster:
@@ -3181,6 +4143,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             http_options = (
                 _BaseTelcoAutomationRestTransport._BaseGetOrchestrationCluster._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_orchestration_cluster(
                 request, metadata
             )
@@ -3192,6 +4155,33 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             query_params = _BaseTelcoAutomationRestTransport._BaseGetOrchestrationCluster._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.telcoautomation_v1alpha1.TelcoAutomationClient.GetOrchestrationCluster",
+                    extra={
+                        "serviceName": "google.cloud.telcoautomation.v1alpha1.TelcoAutomation",
+                        "rpcName": "GetOrchestrationCluster",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -3215,7 +4205,31 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             pb_resp = telcoautomation.OrchestrationCluster.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_orchestration_cluster(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = telcoautomation.OrchestrationCluster.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.telcoautomation_v1alpha1.TelcoAutomationClient.get_orchestration_cluster",
+                    extra={
+                        "serviceName": "google.cloud.telcoautomation.v1alpha1.TelcoAutomation",
+                        "rpcName": "GetOrchestrationCluster",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetPublicBlueprint(
@@ -3253,7 +4267,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> telcoautomation.PublicBlueprint:
             r"""Call the get public blueprint method over HTTP.
 
@@ -3263,8 +4277,10 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.telcoautomation.PublicBlueprint:
@@ -3283,6 +4299,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             http_options = (
                 _BaseTelcoAutomationRestTransport._BaseGetPublicBlueprint._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_public_blueprint(
                 request, metadata
             )
@@ -3294,6 +4311,33 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             query_params = _BaseTelcoAutomationRestTransport._BaseGetPublicBlueprint._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.telcoautomation_v1alpha1.TelcoAutomationClient.GetPublicBlueprint",
+                    extra={
+                        "serviceName": "google.cloud.telcoautomation.v1alpha1.TelcoAutomation",
+                        "rpcName": "GetPublicBlueprint",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TelcoAutomationRestTransport._GetPublicBlueprint._get_response(
@@ -3315,7 +4359,29 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             pb_resp = telcoautomation.PublicBlueprint.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_public_blueprint(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = telcoautomation.PublicBlueprint.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.telcoautomation_v1alpha1.TelcoAutomationClient.get_public_blueprint",
+                    extra={
+                        "serviceName": "google.cloud.telcoautomation.v1alpha1.TelcoAutomation",
+                        "rpcName": "GetPublicBlueprint",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListBlueprintRevisions(
@@ -3353,7 +4419,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> telcoautomation.ListBlueprintRevisionsResponse:
             r"""Call the list blueprint revisions method over HTTP.
 
@@ -3363,8 +4429,10 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.telcoautomation.ListBlueprintRevisionsResponse:
@@ -3374,6 +4442,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             http_options = (
                 _BaseTelcoAutomationRestTransport._BaseListBlueprintRevisions._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_blueprint_revisions(
                 request, metadata
             )
@@ -3385,6 +4454,33 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             query_params = _BaseTelcoAutomationRestTransport._BaseListBlueprintRevisions._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.telcoautomation_v1alpha1.TelcoAutomationClient.ListBlueprintRevisions",
+                    extra={
+                        "serviceName": "google.cloud.telcoautomation.v1alpha1.TelcoAutomation",
+                        "rpcName": "ListBlueprintRevisions",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -3408,7 +4504,31 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             pb_resp = telcoautomation.ListBlueprintRevisionsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_blueprint_revisions(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        telcoautomation.ListBlueprintRevisionsResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.telcoautomation_v1alpha1.TelcoAutomationClient.list_blueprint_revisions",
+                    extra={
+                        "serviceName": "google.cloud.telcoautomation.v1alpha1.TelcoAutomation",
+                        "rpcName": "ListBlueprintRevisions",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListBlueprints(
@@ -3445,7 +4565,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> telcoautomation.ListBlueprintsResponse:
             r"""Call the list blueprints method over HTTP.
 
@@ -3455,8 +4575,10 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.telcoautomation.ListBlueprintsResponse:
@@ -3466,6 +4588,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             http_options = (
                 _BaseTelcoAutomationRestTransport._BaseListBlueprints._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_blueprints(request, metadata)
             transcoded_request = _BaseTelcoAutomationRestTransport._BaseListBlueprints._get_transcoded_request(
                 http_options, request
@@ -3475,6 +4598,33 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             query_params = _BaseTelcoAutomationRestTransport._BaseListBlueprints._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.telcoautomation_v1alpha1.TelcoAutomationClient.ListBlueprints",
+                    extra={
+                        "serviceName": "google.cloud.telcoautomation.v1alpha1.TelcoAutomation",
+                        "rpcName": "ListBlueprints",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TelcoAutomationRestTransport._ListBlueprints._get_response(
@@ -3496,7 +4646,31 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             pb_resp = telcoautomation.ListBlueprintsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_blueprints(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = telcoautomation.ListBlueprintsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.telcoautomation_v1alpha1.TelcoAutomationClient.list_blueprints",
+                    extra={
+                        "serviceName": "google.cloud.telcoautomation.v1alpha1.TelcoAutomation",
+                        "rpcName": "ListBlueprints",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListDeploymentRevisions(
@@ -3534,7 +4708,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> telcoautomation.ListDeploymentRevisionsResponse:
             r"""Call the list deployment revisions method over HTTP.
 
@@ -3545,8 +4719,10 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.telcoautomation.ListDeploymentRevisionsResponse:
@@ -3558,6 +4734,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             http_options = (
                 _BaseTelcoAutomationRestTransport._BaseListDeploymentRevisions._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_deployment_revisions(
                 request, metadata
             )
@@ -3569,6 +4746,33 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             query_params = _BaseTelcoAutomationRestTransport._BaseListDeploymentRevisions._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.telcoautomation_v1alpha1.TelcoAutomationClient.ListDeploymentRevisions",
+                    extra={
+                        "serviceName": "google.cloud.telcoautomation.v1alpha1.TelcoAutomation",
+                        "rpcName": "ListDeploymentRevisions",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -3592,7 +4796,33 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             pb_resp = telcoautomation.ListDeploymentRevisionsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_deployment_revisions(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        telcoautomation.ListDeploymentRevisionsResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.telcoautomation_v1alpha1.TelcoAutomationClient.list_deployment_revisions",
+                    extra={
+                        "serviceName": "google.cloud.telcoautomation.v1alpha1.TelcoAutomation",
+                        "rpcName": "ListDeploymentRevisions",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListDeployments(
@@ -3629,7 +4859,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> telcoautomation.ListDeploymentsResponse:
             r"""Call the list deployments method over HTTP.
 
@@ -3639,8 +4869,10 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.telcoautomation.ListDeploymentsResponse:
@@ -3650,6 +4882,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             http_options = (
                 _BaseTelcoAutomationRestTransport._BaseListDeployments._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_deployments(
                 request, metadata
             )
@@ -3661,6 +4894,33 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             query_params = _BaseTelcoAutomationRestTransport._BaseListDeployments._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.telcoautomation_v1alpha1.TelcoAutomationClient.ListDeployments",
+                    extra={
+                        "serviceName": "google.cloud.telcoautomation.v1alpha1.TelcoAutomation",
+                        "rpcName": "ListDeployments",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TelcoAutomationRestTransport._ListDeployments._get_response(
@@ -3682,7 +4942,31 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             pb_resp = telcoautomation.ListDeploymentsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_deployments(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = telcoautomation.ListDeploymentsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.telcoautomation_v1alpha1.TelcoAutomationClient.list_deployments",
+                    extra={
+                        "serviceName": "google.cloud.telcoautomation.v1alpha1.TelcoAutomation",
+                        "rpcName": "ListDeployments",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListEdgeSlms(
@@ -3719,7 +5003,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> telcoautomation.ListEdgeSlmsResponse:
             r"""Call the list edge slms method over HTTP.
 
@@ -3730,8 +5014,10 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.telcoautomation.ListEdgeSlmsResponse:
@@ -3743,6 +5029,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             http_options = (
                 _BaseTelcoAutomationRestTransport._BaseListEdgeSlms._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_edge_slms(request, metadata)
             transcoded_request = _BaseTelcoAutomationRestTransport._BaseListEdgeSlms._get_transcoded_request(
                 http_options, request
@@ -3752,6 +5039,33 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             query_params = _BaseTelcoAutomationRestTransport._BaseListEdgeSlms._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.telcoautomation_v1alpha1.TelcoAutomationClient.ListEdgeSlms",
+                    extra={
+                        "serviceName": "google.cloud.telcoautomation.v1alpha1.TelcoAutomation",
+                        "rpcName": "ListEdgeSlms",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TelcoAutomationRestTransport._ListEdgeSlms._get_response(
@@ -3773,7 +5087,31 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             pb_resp = telcoautomation.ListEdgeSlmsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_edge_slms(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = telcoautomation.ListEdgeSlmsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.telcoautomation_v1alpha1.TelcoAutomationClient.list_edge_slms",
+                    extra={
+                        "serviceName": "google.cloud.telcoautomation.v1alpha1.TelcoAutomation",
+                        "rpcName": "ListEdgeSlms",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListHydratedDeployments(
@@ -3811,7 +5149,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> telcoautomation.ListHydratedDeploymentsResponse:
             r"""Call the list hydrated deployments method over HTTP.
 
@@ -3821,8 +5159,10 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.telcoautomation.ListHydratedDeploymentsResponse:
@@ -3832,6 +5172,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             http_options = (
                 _BaseTelcoAutomationRestTransport._BaseListHydratedDeployments._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_hydrated_deployments(
                 request, metadata
             )
@@ -3843,6 +5184,33 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             query_params = _BaseTelcoAutomationRestTransport._BaseListHydratedDeployments._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.telcoautomation_v1alpha1.TelcoAutomationClient.ListHydratedDeployments",
+                    extra={
+                        "serviceName": "google.cloud.telcoautomation.v1alpha1.TelcoAutomation",
+                        "rpcName": "ListHydratedDeployments",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -3866,7 +5234,33 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             pb_resp = telcoautomation.ListHydratedDeploymentsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_hydrated_deployments(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        telcoautomation.ListHydratedDeploymentsResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.telcoautomation_v1alpha1.TelcoAutomationClient.list_hydrated_deployments",
+                    extra={
+                        "serviceName": "google.cloud.telcoautomation.v1alpha1.TelcoAutomation",
+                        "rpcName": "ListHydratedDeployments",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListOrchestrationClusters(
@@ -3904,7 +5298,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> telcoautomation.ListOrchestrationClustersResponse:
             r"""Call the list orchestration
             clusters method over HTTP.
@@ -3916,8 +5310,10 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.telcoautomation.ListOrchestrationClustersResponse:
@@ -3929,6 +5325,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             http_options = (
                 _BaseTelcoAutomationRestTransport._BaseListOrchestrationClusters._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_orchestration_clusters(
                 request, metadata
             )
@@ -3940,6 +5337,33 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             query_params = _BaseTelcoAutomationRestTransport._BaseListOrchestrationClusters._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.telcoautomation_v1alpha1.TelcoAutomationClient.ListOrchestrationClusters",
+                    extra={
+                        "serviceName": "google.cloud.telcoautomation.v1alpha1.TelcoAutomation",
+                        "rpcName": "ListOrchestrationClusters",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -3963,7 +5387,33 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             pb_resp = telcoautomation.ListOrchestrationClustersResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_orchestration_clusters(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        telcoautomation.ListOrchestrationClustersResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.telcoautomation_v1alpha1.TelcoAutomationClient.list_orchestration_clusters",
+                    extra={
+                        "serviceName": "google.cloud.telcoautomation.v1alpha1.TelcoAutomation",
+                        "rpcName": "ListOrchestrationClusters",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListPublicBlueprints(
@@ -4001,7 +5451,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> telcoautomation.ListPublicBlueprintsResponse:
             r"""Call the list public blueprints method over HTTP.
 
@@ -4011,8 +5461,10 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.telcoautomation.ListPublicBlueprintsResponse:
@@ -4022,6 +5474,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             http_options = (
                 _BaseTelcoAutomationRestTransport._BaseListPublicBlueprints._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_public_blueprints(
                 request, metadata
             )
@@ -4033,6 +5486,33 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             query_params = _BaseTelcoAutomationRestTransport._BaseListPublicBlueprints._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.telcoautomation_v1alpha1.TelcoAutomationClient.ListPublicBlueprints",
+                    extra={
+                        "serviceName": "google.cloud.telcoautomation.v1alpha1.TelcoAutomation",
+                        "rpcName": "ListPublicBlueprints",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TelcoAutomationRestTransport._ListPublicBlueprints._get_response(
@@ -4054,7 +5534,31 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             pb_resp = telcoautomation.ListPublicBlueprintsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_public_blueprints(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        telcoautomation.ListPublicBlueprintsResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.telcoautomation_v1alpha1.TelcoAutomationClient.list_public_blueprints",
+                    extra={
+                        "serviceName": "google.cloud.telcoautomation.v1alpha1.TelcoAutomation",
+                        "rpcName": "ListPublicBlueprints",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ProposeBlueprint(
@@ -4092,7 +5596,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> telcoautomation.Blueprint:
             r"""Call the propose blueprint method over HTTP.
 
@@ -4102,8 +5606,10 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.telcoautomation.Blueprint:
@@ -4125,6 +5631,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             http_options = (
                 _BaseTelcoAutomationRestTransport._BaseProposeBlueprint._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_propose_blueprint(
                 request, metadata
             )
@@ -4140,6 +5647,33 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             query_params = _BaseTelcoAutomationRestTransport._BaseProposeBlueprint._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.telcoautomation_v1alpha1.TelcoAutomationClient.ProposeBlueprint",
+                    extra={
+                        "serviceName": "google.cloud.telcoautomation.v1alpha1.TelcoAutomation",
+                        "rpcName": "ProposeBlueprint",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TelcoAutomationRestTransport._ProposeBlueprint._get_response(
@@ -4162,7 +5696,29 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             pb_resp = telcoautomation.Blueprint.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_propose_blueprint(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = telcoautomation.Blueprint.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.telcoautomation_v1alpha1.TelcoAutomationClient.propose_blueprint",
+                    extra={
+                        "serviceName": "google.cloud.telcoautomation.v1alpha1.TelcoAutomation",
+                        "rpcName": "ProposeBlueprint",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _RejectBlueprint(
@@ -4200,7 +5756,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> telcoautomation.Blueprint:
             r"""Call the reject blueprint method over HTTP.
 
@@ -4210,8 +5766,10 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.telcoautomation.Blueprint:
@@ -4233,6 +5791,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             http_options = (
                 _BaseTelcoAutomationRestTransport._BaseRejectBlueprint._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_reject_blueprint(
                 request, metadata
             )
@@ -4248,6 +5807,33 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             query_params = _BaseTelcoAutomationRestTransport._BaseRejectBlueprint._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.telcoautomation_v1alpha1.TelcoAutomationClient.RejectBlueprint",
+                    extra={
+                        "serviceName": "google.cloud.telcoautomation.v1alpha1.TelcoAutomation",
+                        "rpcName": "RejectBlueprint",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TelcoAutomationRestTransport._RejectBlueprint._get_response(
@@ -4270,7 +5856,29 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             pb_resp = telcoautomation.Blueprint.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_reject_blueprint(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = telcoautomation.Blueprint.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.telcoautomation_v1alpha1.TelcoAutomationClient.reject_blueprint",
+                    extra={
+                        "serviceName": "google.cloud.telcoautomation.v1alpha1.TelcoAutomation",
+                        "rpcName": "RejectBlueprint",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _RemoveDeployment(
@@ -4308,7 +5916,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the remove deployment method over HTTP.
 
@@ -4318,13 +5926,16 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseTelcoAutomationRestTransport._BaseRemoveDeployment._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_remove_deployment(
                 request, metadata
             )
@@ -4340,6 +5951,33 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             query_params = _BaseTelcoAutomationRestTransport._BaseRemoveDeployment._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.telcoautomation_v1alpha1.TelcoAutomationClient.RemoveDeployment",
+                    extra={
+                        "serviceName": "google.cloud.telcoautomation.v1alpha1.TelcoAutomation",
+                        "rpcName": "RemoveDeployment",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TelcoAutomationRestTransport._RemoveDeployment._get_response(
@@ -4393,7 +6031,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> telcoautomation.Deployment:
             r"""Call the rollback deployment method over HTTP.
 
@@ -4403,8 +6041,10 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.telcoautomation.Deployment:
@@ -4419,6 +6059,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             http_options = (
                 _BaseTelcoAutomationRestTransport._BaseRollbackDeployment._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_rollback_deployment(
                 request, metadata
             )
@@ -4434,6 +6075,33 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             query_params = _BaseTelcoAutomationRestTransport._BaseRollbackDeployment._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.telcoautomation_v1alpha1.TelcoAutomationClient.RollbackDeployment",
+                    extra={
+                        "serviceName": "google.cloud.telcoautomation.v1alpha1.TelcoAutomation",
+                        "rpcName": "RollbackDeployment",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TelcoAutomationRestTransport._RollbackDeployment._get_response(
@@ -4456,7 +6124,29 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             pb_resp = telcoautomation.Deployment.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_rollback_deployment(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = telcoautomation.Deployment.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.telcoautomation_v1alpha1.TelcoAutomationClient.rollback_deployment",
+                    extra={
+                        "serviceName": "google.cloud.telcoautomation.v1alpha1.TelcoAutomation",
+                        "rpcName": "RollbackDeployment",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _SearchBlueprintRevisions(
@@ -4494,7 +6184,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> telcoautomation.SearchBlueprintRevisionsResponse:
             r"""Call the search blueprint
             revisions method over HTTP.
@@ -4505,8 +6195,10 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.telcoautomation.SearchBlueprintRevisionsResponse:
@@ -4516,6 +6208,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             http_options = (
                 _BaseTelcoAutomationRestTransport._BaseSearchBlueprintRevisions._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_search_blueprint_revisions(
                 request, metadata
             )
@@ -4527,6 +6220,33 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             query_params = _BaseTelcoAutomationRestTransport._BaseSearchBlueprintRevisions._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.telcoautomation_v1alpha1.TelcoAutomationClient.SearchBlueprintRevisions",
+                    extra={
+                        "serviceName": "google.cloud.telcoautomation.v1alpha1.TelcoAutomation",
+                        "rpcName": "SearchBlueprintRevisions",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -4550,7 +6270,33 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             pb_resp = telcoautomation.SearchBlueprintRevisionsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_search_blueprint_revisions(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        telcoautomation.SearchBlueprintRevisionsResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.telcoautomation_v1alpha1.TelcoAutomationClient.search_blueprint_revisions",
+                    extra={
+                        "serviceName": "google.cloud.telcoautomation.v1alpha1.TelcoAutomation",
+                        "rpcName": "SearchBlueprintRevisions",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _SearchDeploymentRevisions(
@@ -4588,7 +6334,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> telcoautomation.SearchDeploymentRevisionsResponse:
             r"""Call the search deployment
             revisions method over HTTP.
@@ -4599,8 +6345,10 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.telcoautomation.SearchDeploymentRevisionsResponse:
@@ -4610,6 +6358,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             http_options = (
                 _BaseTelcoAutomationRestTransport._BaseSearchDeploymentRevisions._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_search_deployment_revisions(
                 request, metadata
             )
@@ -4621,6 +6370,33 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             query_params = _BaseTelcoAutomationRestTransport._BaseSearchDeploymentRevisions._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.telcoautomation_v1alpha1.TelcoAutomationClient.SearchDeploymentRevisions",
+                    extra={
+                        "serviceName": "google.cloud.telcoautomation.v1alpha1.TelcoAutomation",
+                        "rpcName": "SearchDeploymentRevisions",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -4644,7 +6420,33 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             pb_resp = telcoautomation.SearchDeploymentRevisionsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_search_deployment_revisions(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        telcoautomation.SearchDeploymentRevisionsResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.telcoautomation_v1alpha1.TelcoAutomationClient.search_deployment_revisions",
+                    extra={
+                        "serviceName": "google.cloud.telcoautomation.v1alpha1.TelcoAutomation",
+                        "rpcName": "SearchDeploymentRevisions",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateBlueprint(
@@ -4682,7 +6484,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> telcoautomation.Blueprint:
             r"""Call the update blueprint method over HTTP.
 
@@ -4692,8 +6494,10 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.telcoautomation.Blueprint:
@@ -4715,6 +6519,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             http_options = (
                 _BaseTelcoAutomationRestTransport._BaseUpdateBlueprint._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_blueprint(
                 request, metadata
             )
@@ -4730,6 +6535,33 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             query_params = _BaseTelcoAutomationRestTransport._BaseUpdateBlueprint._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.telcoautomation_v1alpha1.TelcoAutomationClient.UpdateBlueprint",
+                    extra={
+                        "serviceName": "google.cloud.telcoautomation.v1alpha1.TelcoAutomation",
+                        "rpcName": "UpdateBlueprint",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TelcoAutomationRestTransport._UpdateBlueprint._get_response(
@@ -4752,7 +6584,29 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             pb_resp = telcoautomation.Blueprint.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_blueprint(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = telcoautomation.Blueprint.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.telcoautomation_v1alpha1.TelcoAutomationClient.update_blueprint",
+                    extra={
+                        "serviceName": "google.cloud.telcoautomation.v1alpha1.TelcoAutomation",
+                        "rpcName": "UpdateBlueprint",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateDeployment(
@@ -4790,7 +6644,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> telcoautomation.Deployment:
             r"""Call the update deployment method over HTTP.
 
@@ -4800,8 +6654,10 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.telcoautomation.Deployment:
@@ -4816,6 +6672,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             http_options = (
                 _BaseTelcoAutomationRestTransport._BaseUpdateDeployment._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_deployment(
                 request, metadata
             )
@@ -4831,6 +6688,33 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             query_params = _BaseTelcoAutomationRestTransport._BaseUpdateDeployment._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.telcoautomation_v1alpha1.TelcoAutomationClient.UpdateDeployment",
+                    extra={
+                        "serviceName": "google.cloud.telcoautomation.v1alpha1.TelcoAutomation",
+                        "rpcName": "UpdateDeployment",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TelcoAutomationRestTransport._UpdateDeployment._get_response(
@@ -4853,7 +6737,29 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             pb_resp = telcoautomation.Deployment.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_deployment(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = telcoautomation.Deployment.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.telcoautomation_v1alpha1.TelcoAutomationClient.update_deployment",
+                    extra={
+                        "serviceName": "google.cloud.telcoautomation.v1alpha1.TelcoAutomation",
+                        "rpcName": "UpdateDeployment",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateHydratedDeployment(
@@ -4892,7 +6798,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> telcoautomation.HydratedDeployment:
             r"""Call the update hydrated
             deployment method over HTTP.
@@ -4903,8 +6809,10 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.telcoautomation.HydratedDeployment:
@@ -4918,6 +6826,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             http_options = (
                 _BaseTelcoAutomationRestTransport._BaseUpdateHydratedDeployment._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_hydrated_deployment(
                 request, metadata
             )
@@ -4933,6 +6842,33 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             query_params = _BaseTelcoAutomationRestTransport._BaseUpdateHydratedDeployment._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.telcoautomation_v1alpha1.TelcoAutomationClient.UpdateHydratedDeployment",
+                    extra={
+                        "serviceName": "google.cloud.telcoautomation.v1alpha1.TelcoAutomation",
+                        "rpcName": "UpdateHydratedDeployment",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -4957,7 +6893,31 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             pb_resp = telcoautomation.HydratedDeployment.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_hydrated_deployment(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = telcoautomation.HydratedDeployment.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.telcoautomation_v1alpha1.TelcoAutomationClient.update_hydrated_deployment",
+                    extra={
+                        "serviceName": "google.cloud.telcoautomation.v1alpha1.TelcoAutomation",
+                        "rpcName": "UpdateHydratedDeployment",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -5347,7 +7307,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.Location:
             r"""Call the get location method over HTTP.
 
@@ -5357,8 +7317,10 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.Location: Response from GetLocation method.
@@ -5367,6 +7329,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             http_options = (
                 _BaseTelcoAutomationRestTransport._BaseGetLocation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_location(request, metadata)
             transcoded_request = _BaseTelcoAutomationRestTransport._BaseGetLocation._get_transcoded_request(
                 http_options, request
@@ -5376,6 +7339,33 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             query_params = _BaseTelcoAutomationRestTransport._BaseGetLocation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.telcoautomation_v1alpha1.TelcoAutomationClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.telcoautomation.v1alpha1.TelcoAutomation",
+                        "rpcName": "GetLocation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TelcoAutomationRestTransport._GetLocation._get_response(
@@ -5396,6 +7386,27 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.telcoautomation_v1alpha1.TelcoAutomationAsyncClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.telcoautomation.v1alpha1.TelcoAutomation",
+                        "rpcName": "GetLocation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -5436,7 +7447,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.ListLocationsResponse:
             r"""Call the list locations method over HTTP.
 
@@ -5446,8 +7457,10 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
@@ -5456,6 +7469,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             http_options = (
                 _BaseTelcoAutomationRestTransport._BaseListLocations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
             transcoded_request = _BaseTelcoAutomationRestTransport._BaseListLocations._get_transcoded_request(
                 http_options, request
@@ -5465,6 +7479,33 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             query_params = _BaseTelcoAutomationRestTransport._BaseListLocations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.telcoautomation_v1alpha1.TelcoAutomationClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.telcoautomation.v1alpha1.TelcoAutomation",
+                        "rpcName": "ListLocations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TelcoAutomationRestTransport._ListLocations._get_response(
@@ -5485,6 +7526,27 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.telcoautomation_v1alpha1.TelcoAutomationAsyncClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.telcoautomation.v1alpha1.TelcoAutomation",
+                        "rpcName": "ListLocations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -5526,7 +7588,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the cancel operation method over HTTP.
 
@@ -5536,13 +7598,16 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseTelcoAutomationRestTransport._BaseCancelOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
@@ -5558,6 +7623,33 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             query_params = _BaseTelcoAutomationRestTransport._BaseCancelOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.telcoautomation_v1alpha1.TelcoAutomationClient.CancelOperation",
+                    extra={
+                        "serviceName": "google.cloud.telcoautomation.v1alpha1.TelcoAutomation",
+                        "rpcName": "CancelOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TelcoAutomationRestTransport._CancelOperation._get_response(
@@ -5615,7 +7707,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the delete operation method over HTTP.
 
@@ -5625,13 +7717,16 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseTelcoAutomationRestTransport._BaseDeleteOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
             )
@@ -5643,6 +7738,33 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             query_params = _BaseTelcoAutomationRestTransport._BaseDeleteOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.telcoautomation_v1alpha1.TelcoAutomationClient.DeleteOperation",
+                    extra={
+                        "serviceName": "google.cloud.telcoautomation.v1alpha1.TelcoAutomation",
+                        "rpcName": "DeleteOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TelcoAutomationRestTransport._DeleteOperation._get_response(
@@ -5699,7 +7821,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the get operation method over HTTP.
 
@@ -5709,8 +7831,10 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.
@@ -5719,6 +7843,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             http_options = (
                 _BaseTelcoAutomationRestTransport._BaseGetOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseTelcoAutomationRestTransport._BaseGetOperation._get_transcoded_request(
                 http_options, request
@@ -5728,6 +7853,33 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             query_params = _BaseTelcoAutomationRestTransport._BaseGetOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.telcoautomation_v1alpha1.TelcoAutomationClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.telcoautomation.v1alpha1.TelcoAutomation",
+                        "rpcName": "GetOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TelcoAutomationRestTransport._GetOperation._get_response(
@@ -5748,6 +7900,27 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.telcoautomation_v1alpha1.TelcoAutomationAsyncClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.telcoautomation.v1alpha1.TelcoAutomation",
+                        "rpcName": "GetOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -5788,7 +7961,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.ListOperationsResponse:
             r"""Call the list operations method over HTTP.
 
@@ -5798,8 +7971,10 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
@@ -5808,6 +7983,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             http_options = (
                 _BaseTelcoAutomationRestTransport._BaseListOperations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseTelcoAutomationRestTransport._BaseListOperations._get_transcoded_request(
                 http_options, request
@@ -5817,6 +7993,33 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             query_params = _BaseTelcoAutomationRestTransport._BaseListOperations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.telcoautomation_v1alpha1.TelcoAutomationClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.telcoautomation.v1alpha1.TelcoAutomation",
+                        "rpcName": "ListOperations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = TelcoAutomationRestTransport._ListOperations._get_response(
@@ -5837,6 +8040,27 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.telcoautomation_v1alpha1.TelcoAutomationAsyncClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.telcoautomation.v1alpha1.TelcoAutomation",
+                        "rpcName": "ListOperations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property

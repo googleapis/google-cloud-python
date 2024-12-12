@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -42,6 +42,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -114,10 +122,10 @@ class GenerativeQuestionServiceRestInterceptor:
     def pre_batch_update_generative_question_configs(
         self,
         request: generative_question_service.BatchUpdateGenerativeQuestionConfigsRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         generative_question_service.BatchUpdateGenerativeQuestionConfigsRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for batch_update_generative_question_configs
 
@@ -141,10 +149,10 @@ class GenerativeQuestionServiceRestInterceptor:
     def pre_get_generative_questions_feature_config(
         self,
         request: generative_question_service.GetGenerativeQuestionsFeatureConfigRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         generative_question_service.GetGenerativeQuestionsFeatureConfigRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for get_generative_questions_feature_config
 
@@ -167,10 +175,10 @@ class GenerativeQuestionServiceRestInterceptor:
     def pre_list_generative_question_configs(
         self,
         request: generative_question_service.ListGenerativeQuestionConfigsRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         generative_question_service.ListGenerativeQuestionConfigsRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for list_generative_question_configs
 
@@ -194,10 +202,10 @@ class GenerativeQuestionServiceRestInterceptor:
     def pre_update_generative_question_config(
         self,
         request: generative_question_service.UpdateGenerativeQuestionConfigRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         generative_question_service.UpdateGenerativeQuestionConfigRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for update_generative_question_config
 
@@ -220,10 +228,10 @@ class GenerativeQuestionServiceRestInterceptor:
     def pre_update_generative_questions_feature_config(
         self,
         request: generative_question_service.UpdateGenerativeQuestionsFeatureConfigRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         generative_question_service.UpdateGenerativeQuestionsFeatureConfigRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for update_generative_questions_feature_config
 
@@ -246,8 +254,10 @@ class GenerativeQuestionServiceRestInterceptor:
     def pre_get_operation(
         self,
         request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -269,8 +279,10 @@ class GenerativeQuestionServiceRestInterceptor:
     def pre_list_operations(
         self,
         request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -417,7 +429,7 @@ class GenerativeQuestionServiceRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> generative_question_service.BatchUpdateGenerativeQuestionConfigsResponse:
             r"""Call the batch update generative
             question configs method over HTTP.
@@ -430,8 +442,10 @@ class GenerativeQuestionServiceRestTransport(
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.generative_question_service.BatchUpdateGenerativeQuestionConfigsResponse:
@@ -443,6 +457,7 @@ class GenerativeQuestionServiceRestTransport(
             http_options = (
                 _BaseGenerativeQuestionServiceRestTransport._BaseBatchUpdateGenerativeQuestionConfigs._get_http_options()
             )
+
             (
                 request,
                 metadata,
@@ -461,6 +476,33 @@ class GenerativeQuestionServiceRestTransport(
             query_params = _BaseGenerativeQuestionServiceRestTransport._BaseBatchUpdateGenerativeQuestionConfigs._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.retail_v2.GenerativeQuestionServiceClient.BatchUpdateGenerativeQuestionConfigs",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2.GenerativeQuestionService",
+                        "rpcName": "BatchUpdateGenerativeQuestionConfigs",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = GenerativeQuestionServiceRestTransport._BatchUpdateGenerativeQuestionConfigs._get_response(
@@ -487,7 +529,31 @@ class GenerativeQuestionServiceRestTransport(
             )
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_batch_update_generative_question_configs(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = generative_question_service.BatchUpdateGenerativeQuestionConfigsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.retail_v2.GenerativeQuestionServiceClient.batch_update_generative_question_configs",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2.GenerativeQuestionService",
+                        "rpcName": "BatchUpdateGenerativeQuestionConfigs",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetGenerativeQuestionsFeatureConfig(
@@ -527,7 +593,7 @@ class GenerativeQuestionServiceRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> generative_question.GenerativeQuestionsFeatureConfig:
             r"""Call the get generative questions
             feature config method over HTTP.
@@ -540,8 +606,10 @@ class GenerativeQuestionServiceRestTransport(
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.generative_question.GenerativeQuestionsFeatureConfig:
@@ -553,6 +621,7 @@ class GenerativeQuestionServiceRestTransport(
             http_options = (
                 _BaseGenerativeQuestionServiceRestTransport._BaseGetGenerativeQuestionsFeatureConfig._get_http_options()
             )
+
             (
                 request,
                 metadata,
@@ -567,6 +636,33 @@ class GenerativeQuestionServiceRestTransport(
             query_params = _BaseGenerativeQuestionServiceRestTransport._BaseGetGenerativeQuestionsFeatureConfig._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.retail_v2.GenerativeQuestionServiceClient.GetGenerativeQuestionsFeatureConfig",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2.GenerativeQuestionService",
+                        "rpcName": "GetGenerativeQuestionsFeatureConfig",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = GenerativeQuestionServiceRestTransport._GetGenerativeQuestionsFeatureConfig._get_response(
@@ -588,7 +684,33 @@ class GenerativeQuestionServiceRestTransport(
             pb_resp = generative_question.GenerativeQuestionsFeatureConfig.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_generative_questions_feature_config(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        generative_question.GenerativeQuestionsFeatureConfig.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.retail_v2.GenerativeQuestionServiceClient.get_generative_questions_feature_config",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2.GenerativeQuestionService",
+                        "rpcName": "GetGenerativeQuestionsFeatureConfig",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListGenerativeQuestionConfigs(
@@ -628,7 +750,7 @@ class GenerativeQuestionServiceRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> generative_question_service.ListGenerativeQuestionConfigsResponse:
             r"""Call the list generative question
             configs method over HTTP.
@@ -639,8 +761,10 @@ class GenerativeQuestionServiceRestTransport(
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.generative_question_service.ListGenerativeQuestionConfigsResponse:
@@ -650,6 +774,7 @@ class GenerativeQuestionServiceRestTransport(
             http_options = (
                 _BaseGenerativeQuestionServiceRestTransport._BaseListGenerativeQuestionConfigs._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_generative_question_configs(
                 request, metadata
             )
@@ -661,6 +786,33 @@ class GenerativeQuestionServiceRestTransport(
             query_params = _BaseGenerativeQuestionServiceRestTransport._BaseListGenerativeQuestionConfigs._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.retail_v2.GenerativeQuestionServiceClient.ListGenerativeQuestionConfigs",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2.GenerativeQuestionService",
+                        "rpcName": "ListGenerativeQuestionConfigs",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = GenerativeQuestionServiceRestTransport._ListGenerativeQuestionConfigs._get_response(
@@ -686,7 +838,31 @@ class GenerativeQuestionServiceRestTransport(
             )
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_generative_question_configs(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = generative_question_service.ListGenerativeQuestionConfigsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.retail_v2.GenerativeQuestionServiceClient.list_generative_question_configs",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2.GenerativeQuestionService",
+                        "rpcName": "ListGenerativeQuestionConfigs",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateGenerativeQuestionConfig(
@@ -727,7 +903,7 @@ class GenerativeQuestionServiceRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> generative_question.GenerativeQuestionConfig:
             r"""Call the update generative
             question config method over HTTP.
@@ -739,8 +915,10 @@ class GenerativeQuestionServiceRestTransport(
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.generative_question.GenerativeQuestionConfig:
@@ -752,6 +930,7 @@ class GenerativeQuestionServiceRestTransport(
             http_options = (
                 _BaseGenerativeQuestionServiceRestTransport._BaseUpdateGenerativeQuestionConfig._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_generative_question_config(
                 request, metadata
             )
@@ -767,6 +946,33 @@ class GenerativeQuestionServiceRestTransport(
             query_params = _BaseGenerativeQuestionServiceRestTransport._BaseUpdateGenerativeQuestionConfig._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.retail_v2.GenerativeQuestionServiceClient.UpdateGenerativeQuestionConfig",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2.GenerativeQuestionService",
+                        "rpcName": "UpdateGenerativeQuestionConfig",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = GenerativeQuestionServiceRestTransport._UpdateGenerativeQuestionConfig._get_response(
@@ -789,7 +995,31 @@ class GenerativeQuestionServiceRestTransport(
             pb_resp = generative_question.GenerativeQuestionConfig.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_generative_question_config(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        generative_question.GenerativeQuestionConfig.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.retail_v2.GenerativeQuestionServiceClient.update_generative_question_config",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2.GenerativeQuestionService",
+                        "rpcName": "UpdateGenerativeQuestionConfig",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateGenerativeQuestionsFeatureConfig(
@@ -830,7 +1060,7 @@ class GenerativeQuestionServiceRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> generative_question.GenerativeQuestionsFeatureConfig:
             r"""Call the update generative
             questions feature config method over HTTP.
@@ -843,8 +1073,10 @@ class GenerativeQuestionServiceRestTransport(
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.generative_question.GenerativeQuestionsFeatureConfig:
@@ -856,6 +1088,7 @@ class GenerativeQuestionServiceRestTransport(
             http_options = (
                 _BaseGenerativeQuestionServiceRestTransport._BaseUpdateGenerativeQuestionsFeatureConfig._get_http_options()
             )
+
             (
                 request,
                 metadata,
@@ -874,6 +1107,33 @@ class GenerativeQuestionServiceRestTransport(
             query_params = _BaseGenerativeQuestionServiceRestTransport._BaseUpdateGenerativeQuestionsFeatureConfig._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.retail_v2.GenerativeQuestionServiceClient.UpdateGenerativeQuestionsFeatureConfig",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2.GenerativeQuestionService",
+                        "rpcName": "UpdateGenerativeQuestionsFeatureConfig",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = GenerativeQuestionServiceRestTransport._UpdateGenerativeQuestionsFeatureConfig._get_response(
@@ -896,9 +1156,35 @@ class GenerativeQuestionServiceRestTransport(
             pb_resp = generative_question.GenerativeQuestionsFeatureConfig.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_generative_questions_feature_config(
                 resp
             )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        generative_question.GenerativeQuestionsFeatureConfig.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.retail_v2.GenerativeQuestionServiceClient.update_generative_questions_feature_config",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2.GenerativeQuestionService",
+                        "rpcName": "UpdateGenerativeQuestionsFeatureConfig",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -995,7 +1281,7 @@ class GenerativeQuestionServiceRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the get operation method over HTTP.
 
@@ -1005,8 +1291,10 @@ class GenerativeQuestionServiceRestTransport(
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.
@@ -1015,6 +1303,7 @@ class GenerativeQuestionServiceRestTransport(
             http_options = (
                 _BaseGenerativeQuestionServiceRestTransport._BaseGetOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseGenerativeQuestionServiceRestTransport._BaseGetOperation._get_transcoded_request(
                 http_options, request
@@ -1024,6 +1313,33 @@ class GenerativeQuestionServiceRestTransport(
             query_params = _BaseGenerativeQuestionServiceRestTransport._BaseGetOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.retail_v2.GenerativeQuestionServiceClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2.GenerativeQuestionService",
+                        "rpcName": "GetOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1046,6 +1362,27 @@ class GenerativeQuestionServiceRestTransport(
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.retail_v2.GenerativeQuestionServiceAsyncClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2.GenerativeQuestionService",
+                        "rpcName": "GetOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -1087,7 +1424,7 @@ class GenerativeQuestionServiceRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.ListOperationsResponse:
             r"""Call the list operations method over HTTP.
 
@@ -1097,8 +1434,10 @@ class GenerativeQuestionServiceRestTransport(
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
@@ -1107,6 +1446,7 @@ class GenerativeQuestionServiceRestTransport(
             http_options = (
                 _BaseGenerativeQuestionServiceRestTransport._BaseListOperations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseGenerativeQuestionServiceRestTransport._BaseListOperations._get_transcoded_request(
                 http_options, request
@@ -1116,6 +1456,33 @@ class GenerativeQuestionServiceRestTransport(
             query_params = _BaseGenerativeQuestionServiceRestTransport._BaseListOperations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.retail_v2.GenerativeQuestionServiceClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2.GenerativeQuestionService",
+                        "rpcName": "ListOperations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1138,6 +1505,27 @@ class GenerativeQuestionServiceRestTransport(
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.retail_v2.GenerativeQuestionServiceAsyncClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2.GenerativeQuestionService",
+                        "rpcName": "ListOperations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property

@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -39,6 +39,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -231,10 +239,10 @@ class SecurityCenterManagementRestInterceptor:
     def pre_create_event_threat_detection_custom_module(
         self,
         request: security_center_management.CreateEventThreatDetectionCustomModuleRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         security_center_management.CreateEventThreatDetectionCustomModuleRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for create_event_threat_detection_custom_module
 
@@ -257,10 +265,10 @@ class SecurityCenterManagementRestInterceptor:
     def pre_create_security_health_analytics_custom_module(
         self,
         request: security_center_management.CreateSecurityHealthAnalyticsCustomModuleRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         security_center_management.CreateSecurityHealthAnalyticsCustomModuleRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for create_security_health_analytics_custom_module
 
@@ -283,10 +291,10 @@ class SecurityCenterManagementRestInterceptor:
     def pre_delete_event_threat_detection_custom_module(
         self,
         request: security_center_management.DeleteEventThreatDetectionCustomModuleRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         security_center_management.DeleteEventThreatDetectionCustomModuleRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for delete_event_threat_detection_custom_module
 
@@ -298,10 +306,10 @@ class SecurityCenterManagementRestInterceptor:
     def pre_delete_security_health_analytics_custom_module(
         self,
         request: security_center_management.DeleteSecurityHealthAnalyticsCustomModuleRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         security_center_management.DeleteSecurityHealthAnalyticsCustomModuleRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for delete_security_health_analytics_custom_module
 
@@ -313,10 +321,10 @@ class SecurityCenterManagementRestInterceptor:
     def pre_get_effective_event_threat_detection_custom_module(
         self,
         request: security_center_management.GetEffectiveEventThreatDetectionCustomModuleRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         security_center_management.GetEffectiveEventThreatDetectionCustomModuleRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for get_effective_event_threat_detection_custom_module
 
@@ -340,10 +348,10 @@ class SecurityCenterManagementRestInterceptor:
     def pre_get_effective_security_health_analytics_custom_module(
         self,
         request: security_center_management.GetEffectiveSecurityHealthAnalyticsCustomModuleRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         security_center_management.GetEffectiveSecurityHealthAnalyticsCustomModuleRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for get_effective_security_health_analytics_custom_module
 
@@ -367,10 +375,10 @@ class SecurityCenterManagementRestInterceptor:
     def pre_get_event_threat_detection_custom_module(
         self,
         request: security_center_management.GetEventThreatDetectionCustomModuleRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         security_center_management.GetEventThreatDetectionCustomModuleRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for get_event_threat_detection_custom_module
 
@@ -393,10 +401,10 @@ class SecurityCenterManagementRestInterceptor:
     def pre_get_security_center_service(
         self,
         request: security_center_management.GetSecurityCenterServiceRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         security_center_management.GetSecurityCenterServiceRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for get_security_center_service
 
@@ -419,10 +427,10 @@ class SecurityCenterManagementRestInterceptor:
     def pre_get_security_health_analytics_custom_module(
         self,
         request: security_center_management.GetSecurityHealthAnalyticsCustomModuleRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         security_center_management.GetSecurityHealthAnalyticsCustomModuleRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for get_security_health_analytics_custom_module
 
@@ -445,10 +453,10 @@ class SecurityCenterManagementRestInterceptor:
     def pre_list_descendant_event_threat_detection_custom_modules(
         self,
         request: security_center_management.ListDescendantEventThreatDetectionCustomModulesRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         security_center_management.ListDescendantEventThreatDetectionCustomModulesRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for list_descendant_event_threat_detection_custom_modules
 
@@ -474,10 +482,10 @@ class SecurityCenterManagementRestInterceptor:
     def pre_list_descendant_security_health_analytics_custom_modules(
         self,
         request: security_center_management.ListDescendantSecurityHealthAnalyticsCustomModulesRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         security_center_management.ListDescendantSecurityHealthAnalyticsCustomModulesRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for list_descendant_security_health_analytics_custom_modules
 
@@ -503,10 +511,10 @@ class SecurityCenterManagementRestInterceptor:
     def pre_list_effective_event_threat_detection_custom_modules(
         self,
         request: security_center_management.ListEffectiveEventThreatDetectionCustomModulesRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         security_center_management.ListEffectiveEventThreatDetectionCustomModulesRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for list_effective_event_threat_detection_custom_modules
 
@@ -532,10 +540,10 @@ class SecurityCenterManagementRestInterceptor:
     def pre_list_effective_security_health_analytics_custom_modules(
         self,
         request: security_center_management.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         security_center_management.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for list_effective_security_health_analytics_custom_modules
 
@@ -561,10 +569,10 @@ class SecurityCenterManagementRestInterceptor:
     def pre_list_event_threat_detection_custom_modules(
         self,
         request: security_center_management.ListEventThreatDetectionCustomModulesRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         security_center_management.ListEventThreatDetectionCustomModulesRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for list_event_threat_detection_custom_modules
 
@@ -588,10 +596,10 @@ class SecurityCenterManagementRestInterceptor:
     def pre_list_security_center_services(
         self,
         request: security_center_management.ListSecurityCenterServicesRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         security_center_management.ListSecurityCenterServicesRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for list_security_center_services
 
@@ -614,10 +622,10 @@ class SecurityCenterManagementRestInterceptor:
     def pre_list_security_health_analytics_custom_modules(
         self,
         request: security_center_management.ListSecurityHealthAnalyticsCustomModulesRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         security_center_management.ListSecurityHealthAnalyticsCustomModulesRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for list_security_health_analytics_custom_modules
 
@@ -641,10 +649,10 @@ class SecurityCenterManagementRestInterceptor:
     def pre_simulate_security_health_analytics_custom_module(
         self,
         request: security_center_management.SimulateSecurityHealthAnalyticsCustomModuleRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         security_center_management.SimulateSecurityHealthAnalyticsCustomModuleRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for simulate_security_health_analytics_custom_module
 
@@ -668,10 +676,10 @@ class SecurityCenterManagementRestInterceptor:
     def pre_update_event_threat_detection_custom_module(
         self,
         request: security_center_management.UpdateEventThreatDetectionCustomModuleRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         security_center_management.UpdateEventThreatDetectionCustomModuleRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for update_event_threat_detection_custom_module
 
@@ -694,10 +702,10 @@ class SecurityCenterManagementRestInterceptor:
     def pre_update_security_center_service(
         self,
         request: security_center_management.UpdateSecurityCenterServiceRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         security_center_management.UpdateSecurityCenterServiceRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for update_security_center_service
 
@@ -720,10 +728,10 @@ class SecurityCenterManagementRestInterceptor:
     def pre_update_security_health_analytics_custom_module(
         self,
         request: security_center_management.UpdateSecurityHealthAnalyticsCustomModuleRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         security_center_management.UpdateSecurityHealthAnalyticsCustomModuleRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for update_security_health_analytics_custom_module
 
@@ -746,10 +754,10 @@ class SecurityCenterManagementRestInterceptor:
     def pre_validate_event_threat_detection_custom_module(
         self,
         request: security_center_management.ValidateEventThreatDetectionCustomModuleRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         security_center_management.ValidateEventThreatDetectionCustomModuleRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for validate_event_threat_detection_custom_module
 
@@ -773,8 +781,10 @@ class SecurityCenterManagementRestInterceptor:
     def pre_get_location(
         self,
         request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -796,8 +806,10 @@ class SecurityCenterManagementRestInterceptor:
     def pre_list_locations(
         self,
         request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -941,7 +953,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> security_center_management.EventThreatDetectionCustomModule:
             r"""Call the create event threat
             detection custom module method over HTTP.
@@ -953,8 +965,10 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.security_center_management.EventThreatDetectionCustomModule:
@@ -970,6 +984,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             http_options = (
                 _BaseSecurityCenterManagementRestTransport._BaseCreateEventThreatDetectionCustomModule._get_http_options()
             )
+
             (
                 request,
                 metadata,
@@ -988,6 +1003,33 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             query_params = _BaseSecurityCenterManagementRestTransport._BaseCreateEventThreatDetectionCustomModule._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securitycentermanagement_v1.SecurityCenterManagementClient.CreateEventThreatDetectionCustomModule",
+                    extra={
+                        "serviceName": "google.cloud.securitycentermanagement.v1.SecurityCenterManagement",
+                        "rpcName": "CreateEventThreatDetectionCustomModule",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SecurityCenterManagementRestTransport._CreateEventThreatDetectionCustomModule._get_response(
@@ -1012,9 +1054,33 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             )
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_event_threat_detection_custom_module(
                 resp
             )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = security_center_management.EventThreatDetectionCustomModule.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securitycentermanagement_v1.SecurityCenterManagementClient.create_event_threat_detection_custom_module",
+                    extra={
+                        "serviceName": "google.cloud.securitycentermanagement.v1.SecurityCenterManagement",
+                        "rpcName": "CreateEventThreatDetectionCustomModule",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateSecurityHealthAnalyticsCustomModule(
@@ -1055,7 +1121,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> security_center_management.SecurityHealthAnalyticsCustomModule:
             r"""Call the create security health
             analytics custom module method over HTTP.
@@ -1067,8 +1133,10 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.security_center_management.SecurityHealthAnalyticsCustomModule:
@@ -1088,6 +1156,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             http_options = (
                 _BaseSecurityCenterManagementRestTransport._BaseCreateSecurityHealthAnalyticsCustomModule._get_http_options()
             )
+
             (
                 request,
                 metadata,
@@ -1106,6 +1175,33 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             query_params = _BaseSecurityCenterManagementRestTransport._BaseCreateSecurityHealthAnalyticsCustomModule._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securitycentermanagement_v1.SecurityCenterManagementClient.CreateSecurityHealthAnalyticsCustomModule",
+                    extra={
+                        "serviceName": "google.cloud.securitycentermanagement.v1.SecurityCenterManagement",
+                        "rpcName": "CreateSecurityHealthAnalyticsCustomModule",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SecurityCenterManagementRestTransport._CreateSecurityHealthAnalyticsCustomModule._get_response(
@@ -1130,11 +1226,35 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             )
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = (
                 self._interceptor.post_create_security_health_analytics_custom_module(
                     resp
                 )
             )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = security_center_management.SecurityHealthAnalyticsCustomModule.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securitycentermanagement_v1.SecurityCenterManagementClient.create_security_health_analytics_custom_module",
+                    extra={
+                        "serviceName": "google.cloud.securitycentermanagement.v1.SecurityCenterManagement",
+                        "rpcName": "CreateSecurityHealthAnalyticsCustomModule",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteEventThreatDetectionCustomModule(
@@ -1174,7 +1294,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete event threat
             detection custom module method over HTTP.
@@ -1186,13 +1306,16 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
             """
 
             http_options = (
                 _BaseSecurityCenterManagementRestTransport._BaseDeleteEventThreatDetectionCustomModule._get_http_options()
             )
+
             (
                 request,
                 metadata,
@@ -1207,6 +1330,33 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             query_params = _BaseSecurityCenterManagementRestTransport._BaseDeleteEventThreatDetectionCustomModule._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securitycentermanagement_v1.SecurityCenterManagementClient.DeleteEventThreatDetectionCustomModule",
+                    extra={
+                        "serviceName": "google.cloud.securitycentermanagement.v1.SecurityCenterManagement",
+                        "rpcName": "DeleteEventThreatDetectionCustomModule",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SecurityCenterManagementRestTransport._DeleteEventThreatDetectionCustomModule._get_response(
@@ -1260,7 +1410,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete security health
             analytics custom module method over HTTP.
@@ -1272,13 +1422,16 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
             """
 
             http_options = (
                 _BaseSecurityCenterManagementRestTransport._BaseDeleteSecurityHealthAnalyticsCustomModule._get_http_options()
             )
+
             (
                 request,
                 metadata,
@@ -1293,6 +1446,33 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             query_params = _BaseSecurityCenterManagementRestTransport._BaseDeleteSecurityHealthAnalyticsCustomModule._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securitycentermanagement_v1.SecurityCenterManagementClient.DeleteSecurityHealthAnalyticsCustomModule",
+                    extra={
+                        "serviceName": "google.cloud.securitycentermanagement.v1.SecurityCenterManagement",
+                        "rpcName": "DeleteSecurityHealthAnalyticsCustomModule",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SecurityCenterManagementRestTransport._DeleteSecurityHealthAnalyticsCustomModule._get_response(
@@ -1346,7 +1526,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> security_center_management.EffectiveEventThreatDetectionCustomModule:
             r"""Call the get effective event
             threat detection custom module method over HTTP.
@@ -1358,8 +1538,10 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.security_center_management.EffectiveEventThreatDetectionCustomModule:
@@ -1378,6 +1560,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             http_options = (
                 _BaseSecurityCenterManagementRestTransport._BaseGetEffectiveEventThreatDetectionCustomModule._get_http_options()
             )
+
             (
                 request,
                 metadata,
@@ -1392,6 +1575,33 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             query_params = _BaseSecurityCenterManagementRestTransport._BaseGetEffectiveEventThreatDetectionCustomModule._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securitycentermanagement_v1.SecurityCenterManagementClient.GetEffectiveEventThreatDetectionCustomModule",
+                    extra={
+                        "serviceName": "google.cloud.securitycentermanagement.v1.SecurityCenterManagement",
+                        "rpcName": "GetEffectiveEventThreatDetectionCustomModule",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SecurityCenterManagementRestTransport._GetEffectiveEventThreatDetectionCustomModule._get_response(
@@ -1419,9 +1629,33 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             )
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_effective_event_threat_detection_custom_module(
                 resp
             )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = security_center_management.EffectiveEventThreatDetectionCustomModule.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securitycentermanagement_v1.SecurityCenterManagementClient.get_effective_event_threat_detection_custom_module",
+                    extra={
+                        "serviceName": "google.cloud.securitycentermanagement.v1.SecurityCenterManagement",
+                        "rpcName": "GetEffectiveEventThreatDetectionCustomModule",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetEffectiveSecurityHealthAnalyticsCustomModule(
@@ -1461,7 +1695,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> security_center_management.EffectiveSecurityHealthAnalyticsCustomModule:
             r"""Call the get effective security
             health analytics custom module method over HTTP.
@@ -1473,8 +1707,10 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.security_center_management.EffectiveSecurityHealthAnalyticsCustomModule:
@@ -1494,6 +1730,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             http_options = (
                 _BaseSecurityCenterManagementRestTransport._BaseGetEffectiveSecurityHealthAnalyticsCustomModule._get_http_options()
             )
+
             (
                 request,
                 metadata,
@@ -1508,6 +1745,33 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             query_params = _BaseSecurityCenterManagementRestTransport._BaseGetEffectiveSecurityHealthAnalyticsCustomModule._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securitycentermanagement_v1.SecurityCenterManagementClient.GetEffectiveSecurityHealthAnalyticsCustomModule",
+                    extra={
+                        "serviceName": "google.cloud.securitycentermanagement.v1.SecurityCenterManagement",
+                        "rpcName": "GetEffectiveSecurityHealthAnalyticsCustomModule",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SecurityCenterManagementRestTransport._GetEffectiveSecurityHealthAnalyticsCustomModule._get_response(
@@ -1533,9 +1797,33 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             )
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_effective_security_health_analytics_custom_module(
                 resp
             )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = security_center_management.EffectiveSecurityHealthAnalyticsCustomModule.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securitycentermanagement_v1.SecurityCenterManagementClient.get_effective_security_health_analytics_custom_module",
+                    extra={
+                        "serviceName": "google.cloud.securitycentermanagement.v1.SecurityCenterManagement",
+                        "rpcName": "GetEffectiveSecurityHealthAnalyticsCustomModule",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetEventThreatDetectionCustomModule(
@@ -1575,7 +1863,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> security_center_management.EventThreatDetectionCustomModule:
             r"""Call the get event threat
             detection custom module method over HTTP.
@@ -1587,8 +1875,10 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.security_center_management.EventThreatDetectionCustomModule:
@@ -1604,6 +1894,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             http_options = (
                 _BaseSecurityCenterManagementRestTransport._BaseGetEventThreatDetectionCustomModule._get_http_options()
             )
+
             (
                 request,
                 metadata,
@@ -1618,6 +1909,33 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             query_params = _BaseSecurityCenterManagementRestTransport._BaseGetEventThreatDetectionCustomModule._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securitycentermanagement_v1.SecurityCenterManagementClient.GetEventThreatDetectionCustomModule",
+                    extra={
+                        "serviceName": "google.cloud.securitycentermanagement.v1.SecurityCenterManagement",
+                        "rpcName": "GetEventThreatDetectionCustomModule",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SecurityCenterManagementRestTransport._GetEventThreatDetectionCustomModule._get_response(
@@ -1641,7 +1959,31 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             )
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_event_threat_detection_custom_module(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = security_center_management.EventThreatDetectionCustomModule.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securitycentermanagement_v1.SecurityCenterManagementClient.get_event_threat_detection_custom_module",
+                    extra={
+                        "serviceName": "google.cloud.securitycentermanagement.v1.SecurityCenterManagement",
+                        "rpcName": "GetEventThreatDetectionCustomModule",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetSecurityCenterService(
@@ -1681,7 +2023,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> security_center_management.SecurityCenterService:
             r"""Call the get security center
             service method over HTTP.
@@ -1693,8 +2035,10 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.security_center_management.SecurityCenterService:
@@ -1714,6 +2058,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             http_options = (
                 _BaseSecurityCenterManagementRestTransport._BaseGetSecurityCenterService._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_security_center_service(
                 request, metadata
             )
@@ -1725,6 +2070,33 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             query_params = _BaseSecurityCenterManagementRestTransport._BaseGetSecurityCenterService._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securitycentermanagement_v1.SecurityCenterManagementClient.GetSecurityCenterService",
+                    extra={
+                        "serviceName": "google.cloud.securitycentermanagement.v1.SecurityCenterManagement",
+                        "rpcName": "GetSecurityCenterService",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SecurityCenterManagementRestTransport._GetSecurityCenterService._get_response(
@@ -1746,7 +2118,33 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             pb_resp = security_center_management.SecurityCenterService.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_security_center_service(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        security_center_management.SecurityCenterService.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securitycentermanagement_v1.SecurityCenterManagementClient.get_security_center_service",
+                    extra={
+                        "serviceName": "google.cloud.securitycentermanagement.v1.SecurityCenterManagement",
+                        "rpcName": "GetSecurityCenterService",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetSecurityHealthAnalyticsCustomModule(
@@ -1786,7 +2184,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> security_center_management.SecurityHealthAnalyticsCustomModule:
             r"""Call the get security health
             analytics custom module method over HTTP.
@@ -1798,8 +2196,10 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.security_center_management.SecurityHealthAnalyticsCustomModule:
@@ -1819,6 +2219,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             http_options = (
                 _BaseSecurityCenterManagementRestTransport._BaseGetSecurityHealthAnalyticsCustomModule._get_http_options()
             )
+
             (
                 request,
                 metadata,
@@ -1833,6 +2234,33 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             query_params = _BaseSecurityCenterManagementRestTransport._BaseGetSecurityHealthAnalyticsCustomModule._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securitycentermanagement_v1.SecurityCenterManagementClient.GetSecurityHealthAnalyticsCustomModule",
+                    extra={
+                        "serviceName": "google.cloud.securitycentermanagement.v1.SecurityCenterManagement",
+                        "rpcName": "GetSecurityHealthAnalyticsCustomModule",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SecurityCenterManagementRestTransport._GetSecurityHealthAnalyticsCustomModule._get_response(
@@ -1856,9 +2284,33 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             )
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_security_health_analytics_custom_module(
                 resp
             )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = security_center_management.SecurityHealthAnalyticsCustomModule.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securitycentermanagement_v1.SecurityCenterManagementClient.get_security_health_analytics_custom_module",
+                    extra={
+                        "serviceName": "google.cloud.securitycentermanagement.v1.SecurityCenterManagement",
+                        "rpcName": "GetSecurityHealthAnalyticsCustomModule",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListDescendantEventThreatDetectionCustomModules(
@@ -1898,7 +2350,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> (
             security_center_management.ListDescendantEventThreatDetectionCustomModulesResponse
         ):
@@ -1912,8 +2364,10 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.security_center_management.ListDescendantEventThreatDetectionCustomModulesResponse:
@@ -1925,6 +2379,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             http_options = (
                 _BaseSecurityCenterManagementRestTransport._BaseListDescendantEventThreatDetectionCustomModules._get_http_options()
             )
+
             (
                 request,
                 metadata,
@@ -1939,6 +2394,33 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             query_params = _BaseSecurityCenterManagementRestTransport._BaseListDescendantEventThreatDetectionCustomModules._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securitycentermanagement_v1.SecurityCenterManagementClient.ListDescendantEventThreatDetectionCustomModules",
+                    extra={
+                        "serviceName": "google.cloud.securitycentermanagement.v1.SecurityCenterManagement",
+                        "rpcName": "ListDescendantEventThreatDetectionCustomModules",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SecurityCenterManagementRestTransport._ListDescendantEventThreatDetectionCustomModules._get_response(
@@ -1964,9 +2446,33 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             )
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_descendant_event_threat_detection_custom_modules(
                 resp
             )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = security_center_management.ListDescendantEventThreatDetectionCustomModulesResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securitycentermanagement_v1.SecurityCenterManagementClient.list_descendant_event_threat_detection_custom_modules",
+                    extra={
+                        "serviceName": "google.cloud.securitycentermanagement.v1.SecurityCenterManagement",
+                        "rpcName": "ListDescendantEventThreatDetectionCustomModules",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListDescendantSecurityHealthAnalyticsCustomModules(
@@ -2006,7 +2512,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> (
             security_center_management.ListDescendantSecurityHealthAnalyticsCustomModulesResponse
         ):
@@ -2020,8 +2526,10 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.security_center_management.ListDescendantSecurityHealthAnalyticsCustomModulesResponse:
@@ -2033,6 +2541,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             http_options = (
                 _BaseSecurityCenterManagementRestTransport._BaseListDescendantSecurityHealthAnalyticsCustomModules._get_http_options()
             )
+
             (
                 request,
                 metadata,
@@ -2047,6 +2556,33 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             query_params = _BaseSecurityCenterManagementRestTransport._BaseListDescendantSecurityHealthAnalyticsCustomModules._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securitycentermanagement_v1.SecurityCenterManagementClient.ListDescendantSecurityHealthAnalyticsCustomModules",
+                    extra={
+                        "serviceName": "google.cloud.securitycentermanagement.v1.SecurityCenterManagement",
+                        "rpcName": "ListDescendantSecurityHealthAnalyticsCustomModules",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SecurityCenterManagementRestTransport._ListDescendantSecurityHealthAnalyticsCustomModules._get_response(
@@ -2072,9 +2608,33 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             )
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_descendant_security_health_analytics_custom_modules(
                 resp
             )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = security_center_management.ListDescendantSecurityHealthAnalyticsCustomModulesResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securitycentermanagement_v1.SecurityCenterManagementClient.list_descendant_security_health_analytics_custom_modules",
+                    extra={
+                        "serviceName": "google.cloud.securitycentermanagement.v1.SecurityCenterManagement",
+                        "rpcName": "ListDescendantSecurityHealthAnalyticsCustomModules",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListEffectiveEventThreatDetectionCustomModules(
@@ -2114,7 +2674,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> (
             security_center_management.ListEffectiveEventThreatDetectionCustomModulesResponse
         ):
@@ -2128,8 +2688,10 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.security_center_management.ListEffectiveEventThreatDetectionCustomModulesResponse:
@@ -2141,6 +2703,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             http_options = (
                 _BaseSecurityCenterManagementRestTransport._BaseListEffectiveEventThreatDetectionCustomModules._get_http_options()
             )
+
             (
                 request,
                 metadata,
@@ -2155,6 +2718,33 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             query_params = _BaseSecurityCenterManagementRestTransport._BaseListEffectiveEventThreatDetectionCustomModules._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securitycentermanagement_v1.SecurityCenterManagementClient.ListEffectiveEventThreatDetectionCustomModules",
+                    extra={
+                        "serviceName": "google.cloud.securitycentermanagement.v1.SecurityCenterManagement",
+                        "rpcName": "ListEffectiveEventThreatDetectionCustomModules",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SecurityCenterManagementRestTransport._ListEffectiveEventThreatDetectionCustomModules._get_response(
@@ -2180,9 +2770,33 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             )
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_effective_event_threat_detection_custom_modules(
                 resp
             )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = security_center_management.ListEffectiveEventThreatDetectionCustomModulesResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securitycentermanagement_v1.SecurityCenterManagementClient.list_effective_event_threat_detection_custom_modules",
+                    extra={
+                        "serviceName": "google.cloud.securitycentermanagement.v1.SecurityCenterManagement",
+                        "rpcName": "ListEffectiveEventThreatDetectionCustomModules",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListEffectiveSecurityHealthAnalyticsCustomModules(
@@ -2222,7 +2836,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> (
             security_center_management.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse
         ):
@@ -2236,8 +2850,10 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.security_center_management.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse:
@@ -2249,6 +2865,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             http_options = (
                 _BaseSecurityCenterManagementRestTransport._BaseListEffectiveSecurityHealthAnalyticsCustomModules._get_http_options()
             )
+
             (
                 request,
                 metadata,
@@ -2263,6 +2880,33 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             query_params = _BaseSecurityCenterManagementRestTransport._BaseListEffectiveSecurityHealthAnalyticsCustomModules._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securitycentermanagement_v1.SecurityCenterManagementClient.ListEffectiveSecurityHealthAnalyticsCustomModules",
+                    extra={
+                        "serviceName": "google.cloud.securitycentermanagement.v1.SecurityCenterManagement",
+                        "rpcName": "ListEffectiveSecurityHealthAnalyticsCustomModules",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SecurityCenterManagementRestTransport._ListEffectiveSecurityHealthAnalyticsCustomModules._get_response(
@@ -2288,9 +2932,33 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             )
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_effective_security_health_analytics_custom_modules(
                 resp
             )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = security_center_management.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securitycentermanagement_v1.SecurityCenterManagementClient.list_effective_security_health_analytics_custom_modules",
+                    extra={
+                        "serviceName": "google.cloud.securitycentermanagement.v1.SecurityCenterManagement",
+                        "rpcName": "ListEffectiveSecurityHealthAnalyticsCustomModules",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListEventThreatDetectionCustomModules(
@@ -2330,7 +2998,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> security_center_management.ListEventThreatDetectionCustomModulesResponse:
             r"""Call the list event threat
             detection custom modules method over HTTP.
@@ -2342,8 +3010,10 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.security_center_management.ListEventThreatDetectionCustomModulesResponse:
@@ -2355,6 +3025,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             http_options = (
                 _BaseSecurityCenterManagementRestTransport._BaseListEventThreatDetectionCustomModules._get_http_options()
             )
+
             (
                 request,
                 metadata,
@@ -2369,6 +3040,33 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             query_params = _BaseSecurityCenterManagementRestTransport._BaseListEventThreatDetectionCustomModules._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securitycentermanagement_v1.SecurityCenterManagementClient.ListEventThreatDetectionCustomModules",
+                    extra={
+                        "serviceName": "google.cloud.securitycentermanagement.v1.SecurityCenterManagement",
+                        "rpcName": "ListEventThreatDetectionCustomModules",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SecurityCenterManagementRestTransport._ListEventThreatDetectionCustomModules._get_response(
@@ -2394,9 +3092,33 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             )
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_event_threat_detection_custom_modules(
                 resp
             )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = security_center_management.ListEventThreatDetectionCustomModulesResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securitycentermanagement_v1.SecurityCenterManagementClient.list_event_threat_detection_custom_modules",
+                    extra={
+                        "serviceName": "google.cloud.securitycentermanagement.v1.SecurityCenterManagement",
+                        "rpcName": "ListEventThreatDetectionCustomModules",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListSecurityCenterServices(
@@ -2436,7 +3158,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> security_center_management.ListSecurityCenterServicesResponse:
             r"""Call the list security center
             services method over HTTP.
@@ -2448,8 +3170,10 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.security_center_management.ListSecurityCenterServicesResponse:
@@ -2461,6 +3185,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             http_options = (
                 _BaseSecurityCenterManagementRestTransport._BaseListSecurityCenterServices._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_security_center_services(
                 request, metadata
             )
@@ -2472,6 +3197,33 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             query_params = _BaseSecurityCenterManagementRestTransport._BaseListSecurityCenterServices._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securitycentermanagement_v1.SecurityCenterManagementClient.ListSecurityCenterServices",
+                    extra={
+                        "serviceName": "google.cloud.securitycentermanagement.v1.SecurityCenterManagement",
+                        "rpcName": "ListSecurityCenterServices",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SecurityCenterManagementRestTransport._ListSecurityCenterServices._get_response(
@@ -2495,7 +3247,31 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             )
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_security_center_services(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = security_center_management.ListSecurityCenterServicesResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securitycentermanagement_v1.SecurityCenterManagementClient.list_security_center_services",
+                    extra={
+                        "serviceName": "google.cloud.securitycentermanagement.v1.SecurityCenterManagement",
+                        "rpcName": "ListSecurityCenterServices",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListSecurityHealthAnalyticsCustomModules(
@@ -2535,7 +3311,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> (
             security_center_management.ListSecurityHealthAnalyticsCustomModulesResponse
         ):
@@ -2549,8 +3325,10 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.security_center_management.ListSecurityHealthAnalyticsCustomModulesResponse:
@@ -2562,6 +3340,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             http_options = (
                 _BaseSecurityCenterManagementRestTransport._BaseListSecurityHealthAnalyticsCustomModules._get_http_options()
             )
+
             (
                 request,
                 metadata,
@@ -2576,6 +3355,33 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             query_params = _BaseSecurityCenterManagementRestTransport._BaseListSecurityHealthAnalyticsCustomModules._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securitycentermanagement_v1.SecurityCenterManagementClient.ListSecurityHealthAnalyticsCustomModules",
+                    extra={
+                        "serviceName": "google.cloud.securitycentermanagement.v1.SecurityCenterManagement",
+                        "rpcName": "ListSecurityHealthAnalyticsCustomModules",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SecurityCenterManagementRestTransport._ListSecurityHealthAnalyticsCustomModules._get_response(
@@ -2601,9 +3407,33 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             )
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_security_health_analytics_custom_modules(
                 resp
             )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = security_center_management.ListSecurityHealthAnalyticsCustomModulesResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securitycentermanagement_v1.SecurityCenterManagementClient.list_security_health_analytics_custom_modules",
+                    extra={
+                        "serviceName": "google.cloud.securitycentermanagement.v1.SecurityCenterManagement",
+                        "rpcName": "ListSecurityHealthAnalyticsCustomModules",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _SimulateSecurityHealthAnalyticsCustomModule(
@@ -2644,7 +3474,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> (
             security_center_management.SimulateSecurityHealthAnalyticsCustomModuleResponse
         ):
@@ -2659,8 +3489,10 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.security_center_management.SimulateSecurityHealthAnalyticsCustomModuleResponse:
@@ -2672,6 +3504,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             http_options = (
                 _BaseSecurityCenterManagementRestTransport._BaseSimulateSecurityHealthAnalyticsCustomModule._get_http_options()
             )
+
             (
                 request,
                 metadata,
@@ -2690,6 +3523,33 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             query_params = _BaseSecurityCenterManagementRestTransport._BaseSimulateSecurityHealthAnalyticsCustomModule._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securitycentermanagement_v1.SecurityCenterManagementClient.SimulateSecurityHealthAnalyticsCustomModule",
+                    extra={
+                        "serviceName": "google.cloud.securitycentermanagement.v1.SecurityCenterManagement",
+                        "rpcName": "SimulateSecurityHealthAnalyticsCustomModule",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SecurityCenterManagementRestTransport._SimulateSecurityHealthAnalyticsCustomModule._get_response(
@@ -2716,11 +3576,35 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             )
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = (
                 self._interceptor.post_simulate_security_health_analytics_custom_module(
                     resp
                 )
             )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = security_center_management.SimulateSecurityHealthAnalyticsCustomModuleResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securitycentermanagement_v1.SecurityCenterManagementClient.simulate_security_health_analytics_custom_module",
+                    extra={
+                        "serviceName": "google.cloud.securitycentermanagement.v1.SecurityCenterManagement",
+                        "rpcName": "SimulateSecurityHealthAnalyticsCustomModule",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateEventThreatDetectionCustomModule(
@@ -2761,7 +3645,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> security_center_management.EventThreatDetectionCustomModule:
             r"""Call the update event threat
             detection custom module method over HTTP.
@@ -2773,8 +3657,10 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.security_center_management.EventThreatDetectionCustomModule:
@@ -2790,6 +3676,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             http_options = (
                 _BaseSecurityCenterManagementRestTransport._BaseUpdateEventThreatDetectionCustomModule._get_http_options()
             )
+
             (
                 request,
                 metadata,
@@ -2808,6 +3695,33 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             query_params = _BaseSecurityCenterManagementRestTransport._BaseUpdateEventThreatDetectionCustomModule._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securitycentermanagement_v1.SecurityCenterManagementClient.UpdateEventThreatDetectionCustomModule",
+                    extra={
+                        "serviceName": "google.cloud.securitycentermanagement.v1.SecurityCenterManagement",
+                        "rpcName": "UpdateEventThreatDetectionCustomModule",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SecurityCenterManagementRestTransport._UpdateEventThreatDetectionCustomModule._get_response(
@@ -2832,9 +3746,33 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             )
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_event_threat_detection_custom_module(
                 resp
             )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = security_center_management.EventThreatDetectionCustomModule.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securitycentermanagement_v1.SecurityCenterManagementClient.update_event_threat_detection_custom_module",
+                    extra={
+                        "serviceName": "google.cloud.securitycentermanagement.v1.SecurityCenterManagement",
+                        "rpcName": "UpdateEventThreatDetectionCustomModule",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateSecurityCenterService(
@@ -2875,7 +3813,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> security_center_management.SecurityCenterService:
             r"""Call the update security center
             service method over HTTP.
@@ -2887,8 +3825,10 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.security_center_management.SecurityCenterService:
@@ -2908,6 +3848,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             http_options = (
                 _BaseSecurityCenterManagementRestTransport._BaseUpdateSecurityCenterService._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_security_center_service(
                 request, metadata
             )
@@ -2923,6 +3864,33 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             query_params = _BaseSecurityCenterManagementRestTransport._BaseUpdateSecurityCenterService._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securitycentermanagement_v1.SecurityCenterManagementClient.UpdateSecurityCenterService",
+                    extra={
+                        "serviceName": "google.cloud.securitycentermanagement.v1.SecurityCenterManagement",
+                        "rpcName": "UpdateSecurityCenterService",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SecurityCenterManagementRestTransport._UpdateSecurityCenterService._get_response(
@@ -2945,7 +3913,33 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             pb_resp = security_center_management.SecurityCenterService.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_security_center_service(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        security_center_management.SecurityCenterService.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securitycentermanagement_v1.SecurityCenterManagementClient.update_security_center_service",
+                    extra={
+                        "serviceName": "google.cloud.securitycentermanagement.v1.SecurityCenterManagement",
+                        "rpcName": "UpdateSecurityCenterService",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateSecurityHealthAnalyticsCustomModule(
@@ -2986,7 +3980,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> security_center_management.SecurityHealthAnalyticsCustomModule:
             r"""Call the update security health
             analytics custom module method over HTTP.
@@ -2998,8 +3992,10 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.security_center_management.SecurityHealthAnalyticsCustomModule:
@@ -3019,6 +4015,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             http_options = (
                 _BaseSecurityCenterManagementRestTransport._BaseUpdateSecurityHealthAnalyticsCustomModule._get_http_options()
             )
+
             (
                 request,
                 metadata,
@@ -3037,6 +4034,33 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             query_params = _BaseSecurityCenterManagementRestTransport._BaseUpdateSecurityHealthAnalyticsCustomModule._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securitycentermanagement_v1.SecurityCenterManagementClient.UpdateSecurityHealthAnalyticsCustomModule",
+                    extra={
+                        "serviceName": "google.cloud.securitycentermanagement.v1.SecurityCenterManagement",
+                        "rpcName": "UpdateSecurityHealthAnalyticsCustomModule",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SecurityCenterManagementRestTransport._UpdateSecurityHealthAnalyticsCustomModule._get_response(
@@ -3061,11 +4085,35 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             )
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = (
                 self._interceptor.post_update_security_health_analytics_custom_module(
                     resp
                 )
             )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = security_center_management.SecurityHealthAnalyticsCustomModule.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securitycentermanagement_v1.SecurityCenterManagementClient.update_security_health_analytics_custom_module",
+                    extra={
+                        "serviceName": "google.cloud.securitycentermanagement.v1.SecurityCenterManagement",
+                        "rpcName": "UpdateSecurityHealthAnalyticsCustomModule",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ValidateEventThreatDetectionCustomModule(
@@ -3106,7 +4154,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> (
             security_center_management.ValidateEventThreatDetectionCustomModuleResponse
         ):
@@ -3120,8 +4168,10 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.security_center_management.ValidateEventThreatDetectionCustomModuleResponse:
@@ -3133,6 +4183,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             http_options = (
                 _BaseSecurityCenterManagementRestTransport._BaseValidateEventThreatDetectionCustomModule._get_http_options()
             )
+
             (
                 request,
                 metadata,
@@ -3151,6 +4202,33 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             query_params = _BaseSecurityCenterManagementRestTransport._BaseValidateEventThreatDetectionCustomModule._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securitycentermanagement_v1.SecurityCenterManagementClient.ValidateEventThreatDetectionCustomModule",
+                    extra={
+                        "serviceName": "google.cloud.securitycentermanagement.v1.SecurityCenterManagement",
+                        "rpcName": "ValidateEventThreatDetectionCustomModule",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SecurityCenterManagementRestTransport._ValidateEventThreatDetectionCustomModule._get_response(
@@ -3177,9 +4255,33 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             )
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_validate_event_threat_detection_custom_module(
                 resp
             )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = security_center_management.ValidateEventThreatDetectionCustomModuleResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securitycentermanagement_v1.SecurityCenterManagementClient.validate_event_threat_detection_custom_module",
+                    extra={
+                        "serviceName": "google.cloud.securitycentermanagement.v1.SecurityCenterManagement",
+                        "rpcName": "ValidateEventThreatDetectionCustomModule",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -3464,7 +4566,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.Location:
             r"""Call the get location method over HTTP.
 
@@ -3474,8 +4576,10 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.Location: Response from GetLocation method.
@@ -3484,6 +4588,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             http_options = (
                 _BaseSecurityCenterManagementRestTransport._BaseGetLocation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_location(request, metadata)
             transcoded_request = _BaseSecurityCenterManagementRestTransport._BaseGetLocation._get_transcoded_request(
                 http_options, request
@@ -3493,6 +4598,33 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             query_params = _BaseSecurityCenterManagementRestTransport._BaseGetLocation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securitycentermanagement_v1.SecurityCenterManagementClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.securitycentermanagement.v1.SecurityCenterManagement",
+                        "rpcName": "GetLocation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SecurityCenterManagementRestTransport._GetLocation._get_response(
@@ -3513,6 +4645,27 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securitycentermanagement_v1.SecurityCenterManagementAsyncClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.securitycentermanagement.v1.SecurityCenterManagement",
+                        "rpcName": "GetLocation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -3554,7 +4707,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.ListLocationsResponse:
             r"""Call the list locations method over HTTP.
 
@@ -3564,8 +4717,10 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
@@ -3574,6 +4729,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             http_options = (
                 _BaseSecurityCenterManagementRestTransport._BaseListLocations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
             transcoded_request = _BaseSecurityCenterManagementRestTransport._BaseListLocations._get_transcoded_request(
                 http_options, request
@@ -3583,6 +4739,33 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             query_params = _BaseSecurityCenterManagementRestTransport._BaseListLocations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securitycentermanagement_v1.SecurityCenterManagementClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.securitycentermanagement.v1.SecurityCenterManagement",
+                        "rpcName": "ListLocations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -3605,6 +4788,27 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securitycentermanagement_v1.SecurityCenterManagementAsyncClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.securitycentermanagement.v1.SecurityCenterManagement",
+                        "rpcName": "ListLocations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property

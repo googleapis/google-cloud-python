@@ -8,7 +8,7 @@
     ],
     "language": "PYTHON",
     "name": "google-maps-areainsights",
-    "version": "0.1.2"
+    "version": "0.1.0"
   },
   "snippets": [
     {
@@ -43,7 +43,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.maps.areainsights_v1.types.ComputeInsightsResponse",
@@ -119,7 +119,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.maps.areainsights_v1.types.ComputeInsightsResponse",

@@ -1737,6 +1737,7 @@ def test_batch_write_spans_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.batch_write_spans(request)
 
@@ -1789,6 +1790,7 @@ def test_batch_write_spans_rest_flattened():
         json_return_value = ""
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.batch_write_spans(**mock_args)
 
@@ -1923,6 +1925,7 @@ def test_create_span_rest_required_fields(request_type=trace.Span):
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_span(request)
 
@@ -2198,6 +2201,7 @@ def test_batch_write_spans_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.batch_write_spans(request)
 
 
@@ -2228,6 +2232,7 @@ def test_batch_write_spans_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.batch_write_spans(request)
 
     # Establish that the response is the type that we expect.
@@ -2262,6 +2267,7 @@ def test_batch_write_spans_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = tracing.BatchWriteSpansRequest()
         metadata = [
@@ -2300,6 +2306,7 @@ def test_create_span_rest_bad_request(request_type=trace.Span):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_span(request)
 
 
@@ -2338,6 +2345,7 @@ def test_create_span_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_span(request)
 
     # Establish that the response is the type that we expect.
@@ -2379,6 +2387,7 @@ def test_create_span_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = trace.Span.to_json(trace.Span())
         req.return_value.content = return_value
 
