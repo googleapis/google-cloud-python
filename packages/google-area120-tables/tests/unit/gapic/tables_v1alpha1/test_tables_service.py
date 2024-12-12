@@ -5083,6 +5083,7 @@ def test_get_table_rest_required_fields(request_type=tables.GetTableRequest):
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_table(request)
 
@@ -5128,6 +5129,7 @@ def test_get_table_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_table(**mock_args)
 
@@ -5352,6 +5354,7 @@ def test_get_workspace_rest_required_fields(request_type=tables.GetWorkspaceRequ
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_workspace(request)
 
@@ -5397,6 +5400,7 @@ def test_get_workspace_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_workspace(**mock_args)
 
@@ -5623,6 +5627,7 @@ def test_get_row_rest_required_fields(request_type=tables.GetRowRequest):
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_row(request)
 
@@ -5668,6 +5673,7 @@ def test_get_row_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_row(**mock_args)
 
@@ -5804,6 +5810,7 @@ def test_list_rows_rest_required_fields(request_type=tables.ListRowsRequest):
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_rows(request)
 
@@ -5859,6 +5866,7 @@ def test_list_rows_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_rows(**mock_args)
 
@@ -6050,6 +6058,7 @@ def test_create_row_rest_required_fields(request_type=tables.CreateRowRequest):
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_row(request)
 
@@ -6104,6 +6113,7 @@ def test_create_row_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_row(**mock_args)
 
@@ -6237,6 +6247,7 @@ def test_batch_create_rows_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.batch_create_rows(request)
 
@@ -6365,6 +6376,7 @@ def test_update_row_rest_required_fields(request_type=tables.UpdateRowRequest):
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_row(request)
 
@@ -6419,6 +6431,7 @@ def test_update_row_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_row(**mock_args)
 
@@ -6552,6 +6565,7 @@ def test_batch_update_rows_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.batch_update_rows(request)
 
@@ -6674,6 +6688,7 @@ def test_delete_row_rest_required_fields(request_type=tables.DeleteRowRequest):
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_row(request)
 
@@ -6717,6 +6732,7 @@ def test_delete_row_rest_flattened():
         json_return_value = ""
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_row(**mock_args)
 
@@ -6850,6 +6866,7 @@ def test_batch_delete_rows_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.batch_delete_rows(request)
 
@@ -7599,6 +7616,7 @@ def test_get_table_rest_bad_request(request_type=tables.GetTableRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_table(request)
 
 
@@ -7635,6 +7653,7 @@ def test_get_table_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_table(request)
 
     # Establish that the response is the type that we expect.
@@ -7674,6 +7693,7 @@ def test_get_table_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = tables.Table.to_json(tables.Table())
         req.return_value.content = return_value
 
@@ -7716,6 +7736,7 @@ def test_list_tables_rest_bad_request(request_type=tables.ListTablesRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_tables(request)
 
 
@@ -7751,6 +7772,7 @@ def test_list_tables_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_tables(request)
 
     # Establish that the response is the type that we expect.
@@ -7789,6 +7811,7 @@ def test_list_tables_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = tables.ListTablesResponse.to_json(tables.ListTablesResponse())
         req.return_value.content = return_value
 
@@ -7831,6 +7854,7 @@ def test_get_workspace_rest_bad_request(request_type=tables.GetWorkspaceRequest)
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_workspace(request)
 
 
@@ -7867,6 +7891,7 @@ def test_get_workspace_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_workspace(request)
 
     # Establish that the response is the type that we expect.
@@ -7906,6 +7931,7 @@ def test_get_workspace_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = tables.Workspace.to_json(tables.Workspace())
         req.return_value.content = return_value
 
@@ -7948,6 +7974,7 @@ def test_list_workspaces_rest_bad_request(request_type=tables.ListWorkspacesRequ
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_workspaces(request)
 
 
@@ -7983,6 +8010,7 @@ def test_list_workspaces_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_workspaces(request)
 
     # Establish that the response is the type that we expect.
@@ -8021,6 +8049,7 @@ def test_list_workspaces_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = tables.ListWorkspacesResponse.to_json(
             tables.ListWorkspacesResponse()
         )
@@ -8065,6 +8094,7 @@ def test_get_row_rest_bad_request(request_type=tables.GetRowRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_row(request)
 
 
@@ -8100,6 +8130,7 @@ def test_get_row_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_row(request)
 
     # Establish that the response is the type that we expect.
@@ -8138,6 +8169,7 @@ def test_get_row_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = tables.Row.to_json(tables.Row())
         req.return_value.content = return_value
 
@@ -8180,6 +8212,7 @@ def test_list_rows_rest_bad_request(request_type=tables.ListRowsRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_rows(request)
 
 
@@ -8215,6 +8248,7 @@ def test_list_rows_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_rows(request)
 
     # Establish that the response is the type that we expect.
@@ -8253,6 +8287,7 @@ def test_list_rows_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = tables.ListRowsResponse.to_json(tables.ListRowsResponse())
         req.return_value.content = return_value
 
@@ -8295,6 +8330,7 @@ def test_create_row_rest_bad_request(request_type=tables.CreateRowRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_row(request)
 
 
@@ -8398,6 +8434,7 @@ def test_create_row_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_row(request)
 
     # Establish that the response is the type that we expect.
@@ -8436,6 +8473,7 @@ def test_create_row_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = tables.Row.to_json(tables.Row())
         req.return_value.content = return_value
 
@@ -8478,6 +8516,7 @@ def test_batch_create_rows_rest_bad_request(request_type=tables.BatchCreateRowsR
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.batch_create_rows(request)
 
 
@@ -8511,6 +8550,7 @@ def test_batch_create_rows_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.batch_create_rows(request)
 
     # Establish that the response is the type that we expect.
@@ -8548,6 +8588,7 @@ def test_batch_create_rows_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = tables.BatchCreateRowsResponse.to_json(
             tables.BatchCreateRowsResponse()
         )
@@ -8592,6 +8633,7 @@ def test_update_row_rest_bad_request(request_type=tables.UpdateRowRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_row(request)
 
 
@@ -8695,6 +8737,7 @@ def test_update_row_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_row(request)
 
     # Establish that the response is the type that we expect.
@@ -8733,6 +8776,7 @@ def test_update_row_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = tables.Row.to_json(tables.Row())
         req.return_value.content = return_value
 
@@ -8775,6 +8819,7 @@ def test_batch_update_rows_rest_bad_request(request_type=tables.BatchUpdateRowsR
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.batch_update_rows(request)
 
 
@@ -8808,6 +8853,7 @@ def test_batch_update_rows_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.batch_update_rows(request)
 
     # Establish that the response is the type that we expect.
@@ -8845,6 +8891,7 @@ def test_batch_update_rows_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = tables.BatchUpdateRowsResponse.to_json(
             tables.BatchUpdateRowsResponse()
         )
@@ -8889,6 +8936,7 @@ def test_delete_row_rest_bad_request(request_type=tables.DeleteRowRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_row(request)
 
 
@@ -8919,6 +8967,7 @@ def test_delete_row_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_row(request)
 
     # Establish that the response is the type that we expect.
@@ -8953,6 +9002,7 @@ def test_delete_row_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = tables.DeleteRowRequest()
         metadata = [
@@ -8991,6 +9041,7 @@ def test_batch_delete_rows_rest_bad_request(request_type=tables.BatchDeleteRowsR
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.batch_delete_rows(request)
 
 
@@ -9021,6 +9072,7 @@ def test_batch_delete_rows_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.batch_delete_rows(request)
 
     # Establish that the response is the type that we expect.
@@ -9055,6 +9107,7 @@ def test_batch_delete_rows_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = tables.BatchDeleteRowsRequest()
         metadata = [

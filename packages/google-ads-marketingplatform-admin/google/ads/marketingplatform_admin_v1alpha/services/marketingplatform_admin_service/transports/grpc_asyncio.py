@@ -14,6 +14,9 @@
 # limitations under the License.
 #
 import inspect
+import json
+import logging as std_logging
+import pickle
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -23,8 +26,11 @@ from google.api_core import retry_async as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
+from google.protobuf.json_format import MessageToJson
+import google.protobuf.message
 import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
+import proto  # type: ignore
 
 from google.ads.marketingplatform_admin_v1alpha.types import (
     marketingplatform_admin,
@@ -33,6 +39,82 @@ from google.ads.marketingplatform_admin_v1alpha.types import (
 
 from .base import DEFAULT_CLIENT_INFO, MarketingplatformAdminServiceTransport
 from .grpc import MarketingplatformAdminServiceGrpcTransport
+
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = std_logging.getLogger(__name__)
+
+
+class _LoggingClientAIOInterceptor(
+    grpc.aio.UnaryUnaryClientInterceptor
+):  # pragma: NO COVER
+    async def intercept_unary_unary(self, continuation, client_call_details, request):
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+            std_logging.DEBUG
+        )
+        if logging_enabled:  # pragma: NO COVER
+            request_metadata = client_call_details.metadata
+            if isinstance(request, proto.Message):
+                request_payload = type(request).to_json(request)
+            elif isinstance(request, google.protobuf.message.Message):
+                request_payload = MessageToJson(request)
+            else:
+                request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
+
+            request_metadata = {
+                key: value.decode("utf-8") if isinstance(value, bytes) else value
+                for key, value in request_metadata
+            }
+            grpc_request = {
+                "payload": request_payload,
+                "requestMethod": "grpc",
+                "metadata": dict(request_metadata),
+            }
+            _LOGGER.debug(
+                f"Sending request for {client_call_details.method}",
+                extra={
+                    "serviceName": "google.marketingplatform.admin.v1alpha.MarketingplatformAdminService",
+                    "rpcName": str(client_call_details.method),
+                    "request": grpc_request,
+                    "metadata": grpc_request["metadata"],
+                },
+            )
+        response = await continuation(client_call_details, request)
+        if logging_enabled:  # pragma: NO COVER
+            response_metadata = await response.trailing_metadata()
+            # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
+            metadata = (
+                dict([(k, str(v)) for k, v in response_metadata])
+                if response_metadata
+                else None
+            )
+            result = await response
+            if isinstance(result, proto.Message):
+                response_payload = type(result).to_json(result)
+            elif isinstance(result, google.protobuf.message.Message):
+                response_payload = MessageToJson(result)
+            else:
+                response_payload = f"{type(result).__name__}: {pickle.dumps(result)}"
+            grpc_response = {
+                "payload": response_payload,
+                "metadata": metadata,
+                "status": "OK",
+            }
+            _LOGGER.debug(
+                f"Received response to rpc {client_call_details.method}.",
+                extra={
+                    "serviceName": "google.marketingplatform.admin.v1alpha.MarketingplatformAdminService",
+                    "rpcName": str(client_call_details.method),
+                    "response": grpc_response,
+                    "metadata": grpc_response["metadata"],
+                },
+            )
+        return response
 
 
 class MarketingplatformAdminServiceGrpcAsyncIOTransport(
@@ -233,10 +315,13 @@ class MarketingplatformAdminServiceGrpcAsyncIOTransport(
                 ],
             )
 
-        # Wrap messages. This must be done after self._grpc_channel exists
+        self._interceptor = _LoggingClientAIOInterceptor()
+        self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
+        self._logged_channel = self._grpc_channel
         self._wrap_with_kind = (
             "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         )
+        # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -271,7 +356,7 @@ class MarketingplatformAdminServiceGrpcAsyncIOTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_organization" not in self._stubs:
-            self._stubs["get_organization"] = self.grpc_channel.unary_unary(
+            self._stubs["get_organization"] = self._logged_channel.unary_unary(
                 "/google.marketingplatform.admin.v1alpha.MarketingplatformAdminService/GetOrganization",
                 request_serializer=marketingplatform_admin.GetOrganizationRequest.serialize,
                 response_deserializer=resources.Organization.deserialize,
@@ -301,7 +386,9 @@ class MarketingplatformAdminServiceGrpcAsyncIOTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_analytics_account_links" not in self._stubs:
-            self._stubs["list_analytics_account_links"] = self.grpc_channel.unary_unary(
+            self._stubs[
+                "list_analytics_account_links"
+            ] = self._logged_channel.unary_unary(
                 "/google.marketingplatform.admin.v1alpha.MarketingplatformAdminService/ListAnalyticsAccountLinks",
                 request_serializer=marketingplatform_admin.ListAnalyticsAccountLinksRequest.serialize,
                 response_deserializer=marketingplatform_admin.ListAnalyticsAccountLinksResponse.deserialize,
@@ -339,7 +426,7 @@ class MarketingplatformAdminServiceGrpcAsyncIOTransport(
         if "create_analytics_account_link" not in self._stubs:
             self._stubs[
                 "create_analytics_account_link"
-            ] = self.grpc_channel.unary_unary(
+            ] = self._logged_channel.unary_unary(
                 "/google.marketingplatform.admin.v1alpha.MarketingplatformAdminService/CreateAnalyticsAccountLink",
                 request_serializer=marketingplatform_admin.CreateAnalyticsAccountLinkRequest.serialize,
                 response_deserializer=resources.AnalyticsAccountLink.deserialize,
@@ -375,7 +462,7 @@ class MarketingplatformAdminServiceGrpcAsyncIOTransport(
         if "delete_analytics_account_link" not in self._stubs:
             self._stubs[
                 "delete_analytics_account_link"
-            ] = self.grpc_channel.unary_unary(
+            ] = self._logged_channel.unary_unary(
                 "/google.marketingplatform.admin.v1alpha.MarketingplatformAdminService/DeleteAnalyticsAccountLink",
                 request_serializer=marketingplatform_admin.DeleteAnalyticsAccountLinkRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -404,7 +491,9 @@ class MarketingplatformAdminServiceGrpcAsyncIOTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "set_property_service_level" not in self._stubs:
-            self._stubs["set_property_service_level"] = self.grpc_channel.unary_unary(
+            self._stubs[
+                "set_property_service_level"
+            ] = self._logged_channel.unary_unary(
                 "/google.marketingplatform.admin.v1alpha.MarketingplatformAdminService/SetPropertyServiceLevel",
                 request_serializer=marketingplatform_admin.SetPropertyServiceLevelRequest.serialize,
                 response_deserializer=marketingplatform_admin.SetPropertyServiceLevelResponse.deserialize,
@@ -447,7 +536,7 @@ class MarketingplatformAdminServiceGrpcAsyncIOTransport(
         return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
 
     def close(self):
-        return self.grpc_channel.close()
+        return self._logged_channel.close()
 
     @property
     def kind(self) -> str:

@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -43,6 +43,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -335,8 +343,10 @@ class RegistryRestInterceptor:
     def pre_create_api(
         self,
         request: registry_service.CreateApiRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[registry_service.CreateApiRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        registry_service.CreateApiRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_api
 
         Override in a subclass to manipulate the request or metadata
@@ -356,8 +366,11 @@ class RegistryRestInterceptor:
     def pre_create_api_deployment(
         self,
         request: registry_service.CreateApiDeploymentRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[registry_service.CreateApiDeploymentRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        registry_service.CreateApiDeploymentRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for create_api_deployment
 
         Override in a subclass to manipulate the request or metadata
@@ -379,8 +392,10 @@ class RegistryRestInterceptor:
     def pre_create_api_spec(
         self,
         request: registry_service.CreateApiSpecRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[registry_service.CreateApiSpecRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        registry_service.CreateApiSpecRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_api_spec
 
         Override in a subclass to manipulate the request or metadata
@@ -402,8 +417,11 @@ class RegistryRestInterceptor:
     def pre_create_api_version(
         self,
         request: registry_service.CreateApiVersionRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[registry_service.CreateApiVersionRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        registry_service.CreateApiVersionRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for create_api_version
 
         Override in a subclass to manipulate the request or metadata
@@ -425,8 +443,10 @@ class RegistryRestInterceptor:
     def pre_create_artifact(
         self,
         request: registry_service.CreateArtifactRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[registry_service.CreateArtifactRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        registry_service.CreateArtifactRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_artifact
 
         Override in a subclass to manipulate the request or metadata
@@ -448,8 +468,10 @@ class RegistryRestInterceptor:
     def pre_delete_api(
         self,
         request: registry_service.DeleteApiRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[registry_service.DeleteApiRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        registry_service.DeleteApiRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_api
 
         Override in a subclass to manipulate the request or metadata
@@ -460,8 +482,11 @@ class RegistryRestInterceptor:
     def pre_delete_api_deployment(
         self,
         request: registry_service.DeleteApiDeploymentRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[registry_service.DeleteApiDeploymentRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        registry_service.DeleteApiDeploymentRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for delete_api_deployment
 
         Override in a subclass to manipulate the request or metadata
@@ -472,9 +497,10 @@ class RegistryRestInterceptor:
     def pre_delete_api_deployment_revision(
         self,
         request: registry_service.DeleteApiDeploymentRevisionRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        registry_service.DeleteApiDeploymentRevisionRequest, Sequence[Tuple[str, str]]
+        registry_service.DeleteApiDeploymentRevisionRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for delete_api_deployment_revision
 
@@ -497,8 +523,10 @@ class RegistryRestInterceptor:
     def pre_delete_api_spec(
         self,
         request: registry_service.DeleteApiSpecRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[registry_service.DeleteApiSpecRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        registry_service.DeleteApiSpecRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_api_spec
 
         Override in a subclass to manipulate the request or metadata
@@ -509,9 +537,10 @@ class RegistryRestInterceptor:
     def pre_delete_api_spec_revision(
         self,
         request: registry_service.DeleteApiSpecRevisionRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        registry_service.DeleteApiSpecRevisionRequest, Sequence[Tuple[str, str]]
+        registry_service.DeleteApiSpecRevisionRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for delete_api_spec_revision
 
@@ -534,8 +563,11 @@ class RegistryRestInterceptor:
     def pre_delete_api_version(
         self,
         request: registry_service.DeleteApiVersionRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[registry_service.DeleteApiVersionRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        registry_service.DeleteApiVersionRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for delete_api_version
 
         Override in a subclass to manipulate the request or metadata
@@ -546,8 +578,10 @@ class RegistryRestInterceptor:
     def pre_delete_artifact(
         self,
         request: registry_service.DeleteArtifactRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[registry_service.DeleteArtifactRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        registry_service.DeleteArtifactRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_artifact
 
         Override in a subclass to manipulate the request or metadata
@@ -558,8 +592,8 @@ class RegistryRestInterceptor:
     def pre_get_api(
         self,
         request: registry_service.GetApiRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[registry_service.GetApiRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[registry_service.GetApiRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_api
 
         Override in a subclass to manipulate the request or metadata
@@ -579,8 +613,11 @@ class RegistryRestInterceptor:
     def pre_get_api_deployment(
         self,
         request: registry_service.GetApiDeploymentRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[registry_service.GetApiDeploymentRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        registry_service.GetApiDeploymentRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for get_api_deployment
 
         Override in a subclass to manipulate the request or metadata
@@ -602,8 +639,10 @@ class RegistryRestInterceptor:
     def pre_get_api_spec(
         self,
         request: registry_service.GetApiSpecRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[registry_service.GetApiSpecRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        registry_service.GetApiSpecRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_api_spec
 
         Override in a subclass to manipulate the request or metadata
@@ -625,8 +664,11 @@ class RegistryRestInterceptor:
     def pre_get_api_spec_contents(
         self,
         request: registry_service.GetApiSpecContentsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[registry_service.GetApiSpecContentsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        registry_service.GetApiSpecContentsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for get_api_spec_contents
 
         Override in a subclass to manipulate the request or metadata
@@ -648,8 +690,10 @@ class RegistryRestInterceptor:
     def pre_get_api_version(
         self,
         request: registry_service.GetApiVersionRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[registry_service.GetApiVersionRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        registry_service.GetApiVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_api_version
 
         Override in a subclass to manipulate the request or metadata
@@ -671,8 +715,10 @@ class RegistryRestInterceptor:
     def pre_get_artifact(
         self,
         request: registry_service.GetArtifactRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[registry_service.GetArtifactRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        registry_service.GetArtifactRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_artifact
 
         Override in a subclass to manipulate the request or metadata
@@ -694,8 +740,11 @@ class RegistryRestInterceptor:
     def pre_get_artifact_contents(
         self,
         request: registry_service.GetArtifactContentsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[registry_service.GetArtifactContentsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        registry_service.GetArtifactContentsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for get_artifact_contents
 
         Override in a subclass to manipulate the request or metadata
@@ -717,9 +766,10 @@ class RegistryRestInterceptor:
     def pre_list_api_deployment_revisions(
         self,
         request: registry_service.ListApiDeploymentRevisionsRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        registry_service.ListApiDeploymentRevisionsRequest, Sequence[Tuple[str, str]]
+        registry_service.ListApiDeploymentRevisionsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for list_api_deployment_revisions
 
@@ -742,8 +792,11 @@ class RegistryRestInterceptor:
     def pre_list_api_deployments(
         self,
         request: registry_service.ListApiDeploymentsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[registry_service.ListApiDeploymentsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        registry_service.ListApiDeploymentsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for list_api_deployments
 
         Override in a subclass to manipulate the request or metadata
@@ -765,8 +818,10 @@ class RegistryRestInterceptor:
     def pre_list_apis(
         self,
         request: registry_service.ListApisRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[registry_service.ListApisRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        registry_service.ListApisRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_apis
 
         Override in a subclass to manipulate the request or metadata
@@ -788,8 +843,11 @@ class RegistryRestInterceptor:
     def pre_list_api_spec_revisions(
         self,
         request: registry_service.ListApiSpecRevisionsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[registry_service.ListApiSpecRevisionsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        registry_service.ListApiSpecRevisionsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for list_api_spec_revisions
 
         Override in a subclass to manipulate the request or metadata
@@ -811,8 +869,10 @@ class RegistryRestInterceptor:
     def pre_list_api_specs(
         self,
         request: registry_service.ListApiSpecsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[registry_service.ListApiSpecsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        registry_service.ListApiSpecsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_api_specs
 
         Override in a subclass to manipulate the request or metadata
@@ -834,8 +894,10 @@ class RegistryRestInterceptor:
     def pre_list_api_versions(
         self,
         request: registry_service.ListApiVersionsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[registry_service.ListApiVersionsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        registry_service.ListApiVersionsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_api_versions
 
         Override in a subclass to manipulate the request or metadata
@@ -857,8 +919,10 @@ class RegistryRestInterceptor:
     def pre_list_artifacts(
         self,
         request: registry_service.ListArtifactsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[registry_service.ListArtifactsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        registry_service.ListArtifactsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_artifacts
 
         Override in a subclass to manipulate the request or metadata
@@ -880,8 +944,10 @@ class RegistryRestInterceptor:
     def pre_replace_artifact(
         self,
         request: registry_service.ReplaceArtifactRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[registry_service.ReplaceArtifactRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        registry_service.ReplaceArtifactRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for replace_artifact
 
         Override in a subclass to manipulate the request or metadata
@@ -903,9 +969,10 @@ class RegistryRestInterceptor:
     def pre_rollback_api_deployment(
         self,
         request: registry_service.RollbackApiDeploymentRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        registry_service.RollbackApiDeploymentRequest, Sequence[Tuple[str, str]]
+        registry_service.RollbackApiDeploymentRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for rollback_api_deployment
 
@@ -928,8 +995,10 @@ class RegistryRestInterceptor:
     def pre_rollback_api_spec(
         self,
         request: registry_service.RollbackApiSpecRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[registry_service.RollbackApiSpecRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        registry_service.RollbackApiSpecRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for rollback_api_spec
 
         Override in a subclass to manipulate the request or metadata
@@ -951,9 +1020,10 @@ class RegistryRestInterceptor:
     def pre_tag_api_deployment_revision(
         self,
         request: registry_service.TagApiDeploymentRevisionRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        registry_service.TagApiDeploymentRevisionRequest, Sequence[Tuple[str, str]]
+        registry_service.TagApiDeploymentRevisionRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for tag_api_deployment_revision
 
@@ -976,8 +1046,11 @@ class RegistryRestInterceptor:
     def pre_tag_api_spec_revision(
         self,
         request: registry_service.TagApiSpecRevisionRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[registry_service.TagApiSpecRevisionRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        registry_service.TagApiSpecRevisionRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for tag_api_spec_revision
 
         Override in a subclass to manipulate the request or metadata
@@ -999,8 +1072,10 @@ class RegistryRestInterceptor:
     def pre_update_api(
         self,
         request: registry_service.UpdateApiRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[registry_service.UpdateApiRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        registry_service.UpdateApiRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_api
 
         Override in a subclass to manipulate the request or metadata
@@ -1020,8 +1095,11 @@ class RegistryRestInterceptor:
     def pre_update_api_deployment(
         self,
         request: registry_service.UpdateApiDeploymentRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[registry_service.UpdateApiDeploymentRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        registry_service.UpdateApiDeploymentRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for update_api_deployment
 
         Override in a subclass to manipulate the request or metadata
@@ -1043,8 +1121,10 @@ class RegistryRestInterceptor:
     def pre_update_api_spec(
         self,
         request: registry_service.UpdateApiSpecRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[registry_service.UpdateApiSpecRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        registry_service.UpdateApiSpecRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_api_spec
 
         Override in a subclass to manipulate the request or metadata
@@ -1066,8 +1146,11 @@ class RegistryRestInterceptor:
     def pre_update_api_version(
         self,
         request: registry_service.UpdateApiVersionRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[registry_service.UpdateApiVersionRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        registry_service.UpdateApiVersionRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for update_api_version
 
         Override in a subclass to manipulate the request or metadata
@@ -1089,8 +1172,10 @@ class RegistryRestInterceptor:
     def pre_get_location(
         self,
         request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -1112,8 +1197,10 @@ class RegistryRestInterceptor:
     def pre_list_locations(
         self,
         request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -1135,8 +1222,10 @@ class RegistryRestInterceptor:
     def pre_get_iam_policy(
         self,
         request: iam_policy_pb2.GetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -1156,8 +1245,10 @@ class RegistryRestInterceptor:
     def pre_set_iam_policy(
         self,
         request: iam_policy_pb2.SetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -1177,8 +1268,11 @@ class RegistryRestInterceptor:
     def pre_test_iam_permissions(
         self,
         request: iam_policy_pb2.TestIamPermissionsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.TestIamPermissionsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -1200,8 +1294,10 @@ class RegistryRestInterceptor:
     def pre_cancel_operation(
         self,
         request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1221,8 +1317,10 @@ class RegistryRestInterceptor:
     def pre_delete_operation(
         self,
         request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1242,8 +1340,10 @@ class RegistryRestInterceptor:
     def pre_get_operation(
         self,
         request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1265,8 +1365,10 @@ class RegistryRestInterceptor:
     def pre_list_operations(
         self,
         request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -1406,7 +1508,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> registry_models.Api:
             r"""Call the create api method over HTTP.
 
@@ -1416,8 +1518,10 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.registry_models.Api:
@@ -1428,6 +1532,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             """
 
             http_options = _BaseRegistryRestTransport._BaseCreateApi._get_http_options()
+
             request, metadata = self._interceptor.pre_create_api(request, metadata)
             transcoded_request = (
                 _BaseRegistryRestTransport._BaseCreateApi._get_transcoded_request(
@@ -1445,6 +1550,33 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apigeeregistry_v1.RegistryClient.CreateApi",
+                    extra={
+                        "serviceName": "google.cloud.apigeeregistry.v1.Registry",
+                        "rpcName": "CreateApi",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegistryRestTransport._CreateApi._get_response(
@@ -1467,7 +1599,29 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             pb_resp = registry_models.Api.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_api(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = registry_models.Api.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apigeeregistry_v1.RegistryClient.create_api",
+                    extra={
+                        "serviceName": "google.cloud.apigeeregistry.v1.Registry",
+                        "rpcName": "CreateApi",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateApiDeployment(
@@ -1505,7 +1659,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> registry_models.ApiDeployment:
             r"""Call the create api deployment method over HTTP.
 
@@ -1516,8 +1670,10 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.registry_models.ApiDeployment:
@@ -1536,6 +1692,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             http_options = (
                 _BaseRegistryRestTransport._BaseCreateApiDeployment._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_api_deployment(
                 request, metadata
             )
@@ -1551,6 +1708,33 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             query_params = _BaseRegistryRestTransport._BaseCreateApiDeployment._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apigeeregistry_v1.RegistryClient.CreateApiDeployment",
+                    extra={
+                        "serviceName": "google.cloud.apigeeregistry.v1.Registry",
+                        "rpcName": "CreateApiDeployment",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegistryRestTransport._CreateApiDeployment._get_response(
@@ -1573,7 +1757,29 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             pb_resp = registry_models.ApiDeployment.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_api_deployment(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = registry_models.ApiDeployment.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apigeeregistry_v1.RegistryClient.create_api_deployment",
+                    extra={
+                        "serviceName": "google.cloud.apigeeregistry.v1.Registry",
+                        "rpcName": "CreateApiDeployment",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateApiSpec(
@@ -1611,7 +1817,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> registry_models.ApiSpec:
             r"""Call the create api spec method over HTTP.
 
@@ -1621,8 +1827,10 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.registry_models.ApiSpec:
@@ -1646,6 +1854,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             http_options = (
                 _BaseRegistryRestTransport._BaseCreateApiSpec._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_api_spec(request, metadata)
             transcoded_request = (
                 _BaseRegistryRestTransport._BaseCreateApiSpec._get_transcoded_request(
@@ -1663,6 +1872,33 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apigeeregistry_v1.RegistryClient.CreateApiSpec",
+                    extra={
+                        "serviceName": "google.cloud.apigeeregistry.v1.Registry",
+                        "rpcName": "CreateApiSpec",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegistryRestTransport._CreateApiSpec._get_response(
@@ -1685,7 +1921,29 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             pb_resp = registry_models.ApiSpec.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_api_spec(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = registry_models.ApiSpec.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apigeeregistry_v1.RegistryClient.create_api_spec",
+                    extra={
+                        "serviceName": "google.cloud.apigeeregistry.v1.Registry",
+                        "rpcName": "CreateApiSpec",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateApiVersion(
@@ -1723,7 +1981,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> registry_models.ApiVersion:
             r"""Call the create api version method over HTTP.
 
@@ -1733,8 +1991,10 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.registry_models.ApiVersion:
@@ -1747,6 +2007,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             http_options = (
                 _BaseRegistryRestTransport._BaseCreateApiVersion._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_api_version(
                 request, metadata
             )
@@ -1766,6 +2027,33 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apigeeregistry_v1.RegistryClient.CreateApiVersion",
+                    extra={
+                        "serviceName": "google.cloud.apigeeregistry.v1.Registry",
+                        "rpcName": "CreateApiVersion",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegistryRestTransport._CreateApiVersion._get_response(
@@ -1788,7 +2076,29 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             pb_resp = registry_models.ApiVersion.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_api_version(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = registry_models.ApiVersion.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apigeeregistry_v1.RegistryClient.create_api_version",
+                    extra={
+                        "serviceName": "google.cloud.apigeeregistry.v1.Registry",
+                        "rpcName": "CreateApiVersion",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateArtifact(
@@ -1826,7 +2136,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> registry_models.Artifact:
             r"""Call the create artifact method over HTTP.
 
@@ -1836,8 +2146,10 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.registry_models.Artifact:
@@ -1858,6 +2170,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             http_options = (
                 _BaseRegistryRestTransport._BaseCreateArtifact._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_artifact(request, metadata)
             transcoded_request = (
                 _BaseRegistryRestTransport._BaseCreateArtifact._get_transcoded_request(
@@ -1877,6 +2190,33 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apigeeregistry_v1.RegistryClient.CreateArtifact",
+                    extra={
+                        "serviceName": "google.cloud.apigeeregistry.v1.Registry",
+                        "rpcName": "CreateArtifact",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegistryRestTransport._CreateArtifact._get_response(
@@ -1899,7 +2239,29 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             pb_resp = registry_models.Artifact.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_artifact(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = registry_models.Artifact.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apigeeregistry_v1.RegistryClient.create_artifact",
+                    extra={
+                        "serviceName": "google.cloud.apigeeregistry.v1.Registry",
+                        "rpcName": "CreateArtifact",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteApi(_BaseRegistryRestTransport._BaseDeleteApi, RegistryRestStub):
@@ -1934,7 +2296,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete api method over HTTP.
 
@@ -1944,11 +2306,14 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = _BaseRegistryRestTransport._BaseDeleteApi._get_http_options()
+
             request, metadata = self._interceptor.pre_delete_api(request, metadata)
             transcoded_request = (
                 _BaseRegistryRestTransport._BaseDeleteApi._get_transcoded_request(
@@ -1962,6 +2327,33 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apigeeregistry_v1.RegistryClient.DeleteApi",
+                    extra={
+                        "serviceName": "google.cloud.apigeeregistry.v1.Registry",
+                        "rpcName": "DeleteApi",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegistryRestTransport._DeleteApi._get_response(
@@ -2012,7 +2404,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete api deployment method over HTTP.
 
@@ -2023,13 +2415,16 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseRegistryRestTransport._BaseDeleteApiDeployment._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_api_deployment(
                 request, metadata
             )
@@ -2041,6 +2436,33 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             query_params = _BaseRegistryRestTransport._BaseDeleteApiDeployment._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apigeeregistry_v1.RegistryClient.DeleteApiDeployment",
+                    extra={
+                        "serviceName": "google.cloud.apigeeregistry.v1.Registry",
+                        "rpcName": "DeleteApiDeployment",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegistryRestTransport._DeleteApiDeployment._get_response(
@@ -2091,7 +2513,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> registry_models.ApiDeployment:
             r"""Call the delete api deployment
             revision method over HTTP.
@@ -2103,8 +2525,10 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.registry_models.ApiDeployment:
@@ -2123,6 +2547,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             http_options = (
                 _BaseRegistryRestTransport._BaseDeleteApiDeploymentRevision._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_api_deployment_revision(
                 request, metadata
             )
@@ -2134,6 +2559,33 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             query_params = _BaseRegistryRestTransport._BaseDeleteApiDeploymentRevision._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apigeeregistry_v1.RegistryClient.DeleteApiDeploymentRevision",
+                    extra={
+                        "serviceName": "google.cloud.apigeeregistry.v1.Registry",
+                        "rpcName": "DeleteApiDeploymentRevision",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegistryRestTransport._DeleteApiDeploymentRevision._get_response(
@@ -2155,7 +2607,29 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             pb_resp = registry_models.ApiDeployment.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_api_deployment_revision(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = registry_models.ApiDeployment.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apigeeregistry_v1.RegistryClient.delete_api_deployment_revision",
+                    extra={
+                        "serviceName": "google.cloud.apigeeregistry.v1.Registry",
+                        "rpcName": "DeleteApiDeploymentRevision",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteApiSpec(
@@ -2192,7 +2666,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete api spec method over HTTP.
 
@@ -2202,13 +2676,16 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseRegistryRestTransport._BaseDeleteApiSpec._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_api_spec(request, metadata)
             transcoded_request = (
                 _BaseRegistryRestTransport._BaseDeleteApiSpec._get_transcoded_request(
@@ -2222,6 +2699,33 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apigeeregistry_v1.RegistryClient.DeleteApiSpec",
+                    extra={
+                        "serviceName": "google.cloud.apigeeregistry.v1.Registry",
+                        "rpcName": "DeleteApiSpec",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegistryRestTransport._DeleteApiSpec._get_response(
@@ -2272,7 +2776,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> registry_models.ApiSpec:
             r"""Call the delete api spec revision method over HTTP.
 
@@ -2283,8 +2787,10 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.registry_models.ApiSpec:
@@ -2308,6 +2814,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             http_options = (
                 _BaseRegistryRestTransport._BaseDeleteApiSpecRevision._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_api_spec_revision(
                 request, metadata
             )
@@ -2319,6 +2826,33 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             query_params = _BaseRegistryRestTransport._BaseDeleteApiSpecRevision._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apigeeregistry_v1.RegistryClient.DeleteApiSpecRevision",
+                    extra={
+                        "serviceName": "google.cloud.apigeeregistry.v1.Registry",
+                        "rpcName": "DeleteApiSpecRevision",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegistryRestTransport._DeleteApiSpecRevision._get_response(
@@ -2340,7 +2874,29 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             pb_resp = registry_models.ApiSpec.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_api_spec_revision(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = registry_models.ApiSpec.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apigeeregistry_v1.RegistryClient.delete_api_spec_revision",
+                    extra={
+                        "serviceName": "google.cloud.apigeeregistry.v1.Registry",
+                        "rpcName": "DeleteApiSpecRevision",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteApiVersion(
@@ -2377,7 +2933,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete api version method over HTTP.
 
@@ -2387,13 +2943,16 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseRegistryRestTransport._BaseDeleteApiVersion._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_api_version(
                 request, metadata
             )
@@ -2407,6 +2966,33 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apigeeregistry_v1.RegistryClient.DeleteApiVersion",
+                    extra={
+                        "serviceName": "google.cloud.apigeeregistry.v1.Registry",
+                        "rpcName": "DeleteApiVersion",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegistryRestTransport._DeleteApiVersion._get_response(
@@ -2457,7 +3043,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete artifact method over HTTP.
 
@@ -2467,13 +3053,16 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseRegistryRestTransport._BaseDeleteArtifact._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_artifact(request, metadata)
             transcoded_request = (
                 _BaseRegistryRestTransport._BaseDeleteArtifact._get_transcoded_request(
@@ -2487,6 +3076,33 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apigeeregistry_v1.RegistryClient.DeleteArtifact",
+                    extra={
+                        "serviceName": "google.cloud.apigeeregistry.v1.Registry",
+                        "rpcName": "DeleteArtifact",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegistryRestTransport._DeleteArtifact._get_response(
@@ -2535,7 +3151,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> registry_models.Api:
             r"""Call the get api method over HTTP.
 
@@ -2545,8 +3161,10 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.registry_models.Api:
@@ -2557,6 +3175,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             """
 
             http_options = _BaseRegistryRestTransport._BaseGetApi._get_http_options()
+
             request, metadata = self._interceptor.pre_get_api(request, metadata)
             transcoded_request = (
                 _BaseRegistryRestTransport._BaseGetApi._get_transcoded_request(
@@ -2570,6 +3189,33 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apigeeregistry_v1.RegistryClient.GetApi",
+                    extra={
+                        "serviceName": "google.cloud.apigeeregistry.v1.Registry",
+                        "rpcName": "GetApi",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegistryRestTransport._GetApi._get_response(
@@ -2591,7 +3237,29 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             pb_resp = registry_models.Api.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_api(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = registry_models.Api.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apigeeregistry_v1.RegistryClient.get_api",
+                    extra={
+                        "serviceName": "google.cloud.apigeeregistry.v1.Registry",
+                        "rpcName": "GetApi",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetApiDeployment(
@@ -2628,7 +3296,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> registry_models.ApiDeployment:
             r"""Call the get api deployment method over HTTP.
 
@@ -2638,8 +3306,10 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.registry_models.ApiDeployment:
@@ -2658,6 +3328,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             http_options = (
                 _BaseRegistryRestTransport._BaseGetApiDeployment._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_api_deployment(
                 request, metadata
             )
@@ -2671,6 +3342,33 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apigeeregistry_v1.RegistryClient.GetApiDeployment",
+                    extra={
+                        "serviceName": "google.cloud.apigeeregistry.v1.Registry",
+                        "rpcName": "GetApiDeployment",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegistryRestTransport._GetApiDeployment._get_response(
@@ -2692,7 +3390,29 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             pb_resp = registry_models.ApiDeployment.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_api_deployment(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = registry_models.ApiDeployment.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apigeeregistry_v1.RegistryClient.get_api_deployment",
+                    extra={
+                        "serviceName": "google.cloud.apigeeregistry.v1.Registry",
+                        "rpcName": "GetApiDeployment",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetApiSpec(_BaseRegistryRestTransport._BaseGetApiSpec, RegistryRestStub):
@@ -2727,7 +3447,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> registry_models.ApiSpec:
             r"""Call the get api spec method over HTTP.
 
@@ -2737,8 +3457,10 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.registry_models.ApiSpec:
@@ -2762,6 +3484,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             http_options = (
                 _BaseRegistryRestTransport._BaseGetApiSpec._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_api_spec(request, metadata)
             transcoded_request = (
                 _BaseRegistryRestTransport._BaseGetApiSpec._get_transcoded_request(
@@ -2775,6 +3498,33 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apigeeregistry_v1.RegistryClient.GetApiSpec",
+                    extra={
+                        "serviceName": "google.cloud.apigeeregistry.v1.Registry",
+                        "rpcName": "GetApiSpec",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegistryRestTransport._GetApiSpec._get_response(
@@ -2796,7 +3546,29 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             pb_resp = registry_models.ApiSpec.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_api_spec(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = registry_models.ApiSpec.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apigeeregistry_v1.RegistryClient.get_api_spec",
+                    extra={
+                        "serviceName": "google.cloud.apigeeregistry.v1.Registry",
+                        "rpcName": "GetApiSpec",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetApiSpecContents(
@@ -2833,7 +3605,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> httpbody_pb2.HttpBody:
             r"""Call the get api spec contents method over HTTP.
 
@@ -2844,8 +3616,10 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.httpbody_pb2.HttpBody:
@@ -2904,6 +3678,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             http_options = (
                 _BaseRegistryRestTransport._BaseGetApiSpecContents._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_api_spec_contents(
                 request, metadata
             )
@@ -2915,6 +3690,33 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             query_params = _BaseRegistryRestTransport._BaseGetApiSpecContents._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apigeeregistry_v1.RegistryClient.GetApiSpecContents",
+                    extra={
+                        "serviceName": "google.cloud.apigeeregistry.v1.Registry",
+                        "rpcName": "GetApiSpecContents",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegistryRestTransport._GetApiSpecContents._get_response(
@@ -2936,7 +3738,29 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             pb_resp = resp
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_api_spec_contents(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apigeeregistry_v1.RegistryClient.get_api_spec_contents",
+                    extra={
+                        "serviceName": "google.cloud.apigeeregistry.v1.Registry",
+                        "rpcName": "GetApiSpecContents",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetApiVersion(
@@ -2973,7 +3797,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> registry_models.ApiVersion:
             r"""Call the get api version method over HTTP.
 
@@ -2983,8 +3807,10 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.registry_models.ApiVersion:
@@ -2997,6 +3823,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             http_options = (
                 _BaseRegistryRestTransport._BaseGetApiVersion._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_api_version(request, metadata)
             transcoded_request = (
                 _BaseRegistryRestTransport._BaseGetApiVersion._get_transcoded_request(
@@ -3010,6 +3837,33 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apigeeregistry_v1.RegistryClient.GetApiVersion",
+                    extra={
+                        "serviceName": "google.cloud.apigeeregistry.v1.Registry",
+                        "rpcName": "GetApiVersion",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegistryRestTransport._GetApiVersion._get_response(
@@ -3031,7 +3885,29 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             pb_resp = registry_models.ApiVersion.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_api_version(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = registry_models.ApiVersion.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apigeeregistry_v1.RegistryClient.get_api_version",
+                    extra={
+                        "serviceName": "google.cloud.apigeeregistry.v1.Registry",
+                        "rpcName": "GetApiVersion",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetArtifact(_BaseRegistryRestTransport._BaseGetArtifact, RegistryRestStub):
@@ -3066,7 +3942,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> registry_models.Artifact:
             r"""Call the get artifact method over HTTP.
 
@@ -3076,8 +3952,10 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.registry_models.Artifact:
@@ -3098,6 +3976,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             http_options = (
                 _BaseRegistryRestTransport._BaseGetArtifact._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_artifact(request, metadata)
             transcoded_request = (
                 _BaseRegistryRestTransport._BaseGetArtifact._get_transcoded_request(
@@ -3111,6 +3990,33 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apigeeregistry_v1.RegistryClient.GetArtifact",
+                    extra={
+                        "serviceName": "google.cloud.apigeeregistry.v1.Registry",
+                        "rpcName": "GetArtifact",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegistryRestTransport._GetArtifact._get_response(
@@ -3132,7 +4038,29 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             pb_resp = registry_models.Artifact.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_artifact(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = registry_models.Artifact.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apigeeregistry_v1.RegistryClient.get_artifact",
+                    extra={
+                        "serviceName": "google.cloud.apigeeregistry.v1.Registry",
+                        "rpcName": "GetArtifact",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetArtifactContents(
@@ -3169,7 +4097,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> httpbody_pb2.HttpBody:
             r"""Call the get artifact contents method over HTTP.
 
@@ -3180,8 +4108,10 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.httpbody_pb2.HttpBody:
@@ -3240,6 +4170,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             http_options = (
                 _BaseRegistryRestTransport._BaseGetArtifactContents._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_artifact_contents(
                 request, metadata
             )
@@ -3251,6 +4182,33 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             query_params = _BaseRegistryRestTransport._BaseGetArtifactContents._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apigeeregistry_v1.RegistryClient.GetArtifactContents",
+                    extra={
+                        "serviceName": "google.cloud.apigeeregistry.v1.Registry",
+                        "rpcName": "GetArtifactContents",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegistryRestTransport._GetArtifactContents._get_response(
@@ -3272,7 +4230,29 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             pb_resp = resp
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_artifact_contents(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apigeeregistry_v1.RegistryClient.get_artifact_contents",
+                    extra={
+                        "serviceName": "google.cloud.apigeeregistry.v1.Registry",
+                        "rpcName": "GetArtifactContents",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListApiDeploymentRevisions(
@@ -3309,7 +4289,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> registry_service.ListApiDeploymentRevisionsResponse:
             r"""Call the list api deployment
             revisions method over HTTP.
@@ -3321,8 +4301,10 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.registry_service.ListApiDeploymentRevisionsResponse:
@@ -3334,6 +4316,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             http_options = (
                 _BaseRegistryRestTransport._BaseListApiDeploymentRevisions._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_api_deployment_revisions(
                 request, metadata
             )
@@ -3345,6 +4328,33 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             query_params = _BaseRegistryRestTransport._BaseListApiDeploymentRevisions._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apigeeregistry_v1.RegistryClient.ListApiDeploymentRevisions",
+                    extra={
+                        "serviceName": "google.cloud.apigeeregistry.v1.Registry",
+                        "rpcName": "ListApiDeploymentRevisions",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegistryRestTransport._ListApiDeploymentRevisions._get_response(
@@ -3366,7 +4376,33 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             pb_resp = registry_service.ListApiDeploymentRevisionsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_api_deployment_revisions(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        registry_service.ListApiDeploymentRevisionsResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apigeeregistry_v1.RegistryClient.list_api_deployment_revisions",
+                    extra={
+                        "serviceName": "google.cloud.apigeeregistry.v1.Registry",
+                        "rpcName": "ListApiDeploymentRevisions",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListApiDeployments(
@@ -3403,7 +4439,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> registry_service.ListApiDeploymentsResponse:
             r"""Call the list api deployments method over HTTP.
 
@@ -3414,8 +4450,10 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.registry_service.ListApiDeploymentsResponse:
@@ -3427,6 +4465,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             http_options = (
                 _BaseRegistryRestTransport._BaseListApiDeployments._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_api_deployments(
                 request, metadata
             )
@@ -3438,6 +4477,33 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             query_params = _BaseRegistryRestTransport._BaseListApiDeployments._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apigeeregistry_v1.RegistryClient.ListApiDeployments",
+                    extra={
+                        "serviceName": "google.cloud.apigeeregistry.v1.Registry",
+                        "rpcName": "ListApiDeployments",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegistryRestTransport._ListApiDeployments._get_response(
@@ -3459,7 +4525,31 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             pb_resp = registry_service.ListApiDeploymentsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_api_deployments(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        registry_service.ListApiDeploymentsResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apigeeregistry_v1.RegistryClient.list_api_deployments",
+                    extra={
+                        "serviceName": "google.cloud.apigeeregistry.v1.Registry",
+                        "rpcName": "ListApiDeployments",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListApis(_BaseRegistryRestTransport._BaseListApis, RegistryRestStub):
@@ -3494,7 +4584,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> registry_service.ListApisResponse:
             r"""Call the list apis method over HTTP.
 
@@ -3504,8 +4594,10 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.registry_service.ListApisResponse:
@@ -3513,6 +4605,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             """
 
             http_options = _BaseRegistryRestTransport._BaseListApis._get_http_options()
+
             request, metadata = self._interceptor.pre_list_apis(request, metadata)
             transcoded_request = (
                 _BaseRegistryRestTransport._BaseListApis._get_transcoded_request(
@@ -3526,6 +4619,33 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apigeeregistry_v1.RegistryClient.ListApis",
+                    extra={
+                        "serviceName": "google.cloud.apigeeregistry.v1.Registry",
+                        "rpcName": "ListApis",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegistryRestTransport._ListApis._get_response(
@@ -3547,7 +4667,31 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             pb_resp = registry_service.ListApisResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_apis(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = registry_service.ListApisResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apigeeregistry_v1.RegistryClient.list_apis",
+                    extra={
+                        "serviceName": "google.cloud.apigeeregistry.v1.Registry",
+                        "rpcName": "ListApis",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListApiSpecRevisions(
@@ -3584,7 +4728,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> registry_service.ListApiSpecRevisionsResponse:
             r"""Call the list api spec revisions method over HTTP.
 
@@ -3595,8 +4739,10 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.registry_service.ListApiSpecRevisionsResponse:
@@ -3608,6 +4754,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             http_options = (
                 _BaseRegistryRestTransport._BaseListApiSpecRevisions._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_api_spec_revisions(
                 request, metadata
             )
@@ -3619,6 +4766,33 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             query_params = _BaseRegistryRestTransport._BaseListApiSpecRevisions._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apigeeregistry_v1.RegistryClient.ListApiSpecRevisions",
+                    extra={
+                        "serviceName": "google.cloud.apigeeregistry.v1.Registry",
+                        "rpcName": "ListApiSpecRevisions",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegistryRestTransport._ListApiSpecRevisions._get_response(
@@ -3640,7 +4814,31 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             pb_resp = registry_service.ListApiSpecRevisionsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_api_spec_revisions(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        registry_service.ListApiSpecRevisionsResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apigeeregistry_v1.RegistryClient.list_api_spec_revisions",
+                    extra={
+                        "serviceName": "google.cloud.apigeeregistry.v1.Registry",
+                        "rpcName": "ListApiSpecRevisions",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListApiSpecs(_BaseRegistryRestTransport._BaseListApiSpecs, RegistryRestStub):
@@ -3675,7 +4873,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> registry_service.ListApiSpecsResponse:
             r"""Call the list api specs method over HTTP.
 
@@ -3685,8 +4883,10 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.registry_service.ListApiSpecsResponse:
@@ -3696,6 +4896,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             http_options = (
                 _BaseRegistryRestTransport._BaseListApiSpecs._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_api_specs(request, metadata)
             transcoded_request = (
                 _BaseRegistryRestTransport._BaseListApiSpecs._get_transcoded_request(
@@ -3709,6 +4910,33 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apigeeregistry_v1.RegistryClient.ListApiSpecs",
+                    extra={
+                        "serviceName": "google.cloud.apigeeregistry.v1.Registry",
+                        "rpcName": "ListApiSpecs",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegistryRestTransport._ListApiSpecs._get_response(
@@ -3730,7 +4958,31 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             pb_resp = registry_service.ListApiSpecsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_api_specs(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = registry_service.ListApiSpecsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apigeeregistry_v1.RegistryClient.list_api_specs",
+                    extra={
+                        "serviceName": "google.cloud.apigeeregistry.v1.Registry",
+                        "rpcName": "ListApiSpecs",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListApiVersions(
@@ -3767,7 +5019,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> registry_service.ListApiVersionsResponse:
             r"""Call the list api versions method over HTTP.
 
@@ -3777,8 +5029,10 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.registry_service.ListApiVersionsResponse:
@@ -3788,6 +5042,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             http_options = (
                 _BaseRegistryRestTransport._BaseListApiVersions._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_api_versions(
                 request, metadata
             )
@@ -3803,6 +5058,33 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apigeeregistry_v1.RegistryClient.ListApiVersions",
+                    extra={
+                        "serviceName": "google.cloud.apigeeregistry.v1.Registry",
+                        "rpcName": "ListApiVersions",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegistryRestTransport._ListApiVersions._get_response(
@@ -3824,7 +5106,31 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             pb_resp = registry_service.ListApiVersionsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_api_versions(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = registry_service.ListApiVersionsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apigeeregistry_v1.RegistryClient.list_api_versions",
+                    extra={
+                        "serviceName": "google.cloud.apigeeregistry.v1.Registry",
+                        "rpcName": "ListApiVersions",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListArtifacts(
@@ -3861,7 +5167,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> registry_service.ListArtifactsResponse:
             r"""Call the list artifacts method over HTTP.
 
@@ -3871,8 +5177,10 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.registry_service.ListArtifactsResponse:
@@ -3882,6 +5190,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             http_options = (
                 _BaseRegistryRestTransport._BaseListArtifacts._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_artifacts(request, metadata)
             transcoded_request = (
                 _BaseRegistryRestTransport._BaseListArtifacts._get_transcoded_request(
@@ -3895,6 +5204,33 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apigeeregistry_v1.RegistryClient.ListArtifacts",
+                    extra={
+                        "serviceName": "google.cloud.apigeeregistry.v1.Registry",
+                        "rpcName": "ListArtifacts",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegistryRestTransport._ListArtifacts._get_response(
@@ -3916,7 +5252,31 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             pb_resp = registry_service.ListArtifactsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_artifacts(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = registry_service.ListArtifactsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apigeeregistry_v1.RegistryClient.list_artifacts",
+                    extra={
+                        "serviceName": "google.cloud.apigeeregistry.v1.Registry",
+                        "rpcName": "ListArtifacts",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ReplaceArtifact(
@@ -3954,7 +5314,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> registry_models.Artifact:
             r"""Call the replace artifact method over HTTP.
 
@@ -3964,8 +5324,10 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.registry_models.Artifact:
@@ -3986,6 +5348,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             http_options = (
                 _BaseRegistryRestTransport._BaseReplaceArtifact._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_replace_artifact(
                 request, metadata
             )
@@ -4008,6 +5371,33 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                 )
             )
 
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apigeeregistry_v1.RegistryClient.ReplaceArtifact",
+                    extra={
+                        "serviceName": "google.cloud.apigeeregistry.v1.Registry",
+                        "rpcName": "ReplaceArtifact",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
             # Send the request
             response = RegistryRestTransport._ReplaceArtifact._get_response(
                 self._host,
@@ -4029,7 +5419,29 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             pb_resp = registry_models.Artifact.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_replace_artifact(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = registry_models.Artifact.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apigeeregistry_v1.RegistryClient.replace_artifact",
+                    extra={
+                        "serviceName": "google.cloud.apigeeregistry.v1.Registry",
+                        "rpcName": "ReplaceArtifact",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _RollbackApiDeployment(
@@ -4067,7 +5479,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> registry_models.ApiDeployment:
             r"""Call the rollback api deployment method over HTTP.
 
@@ -4078,8 +5490,10 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.registry_models.ApiDeployment:
@@ -4098,6 +5512,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             http_options = (
                 _BaseRegistryRestTransport._BaseRollbackApiDeployment._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_rollback_api_deployment(
                 request, metadata
             )
@@ -4113,6 +5528,33 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             query_params = _BaseRegistryRestTransport._BaseRollbackApiDeployment._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apigeeregistry_v1.RegistryClient.RollbackApiDeployment",
+                    extra={
+                        "serviceName": "google.cloud.apigeeregistry.v1.Registry",
+                        "rpcName": "RollbackApiDeployment",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegistryRestTransport._RollbackApiDeployment._get_response(
@@ -4135,7 +5577,29 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             pb_resp = registry_models.ApiDeployment.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_rollback_api_deployment(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = registry_models.ApiDeployment.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apigeeregistry_v1.RegistryClient.rollback_api_deployment",
+                    extra={
+                        "serviceName": "google.cloud.apigeeregistry.v1.Registry",
+                        "rpcName": "RollbackApiDeployment",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _RollbackApiSpec(
@@ -4173,7 +5637,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> registry_models.ApiSpec:
             r"""Call the rollback api spec method over HTTP.
 
@@ -4183,8 +5647,10 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.registry_models.ApiSpec:
@@ -4208,6 +5674,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             http_options = (
                 _BaseRegistryRestTransport._BaseRollbackApiSpec._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_rollback_api_spec(
                 request, metadata
             )
@@ -4230,6 +5697,33 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                 )
             )
 
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apigeeregistry_v1.RegistryClient.RollbackApiSpec",
+                    extra={
+                        "serviceName": "google.cloud.apigeeregistry.v1.Registry",
+                        "rpcName": "RollbackApiSpec",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
             # Send the request
             response = RegistryRestTransport._RollbackApiSpec._get_response(
                 self._host,
@@ -4251,7 +5745,29 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             pb_resp = registry_models.ApiSpec.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_rollback_api_spec(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = registry_models.ApiSpec.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apigeeregistry_v1.RegistryClient.rollback_api_spec",
+                    extra={
+                        "serviceName": "google.cloud.apigeeregistry.v1.Registry",
+                        "rpcName": "RollbackApiSpec",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _TagApiDeploymentRevision(
@@ -4289,7 +5805,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> registry_models.ApiDeployment:
             r"""Call the tag api deployment
             revision method over HTTP.
@@ -4301,8 +5817,10 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.registry_models.ApiDeployment:
@@ -4321,6 +5839,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             http_options = (
                 _BaseRegistryRestTransport._BaseTagApiDeploymentRevision._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_tag_api_deployment_revision(
                 request, metadata
             )
@@ -4336,6 +5855,33 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             query_params = _BaseRegistryRestTransport._BaseTagApiDeploymentRevision._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apigeeregistry_v1.RegistryClient.TagApiDeploymentRevision",
+                    extra={
+                        "serviceName": "google.cloud.apigeeregistry.v1.Registry",
+                        "rpcName": "TagApiDeploymentRevision",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegistryRestTransport._TagApiDeploymentRevision._get_response(
@@ -4358,7 +5904,29 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             pb_resp = registry_models.ApiDeployment.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_tag_api_deployment_revision(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = registry_models.ApiDeployment.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apigeeregistry_v1.RegistryClient.tag_api_deployment_revision",
+                    extra={
+                        "serviceName": "google.cloud.apigeeregistry.v1.Registry",
+                        "rpcName": "TagApiDeploymentRevision",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _TagApiSpecRevision(
@@ -4396,7 +5964,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> registry_models.ApiSpec:
             r"""Call the tag api spec revision method over HTTP.
 
@@ -4407,8 +5975,10 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.registry_models.ApiSpec:
@@ -4432,6 +6002,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             http_options = (
                 _BaseRegistryRestTransport._BaseTagApiSpecRevision._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_tag_api_spec_revision(
                 request, metadata
             )
@@ -4447,6 +6018,33 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             query_params = _BaseRegistryRestTransport._BaseTagApiSpecRevision._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apigeeregistry_v1.RegistryClient.TagApiSpecRevision",
+                    extra={
+                        "serviceName": "google.cloud.apigeeregistry.v1.Registry",
+                        "rpcName": "TagApiSpecRevision",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegistryRestTransport._TagApiSpecRevision._get_response(
@@ -4469,7 +6067,29 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             pb_resp = registry_models.ApiSpec.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_tag_api_spec_revision(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = registry_models.ApiSpec.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apigeeregistry_v1.RegistryClient.tag_api_spec_revision",
+                    extra={
+                        "serviceName": "google.cloud.apigeeregistry.v1.Registry",
+                        "rpcName": "TagApiSpecRevision",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateApi(_BaseRegistryRestTransport._BaseUpdateApi, RegistryRestStub):
@@ -4505,7 +6125,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> registry_models.Api:
             r"""Call the update api method over HTTP.
 
@@ -4515,8 +6135,10 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.registry_models.Api:
@@ -4527,6 +6149,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             """
 
             http_options = _BaseRegistryRestTransport._BaseUpdateApi._get_http_options()
+
             request, metadata = self._interceptor.pre_update_api(request, metadata)
             transcoded_request = (
                 _BaseRegistryRestTransport._BaseUpdateApi._get_transcoded_request(
@@ -4544,6 +6167,33 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apigeeregistry_v1.RegistryClient.UpdateApi",
+                    extra={
+                        "serviceName": "google.cloud.apigeeregistry.v1.Registry",
+                        "rpcName": "UpdateApi",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegistryRestTransport._UpdateApi._get_response(
@@ -4566,7 +6216,29 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             pb_resp = registry_models.Api.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_api(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = registry_models.Api.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apigeeregistry_v1.RegistryClient.update_api",
+                    extra={
+                        "serviceName": "google.cloud.apigeeregistry.v1.Registry",
+                        "rpcName": "UpdateApi",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateApiDeployment(
@@ -4604,7 +6276,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> registry_models.ApiDeployment:
             r"""Call the update api deployment method over HTTP.
 
@@ -4615,8 +6287,10 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.registry_models.ApiDeployment:
@@ -4635,6 +6309,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             http_options = (
                 _BaseRegistryRestTransport._BaseUpdateApiDeployment._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_api_deployment(
                 request, metadata
             )
@@ -4650,6 +6325,33 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             query_params = _BaseRegistryRestTransport._BaseUpdateApiDeployment._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apigeeregistry_v1.RegistryClient.UpdateApiDeployment",
+                    extra={
+                        "serviceName": "google.cloud.apigeeregistry.v1.Registry",
+                        "rpcName": "UpdateApiDeployment",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegistryRestTransport._UpdateApiDeployment._get_response(
@@ -4672,7 +6374,29 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             pb_resp = registry_models.ApiDeployment.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_api_deployment(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = registry_models.ApiDeployment.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apigeeregistry_v1.RegistryClient.update_api_deployment",
+                    extra={
+                        "serviceName": "google.cloud.apigeeregistry.v1.Registry",
+                        "rpcName": "UpdateApiDeployment",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateApiSpec(
@@ -4710,7 +6434,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> registry_models.ApiSpec:
             r"""Call the update api spec method over HTTP.
 
@@ -4720,8 +6444,10 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.registry_models.ApiSpec:
@@ -4745,6 +6471,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             http_options = (
                 _BaseRegistryRestTransport._BaseUpdateApiSpec._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_api_spec(request, metadata)
             transcoded_request = (
                 _BaseRegistryRestTransport._BaseUpdateApiSpec._get_transcoded_request(
@@ -4762,6 +6489,33 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apigeeregistry_v1.RegistryClient.UpdateApiSpec",
+                    extra={
+                        "serviceName": "google.cloud.apigeeregistry.v1.Registry",
+                        "rpcName": "UpdateApiSpec",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegistryRestTransport._UpdateApiSpec._get_response(
@@ -4784,7 +6538,29 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             pb_resp = registry_models.ApiSpec.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_api_spec(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = registry_models.ApiSpec.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apigeeregistry_v1.RegistryClient.update_api_spec",
+                    extra={
+                        "serviceName": "google.cloud.apigeeregistry.v1.Registry",
+                        "rpcName": "UpdateApiSpec",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateApiVersion(
@@ -4822,7 +6598,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> registry_models.ApiVersion:
             r"""Call the update api version method over HTTP.
 
@@ -4832,8 +6608,10 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.registry_models.ApiVersion:
@@ -4846,6 +6624,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             http_options = (
                 _BaseRegistryRestTransport._BaseUpdateApiVersion._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_api_version(
                 request, metadata
             )
@@ -4865,6 +6644,33 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apigeeregistry_v1.RegistryClient.UpdateApiVersion",
+                    extra={
+                        "serviceName": "google.cloud.apigeeregistry.v1.Registry",
+                        "rpcName": "UpdateApiVersion",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegistryRestTransport._UpdateApiVersion._get_response(
@@ -4887,7 +6693,29 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             pb_resp = registry_models.ApiVersion.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_api_version(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = registry_models.ApiVersion.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apigeeregistry_v1.RegistryClient.update_api_version",
+                    extra={
+                        "serviceName": "google.cloud.apigeeregistry.v1.Registry",
+                        "rpcName": "UpdateApiVersion",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -5246,7 +7074,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.Location:
             r"""Call the get location method over HTTP.
 
@@ -5256,8 +7084,10 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.Location: Response from GetLocation method.
@@ -5266,6 +7096,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             http_options = (
                 _BaseRegistryRestTransport._BaseGetLocation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_location(request, metadata)
             transcoded_request = (
                 _BaseRegistryRestTransport._BaseGetLocation._get_transcoded_request(
@@ -5279,6 +7110,33 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apigeeregistry_v1.RegistryClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.apigeeregistry.v1.Registry",
+                        "rpcName": "GetLocation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegistryRestTransport._GetLocation._get_response(
@@ -5299,6 +7157,27 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apigeeregistry_v1.RegistryAsyncClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.apigeeregistry.v1.Registry",
+                        "rpcName": "GetLocation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -5339,7 +7218,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.ListLocationsResponse:
             r"""Call the list locations method over HTTP.
 
@@ -5349,8 +7228,10 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
@@ -5359,6 +7240,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             http_options = (
                 _BaseRegistryRestTransport._BaseListLocations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
             transcoded_request = (
                 _BaseRegistryRestTransport._BaseListLocations._get_transcoded_request(
@@ -5372,6 +7254,33 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apigeeregistry_v1.RegistryClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.apigeeregistry.v1.Registry",
+                        "rpcName": "ListLocations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegistryRestTransport._ListLocations._get_response(
@@ -5392,6 +7301,27 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apigeeregistry_v1.RegistryAsyncClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.apigeeregistry.v1.Registry",
+                        "rpcName": "ListLocations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -5430,7 +7360,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> policy_pb2.Policy:
             r"""Call the get iam policy method over HTTP.
 
@@ -5440,8 +7370,10 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 policy_pb2.Policy: Response from GetIamPolicy method.
@@ -5450,6 +7382,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             http_options = (
                 _BaseRegistryRestTransport._BaseGetIamPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
             transcoded_request = (
                 _BaseRegistryRestTransport._BaseGetIamPolicy._get_transcoded_request(
@@ -5463,6 +7396,33 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apigeeregistry_v1.RegistryClient.GetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.apigeeregistry.v1.Registry",
+                        "rpcName": "GetIamPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegistryRestTransport._GetIamPolicy._get_response(
@@ -5483,6 +7443,27 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_iam_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apigeeregistry_v1.RegistryAsyncClient.GetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.apigeeregistry.v1.Registry",
+                        "rpcName": "GetIamPolicy",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -5522,7 +7503,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> policy_pb2.Policy:
             r"""Call the set iam policy method over HTTP.
 
@@ -5532,8 +7513,10 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 policy_pb2.Policy: Response from SetIamPolicy method.
@@ -5542,6 +7525,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             http_options = (
                 _BaseRegistryRestTransport._BaseSetIamPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
             transcoded_request = (
                 _BaseRegistryRestTransport._BaseSetIamPolicy._get_transcoded_request(
@@ -5559,6 +7543,33 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apigeeregistry_v1.RegistryClient.SetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.apigeeregistry.v1.Registry",
+                        "rpcName": "SetIamPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegistryRestTransport._SetIamPolicy._get_response(
@@ -5580,6 +7591,27 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_set_iam_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apigeeregistry_v1.RegistryAsyncClient.SetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.apigeeregistry.v1.Registry",
+                        "rpcName": "SetIamPolicy",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -5621,7 +7653,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> iam_policy_pb2.TestIamPermissionsResponse:
             r"""Call the test iam permissions method over HTTP.
 
@@ -5631,8 +7663,10 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 iam_policy_pb2.TestIamPermissionsResponse: Response from TestIamPermissions method.
@@ -5641,6 +7675,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             http_options = (
                 _BaseRegistryRestTransport._BaseTestIamPermissions._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata
             )
@@ -5656,6 +7691,33 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             query_params = _BaseRegistryRestTransport._BaseTestIamPermissions._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apigeeregistry_v1.RegistryClient.TestIamPermissions",
+                    extra={
+                        "serviceName": "google.cloud.apigeeregistry.v1.Registry",
+                        "rpcName": "TestIamPermissions",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegistryRestTransport._TestIamPermissions._get_response(
@@ -5677,6 +7739,27 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             resp = iam_policy_pb2.TestIamPermissionsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_test_iam_permissions(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apigeeregistry_v1.RegistryAsyncClient.TestIamPermissions",
+                    extra={
+                        "serviceName": "google.cloud.apigeeregistry.v1.Registry",
+                        "rpcName": "TestIamPermissions",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -5718,7 +7801,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the cancel operation method over HTTP.
 
@@ -5728,13 +7811,16 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseRegistryRestTransport._BaseCancelOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
@@ -5756,6 +7842,33 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apigeeregistry_v1.RegistryClient.CancelOperation",
+                    extra={
+                        "serviceName": "google.cloud.apigeeregistry.v1.Registry",
+                        "rpcName": "CancelOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegistryRestTransport._CancelOperation._get_response(
@@ -5813,7 +7926,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the delete operation method over HTTP.
 
@@ -5823,13 +7936,16 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseRegistryRestTransport._BaseDeleteOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
             )
@@ -5845,6 +7961,33 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apigeeregistry_v1.RegistryClient.DeleteOperation",
+                    extra={
+                        "serviceName": "google.cloud.apigeeregistry.v1.Registry",
+                        "rpcName": "DeleteOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegistryRestTransport._DeleteOperation._get_response(
@@ -5899,7 +8042,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the get operation method over HTTP.
 
@@ -5909,8 +8052,10 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.
@@ -5919,6 +8064,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             http_options = (
                 _BaseRegistryRestTransport._BaseGetOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = (
                 _BaseRegistryRestTransport._BaseGetOperation._get_transcoded_request(
@@ -5932,6 +8078,33 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apigeeregistry_v1.RegistryClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.apigeeregistry.v1.Registry",
+                        "rpcName": "GetOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegistryRestTransport._GetOperation._get_response(
@@ -5952,6 +8125,27 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apigeeregistry_v1.RegistryAsyncClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.apigeeregistry.v1.Registry",
+                        "rpcName": "GetOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -5992,7 +8186,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.ListOperationsResponse:
             r"""Call the list operations method over HTTP.
 
@@ -6002,8 +8196,10 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
@@ -6012,6 +8208,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             http_options = (
                 _BaseRegistryRestTransport._BaseListOperations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = (
                 _BaseRegistryRestTransport._BaseListOperations._get_transcoded_request(
@@ -6025,6 +8222,33 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apigeeregistry_v1.RegistryClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.apigeeregistry.v1.Registry",
+                        "rpcName": "ListOperations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RegistryRestTransport._ListOperations._get_response(
@@ -6045,6 +8269,27 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apigeeregistry_v1.RegistryAsyncClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.apigeeregistry.v1.Registry",
+                        "rpcName": "ListOperations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property

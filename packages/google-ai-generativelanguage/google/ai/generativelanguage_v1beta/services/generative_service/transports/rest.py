@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -38,6 +38,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -118,8 +126,11 @@ class GenerativeServiceRestInterceptor:
     def pre_batch_embed_contents(
         self,
         request: generative_service.BatchEmbedContentsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[generative_service.BatchEmbedContentsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        generative_service.BatchEmbedContentsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for batch_embed_contents
 
         Override in a subclass to manipulate the request or metadata
@@ -141,8 +152,10 @@ class GenerativeServiceRestInterceptor:
     def pre_count_tokens(
         self,
         request: generative_service.CountTokensRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[generative_service.CountTokensRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        generative_service.CountTokensRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for count_tokens
 
         Override in a subclass to manipulate the request or metadata
@@ -164,8 +177,10 @@ class GenerativeServiceRestInterceptor:
     def pre_embed_content(
         self,
         request: generative_service.EmbedContentRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[generative_service.EmbedContentRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        generative_service.EmbedContentRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for embed_content
 
         Override in a subclass to manipulate the request or metadata
@@ -187,8 +202,11 @@ class GenerativeServiceRestInterceptor:
     def pre_generate_answer(
         self,
         request: generative_service.GenerateAnswerRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[generative_service.GenerateAnswerRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        generative_service.GenerateAnswerRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for generate_answer
 
         Override in a subclass to manipulate the request or metadata
@@ -210,8 +228,11 @@ class GenerativeServiceRestInterceptor:
     def pre_generate_content(
         self,
         request: generative_service.GenerateContentRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[generative_service.GenerateContentRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        generative_service.GenerateContentRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for generate_content
 
         Override in a subclass to manipulate the request or metadata
@@ -233,8 +254,11 @@ class GenerativeServiceRestInterceptor:
     def pre_stream_generate_content(
         self,
         request: generative_service.GenerateContentRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[generative_service.GenerateContentRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        generative_service.GenerateContentRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for stream_generate_content
 
         Override in a subclass to manipulate the request or metadata
@@ -256,8 +280,10 @@ class GenerativeServiceRestInterceptor:
     def pre_get_operation(
         self,
         request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -279,8 +305,10 @@ class GenerativeServiceRestInterceptor:
     def pre_list_operations(
         self,
         request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -423,7 +451,7 @@ class GenerativeServiceRestTransport(_BaseGenerativeServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> generative_service.BatchEmbedContentsResponse:
             r"""Call the batch embed contents method over HTTP.
 
@@ -434,8 +462,10 @@ class GenerativeServiceRestTransport(_BaseGenerativeServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.generative_service.BatchEmbedContentsResponse:
@@ -445,6 +475,7 @@ class GenerativeServiceRestTransport(_BaseGenerativeServiceRestTransport):
             http_options = (
                 _BaseGenerativeServiceRestTransport._BaseBatchEmbedContents._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_batch_embed_contents(
                 request, metadata
             )
@@ -460,6 +491,33 @@ class GenerativeServiceRestTransport(_BaseGenerativeServiceRestTransport):
             query_params = _BaseGenerativeServiceRestTransport._BaseBatchEmbedContents._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.ai.generativelanguage_v1beta.GenerativeServiceClient.BatchEmbedContents",
+                    extra={
+                        "serviceName": "google.ai.generativelanguage.v1beta.GenerativeService",
+                        "rpcName": "BatchEmbedContents",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = GenerativeServiceRestTransport._BatchEmbedContents._get_response(
@@ -482,7 +540,31 @@ class GenerativeServiceRestTransport(_BaseGenerativeServiceRestTransport):
             pb_resp = generative_service.BatchEmbedContentsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_batch_embed_contents(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        generative_service.BatchEmbedContentsResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.ai.generativelanguage_v1beta.GenerativeServiceClient.batch_embed_contents",
+                    extra={
+                        "serviceName": "google.ai.generativelanguage.v1beta.GenerativeService",
+                        "rpcName": "BatchEmbedContents",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CountTokens(
@@ -520,7 +602,7 @@ class GenerativeServiceRestTransport(_BaseGenerativeServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> generative_service.CountTokensResponse:
             r"""Call the count tokens method over HTTP.
 
@@ -534,8 +616,10 @@ class GenerativeServiceRestTransport(_BaseGenerativeServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.generative_service.CountTokensResponse:
@@ -549,6 +633,7 @@ class GenerativeServiceRestTransport(_BaseGenerativeServiceRestTransport):
             http_options = (
                 _BaseGenerativeServiceRestTransport._BaseCountTokens._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_count_tokens(request, metadata)
             transcoded_request = _BaseGenerativeServiceRestTransport._BaseCountTokens._get_transcoded_request(
                 http_options, request
@@ -562,6 +647,33 @@ class GenerativeServiceRestTransport(_BaseGenerativeServiceRestTransport):
             query_params = _BaseGenerativeServiceRestTransport._BaseCountTokens._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.ai.generativelanguage_v1beta.GenerativeServiceClient.CountTokens",
+                    extra={
+                        "serviceName": "google.ai.generativelanguage.v1beta.GenerativeService",
+                        "rpcName": "CountTokens",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = GenerativeServiceRestTransport._CountTokens._get_response(
@@ -584,7 +696,31 @@ class GenerativeServiceRestTransport(_BaseGenerativeServiceRestTransport):
             pb_resp = generative_service.CountTokensResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_count_tokens(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = generative_service.CountTokensResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.ai.generativelanguage_v1beta.GenerativeServiceClient.count_tokens",
+                    extra={
+                        "serviceName": "google.ai.generativelanguage.v1beta.GenerativeService",
+                        "rpcName": "CountTokens",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _EmbedContent(
@@ -622,7 +758,7 @@ class GenerativeServiceRestTransport(_BaseGenerativeServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> generative_service.EmbedContentResponse:
             r"""Call the embed content method over HTTP.
 
@@ -633,8 +769,10 @@ class GenerativeServiceRestTransport(_BaseGenerativeServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.generative_service.EmbedContentResponse:
@@ -644,6 +782,7 @@ class GenerativeServiceRestTransport(_BaseGenerativeServiceRestTransport):
             http_options = (
                 _BaseGenerativeServiceRestTransport._BaseEmbedContent._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_embed_content(request, metadata)
             transcoded_request = _BaseGenerativeServiceRestTransport._BaseEmbedContent._get_transcoded_request(
                 http_options, request
@@ -657,6 +796,33 @@ class GenerativeServiceRestTransport(_BaseGenerativeServiceRestTransport):
             query_params = _BaseGenerativeServiceRestTransport._BaseEmbedContent._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.ai.generativelanguage_v1beta.GenerativeServiceClient.EmbedContent",
+                    extra={
+                        "serviceName": "google.ai.generativelanguage.v1beta.GenerativeService",
+                        "rpcName": "EmbedContent",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = GenerativeServiceRestTransport._EmbedContent._get_response(
@@ -679,7 +845,31 @@ class GenerativeServiceRestTransport(_BaseGenerativeServiceRestTransport):
             pb_resp = generative_service.EmbedContentResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_embed_content(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = generative_service.EmbedContentResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.ai.generativelanguage_v1beta.GenerativeServiceClient.embed_content",
+                    extra={
+                        "serviceName": "google.ai.generativelanguage.v1beta.GenerativeService",
+                        "rpcName": "EmbedContent",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GenerateAnswer(
@@ -718,7 +908,7 @@ class GenerativeServiceRestTransport(_BaseGenerativeServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> generative_service.GenerateAnswerResponse:
             r"""Call the generate answer method over HTTP.
 
@@ -729,8 +919,10 @@ class GenerativeServiceRestTransport(_BaseGenerativeServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.generative_service.GenerateAnswerResponse:
@@ -742,6 +934,7 @@ class GenerativeServiceRestTransport(_BaseGenerativeServiceRestTransport):
             http_options = (
                 _BaseGenerativeServiceRestTransport._BaseGenerateAnswer._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_generate_answer(request, metadata)
             transcoded_request = _BaseGenerativeServiceRestTransport._BaseGenerateAnswer._get_transcoded_request(
                 http_options, request
@@ -755,6 +948,33 @@ class GenerativeServiceRestTransport(_BaseGenerativeServiceRestTransport):
             query_params = _BaseGenerativeServiceRestTransport._BaseGenerateAnswer._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.ai.generativelanguage_v1beta.GenerativeServiceClient.GenerateAnswer",
+                    extra={
+                        "serviceName": "google.ai.generativelanguage.v1beta.GenerativeService",
+                        "rpcName": "GenerateAnswer",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = GenerativeServiceRestTransport._GenerateAnswer._get_response(
@@ -777,7 +997,31 @@ class GenerativeServiceRestTransport(_BaseGenerativeServiceRestTransport):
             pb_resp = generative_service.GenerateAnswerResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_generate_answer(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        generative_service.GenerateAnswerResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.ai.generativelanguage_v1beta.GenerativeServiceClient.generate_answer",
+                    extra={
+                        "serviceName": "google.ai.generativelanguage.v1beta.GenerativeService",
+                        "rpcName": "GenerateAnswer",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GenerateContent(
@@ -816,7 +1060,7 @@ class GenerativeServiceRestTransport(_BaseGenerativeServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> generative_service.GenerateContentResponse:
             r"""Call the generate content method over HTTP.
 
@@ -827,8 +1071,10 @@ class GenerativeServiceRestTransport(_BaseGenerativeServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.generative_service.GenerateContentResponse:
@@ -854,6 +1100,7 @@ class GenerativeServiceRestTransport(_BaseGenerativeServiceRestTransport):
             http_options = (
                 _BaseGenerativeServiceRestTransport._BaseGenerateContent._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_generate_content(
                 request, metadata
             )
@@ -869,6 +1116,33 @@ class GenerativeServiceRestTransport(_BaseGenerativeServiceRestTransport):
             query_params = _BaseGenerativeServiceRestTransport._BaseGenerateContent._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.ai.generativelanguage_v1beta.GenerativeServiceClient.GenerateContent",
+                    extra={
+                        "serviceName": "google.ai.generativelanguage.v1beta.GenerativeService",
+                        "rpcName": "GenerateContent",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = GenerativeServiceRestTransport._GenerateContent._get_response(
@@ -891,7 +1165,31 @@ class GenerativeServiceRestTransport(_BaseGenerativeServiceRestTransport):
             pb_resp = generative_service.GenerateContentResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_generate_content(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        generative_service.GenerateContentResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.ai.generativelanguage_v1beta.GenerativeServiceClient.generate_content",
+                    extra={
+                        "serviceName": "google.ai.generativelanguage.v1beta.GenerativeService",
+                        "rpcName": "GenerateContent",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _StreamGenerateContent(
@@ -931,7 +1229,7 @@ class GenerativeServiceRestTransport(_BaseGenerativeServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> rest_streaming.ResponseIterator:
             r"""Call the stream generate content method over HTTP.
 
@@ -942,8 +1240,10 @@ class GenerativeServiceRestTransport(_BaseGenerativeServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.generative_service.GenerateContentResponse:
@@ -969,6 +1269,7 @@ class GenerativeServiceRestTransport(_BaseGenerativeServiceRestTransport):
             http_options = (
                 _BaseGenerativeServiceRestTransport._BaseStreamGenerateContent._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_stream_generate_content(
                 request, metadata
             )
@@ -984,6 +1285,33 @@ class GenerativeServiceRestTransport(_BaseGenerativeServiceRestTransport):
             query_params = _BaseGenerativeServiceRestTransport._BaseStreamGenerateContent._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.ai.generativelanguage_v1beta.GenerativeServiceClient.StreamGenerateContent",
+                    extra={
+                        "serviceName": "google.ai.generativelanguage.v1beta.GenerativeService",
+                        "rpcName": "StreamGenerateContent",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1007,6 +1335,7 @@ class GenerativeServiceRestTransport(_BaseGenerativeServiceRestTransport):
             resp = rest_streaming.ResponseIterator(
                 response, generative_service.GenerateContentResponse
             )
+
             resp = self._interceptor.post_stream_generate_content(resp)
             return resp
 
@@ -1113,7 +1442,7 @@ class GenerativeServiceRestTransport(_BaseGenerativeServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the get operation method over HTTP.
 
@@ -1123,8 +1452,10 @@ class GenerativeServiceRestTransport(_BaseGenerativeServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.
@@ -1133,6 +1464,7 @@ class GenerativeServiceRestTransport(_BaseGenerativeServiceRestTransport):
             http_options = (
                 _BaseGenerativeServiceRestTransport._BaseGetOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseGenerativeServiceRestTransport._BaseGetOperation._get_transcoded_request(
                 http_options, request
@@ -1142,6 +1474,33 @@ class GenerativeServiceRestTransport(_BaseGenerativeServiceRestTransport):
             query_params = _BaseGenerativeServiceRestTransport._BaseGetOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.ai.generativelanguage_v1beta.GenerativeServiceClient.GetOperation",
+                    extra={
+                        "serviceName": "google.ai.generativelanguage.v1beta.GenerativeService",
+                        "rpcName": "GetOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = GenerativeServiceRestTransport._GetOperation._get_response(
@@ -1162,6 +1521,27 @@ class GenerativeServiceRestTransport(_BaseGenerativeServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.ai.generativelanguage_v1beta.GenerativeServiceAsyncClient.GetOperation",
+                    extra={
+                        "serviceName": "google.ai.generativelanguage.v1beta.GenerativeService",
+                        "rpcName": "GetOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -1203,7 +1583,7 @@ class GenerativeServiceRestTransport(_BaseGenerativeServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.ListOperationsResponse:
             r"""Call the list operations method over HTTP.
 
@@ -1213,8 +1593,10 @@ class GenerativeServiceRestTransport(_BaseGenerativeServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
@@ -1223,6 +1605,7 @@ class GenerativeServiceRestTransport(_BaseGenerativeServiceRestTransport):
             http_options = (
                 _BaseGenerativeServiceRestTransport._BaseListOperations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseGenerativeServiceRestTransport._BaseListOperations._get_transcoded_request(
                 http_options, request
@@ -1232,6 +1615,33 @@ class GenerativeServiceRestTransport(_BaseGenerativeServiceRestTransport):
             query_params = _BaseGenerativeServiceRestTransport._BaseListOperations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.ai.generativelanguage_v1beta.GenerativeServiceClient.ListOperations",
+                    extra={
+                        "serviceName": "google.ai.generativelanguage.v1beta.GenerativeService",
+                        "rpcName": "ListOperations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = GenerativeServiceRestTransport._ListOperations._get_response(
@@ -1252,6 +1662,27 @@ class GenerativeServiceRestTransport(_BaseGenerativeServiceRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.ai.generativelanguage_v1beta.GenerativeServiceAsyncClient.ListOperations",
+                    extra={
+                        "serviceName": "google.ai.generativelanguage.v1beta.GenerativeService",
+                        "rpcName": "ListOperations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property

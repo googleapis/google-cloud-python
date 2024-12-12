@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -47,6 +47,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -295,8 +303,10 @@ class AppHubRestInterceptor:
     def pre_create_application(
         self,
         request: apphub_service.CreateApplicationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[apphub_service.CreateApplicationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        apphub_service.CreateApplicationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_application
 
         Override in a subclass to manipulate the request or metadata
@@ -318,8 +328,10 @@ class AppHubRestInterceptor:
     def pre_create_service(
         self,
         request: apphub_service.CreateServiceRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[apphub_service.CreateServiceRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        apphub_service.CreateServiceRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_service
 
         Override in a subclass to manipulate the request or metadata
@@ -341,9 +353,10 @@ class AppHubRestInterceptor:
     def pre_create_service_project_attachment(
         self,
         request: apphub_service.CreateServiceProjectAttachmentRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        apphub_service.CreateServiceProjectAttachmentRequest, Sequence[Tuple[str, str]]
+        apphub_service.CreateServiceProjectAttachmentRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for create_service_project_attachment
 
@@ -366,8 +379,10 @@ class AppHubRestInterceptor:
     def pre_create_workload(
         self,
         request: apphub_service.CreateWorkloadRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[apphub_service.CreateWorkloadRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        apphub_service.CreateWorkloadRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_workload
 
         Override in a subclass to manipulate the request or metadata
@@ -389,8 +404,10 @@ class AppHubRestInterceptor:
     def pre_delete_application(
         self,
         request: apphub_service.DeleteApplicationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[apphub_service.DeleteApplicationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        apphub_service.DeleteApplicationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_application
 
         Override in a subclass to manipulate the request or metadata
@@ -412,8 +429,10 @@ class AppHubRestInterceptor:
     def pre_delete_service(
         self,
         request: apphub_service.DeleteServiceRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[apphub_service.DeleteServiceRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        apphub_service.DeleteServiceRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_service
 
         Override in a subclass to manipulate the request or metadata
@@ -435,9 +454,10 @@ class AppHubRestInterceptor:
     def pre_delete_service_project_attachment(
         self,
         request: apphub_service.DeleteServiceProjectAttachmentRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        apphub_service.DeleteServiceProjectAttachmentRequest, Sequence[Tuple[str, str]]
+        apphub_service.DeleteServiceProjectAttachmentRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for delete_service_project_attachment
 
@@ -460,8 +480,10 @@ class AppHubRestInterceptor:
     def pre_delete_workload(
         self,
         request: apphub_service.DeleteWorkloadRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[apphub_service.DeleteWorkloadRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        apphub_service.DeleteWorkloadRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_workload
 
         Override in a subclass to manipulate the request or metadata
@@ -483,9 +505,10 @@ class AppHubRestInterceptor:
     def pre_detach_service_project_attachment(
         self,
         request: apphub_service.DetachServiceProjectAttachmentRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        apphub_service.DetachServiceProjectAttachmentRequest, Sequence[Tuple[str, str]]
+        apphub_service.DetachServiceProjectAttachmentRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for detach_service_project_attachment
 
@@ -508,8 +531,10 @@ class AppHubRestInterceptor:
     def pre_get_application(
         self,
         request: apphub_service.GetApplicationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[apphub_service.GetApplicationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        apphub_service.GetApplicationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_application
 
         Override in a subclass to manipulate the request or metadata
@@ -531,8 +556,11 @@ class AppHubRestInterceptor:
     def pre_get_discovered_service(
         self,
         request: apphub_service.GetDiscoveredServiceRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[apphub_service.GetDiscoveredServiceRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        apphub_service.GetDiscoveredServiceRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for get_discovered_service
 
         Override in a subclass to manipulate the request or metadata
@@ -554,8 +582,11 @@ class AppHubRestInterceptor:
     def pre_get_discovered_workload(
         self,
         request: apphub_service.GetDiscoveredWorkloadRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[apphub_service.GetDiscoveredWorkloadRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        apphub_service.GetDiscoveredWorkloadRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for get_discovered_workload
 
         Override in a subclass to manipulate the request or metadata
@@ -577,8 +608,10 @@ class AppHubRestInterceptor:
     def pre_get_service(
         self,
         request: apphub_service.GetServiceRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[apphub_service.GetServiceRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        apphub_service.GetServiceRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_service
 
         Override in a subclass to manipulate the request or metadata
@@ -598,9 +631,10 @@ class AppHubRestInterceptor:
     def pre_get_service_project_attachment(
         self,
         request: apphub_service.GetServiceProjectAttachmentRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        apphub_service.GetServiceProjectAttachmentRequest, Sequence[Tuple[str, str]]
+        apphub_service.GetServiceProjectAttachmentRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for get_service_project_attachment
 
@@ -623,8 +657,10 @@ class AppHubRestInterceptor:
     def pre_get_workload(
         self,
         request: apphub_service.GetWorkloadRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[apphub_service.GetWorkloadRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        apphub_service.GetWorkloadRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_workload
 
         Override in a subclass to manipulate the request or metadata
@@ -644,8 +680,10 @@ class AppHubRestInterceptor:
     def pre_list_applications(
         self,
         request: apphub_service.ListApplicationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[apphub_service.ListApplicationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        apphub_service.ListApplicationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_applications
 
         Override in a subclass to manipulate the request or metadata
@@ -667,8 +705,11 @@ class AppHubRestInterceptor:
     def pre_list_discovered_services(
         self,
         request: apphub_service.ListDiscoveredServicesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[apphub_service.ListDiscoveredServicesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        apphub_service.ListDiscoveredServicesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for list_discovered_services
 
         Override in a subclass to manipulate the request or metadata
@@ -690,9 +731,10 @@ class AppHubRestInterceptor:
     def pre_list_discovered_workloads(
         self,
         request: apphub_service.ListDiscoveredWorkloadsRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        apphub_service.ListDiscoveredWorkloadsRequest, Sequence[Tuple[str, str]]
+        apphub_service.ListDiscoveredWorkloadsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for list_discovered_workloads
 
@@ -715,9 +757,10 @@ class AppHubRestInterceptor:
     def pre_list_service_project_attachments(
         self,
         request: apphub_service.ListServiceProjectAttachmentsRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        apphub_service.ListServiceProjectAttachmentsRequest, Sequence[Tuple[str, str]]
+        apphub_service.ListServiceProjectAttachmentsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for list_service_project_attachments
 
@@ -740,8 +783,10 @@ class AppHubRestInterceptor:
     def pre_list_services(
         self,
         request: apphub_service.ListServicesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[apphub_service.ListServicesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        apphub_service.ListServicesRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_services
 
         Override in a subclass to manipulate the request or metadata
@@ -763,8 +808,10 @@ class AppHubRestInterceptor:
     def pre_list_workloads(
         self,
         request: apphub_service.ListWorkloadsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[apphub_service.ListWorkloadsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        apphub_service.ListWorkloadsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_workloads
 
         Override in a subclass to manipulate the request or metadata
@@ -786,9 +833,10 @@ class AppHubRestInterceptor:
     def pre_lookup_discovered_service(
         self,
         request: apphub_service.LookupDiscoveredServiceRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        apphub_service.LookupDiscoveredServiceRequest, Sequence[Tuple[str, str]]
+        apphub_service.LookupDiscoveredServiceRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for lookup_discovered_service
 
@@ -811,9 +859,10 @@ class AppHubRestInterceptor:
     def pre_lookup_discovered_workload(
         self,
         request: apphub_service.LookupDiscoveredWorkloadRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        apphub_service.LookupDiscoveredWorkloadRequest, Sequence[Tuple[str, str]]
+        apphub_service.LookupDiscoveredWorkloadRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for lookup_discovered_workload
 
@@ -836,9 +885,10 @@ class AppHubRestInterceptor:
     def pre_lookup_service_project_attachment(
         self,
         request: apphub_service.LookupServiceProjectAttachmentRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        apphub_service.LookupServiceProjectAttachmentRequest, Sequence[Tuple[str, str]]
+        apphub_service.LookupServiceProjectAttachmentRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for lookup_service_project_attachment
 
@@ -861,8 +911,10 @@ class AppHubRestInterceptor:
     def pre_update_application(
         self,
         request: apphub_service.UpdateApplicationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[apphub_service.UpdateApplicationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        apphub_service.UpdateApplicationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_application
 
         Override in a subclass to manipulate the request or metadata
@@ -884,8 +936,10 @@ class AppHubRestInterceptor:
     def pre_update_service(
         self,
         request: apphub_service.UpdateServiceRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[apphub_service.UpdateServiceRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        apphub_service.UpdateServiceRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_service
 
         Override in a subclass to manipulate the request or metadata
@@ -907,8 +961,10 @@ class AppHubRestInterceptor:
     def pre_update_workload(
         self,
         request: apphub_service.UpdateWorkloadRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[apphub_service.UpdateWorkloadRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        apphub_service.UpdateWorkloadRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_workload
 
         Override in a subclass to manipulate the request or metadata
@@ -930,8 +986,10 @@ class AppHubRestInterceptor:
     def pre_get_location(
         self,
         request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -953,8 +1011,10 @@ class AppHubRestInterceptor:
     def pre_list_locations(
         self,
         request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -976,8 +1036,10 @@ class AppHubRestInterceptor:
     def pre_get_iam_policy(
         self,
         request: iam_policy_pb2.GetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -997,8 +1059,10 @@ class AppHubRestInterceptor:
     def pre_set_iam_policy(
         self,
         request: iam_policy_pb2.SetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -1018,8 +1082,11 @@ class AppHubRestInterceptor:
     def pre_test_iam_permissions(
         self,
         request: iam_policy_pb2.TestIamPermissionsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.TestIamPermissionsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -1041,8 +1108,10 @@ class AppHubRestInterceptor:
     def pre_cancel_operation(
         self,
         request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1062,8 +1131,10 @@ class AppHubRestInterceptor:
     def pre_delete_operation(
         self,
         request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1083,8 +1154,10 @@ class AppHubRestInterceptor:
     def pre_get_operation(
         self,
         request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1106,8 +1179,10 @@ class AppHubRestInterceptor:
     def pre_list_operations(
         self,
         request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -1302,7 +1377,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create application method over HTTP.
 
@@ -1312,8 +1387,10 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1326,6 +1403,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             http_options = (
                 _BaseAppHubRestTransport._BaseCreateApplication._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_application(
                 request, metadata
             )
@@ -1348,6 +1426,33 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                 )
             )
 
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apphub_v1.AppHubClient.CreateApplication",
+                    extra={
+                        "serviceName": "google.cloud.apphub.v1.AppHub",
+                        "rpcName": "CreateApplication",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
             # Send the request
             response = AppHubRestTransport._CreateApplication._get_response(
                 self._host,
@@ -1367,7 +1472,29 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_application(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apphub_v1.AppHubClient.create_application",
+                    extra={
+                        "serviceName": "google.cloud.apphub.v1.AppHub",
+                        "rpcName": "CreateApplication",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateService(_BaseAppHubRestTransport._BaseCreateService, AppHubRestStub):
@@ -1403,7 +1530,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create service method over HTTP.
 
@@ -1413,8 +1540,10 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1427,6 +1556,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             http_options = (
                 _BaseAppHubRestTransport._BaseCreateService._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_service(request, metadata)
             transcoded_request = (
                 _BaseAppHubRestTransport._BaseCreateService._get_transcoded_request(
@@ -1444,6 +1574,33 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apphub_v1.AppHubClient.CreateService",
+                    extra={
+                        "serviceName": "google.cloud.apphub.v1.AppHub",
+                        "rpcName": "CreateService",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AppHubRestTransport._CreateService._get_response(
@@ -1464,7 +1621,29 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_service(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apphub_v1.AppHubClient.create_service",
+                    extra={
+                        "serviceName": "google.cloud.apphub.v1.AppHub",
+                        "rpcName": "CreateService",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateServiceProjectAttachment(
@@ -1502,7 +1681,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create service project
             attachment method over HTTP.
@@ -1514,8 +1693,10 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.operations_pb2.Operation:
@@ -1528,6 +1709,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             http_options = (
                 _BaseAppHubRestTransport._BaseCreateServiceProjectAttachment._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_service_project_attachment(
                 request, metadata
             )
@@ -1543,6 +1725,33 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             query_params = _BaseAppHubRestTransport._BaseCreateServiceProjectAttachment._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apphub_v1.AppHubClient.CreateServiceProjectAttachment",
+                    extra={
+                        "serviceName": "google.cloud.apphub.v1.AppHub",
+                        "rpcName": "CreateServiceProjectAttachment",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1565,7 +1774,29 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_service_project_attachment(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apphub_v1.AppHubClient.create_service_project_attachment",
+                    extra={
+                        "serviceName": "google.cloud.apphub.v1.AppHub",
+                        "rpcName": "CreateServiceProjectAttachment",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateWorkload(_BaseAppHubRestTransport._BaseCreateWorkload, AppHubRestStub):
@@ -1601,7 +1832,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create workload method over HTTP.
 
@@ -1611,8 +1842,10 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1625,6 +1858,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             http_options = (
                 _BaseAppHubRestTransport._BaseCreateWorkload._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_workload(request, metadata)
             transcoded_request = (
                 _BaseAppHubRestTransport._BaseCreateWorkload._get_transcoded_request(
@@ -1642,6 +1876,33 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apphub_v1.AppHubClient.CreateWorkload",
+                    extra={
+                        "serviceName": "google.cloud.apphub.v1.AppHub",
+                        "rpcName": "CreateWorkload",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AppHubRestTransport._CreateWorkload._get_response(
@@ -1662,7 +1923,29 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_workload(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apphub_v1.AppHubClient.create_workload",
+                    extra={
+                        "serviceName": "google.cloud.apphub.v1.AppHub",
+                        "rpcName": "CreateWorkload",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteApplication(
@@ -1699,7 +1982,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete application method over HTTP.
 
@@ -1709,8 +1992,10 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1723,6 +2008,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             http_options = (
                 _BaseAppHubRestTransport._BaseDeleteApplication._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_application(
                 request, metadata
             )
@@ -1738,6 +2024,33 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apphub_v1.AppHubClient.DeleteApplication",
+                    extra={
+                        "serviceName": "google.cloud.apphub.v1.AppHub",
+                        "rpcName": "DeleteApplication",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AppHubRestTransport._DeleteApplication._get_response(
@@ -1757,7 +2070,29 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_application(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apphub_v1.AppHubClient.delete_application",
+                    extra={
+                        "serviceName": "google.cloud.apphub.v1.AppHub",
+                        "rpcName": "DeleteApplication",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteService(_BaseAppHubRestTransport._BaseDeleteService, AppHubRestStub):
@@ -1792,7 +2127,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete service method over HTTP.
 
@@ -1802,8 +2137,10 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1816,6 +2153,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             http_options = (
                 _BaseAppHubRestTransport._BaseDeleteService._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_service(request, metadata)
             transcoded_request = (
                 _BaseAppHubRestTransport._BaseDeleteService._get_transcoded_request(
@@ -1829,6 +2167,33 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apphub_v1.AppHubClient.DeleteService",
+                    extra={
+                        "serviceName": "google.cloud.apphub.v1.AppHub",
+                        "rpcName": "DeleteService",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AppHubRestTransport._DeleteService._get_response(
@@ -1848,7 +2213,29 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_service(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apphub_v1.AppHubClient.delete_service",
+                    extra={
+                        "serviceName": "google.cloud.apphub.v1.AppHub",
+                        "rpcName": "DeleteService",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteServiceProjectAttachment(
@@ -1885,7 +2272,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete service project
             attachment method over HTTP.
@@ -1897,8 +2284,10 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.operations_pb2.Operation:
@@ -1911,6 +2300,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             http_options = (
                 _BaseAppHubRestTransport._BaseDeleteServiceProjectAttachment._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_service_project_attachment(
                 request, metadata
             )
@@ -1922,6 +2312,33 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             query_params = _BaseAppHubRestTransport._BaseDeleteServiceProjectAttachment._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apphub_v1.AppHubClient.DeleteServiceProjectAttachment",
+                    extra={
+                        "serviceName": "google.cloud.apphub.v1.AppHub",
+                        "rpcName": "DeleteServiceProjectAttachment",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1943,7 +2360,29 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_service_project_attachment(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apphub_v1.AppHubClient.delete_service_project_attachment",
+                    extra={
+                        "serviceName": "google.cloud.apphub.v1.AppHub",
+                        "rpcName": "DeleteServiceProjectAttachment",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteWorkload(_BaseAppHubRestTransport._BaseDeleteWorkload, AppHubRestStub):
@@ -1978,7 +2417,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete workload method over HTTP.
 
@@ -1988,8 +2427,10 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2002,6 +2443,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             http_options = (
                 _BaseAppHubRestTransport._BaseDeleteWorkload._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_workload(request, metadata)
             transcoded_request = (
                 _BaseAppHubRestTransport._BaseDeleteWorkload._get_transcoded_request(
@@ -2015,6 +2457,33 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apphub_v1.AppHubClient.DeleteWorkload",
+                    extra={
+                        "serviceName": "google.cloud.apphub.v1.AppHub",
+                        "rpcName": "DeleteWorkload",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AppHubRestTransport._DeleteWorkload._get_response(
@@ -2034,7 +2503,29 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_workload(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apphub_v1.AppHubClient.delete_workload",
+                    extra={
+                        "serviceName": "google.cloud.apphub.v1.AppHub",
+                        "rpcName": "DeleteWorkload",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DetachServiceProjectAttachment(
@@ -2072,7 +2563,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> apphub_service.DetachServiceProjectAttachmentResponse:
             r"""Call the detach service project
             attachment method over HTTP.
@@ -2084,8 +2575,10 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.apphub_service.DetachServiceProjectAttachmentResponse:
@@ -2097,6 +2590,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             http_options = (
                 _BaseAppHubRestTransport._BaseDetachServiceProjectAttachment._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_detach_service_project_attachment(
                 request, metadata
             )
@@ -2112,6 +2606,33 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             query_params = _BaseAppHubRestTransport._BaseDetachServiceProjectAttachment._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apphub_v1.AppHubClient.DetachServiceProjectAttachment",
+                    extra={
+                        "serviceName": "google.cloud.apphub.v1.AppHub",
+                        "rpcName": "DetachServiceProjectAttachment",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -2136,7 +2657,33 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             pb_resp = apphub_service.DetachServiceProjectAttachmentResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_detach_service_project_attachment(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        apphub_service.DetachServiceProjectAttachmentResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apphub_v1.AppHubClient.detach_service_project_attachment",
+                    extra={
+                        "serviceName": "google.cloud.apphub.v1.AppHub",
+                        "rpcName": "DetachServiceProjectAttachment",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetApplication(_BaseAppHubRestTransport._BaseGetApplication, AppHubRestStub):
@@ -2171,7 +2718,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> application.Application:
             r"""Call the get application method over HTTP.
 
@@ -2181,8 +2728,10 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.application.Application:
@@ -2198,6 +2747,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             http_options = (
                 _BaseAppHubRestTransport._BaseGetApplication._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_application(request, metadata)
             transcoded_request = (
                 _BaseAppHubRestTransport._BaseGetApplication._get_transcoded_request(
@@ -2211,6 +2761,33 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apphub_v1.AppHubClient.GetApplication",
+                    extra={
+                        "serviceName": "google.cloud.apphub.v1.AppHub",
+                        "rpcName": "GetApplication",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AppHubRestTransport._GetApplication._get_response(
@@ -2232,7 +2809,29 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             pb_resp = application.Application.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_application(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = application.Application.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apphub_v1.AppHubClient.get_application",
+                    extra={
+                        "serviceName": "google.cloud.apphub.v1.AppHub",
+                        "rpcName": "GetApplication",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetDiscoveredService(
@@ -2269,7 +2868,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> service.DiscoveredService:
             r"""Call the get discovered service method over HTTP.
 
@@ -2279,8 +2878,10 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.service.DiscoveredService:
@@ -2295,6 +2896,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             http_options = (
                 _BaseAppHubRestTransport._BaseGetDiscoveredService._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_discovered_service(
                 request, metadata
             )
@@ -2306,6 +2908,33 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             query_params = _BaseAppHubRestTransport._BaseGetDiscoveredService._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apphub_v1.AppHubClient.GetDiscoveredService",
+                    extra={
+                        "serviceName": "google.cloud.apphub.v1.AppHub",
+                        "rpcName": "GetDiscoveredService",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AppHubRestTransport._GetDiscoveredService._get_response(
@@ -2327,7 +2956,29 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             pb_resp = service.DiscoveredService.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_discovered_service(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = service.DiscoveredService.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apphub_v1.AppHubClient.get_discovered_service",
+                    extra={
+                        "serviceName": "google.cloud.apphub.v1.AppHub",
+                        "rpcName": "GetDiscoveredService",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetDiscoveredWorkload(
@@ -2364,7 +3015,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> workload.DiscoveredWorkload:
             r"""Call the get discovered workload method over HTTP.
 
@@ -2374,8 +3025,10 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.workload.DiscoveredWorkload:
@@ -2392,6 +3045,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             http_options = (
                 _BaseAppHubRestTransport._BaseGetDiscoveredWorkload._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_discovered_workload(
                 request, metadata
             )
@@ -2403,6 +3057,33 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             query_params = _BaseAppHubRestTransport._BaseGetDiscoveredWorkload._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apphub_v1.AppHubClient.GetDiscoveredWorkload",
+                    extra={
+                        "serviceName": "google.cloud.apphub.v1.AppHub",
+                        "rpcName": "GetDiscoveredWorkload",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AppHubRestTransport._GetDiscoveredWorkload._get_response(
@@ -2424,7 +3105,29 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             pb_resp = workload.DiscoveredWorkload.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_discovered_workload(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = workload.DiscoveredWorkload.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apphub_v1.AppHubClient.get_discovered_workload",
+                    extra={
+                        "serviceName": "google.cloud.apphub.v1.AppHub",
+                        "rpcName": "GetDiscoveredWorkload",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetService(_BaseAppHubRestTransport._BaseGetService, AppHubRestStub):
@@ -2459,7 +3162,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> service.Service:
             r"""Call the get service method over HTTP.
 
@@ -2469,8 +3172,10 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.service.Service:
@@ -2483,6 +3188,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             """
 
             http_options = _BaseAppHubRestTransport._BaseGetService._get_http_options()
+
             request, metadata = self._interceptor.pre_get_service(request, metadata)
             transcoded_request = (
                 _BaseAppHubRestTransport._BaseGetService._get_transcoded_request(
@@ -2496,6 +3202,33 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apphub_v1.AppHubClient.GetService",
+                    extra={
+                        "serviceName": "google.cloud.apphub.v1.AppHub",
+                        "rpcName": "GetService",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AppHubRestTransport._GetService._get_response(
@@ -2517,7 +3250,29 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             pb_resp = service.Service.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_service(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = service.Service.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apphub_v1.AppHubClient.get_service",
+                    extra={
+                        "serviceName": "google.cloud.apphub.v1.AppHub",
+                        "rpcName": "GetService",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetServiceProjectAttachment(
@@ -2554,7 +3309,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> service_project_attachment.ServiceProjectAttachment:
             r"""Call the get service project
             attachment method over HTTP.
@@ -2566,8 +3321,10 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.service_project_attachment.ServiceProjectAttachment:
@@ -2587,6 +3344,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             http_options = (
                 _BaseAppHubRestTransport._BaseGetServiceProjectAttachment._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_service_project_attachment(
                 request, metadata
             )
@@ -2598,6 +3356,33 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             query_params = _BaseAppHubRestTransport._BaseGetServiceProjectAttachment._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apphub_v1.AppHubClient.GetServiceProjectAttachment",
+                    extra={
+                        "serviceName": "google.cloud.apphub.v1.AppHub",
+                        "rpcName": "GetServiceProjectAttachment",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AppHubRestTransport._GetServiceProjectAttachment._get_response(
@@ -2619,7 +3404,33 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             pb_resp = service_project_attachment.ServiceProjectAttachment.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_service_project_attachment(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        service_project_attachment.ServiceProjectAttachment.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apphub_v1.AppHubClient.get_service_project_attachment",
+                    extra={
+                        "serviceName": "google.cloud.apphub.v1.AppHub",
+                        "rpcName": "GetServiceProjectAttachment",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetWorkload(_BaseAppHubRestTransport._BaseGetWorkload, AppHubRestStub):
@@ -2654,7 +3465,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> workload.Workload:
             r"""Call the get workload method over HTTP.
 
@@ -2664,8 +3475,10 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.workload.Workload:
@@ -2680,6 +3493,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             """
 
             http_options = _BaseAppHubRestTransport._BaseGetWorkload._get_http_options()
+
             request, metadata = self._interceptor.pre_get_workload(request, metadata)
             transcoded_request = (
                 _BaseAppHubRestTransport._BaseGetWorkload._get_transcoded_request(
@@ -2693,6 +3507,33 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apphub_v1.AppHubClient.GetWorkload",
+                    extra={
+                        "serviceName": "google.cloud.apphub.v1.AppHub",
+                        "rpcName": "GetWorkload",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AppHubRestTransport._GetWorkload._get_response(
@@ -2714,7 +3555,29 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             pb_resp = workload.Workload.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_workload(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = workload.Workload.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apphub_v1.AppHubClient.get_workload",
+                    extra={
+                        "serviceName": "google.cloud.apphub.v1.AppHub",
+                        "rpcName": "GetWorkload",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListApplications(
@@ -2751,7 +3614,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> apphub_service.ListApplicationsResponse:
             r"""Call the list applications method over HTTP.
 
@@ -2761,8 +3624,10 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.apphub_service.ListApplicationsResponse:
@@ -2772,6 +3637,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             http_options = (
                 _BaseAppHubRestTransport._BaseListApplications._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_applications(
                 request, metadata
             )
@@ -2787,6 +3653,33 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apphub_v1.AppHubClient.ListApplications",
+                    extra={
+                        "serviceName": "google.cloud.apphub.v1.AppHub",
+                        "rpcName": "ListApplications",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AppHubRestTransport._ListApplications._get_response(
@@ -2808,7 +3701,31 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             pb_resp = apphub_service.ListApplicationsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_applications(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = apphub_service.ListApplicationsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apphub_v1.AppHubClient.list_applications",
+                    extra={
+                        "serviceName": "google.cloud.apphub.v1.AppHub",
+                        "rpcName": "ListApplications",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListDiscoveredServices(
@@ -2845,7 +3762,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> apphub_service.ListDiscoveredServicesResponse:
             r"""Call the list discovered services method over HTTP.
 
@@ -2855,8 +3772,10 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.apphub_service.ListDiscoveredServicesResponse:
@@ -2866,6 +3785,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             http_options = (
                 _BaseAppHubRestTransport._BaseListDiscoveredServices._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_discovered_services(
                 request, metadata
             )
@@ -2877,6 +3797,33 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             query_params = _BaseAppHubRestTransport._BaseListDiscoveredServices._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apphub_v1.AppHubClient.ListDiscoveredServices",
+                    extra={
+                        "serviceName": "google.cloud.apphub.v1.AppHub",
+                        "rpcName": "ListDiscoveredServices",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AppHubRestTransport._ListDiscoveredServices._get_response(
@@ -2898,7 +3845,31 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             pb_resp = apphub_service.ListDiscoveredServicesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_discovered_services(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        apphub_service.ListDiscoveredServicesResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apphub_v1.AppHubClient.list_discovered_services",
+                    extra={
+                        "serviceName": "google.cloud.apphub.v1.AppHub",
+                        "rpcName": "ListDiscoveredServices",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListDiscoveredWorkloads(
@@ -2935,7 +3906,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> apphub_service.ListDiscoveredWorkloadsResponse:
             r"""Call the list discovered workloads method over HTTP.
 
@@ -2945,8 +3916,10 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.apphub_service.ListDiscoveredWorkloadsResponse:
@@ -2956,6 +3929,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             http_options = (
                 _BaseAppHubRestTransport._BaseListDiscoveredWorkloads._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_discovered_workloads(
                 request, metadata
             )
@@ -2967,6 +3941,33 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             query_params = _BaseAppHubRestTransport._BaseListDiscoveredWorkloads._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apphub_v1.AppHubClient.ListDiscoveredWorkloads",
+                    extra={
+                        "serviceName": "google.cloud.apphub.v1.AppHub",
+                        "rpcName": "ListDiscoveredWorkloads",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AppHubRestTransport._ListDiscoveredWorkloads._get_response(
@@ -2988,7 +3989,31 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             pb_resp = apphub_service.ListDiscoveredWorkloadsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_discovered_workloads(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        apphub_service.ListDiscoveredWorkloadsResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apphub_v1.AppHubClient.list_discovered_workloads",
+                    extra={
+                        "serviceName": "google.cloud.apphub.v1.AppHub",
+                        "rpcName": "ListDiscoveredWorkloads",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListServiceProjectAttachments(
@@ -3025,7 +4050,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> apphub_service.ListServiceProjectAttachmentsResponse:
             r"""Call the list service project
             attachments method over HTTP.
@@ -3037,8 +4062,10 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.apphub_service.ListServiceProjectAttachmentsResponse:
@@ -3050,6 +4077,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             http_options = (
                 _BaseAppHubRestTransport._BaseListServiceProjectAttachments._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_service_project_attachments(
                 request, metadata
             )
@@ -3061,6 +4089,33 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             query_params = _BaseAppHubRestTransport._BaseListServiceProjectAttachments._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apphub_v1.AppHubClient.ListServiceProjectAttachments",
+                    extra={
+                        "serviceName": "google.cloud.apphub.v1.AppHub",
+                        "rpcName": "ListServiceProjectAttachments",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AppHubRestTransport._ListServiceProjectAttachments._get_response(
@@ -3082,7 +4137,33 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             pb_resp = apphub_service.ListServiceProjectAttachmentsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_service_project_attachments(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        apphub_service.ListServiceProjectAttachmentsResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apphub_v1.AppHubClient.list_service_project_attachments",
+                    extra={
+                        "serviceName": "google.cloud.apphub.v1.AppHub",
+                        "rpcName": "ListServiceProjectAttachments",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListServices(_BaseAppHubRestTransport._BaseListServices, AppHubRestStub):
@@ -3117,7 +4198,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> apphub_service.ListServicesResponse:
             r"""Call the list services method over HTTP.
 
@@ -3127,8 +4208,10 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.apphub_service.ListServicesResponse:
@@ -3138,6 +4221,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             http_options = (
                 _BaseAppHubRestTransport._BaseListServices._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_services(request, metadata)
             transcoded_request = (
                 _BaseAppHubRestTransport._BaseListServices._get_transcoded_request(
@@ -3151,6 +4235,33 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apphub_v1.AppHubClient.ListServices",
+                    extra={
+                        "serviceName": "google.cloud.apphub.v1.AppHub",
+                        "rpcName": "ListServices",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AppHubRestTransport._ListServices._get_response(
@@ -3172,7 +4283,31 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             pb_resp = apphub_service.ListServicesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_services(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = apphub_service.ListServicesResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apphub_v1.AppHubClient.list_services",
+                    extra={
+                        "serviceName": "google.cloud.apphub.v1.AppHub",
+                        "rpcName": "ListServices",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListWorkloads(_BaseAppHubRestTransport._BaseListWorkloads, AppHubRestStub):
@@ -3207,7 +4342,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> apphub_service.ListWorkloadsResponse:
             r"""Call the list workloads method over HTTP.
 
@@ -3217,8 +4352,10 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.apphub_service.ListWorkloadsResponse:
@@ -3228,6 +4365,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             http_options = (
                 _BaseAppHubRestTransport._BaseListWorkloads._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_workloads(request, metadata)
             transcoded_request = (
                 _BaseAppHubRestTransport._BaseListWorkloads._get_transcoded_request(
@@ -3241,6 +4379,33 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apphub_v1.AppHubClient.ListWorkloads",
+                    extra={
+                        "serviceName": "google.cloud.apphub.v1.AppHub",
+                        "rpcName": "ListWorkloads",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AppHubRestTransport._ListWorkloads._get_response(
@@ -3262,7 +4427,31 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             pb_resp = apphub_service.ListWorkloadsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_workloads(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = apphub_service.ListWorkloadsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apphub_v1.AppHubClient.list_workloads",
+                    extra={
+                        "serviceName": "google.cloud.apphub.v1.AppHub",
+                        "rpcName": "ListWorkloads",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _LookupDiscoveredService(
@@ -3299,7 +4488,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> apphub_service.LookupDiscoveredServiceResponse:
             r"""Call the lookup discovered service method over HTTP.
 
@@ -3309,8 +4498,10 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.apphub_service.LookupDiscoveredServiceResponse:
@@ -3320,6 +4511,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             http_options = (
                 _BaseAppHubRestTransport._BaseLookupDiscoveredService._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_lookup_discovered_service(
                 request, metadata
             )
@@ -3331,6 +4523,33 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             query_params = _BaseAppHubRestTransport._BaseLookupDiscoveredService._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apphub_v1.AppHubClient.LookupDiscoveredService",
+                    extra={
+                        "serviceName": "google.cloud.apphub.v1.AppHub",
+                        "rpcName": "LookupDiscoveredService",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AppHubRestTransport._LookupDiscoveredService._get_response(
@@ -3352,7 +4571,31 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             pb_resp = apphub_service.LookupDiscoveredServiceResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_lookup_discovered_service(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        apphub_service.LookupDiscoveredServiceResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apphub_v1.AppHubClient.lookup_discovered_service",
+                    extra={
+                        "serviceName": "google.cloud.apphub.v1.AppHub",
+                        "rpcName": "LookupDiscoveredService",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _LookupDiscoveredWorkload(
@@ -3389,7 +4632,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> apphub_service.LookupDiscoveredWorkloadResponse:
             r"""Call the lookup discovered
             workload method over HTTP.
@@ -3400,8 +4643,10 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.apphub_service.LookupDiscoveredWorkloadResponse:
@@ -3413,6 +4658,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             http_options = (
                 _BaseAppHubRestTransport._BaseLookupDiscoveredWorkload._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_lookup_discovered_workload(
                 request, metadata
             )
@@ -3424,6 +4670,33 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             query_params = _BaseAppHubRestTransport._BaseLookupDiscoveredWorkload._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apphub_v1.AppHubClient.LookupDiscoveredWorkload",
+                    extra={
+                        "serviceName": "google.cloud.apphub.v1.AppHub",
+                        "rpcName": "LookupDiscoveredWorkload",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AppHubRestTransport._LookupDiscoveredWorkload._get_response(
@@ -3445,7 +4718,33 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             pb_resp = apphub_service.LookupDiscoveredWorkloadResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_lookup_discovered_workload(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        apphub_service.LookupDiscoveredWorkloadResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apphub_v1.AppHubClient.lookup_discovered_workload",
+                    extra={
+                        "serviceName": "google.cloud.apphub.v1.AppHub",
+                        "rpcName": "LookupDiscoveredWorkload",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _LookupServiceProjectAttachment(
@@ -3482,7 +4781,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> apphub_service.LookupServiceProjectAttachmentResponse:
             r"""Call the lookup service project
             attachment method over HTTP.
@@ -3494,8 +4793,10 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.apphub_service.LookupServiceProjectAttachmentResponse:
@@ -3507,6 +4808,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             http_options = (
                 _BaseAppHubRestTransport._BaseLookupServiceProjectAttachment._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_lookup_service_project_attachment(
                 request, metadata
             )
@@ -3518,6 +4820,33 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             query_params = _BaseAppHubRestTransport._BaseLookupServiceProjectAttachment._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apphub_v1.AppHubClient.LookupServiceProjectAttachment",
+                    extra={
+                        "serviceName": "google.cloud.apphub.v1.AppHub",
+                        "rpcName": "LookupServiceProjectAttachment",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -3541,7 +4870,33 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             pb_resp = apphub_service.LookupServiceProjectAttachmentResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_lookup_service_project_attachment(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        apphub_service.LookupServiceProjectAttachmentResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apphub_v1.AppHubClient.lookup_service_project_attachment",
+                    extra={
+                        "serviceName": "google.cloud.apphub.v1.AppHub",
+                        "rpcName": "LookupServiceProjectAttachment",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateApplication(
@@ -3579,7 +4934,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update application method over HTTP.
 
@@ -3589,8 +4944,10 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -3603,6 +4960,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             http_options = (
                 _BaseAppHubRestTransport._BaseUpdateApplication._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_application(
                 request, metadata
             )
@@ -3625,6 +4983,33 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                 )
             )
 
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apphub_v1.AppHubClient.UpdateApplication",
+                    extra={
+                        "serviceName": "google.cloud.apphub.v1.AppHub",
+                        "rpcName": "UpdateApplication",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
             # Send the request
             response = AppHubRestTransport._UpdateApplication._get_response(
                 self._host,
@@ -3644,7 +5029,29 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_application(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apphub_v1.AppHubClient.update_application",
+                    extra={
+                        "serviceName": "google.cloud.apphub.v1.AppHub",
+                        "rpcName": "UpdateApplication",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateService(_BaseAppHubRestTransport._BaseUpdateService, AppHubRestStub):
@@ -3680,7 +5087,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update service method over HTTP.
 
@@ -3690,8 +5097,10 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -3704,6 +5113,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             http_options = (
                 _BaseAppHubRestTransport._BaseUpdateService._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_service(request, metadata)
             transcoded_request = (
                 _BaseAppHubRestTransport._BaseUpdateService._get_transcoded_request(
@@ -3721,6 +5131,33 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apphub_v1.AppHubClient.UpdateService",
+                    extra={
+                        "serviceName": "google.cloud.apphub.v1.AppHub",
+                        "rpcName": "UpdateService",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AppHubRestTransport._UpdateService._get_response(
@@ -3741,7 +5178,29 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_service(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apphub_v1.AppHubClient.update_service",
+                    extra={
+                        "serviceName": "google.cloud.apphub.v1.AppHub",
+                        "rpcName": "UpdateService",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateWorkload(_BaseAppHubRestTransport._BaseUpdateWorkload, AppHubRestStub):
@@ -3777,7 +5236,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update workload method over HTTP.
 
@@ -3787,8 +5246,10 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -3801,6 +5262,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             http_options = (
                 _BaseAppHubRestTransport._BaseUpdateWorkload._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_workload(request, metadata)
             transcoded_request = (
                 _BaseAppHubRestTransport._BaseUpdateWorkload._get_transcoded_request(
@@ -3818,6 +5280,33 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apphub_v1.AppHubClient.UpdateWorkload",
+                    extra={
+                        "serviceName": "google.cloud.apphub.v1.AppHub",
+                        "rpcName": "UpdateWorkload",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AppHubRestTransport._UpdateWorkload._get_response(
@@ -3838,7 +5327,29 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_workload(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apphub_v1.AppHubClient.update_workload",
+                    extra={
+                        "serviceName": "google.cloud.apphub.v1.AppHub",
+                        "rpcName": "UpdateWorkload",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -4132,7 +5643,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.Location:
             r"""Call the get location method over HTTP.
 
@@ -4142,14 +5653,17 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.Location: Response from GetLocation method.
             """
 
             http_options = _BaseAppHubRestTransport._BaseGetLocation._get_http_options()
+
             request, metadata = self._interceptor.pre_get_location(request, metadata)
             transcoded_request = (
                 _BaseAppHubRestTransport._BaseGetLocation._get_transcoded_request(
@@ -4163,6 +5677,33 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apphub_v1.AppHubClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.apphub.v1.AppHub",
+                        "rpcName": "GetLocation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AppHubRestTransport._GetLocation._get_response(
@@ -4183,6 +5724,27 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apphub_v1.AppHubAsyncClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.apphub.v1.AppHub",
+                        "rpcName": "GetLocation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -4221,7 +5783,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.ListLocationsResponse:
             r"""Call the list locations method over HTTP.
 
@@ -4231,8 +5793,10 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
@@ -4241,6 +5805,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             http_options = (
                 _BaseAppHubRestTransport._BaseListLocations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
             transcoded_request = (
                 _BaseAppHubRestTransport._BaseListLocations._get_transcoded_request(
@@ -4254,6 +5819,33 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apphub_v1.AppHubClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.apphub.v1.AppHub",
+                        "rpcName": "ListLocations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AppHubRestTransport._ListLocations._get_response(
@@ -4274,6 +5866,27 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apphub_v1.AppHubAsyncClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.apphub.v1.AppHub",
+                        "rpcName": "ListLocations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -4312,7 +5925,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> policy_pb2.Policy:
             r"""Call the get iam policy method over HTTP.
 
@@ -4322,8 +5935,10 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 policy_pb2.Policy: Response from GetIamPolicy method.
@@ -4332,6 +5947,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             http_options = (
                 _BaseAppHubRestTransport._BaseGetIamPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
             transcoded_request = (
                 _BaseAppHubRestTransport._BaseGetIamPolicy._get_transcoded_request(
@@ -4345,6 +5961,33 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apphub_v1.AppHubClient.GetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.apphub.v1.AppHub",
+                        "rpcName": "GetIamPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AppHubRestTransport._GetIamPolicy._get_response(
@@ -4365,6 +6008,27 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_iam_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apphub_v1.AppHubAsyncClient.GetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.apphub.v1.AppHub",
+                        "rpcName": "GetIamPolicy",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -4404,7 +6068,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> policy_pb2.Policy:
             r"""Call the set iam policy method over HTTP.
 
@@ -4414,8 +6078,10 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 policy_pb2.Policy: Response from SetIamPolicy method.
@@ -4424,6 +6090,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             http_options = (
                 _BaseAppHubRestTransport._BaseSetIamPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
             transcoded_request = (
                 _BaseAppHubRestTransport._BaseSetIamPolicy._get_transcoded_request(
@@ -4441,6 +6108,33 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apphub_v1.AppHubClient.SetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.apphub.v1.AppHub",
+                        "rpcName": "SetIamPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AppHubRestTransport._SetIamPolicy._get_response(
@@ -4462,6 +6156,27 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_set_iam_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apphub_v1.AppHubAsyncClient.SetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.apphub.v1.AppHub",
+                        "rpcName": "SetIamPolicy",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -4503,7 +6218,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> iam_policy_pb2.TestIamPermissionsResponse:
             r"""Call the test iam permissions method over HTTP.
 
@@ -4513,8 +6228,10 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 iam_policy_pb2.TestIamPermissionsResponse: Response from TestIamPermissions method.
@@ -4523,6 +6240,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             http_options = (
                 _BaseAppHubRestTransport._BaseTestIamPermissions._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata
             )
@@ -4542,6 +6260,33 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apphub_v1.AppHubClient.TestIamPermissions",
+                    extra={
+                        "serviceName": "google.cloud.apphub.v1.AppHub",
+                        "rpcName": "TestIamPermissions",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AppHubRestTransport._TestIamPermissions._get_response(
@@ -4563,6 +6308,27 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             resp = iam_policy_pb2.TestIamPermissionsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_test_iam_permissions(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apphub_v1.AppHubAsyncClient.TestIamPermissions",
+                    extra={
+                        "serviceName": "google.cloud.apphub.v1.AppHub",
+                        "rpcName": "TestIamPermissions",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -4604,7 +6370,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the cancel operation method over HTTP.
 
@@ -4614,13 +6380,16 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseAppHubRestTransport._BaseCancelOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
@@ -4640,6 +6409,33 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apphub_v1.AppHubClient.CancelOperation",
+                    extra={
+                        "serviceName": "google.cloud.apphub.v1.AppHub",
+                        "rpcName": "CancelOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AppHubRestTransport._CancelOperation._get_response(
@@ -4697,7 +6493,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the delete operation method over HTTP.
 
@@ -4707,13 +6503,16 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseAppHubRestTransport._BaseDeleteOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
             )
@@ -4729,6 +6528,33 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apphub_v1.AppHubClient.DeleteOperation",
+                    extra={
+                        "serviceName": "google.cloud.apphub.v1.AppHub",
+                        "rpcName": "DeleteOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AppHubRestTransport._DeleteOperation._get_response(
@@ -4783,7 +6609,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the get operation method over HTTP.
 
@@ -4793,8 +6619,10 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.
@@ -4803,6 +6631,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             http_options = (
                 _BaseAppHubRestTransport._BaseGetOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = (
                 _BaseAppHubRestTransport._BaseGetOperation._get_transcoded_request(
@@ -4816,6 +6645,33 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apphub_v1.AppHubClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.apphub.v1.AppHub",
+                        "rpcName": "GetOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AppHubRestTransport._GetOperation._get_response(
@@ -4836,6 +6692,27 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apphub_v1.AppHubAsyncClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.apphub.v1.AppHub",
+                        "rpcName": "GetOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -4874,7 +6751,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.ListOperationsResponse:
             r"""Call the list operations method over HTTP.
 
@@ -4884,8 +6761,10 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
@@ -4894,6 +6773,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             http_options = (
                 _BaseAppHubRestTransport._BaseListOperations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = (
                 _BaseAppHubRestTransport._BaseListOperations._get_transcoded_request(
@@ -4907,6 +6787,33 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apphub_v1.AppHubClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.apphub.v1.AppHub",
+                        "rpcName": "ListOperations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AppHubRestTransport._ListOperations._get_response(
@@ -4927,6 +6834,27 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apphub_v1.AppHubAsyncClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.apphub.v1.AppHub",
+                        "rpcName": "ListOperations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property

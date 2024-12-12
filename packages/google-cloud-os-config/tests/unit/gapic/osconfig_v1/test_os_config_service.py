@@ -5830,6 +5830,7 @@ def test_execute_patch_job_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.execute_patch_job(request)
 
@@ -5955,6 +5956,7 @@ def test_get_patch_job_rest_required_fields(request_type=patch_jobs.GetPatchJobR
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_patch_job(request)
 
@@ -6000,6 +6002,7 @@ def test_get_patch_job_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_patch_job(**mock_args)
 
@@ -6132,6 +6135,7 @@ def test_cancel_patch_job_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.cancel_patch_job(request)
 
@@ -6259,6 +6263,7 @@ def test_list_patch_jobs_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_patch_jobs(request)
 
@@ -6313,6 +6318,7 @@ def test_list_patch_jobs_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_patch_jobs(**mock_args)
 
@@ -6518,6 +6524,7 @@ def test_list_patch_job_instance_details_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_patch_job_instance_details(request)
 
@@ -6574,6 +6581,7 @@ def test_list_patch_job_instance_details_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_patch_job_instance_details(**mock_args)
 
@@ -6785,6 +6793,7 @@ def test_create_patch_deployment_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_patch_deployment(request)
 
@@ -6847,6 +6856,7 @@ def test_create_patch_deployment_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_patch_deployment(**mock_args)
 
@@ -6983,6 +6993,7 @@ def test_get_patch_deployment_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_patch_deployment(request)
 
@@ -7028,6 +7039,7 @@ def test_get_patch_deployment_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_patch_deployment(**mock_args)
 
@@ -7172,6 +7184,7 @@ def test_list_patch_deployments_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_patch_deployments(request)
 
@@ -7225,6 +7238,7 @@ def test_list_patch_deployments_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_patch_deployments(**mock_args)
 
@@ -7420,6 +7434,7 @@ def test_delete_patch_deployment_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_patch_deployment(request)
 
@@ -7463,6 +7478,7 @@ def test_delete_patch_deployment_rest_flattened():
         json_return_value = ""
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_patch_deployment(**mock_args)
 
@@ -7596,6 +7612,7 @@ def test_update_patch_deployment_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_patch_deployment(request)
 
@@ -7644,6 +7661,7 @@ def test_update_patch_deployment_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_patch_deployment(**mock_args)
 
@@ -7782,6 +7800,7 @@ def test_pause_patch_deployment_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.pause_patch_deployment(request)
 
@@ -7827,6 +7846,7 @@ def test_pause_patch_deployment_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.pause_patch_deployment(**mock_args)
 
@@ -7963,6 +7983,7 @@ def test_resume_patch_deployment_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.resume_patch_deployment(request)
 
@@ -8008,6 +8029,7 @@ def test_resume_patch_deployment_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.resume_patch_deployment(**mock_args)
 
@@ -8824,6 +8846,7 @@ def test_execute_patch_job_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.execute_patch_job(request)
 
 
@@ -8866,6 +8889,7 @@ def test_execute_patch_job_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.execute_patch_job(request)
 
     # Establish that the response is the type that we expect.
@@ -8913,6 +8937,7 @@ def test_execute_patch_job_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = patch_jobs.PatchJob.to_json(patch_jobs.PatchJob())
         req.return_value.content = return_value
 
@@ -8955,6 +8980,7 @@ def test_get_patch_job_rest_bad_request(request_type=patch_jobs.GetPatchJobReque
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_patch_job(request)
 
 
@@ -8997,6 +9023,7 @@ def test_get_patch_job_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_patch_job(request)
 
     # Establish that the response is the type that we expect.
@@ -9042,6 +9069,7 @@ def test_get_patch_job_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = patch_jobs.PatchJob.to_json(patch_jobs.PatchJob())
         req.return_value.content = return_value
 
@@ -9086,6 +9114,7 @@ def test_cancel_patch_job_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.cancel_patch_job(request)
 
 
@@ -9128,6 +9157,7 @@ def test_cancel_patch_job_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.cancel_patch_job(request)
 
     # Establish that the response is the type that we expect.
@@ -9175,6 +9205,7 @@ def test_cancel_patch_job_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = patch_jobs.PatchJob.to_json(patch_jobs.PatchJob())
         req.return_value.content = return_value
 
@@ -9217,6 +9248,7 @@ def test_list_patch_jobs_rest_bad_request(request_type=patch_jobs.ListPatchJobsR
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_patch_jobs(request)
 
 
@@ -9252,6 +9284,7 @@ def test_list_patch_jobs_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_patch_jobs(request)
 
     # Establish that the response is the type that we expect.
@@ -9292,6 +9325,7 @@ def test_list_patch_jobs_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = patch_jobs.ListPatchJobsResponse.to_json(
             patch_jobs.ListPatchJobsResponse()
         )
@@ -9338,6 +9372,7 @@ def test_list_patch_job_instance_details_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_patch_job_instance_details(request)
 
 
@@ -9373,6 +9408,7 @@ def test_list_patch_job_instance_details_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_patch_job_instance_details(request)
 
     # Establish that the response is the type that we expect.
@@ -9414,6 +9450,7 @@ def test_list_patch_job_instance_details_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = patch_jobs.ListPatchJobInstanceDetailsResponse.to_json(
             patch_jobs.ListPatchJobInstanceDetailsResponse()
         )
@@ -9460,6 +9497,7 @@ def test_create_patch_deployment_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_patch_deployment(request)
 
 
@@ -9660,6 +9698,7 @@ def test_create_patch_deployment_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_patch_deployment(request)
 
     # Establish that the response is the type that we expect.
@@ -9702,6 +9741,7 @@ def test_create_patch_deployment_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = patch_deployments.PatchDeployment.to_json(
             patch_deployments.PatchDeployment()
         )
@@ -9748,6 +9788,7 @@ def test_get_patch_deployment_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_patch_deployment(request)
 
 
@@ -9785,6 +9826,7 @@ def test_get_patch_deployment_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_patch_deployment(request)
 
     # Establish that the response is the type that we expect.
@@ -9827,6 +9869,7 @@ def test_get_patch_deployment_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = patch_deployments.PatchDeployment.to_json(
             patch_deployments.PatchDeployment()
         )
@@ -9873,6 +9916,7 @@ def test_list_patch_deployments_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_patch_deployments(request)
 
 
@@ -9908,6 +9952,7 @@ def test_list_patch_deployments_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_patch_deployments(request)
 
     # Establish that the response is the type that we expect.
@@ -9948,6 +9993,7 @@ def test_list_patch_deployments_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = patch_deployments.ListPatchDeploymentsResponse.to_json(
             patch_deployments.ListPatchDeploymentsResponse()
         )
@@ -9994,6 +10040,7 @@ def test_delete_patch_deployment_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_patch_deployment(request)
 
 
@@ -10024,6 +10071,7 @@ def test_delete_patch_deployment_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_patch_deployment(request)
 
     # Establish that the response is the type that we expect.
@@ -10060,6 +10108,7 @@ def test_delete_patch_deployment_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = patch_deployments.DeletePatchDeploymentRequest()
         metadata = [
@@ -10102,6 +10151,7 @@ def test_update_patch_deployment_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_patch_deployment(request)
 
 
@@ -10304,6 +10354,7 @@ def test_update_patch_deployment_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_patch_deployment(request)
 
     # Establish that the response is the type that we expect.
@@ -10346,6 +10397,7 @@ def test_update_patch_deployment_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = patch_deployments.PatchDeployment.to_json(
             patch_deployments.PatchDeployment()
         )
@@ -10392,6 +10444,7 @@ def test_pause_patch_deployment_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.pause_patch_deployment(request)
 
 
@@ -10429,6 +10482,7 @@ def test_pause_patch_deployment_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.pause_patch_deployment(request)
 
     # Establish that the response is the type that we expect.
@@ -10471,6 +10525,7 @@ def test_pause_patch_deployment_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = patch_deployments.PatchDeployment.to_json(
             patch_deployments.PatchDeployment()
         )
@@ -10517,6 +10572,7 @@ def test_resume_patch_deployment_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.resume_patch_deployment(request)
 
 
@@ -10554,6 +10610,7 @@ def test_resume_patch_deployment_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.resume_patch_deployment(request)
 
     # Establish that the response is the type that we expect.
@@ -10596,6 +10653,7 @@ def test_resume_patch_deployment_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = patch_deployments.PatchDeployment.to_json(
             patch_deployments.PatchDeployment()
         )

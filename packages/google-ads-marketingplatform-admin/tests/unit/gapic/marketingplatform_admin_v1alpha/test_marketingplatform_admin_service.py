@@ -3176,6 +3176,7 @@ def test_get_organization_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_organization(request)
 
@@ -3221,6 +3222,7 @@ def test_get_organization_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_organization(**mock_args)
 
@@ -3364,6 +3366,7 @@ def test_list_analytics_account_links_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_analytics_account_links(request)
 
@@ -3419,6 +3422,7 @@ def test_list_analytics_account_links_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_analytics_account_links(**mock_args)
 
@@ -3620,6 +3624,7 @@ def test_create_analytics_account_link_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_analytics_account_link(request)
 
@@ -3676,6 +3681,7 @@ def test_create_analytics_account_link_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_analytics_account_link(**mock_args)
 
@@ -3810,6 +3816,7 @@ def test_delete_analytics_account_link_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_analytics_account_link(request)
 
@@ -3855,6 +3862,7 @@ def test_delete_analytics_account_link_rest_flattened():
         json_return_value = ""
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_analytics_account_link(**mock_args)
 
@@ -3998,6 +4006,7 @@ def test_set_property_service_level_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.set_property_service_level(request)
 
@@ -4056,6 +4065,7 @@ def test_set_property_service_level_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.set_property_service_level(**mock_args)
 
@@ -4487,6 +4497,7 @@ def test_get_organization_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_organization(request)
 
 
@@ -4523,6 +4534,7 @@ def test_get_organization_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_organization(request)
 
     # Establish that the response is the type that we expect.
@@ -4564,6 +4576,7 @@ def test_get_organization_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = resources.Organization.to_json(resources.Organization())
         req.return_value.content = return_value
 
@@ -4608,6 +4621,7 @@ def test_list_analytics_account_links_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_analytics_account_links(request)
 
 
@@ -4645,6 +4659,7 @@ def test_list_analytics_account_links_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_analytics_account_links(request)
 
     # Establish that the response is the type that we expect.
@@ -4687,6 +4702,7 @@ def test_list_analytics_account_links_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = (
             marketingplatform_admin.ListAnalyticsAccountLinksResponse.to_json(
                 marketingplatform_admin.ListAnalyticsAccountLinksResponse()
@@ -4735,6 +4751,7 @@ def test_create_analytics_account_link_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_analytics_account_link(request)
 
 
@@ -4850,6 +4867,7 @@ def test_create_analytics_account_link_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_analytics_account_link(request)
 
     # Establish that the response is the type that we expect.
@@ -4898,6 +4916,7 @@ def test_create_analytics_account_link_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = resources.AnalyticsAccountLink.to_json(
             resources.AnalyticsAccountLink()
         )
@@ -4944,6 +4963,7 @@ def test_delete_analytics_account_link_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_analytics_account_link(request)
 
 
@@ -4974,6 +4994,7 @@ def test_delete_analytics_account_link_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_analytics_account_link(request)
 
     # Establish that the response is the type that we expect.
@@ -5011,6 +5032,7 @@ def test_delete_analytics_account_link_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = marketingplatform_admin.DeleteAnalyticsAccountLinkRequest()
         metadata = [
@@ -5053,6 +5075,7 @@ def test_set_property_service_level_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.set_property_service_level(request)
 
 
@@ -5090,6 +5113,7 @@ def test_set_property_service_level_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.set_property_service_level(request)
 
     # Establish that the response is the type that we expect.
@@ -5131,6 +5155,7 @@ def test_set_property_service_level_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = marketingplatform_admin.SetPropertyServiceLevelResponse.to_json(
             marketingplatform_admin.SetPropertyServiceLevelResponse()
         )

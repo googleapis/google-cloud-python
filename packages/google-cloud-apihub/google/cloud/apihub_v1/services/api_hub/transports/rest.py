@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -40,6 +40,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -328,8 +336,10 @@ class ApiHubRestInterceptor:
     def pre_create_api(
         self,
         request: apihub_service.CreateApiRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[apihub_service.CreateApiRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        apihub_service.CreateApiRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_api
 
         Override in a subclass to manipulate the request or metadata
@@ -349,8 +359,10 @@ class ApiHubRestInterceptor:
     def pre_create_attribute(
         self,
         request: apihub_service.CreateAttributeRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[apihub_service.CreateAttributeRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        apihub_service.CreateAttributeRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_attribute
 
         Override in a subclass to manipulate the request or metadata
@@ -372,8 +384,10 @@ class ApiHubRestInterceptor:
     def pre_create_deployment(
         self,
         request: apihub_service.CreateDeploymentRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[apihub_service.CreateDeploymentRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        apihub_service.CreateDeploymentRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_deployment
 
         Override in a subclass to manipulate the request or metadata
@@ -395,8 +409,10 @@ class ApiHubRestInterceptor:
     def pre_create_external_api(
         self,
         request: apihub_service.CreateExternalApiRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[apihub_service.CreateExternalApiRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        apihub_service.CreateExternalApiRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_external_api
 
         Override in a subclass to manipulate the request or metadata
@@ -418,8 +434,10 @@ class ApiHubRestInterceptor:
     def pre_create_spec(
         self,
         request: apihub_service.CreateSpecRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[apihub_service.CreateSpecRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        apihub_service.CreateSpecRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_spec
 
         Override in a subclass to manipulate the request or metadata
@@ -439,8 +457,10 @@ class ApiHubRestInterceptor:
     def pre_create_version(
         self,
         request: apihub_service.CreateVersionRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[apihub_service.CreateVersionRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        apihub_service.CreateVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_version
 
         Override in a subclass to manipulate the request or metadata
@@ -462,8 +482,10 @@ class ApiHubRestInterceptor:
     def pre_delete_api(
         self,
         request: apihub_service.DeleteApiRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[apihub_service.DeleteApiRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        apihub_service.DeleteApiRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_api
 
         Override in a subclass to manipulate the request or metadata
@@ -474,8 +496,10 @@ class ApiHubRestInterceptor:
     def pre_delete_attribute(
         self,
         request: apihub_service.DeleteAttributeRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[apihub_service.DeleteAttributeRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        apihub_service.DeleteAttributeRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_attribute
 
         Override in a subclass to manipulate the request or metadata
@@ -486,8 +510,10 @@ class ApiHubRestInterceptor:
     def pre_delete_deployment(
         self,
         request: apihub_service.DeleteDeploymentRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[apihub_service.DeleteDeploymentRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        apihub_service.DeleteDeploymentRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_deployment
 
         Override in a subclass to manipulate the request or metadata
@@ -498,8 +524,10 @@ class ApiHubRestInterceptor:
     def pre_delete_external_api(
         self,
         request: apihub_service.DeleteExternalApiRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[apihub_service.DeleteExternalApiRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        apihub_service.DeleteExternalApiRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_external_api
 
         Override in a subclass to manipulate the request or metadata
@@ -510,8 +538,10 @@ class ApiHubRestInterceptor:
     def pre_delete_spec(
         self,
         request: apihub_service.DeleteSpecRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[apihub_service.DeleteSpecRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        apihub_service.DeleteSpecRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_spec
 
         Override in a subclass to manipulate the request or metadata
@@ -522,8 +552,10 @@ class ApiHubRestInterceptor:
     def pre_delete_version(
         self,
         request: apihub_service.DeleteVersionRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[apihub_service.DeleteVersionRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        apihub_service.DeleteVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_version
 
         Override in a subclass to manipulate the request or metadata
@@ -532,8 +564,10 @@ class ApiHubRestInterceptor:
         return request, metadata
 
     def pre_get_api(
-        self, request: apihub_service.GetApiRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[apihub_service.GetApiRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: apihub_service.GetApiRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[apihub_service.GetApiRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_api
 
         Override in a subclass to manipulate the request or metadata
@@ -553,8 +587,10 @@ class ApiHubRestInterceptor:
     def pre_get_api_operation(
         self,
         request: apihub_service.GetApiOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[apihub_service.GetApiOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        apihub_service.GetApiOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_api_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -576,8 +612,10 @@ class ApiHubRestInterceptor:
     def pre_get_attribute(
         self,
         request: apihub_service.GetAttributeRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[apihub_service.GetAttributeRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        apihub_service.GetAttributeRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_attribute
 
         Override in a subclass to manipulate the request or metadata
@@ -599,8 +637,10 @@ class ApiHubRestInterceptor:
     def pre_get_definition(
         self,
         request: apihub_service.GetDefinitionRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[apihub_service.GetDefinitionRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        apihub_service.GetDefinitionRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_definition
 
         Override in a subclass to manipulate the request or metadata
@@ -622,8 +662,10 @@ class ApiHubRestInterceptor:
     def pre_get_deployment(
         self,
         request: apihub_service.GetDeploymentRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[apihub_service.GetDeploymentRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        apihub_service.GetDeploymentRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_deployment
 
         Override in a subclass to manipulate the request or metadata
@@ -645,8 +687,10 @@ class ApiHubRestInterceptor:
     def pre_get_external_api(
         self,
         request: apihub_service.GetExternalApiRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[apihub_service.GetExternalApiRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        apihub_service.GetExternalApiRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_external_api
 
         Override in a subclass to manipulate the request or metadata
@@ -668,8 +712,8 @@ class ApiHubRestInterceptor:
     def pre_get_spec(
         self,
         request: apihub_service.GetSpecRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[apihub_service.GetSpecRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[apihub_service.GetSpecRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_spec
 
         Override in a subclass to manipulate the request or metadata
@@ -689,8 +733,10 @@ class ApiHubRestInterceptor:
     def pre_get_spec_contents(
         self,
         request: apihub_service.GetSpecContentsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[apihub_service.GetSpecContentsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        apihub_service.GetSpecContentsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_spec_contents
 
         Override in a subclass to manipulate the request or metadata
@@ -712,8 +758,10 @@ class ApiHubRestInterceptor:
     def pre_get_version(
         self,
         request: apihub_service.GetVersionRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[apihub_service.GetVersionRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        apihub_service.GetVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_version
 
         Override in a subclass to manipulate the request or metadata
@@ -735,8 +783,10 @@ class ApiHubRestInterceptor:
     def pre_list_api_operations(
         self,
         request: apihub_service.ListApiOperationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[apihub_service.ListApiOperationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        apihub_service.ListApiOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_api_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -758,8 +808,8 @@ class ApiHubRestInterceptor:
     def pre_list_apis(
         self,
         request: apihub_service.ListApisRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[apihub_service.ListApisRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[apihub_service.ListApisRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_apis
 
         Override in a subclass to manipulate the request or metadata
@@ -781,8 +831,10 @@ class ApiHubRestInterceptor:
     def pre_list_attributes(
         self,
         request: apihub_service.ListAttributesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[apihub_service.ListAttributesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        apihub_service.ListAttributesRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_attributes
 
         Override in a subclass to manipulate the request or metadata
@@ -804,8 +856,10 @@ class ApiHubRestInterceptor:
     def pre_list_deployments(
         self,
         request: apihub_service.ListDeploymentsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[apihub_service.ListDeploymentsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        apihub_service.ListDeploymentsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_deployments
 
         Override in a subclass to manipulate the request or metadata
@@ -827,8 +881,10 @@ class ApiHubRestInterceptor:
     def pre_list_external_apis(
         self,
         request: apihub_service.ListExternalApisRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[apihub_service.ListExternalApisRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        apihub_service.ListExternalApisRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_external_apis
 
         Override in a subclass to manipulate the request or metadata
@@ -850,8 +906,10 @@ class ApiHubRestInterceptor:
     def pre_list_specs(
         self,
         request: apihub_service.ListSpecsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[apihub_service.ListSpecsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        apihub_service.ListSpecsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_specs
 
         Override in a subclass to manipulate the request or metadata
@@ -873,8 +931,10 @@ class ApiHubRestInterceptor:
     def pre_list_versions(
         self,
         request: apihub_service.ListVersionsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[apihub_service.ListVersionsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        apihub_service.ListVersionsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_versions
 
         Override in a subclass to manipulate the request or metadata
@@ -896,8 +956,10 @@ class ApiHubRestInterceptor:
     def pre_search_resources(
         self,
         request: apihub_service.SearchResourcesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[apihub_service.SearchResourcesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        apihub_service.SearchResourcesRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for search_resources
 
         Override in a subclass to manipulate the request or metadata
@@ -919,8 +981,10 @@ class ApiHubRestInterceptor:
     def pre_update_api(
         self,
         request: apihub_service.UpdateApiRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[apihub_service.UpdateApiRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        apihub_service.UpdateApiRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_api
 
         Override in a subclass to manipulate the request or metadata
@@ -940,8 +1004,10 @@ class ApiHubRestInterceptor:
     def pre_update_attribute(
         self,
         request: apihub_service.UpdateAttributeRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[apihub_service.UpdateAttributeRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        apihub_service.UpdateAttributeRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_attribute
 
         Override in a subclass to manipulate the request or metadata
@@ -963,8 +1029,10 @@ class ApiHubRestInterceptor:
     def pre_update_deployment(
         self,
         request: apihub_service.UpdateDeploymentRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[apihub_service.UpdateDeploymentRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        apihub_service.UpdateDeploymentRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_deployment
 
         Override in a subclass to manipulate the request or metadata
@@ -986,8 +1054,10 @@ class ApiHubRestInterceptor:
     def pre_update_external_api(
         self,
         request: apihub_service.UpdateExternalApiRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[apihub_service.UpdateExternalApiRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        apihub_service.UpdateExternalApiRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_external_api
 
         Override in a subclass to manipulate the request or metadata
@@ -1009,8 +1079,10 @@ class ApiHubRestInterceptor:
     def pre_update_spec(
         self,
         request: apihub_service.UpdateSpecRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[apihub_service.UpdateSpecRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        apihub_service.UpdateSpecRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_spec
 
         Override in a subclass to manipulate the request or metadata
@@ -1030,8 +1102,10 @@ class ApiHubRestInterceptor:
     def pre_update_version(
         self,
         request: apihub_service.UpdateVersionRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[apihub_service.UpdateVersionRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        apihub_service.UpdateVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_version
 
         Override in a subclass to manipulate the request or metadata
@@ -1053,8 +1127,10 @@ class ApiHubRestInterceptor:
     def pre_get_location(
         self,
         request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -1076,8 +1152,10 @@ class ApiHubRestInterceptor:
     def pre_list_locations(
         self,
         request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -1099,8 +1177,10 @@ class ApiHubRestInterceptor:
     def pre_cancel_operation(
         self,
         request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1120,8 +1200,10 @@ class ApiHubRestInterceptor:
     def pre_delete_operation(
         self,
         request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1141,8 +1223,10 @@ class ApiHubRestInterceptor:
     def pre_get_operation(
         self,
         request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1164,8 +1248,10 @@ class ApiHubRestInterceptor:
     def pre_list_operations(
         self,
         request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -1304,7 +1390,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> common_fields.Api:
             r"""Call the create api method over HTTP.
 
@@ -1315,8 +1401,10 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.common_fields.Api:
@@ -1324,6 +1412,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             """
 
             http_options = _BaseApiHubRestTransport._BaseCreateApi._get_http_options()
+
             request, metadata = self._interceptor.pre_create_api(request, metadata)
             transcoded_request = (
                 _BaseApiHubRestTransport._BaseCreateApi._get_transcoded_request(
@@ -1341,6 +1430,33 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apihub_v1.ApiHubClient.CreateApi",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHub",
+                        "rpcName": "CreateApi",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ApiHubRestTransport._CreateApi._get_response(
@@ -1363,7 +1479,29 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             pb_resp = common_fields.Api.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_api(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = common_fields.Api.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apihub_v1.ApiHubClient.create_api",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHub",
+                        "rpcName": "CreateApi",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateAttribute(
@@ -1401,7 +1539,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> common_fields.Attribute:
             r"""Call the create attribute method over HTTP.
 
@@ -1413,8 +1551,10 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.common_fields.Attribute:
@@ -1431,6 +1571,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             http_options = (
                 _BaseApiHubRestTransport._BaseCreateAttribute._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_attribute(
                 request, metadata
             )
@@ -1450,6 +1591,33 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apihub_v1.ApiHubClient.CreateAttribute",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHub",
+                        "rpcName": "CreateAttribute",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ApiHubRestTransport._CreateAttribute._get_response(
@@ -1472,7 +1640,29 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             pb_resp = common_fields.Attribute.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_attribute(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = common_fields.Attribute.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apihub_v1.ApiHubClient.create_attribute",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHub",
+                        "rpcName": "CreateAttribute",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateDeployment(
@@ -1510,7 +1700,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> common_fields.Deployment:
             r"""Call the create deployment method over HTTP.
 
@@ -1522,8 +1712,10 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.common_fields.Deployment:
@@ -1540,6 +1732,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             http_options = (
                 _BaseApiHubRestTransport._BaseCreateDeployment._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_deployment(
                 request, metadata
             )
@@ -1562,6 +1755,33 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 )
             )
 
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apihub_v1.ApiHubClient.CreateDeployment",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHub",
+                        "rpcName": "CreateDeployment",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
             # Send the request
             response = ApiHubRestTransport._CreateDeployment._get_response(
                 self._host,
@@ -1583,7 +1803,29 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             pb_resp = common_fields.Deployment.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_deployment(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = common_fields.Deployment.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apihub_v1.ApiHubClient.create_deployment",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHub",
+                        "rpcName": "CreateDeployment",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateExternalApi(
@@ -1621,7 +1863,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> common_fields.ExternalApi:
             r"""Call the create external api method over HTTP.
 
@@ -1633,8 +1875,10 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.common_fields.ExternalApi:
@@ -1648,6 +1892,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             http_options = (
                 _BaseApiHubRestTransport._BaseCreateExternalApi._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_external_api(
                 request, metadata
             )
@@ -1670,6 +1915,33 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 )
             )
 
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apihub_v1.ApiHubClient.CreateExternalApi",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHub",
+                        "rpcName": "CreateExternalApi",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
             # Send the request
             response = ApiHubRestTransport._CreateExternalApi._get_response(
                 self._host,
@@ -1691,7 +1963,29 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             pb_resp = common_fields.ExternalApi.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_external_api(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = common_fields.ExternalApi.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apihub_v1.ApiHubClient.create_external_api",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHub",
+                        "rpcName": "CreateExternalApi",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateSpec(_BaseApiHubRestTransport._BaseCreateSpec, ApiHubRestStub):
@@ -1727,7 +2021,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> common_fields.Spec:
             r"""Call the create spec method over HTTP.
 
@@ -1739,8 +2033,10 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.common_fields.Spec:
@@ -1753,6 +2049,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             """
 
             http_options = _BaseApiHubRestTransport._BaseCreateSpec._get_http_options()
+
             request, metadata = self._interceptor.pre_create_spec(request, metadata)
             transcoded_request = (
                 _BaseApiHubRestTransport._BaseCreateSpec._get_transcoded_request(
@@ -1770,6 +2067,33 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apihub_v1.ApiHubClient.CreateSpec",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHub",
+                        "rpcName": "CreateSpec",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ApiHubRestTransport._CreateSpec._get_response(
@@ -1792,7 +2116,29 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             pb_resp = common_fields.Spec.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_spec(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = common_fields.Spec.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apihub_v1.ApiHubClient.create_spec",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHub",
+                        "rpcName": "CreateSpec",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateVersion(_BaseApiHubRestTransport._BaseCreateVersion, ApiHubRestStub):
@@ -1828,7 +2174,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> common_fields.Version:
             r"""Call the create version method over HTTP.
 
@@ -1840,8 +2186,10 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.common_fields.Version:
@@ -1854,6 +2202,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             http_options = (
                 _BaseApiHubRestTransport._BaseCreateVersion._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_version(request, metadata)
             transcoded_request = (
                 _BaseApiHubRestTransport._BaseCreateVersion._get_transcoded_request(
@@ -1871,6 +2220,33 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apihub_v1.ApiHubClient.CreateVersion",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHub",
+                        "rpcName": "CreateVersion",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ApiHubRestTransport._CreateVersion._get_response(
@@ -1893,7 +2269,29 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             pb_resp = common_fields.Version.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_version(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = common_fields.Version.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apihub_v1.ApiHubClient.create_version",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHub",
+                        "rpcName": "CreateVersion",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteApi(_BaseApiHubRestTransport._BaseDeleteApi, ApiHubRestStub):
@@ -1928,7 +2326,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete api method over HTTP.
 
@@ -1939,11 +2337,14 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = _BaseApiHubRestTransport._BaseDeleteApi._get_http_options()
+
             request, metadata = self._interceptor.pre_delete_api(request, metadata)
             transcoded_request = (
                 _BaseApiHubRestTransport._BaseDeleteApi._get_transcoded_request(
@@ -1957,6 +2358,33 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apihub_v1.ApiHubClient.DeleteApi",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHub",
+                        "rpcName": "DeleteApi",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ApiHubRestTransport._DeleteApi._get_response(
@@ -2007,7 +2435,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete attribute method over HTTP.
 
@@ -2019,13 +2447,16 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseApiHubRestTransport._BaseDeleteAttribute._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_attribute(
                 request, metadata
             )
@@ -2041,6 +2472,33 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apihub_v1.ApiHubClient.DeleteAttribute",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHub",
+                        "rpcName": "DeleteAttribute",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ApiHubRestTransport._DeleteAttribute._get_response(
@@ -2091,7 +2549,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete deployment method over HTTP.
 
@@ -2103,13 +2561,16 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseApiHubRestTransport._BaseDeleteDeployment._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_deployment(
                 request, metadata
             )
@@ -2125,6 +2586,33 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apihub_v1.ApiHubClient.DeleteDeployment",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHub",
+                        "rpcName": "DeleteDeployment",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ApiHubRestTransport._DeleteDeployment._get_response(
@@ -2175,7 +2663,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete external api method over HTTP.
 
@@ -2187,13 +2675,16 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseApiHubRestTransport._BaseDeleteExternalApi._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_external_api(
                 request, metadata
             )
@@ -2209,6 +2700,33 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apihub_v1.ApiHubClient.DeleteExternalApi",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHub",
+                        "rpcName": "DeleteExternalApi",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ApiHubRestTransport._DeleteExternalApi._get_response(
@@ -2257,7 +2775,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete spec method over HTTP.
 
@@ -2269,11 +2787,14 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = _BaseApiHubRestTransport._BaseDeleteSpec._get_http_options()
+
             request, metadata = self._interceptor.pre_delete_spec(request, metadata)
             transcoded_request = (
                 _BaseApiHubRestTransport._BaseDeleteSpec._get_transcoded_request(
@@ -2287,6 +2808,33 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apihub_v1.ApiHubClient.DeleteSpec",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHub",
+                        "rpcName": "DeleteSpec",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ApiHubRestTransport._DeleteSpec._get_response(
@@ -2335,7 +2883,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete version method over HTTP.
 
@@ -2347,13 +2895,16 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseApiHubRestTransport._BaseDeleteVersion._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_version(request, metadata)
             transcoded_request = (
                 _BaseApiHubRestTransport._BaseDeleteVersion._get_transcoded_request(
@@ -2367,6 +2918,33 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apihub_v1.ApiHubClient.DeleteVersion",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHub",
+                        "rpcName": "DeleteVersion",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ApiHubRestTransport._DeleteVersion._get_response(
@@ -2415,7 +2993,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> common_fields.Api:
             r"""Call the get api method over HTTP.
 
@@ -2426,8 +3004,10 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.common_fields.Api:
@@ -2435,6 +3015,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             """
 
             http_options = _BaseApiHubRestTransport._BaseGetApi._get_http_options()
+
             request, metadata = self._interceptor.pre_get_api(request, metadata)
             transcoded_request = (
                 _BaseApiHubRestTransport._BaseGetApi._get_transcoded_request(
@@ -2446,6 +3027,33 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             query_params = _BaseApiHubRestTransport._BaseGetApi._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apihub_v1.ApiHubClient.GetApi",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHub",
+                        "rpcName": "GetApi",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ApiHubRestTransport._GetApi._get_response(
@@ -2467,7 +3075,29 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             pb_resp = common_fields.Api.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_api(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = common_fields.Api.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apihub_v1.ApiHubClient.get_api",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHub",
+                        "rpcName": "GetApi",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetApiOperation(
@@ -2504,7 +3134,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> common_fields.ApiOperation:
             r"""Call the get api operation method over HTTP.
 
@@ -2516,8 +3146,10 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.common_fields.ApiOperation:
@@ -2536,6 +3168,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             http_options = (
                 _BaseApiHubRestTransport._BaseGetApiOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_api_operation(
                 request, metadata
             )
@@ -2551,6 +3184,33 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apihub_v1.ApiHubClient.GetApiOperation",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHub",
+                        "rpcName": "GetApiOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ApiHubRestTransport._GetApiOperation._get_response(
@@ -2572,7 +3232,29 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             pb_resp = common_fields.ApiOperation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_api_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = common_fields.ApiOperation.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apihub_v1.ApiHubClient.get_api_operation",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHub",
+                        "rpcName": "GetApiOperation",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetAttribute(_BaseApiHubRestTransport._BaseGetAttribute, ApiHubRestStub):
@@ -2607,7 +3289,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> common_fields.Attribute:
             r"""Call the get attribute method over HTTP.
 
@@ -2619,8 +3301,10 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.common_fields.Attribute:
@@ -2637,6 +3321,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             http_options = (
                 _BaseApiHubRestTransport._BaseGetAttribute._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_attribute(request, metadata)
             transcoded_request = (
                 _BaseApiHubRestTransport._BaseGetAttribute._get_transcoded_request(
@@ -2650,6 +3335,33 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apihub_v1.ApiHubClient.GetAttribute",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHub",
+                        "rpcName": "GetAttribute",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ApiHubRestTransport._GetAttribute._get_response(
@@ -2671,7 +3383,29 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             pb_resp = common_fields.Attribute.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_attribute(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = common_fields.Attribute.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apihub_v1.ApiHubClient.get_attribute",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHub",
+                        "rpcName": "GetAttribute",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetDefinition(_BaseApiHubRestTransport._BaseGetDefinition, ApiHubRestStub):
@@ -2706,7 +3440,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> common_fields.Definition:
             r"""Call the get definition method over HTTP.
 
@@ -2718,8 +3452,10 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.common_fields.Definition:
@@ -2737,6 +3473,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             http_options = (
                 _BaseApiHubRestTransport._BaseGetDefinition._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_definition(request, metadata)
             transcoded_request = (
                 _BaseApiHubRestTransport._BaseGetDefinition._get_transcoded_request(
@@ -2750,6 +3487,33 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apihub_v1.ApiHubClient.GetDefinition",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHub",
+                        "rpcName": "GetDefinition",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ApiHubRestTransport._GetDefinition._get_response(
@@ -2771,7 +3535,29 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             pb_resp = common_fields.Definition.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_definition(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = common_fields.Definition.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apihub_v1.ApiHubClient.get_definition",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHub",
+                        "rpcName": "GetDefinition",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetDeployment(_BaseApiHubRestTransport._BaseGetDeployment, ApiHubRestStub):
@@ -2806,7 +3592,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> common_fields.Deployment:
             r"""Call the get deployment method over HTTP.
 
@@ -2818,8 +3604,10 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.common_fields.Deployment:
@@ -2836,6 +3624,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             http_options = (
                 _BaseApiHubRestTransport._BaseGetDeployment._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_deployment(request, metadata)
             transcoded_request = (
                 _BaseApiHubRestTransport._BaseGetDeployment._get_transcoded_request(
@@ -2849,6 +3638,33 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apihub_v1.ApiHubClient.GetDeployment",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHub",
+                        "rpcName": "GetDeployment",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ApiHubRestTransport._GetDeployment._get_response(
@@ -2870,7 +3686,29 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             pb_resp = common_fields.Deployment.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_deployment(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = common_fields.Deployment.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apihub_v1.ApiHubClient.get_deployment",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHub",
+                        "rpcName": "GetDeployment",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetExternalApi(_BaseApiHubRestTransport._BaseGetExternalApi, ApiHubRestStub):
@@ -2905,7 +3743,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> common_fields.ExternalApi:
             r"""Call the get external api method over HTTP.
 
@@ -2917,8 +3755,10 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.common_fields.ExternalApi:
@@ -2932,6 +3772,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             http_options = (
                 _BaseApiHubRestTransport._BaseGetExternalApi._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_external_api(
                 request, metadata
             )
@@ -2947,6 +3788,33 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apihub_v1.ApiHubClient.GetExternalApi",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHub",
+                        "rpcName": "GetExternalApi",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ApiHubRestTransport._GetExternalApi._get_response(
@@ -2968,7 +3836,29 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             pb_resp = common_fields.ExternalApi.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_external_api(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = common_fields.ExternalApi.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apihub_v1.ApiHubClient.get_external_api",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHub",
+                        "rpcName": "GetExternalApi",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetSpec(_BaseApiHubRestTransport._BaseGetSpec, ApiHubRestStub):
@@ -3003,7 +3893,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> common_fields.Spec:
             r"""Call the get spec method over HTTP.
 
@@ -3014,8 +3904,10 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.common_fields.Spec:
@@ -3028,6 +3920,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             """
 
             http_options = _BaseApiHubRestTransport._BaseGetSpec._get_http_options()
+
             request, metadata = self._interceptor.pre_get_spec(request, metadata)
             transcoded_request = (
                 _BaseApiHubRestTransport._BaseGetSpec._get_transcoded_request(
@@ -3039,6 +3932,33 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             query_params = _BaseApiHubRestTransport._BaseGetSpec._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apihub_v1.ApiHubClient.GetSpec",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHub",
+                        "rpcName": "GetSpec",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ApiHubRestTransport._GetSpec._get_response(
@@ -3060,7 +3980,29 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             pb_resp = common_fields.Spec.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_spec(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = common_fields.Spec.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apihub_v1.ApiHubClient.get_spec",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHub",
+                        "rpcName": "GetSpec",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetSpecContents(
@@ -3097,7 +4039,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> common_fields.SpecContents:
             r"""Call the get spec contents method over HTTP.
 
@@ -3109,8 +4051,10 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.common_fields.SpecContents:
@@ -3120,6 +4064,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             http_options = (
                 _BaseApiHubRestTransport._BaseGetSpecContents._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_spec_contents(
                 request, metadata
             )
@@ -3135,6 +4080,33 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apihub_v1.ApiHubClient.GetSpecContents",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHub",
+                        "rpcName": "GetSpecContents",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ApiHubRestTransport._GetSpecContents._get_response(
@@ -3156,7 +4128,29 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             pb_resp = common_fields.SpecContents.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_spec_contents(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = common_fields.SpecContents.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apihub_v1.ApiHubClient.get_spec_contents",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHub",
+                        "rpcName": "GetSpecContents",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetVersion(_BaseApiHubRestTransport._BaseGetVersion, ApiHubRestStub):
@@ -3191,7 +4185,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> common_fields.Version:
             r"""Call the get version method over HTTP.
 
@@ -3203,8 +4197,10 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.common_fields.Version:
@@ -3215,6 +4211,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             """
 
             http_options = _BaseApiHubRestTransport._BaseGetVersion._get_http_options()
+
             request, metadata = self._interceptor.pre_get_version(request, metadata)
             transcoded_request = (
                 _BaseApiHubRestTransport._BaseGetVersion._get_transcoded_request(
@@ -3228,6 +4225,33 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apihub_v1.ApiHubClient.GetVersion",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHub",
+                        "rpcName": "GetVersion",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ApiHubRestTransport._GetVersion._get_response(
@@ -3249,7 +4273,29 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             pb_resp = common_fields.Version.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_version(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = common_fields.Version.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apihub_v1.ApiHubClient.get_version",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHub",
+                        "rpcName": "GetVersion",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListApiOperations(
@@ -3286,7 +4332,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> apihub_service.ListApiOperationsResponse:
             r"""Call the list api operations method over HTTP.
 
@@ -3298,8 +4344,10 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.apihub_service.ListApiOperationsResponse:
@@ -3312,6 +4360,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             http_options = (
                 _BaseApiHubRestTransport._BaseListApiOperations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_api_operations(
                 request, metadata
             )
@@ -3327,6 +4376,33 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apihub_v1.ApiHubClient.ListApiOperations",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHub",
+                        "rpcName": "ListApiOperations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ApiHubRestTransport._ListApiOperations._get_response(
@@ -3348,7 +4424,31 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             pb_resp = apihub_service.ListApiOperationsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_api_operations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = apihub_service.ListApiOperationsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apihub_v1.ApiHubClient.list_api_operations",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHub",
+                        "rpcName": "ListApiOperations",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListApis(_BaseApiHubRestTransport._BaseListApis, ApiHubRestStub):
@@ -3383,7 +4483,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> apihub_service.ListApisResponse:
             r"""Call the list apis method over HTTP.
 
@@ -3394,8 +4494,10 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.apihub_service.ListApisResponse:
@@ -3405,6 +4507,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             """
 
             http_options = _BaseApiHubRestTransport._BaseListApis._get_http_options()
+
             request, metadata = self._interceptor.pre_list_apis(request, metadata)
             transcoded_request = (
                 _BaseApiHubRestTransport._BaseListApis._get_transcoded_request(
@@ -3418,6 +4521,33 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apihub_v1.ApiHubClient.ListApis",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHub",
+                        "rpcName": "ListApis",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ApiHubRestTransport._ListApis._get_response(
@@ -3439,7 +4569,29 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             pb_resp = apihub_service.ListApisResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_apis(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = apihub_service.ListApisResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apihub_v1.ApiHubClient.list_apis",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHub",
+                        "rpcName": "ListApis",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListAttributes(_BaseApiHubRestTransport._BaseListAttributes, ApiHubRestStub):
@@ -3474,7 +4626,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> apihub_service.ListAttributesResponse:
             r"""Call the list attributes method over HTTP.
 
@@ -3486,8 +4638,10 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.apihub_service.ListAttributesResponse:
@@ -3500,6 +4654,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             http_options = (
                 _BaseApiHubRestTransport._BaseListAttributes._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_attributes(request, metadata)
             transcoded_request = (
                 _BaseApiHubRestTransport._BaseListAttributes._get_transcoded_request(
@@ -3513,6 +4668,33 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apihub_v1.ApiHubClient.ListAttributes",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHub",
+                        "rpcName": "ListAttributes",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ApiHubRestTransport._ListAttributes._get_response(
@@ -3534,7 +4716,31 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             pb_resp = apihub_service.ListAttributesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_attributes(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = apihub_service.ListAttributesResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apihub_v1.ApiHubClient.list_attributes",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHub",
+                        "rpcName": "ListAttributes",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListDeployments(
@@ -3571,7 +4777,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> apihub_service.ListDeploymentsResponse:
             r"""Call the list deployments method over HTTP.
 
@@ -3583,8 +4789,10 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.apihub_service.ListDeploymentsResponse:
@@ -3597,6 +4805,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             http_options = (
                 _BaseApiHubRestTransport._BaseListDeployments._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_deployments(
                 request, metadata
             )
@@ -3612,6 +4821,33 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apihub_v1.ApiHubClient.ListDeployments",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHub",
+                        "rpcName": "ListDeployments",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ApiHubRestTransport._ListDeployments._get_response(
@@ -3633,7 +4869,31 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             pb_resp = apihub_service.ListDeploymentsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_deployments(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = apihub_service.ListDeploymentsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apihub_v1.ApiHubClient.list_deployments",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHub",
+                        "rpcName": "ListDeployments",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListExternalApis(
@@ -3670,7 +4930,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> apihub_service.ListExternalApisResponse:
             r"""Call the list external apis method over HTTP.
 
@@ -3682,8 +4942,10 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.apihub_service.ListExternalApisResponse:
@@ -3696,6 +4958,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             http_options = (
                 _BaseApiHubRestTransport._BaseListExternalApis._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_external_apis(
                 request, metadata
             )
@@ -3711,6 +4974,33 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apihub_v1.ApiHubClient.ListExternalApis",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHub",
+                        "rpcName": "ListExternalApis",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ApiHubRestTransport._ListExternalApis._get_response(
@@ -3732,7 +5022,31 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             pb_resp = apihub_service.ListExternalApisResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_external_apis(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = apihub_service.ListExternalApisResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apihub_v1.ApiHubClient.list_external_apis",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHub",
+                        "rpcName": "ListExternalApis",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListSpecs(_BaseApiHubRestTransport._BaseListSpecs, ApiHubRestStub):
@@ -3767,7 +5081,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> apihub_service.ListSpecsResponse:
             r"""Call the list specs method over HTTP.
 
@@ -3777,8 +5091,10 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.apihub_service.ListSpecsResponse:
@@ -3788,6 +5104,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             """
 
             http_options = _BaseApiHubRestTransport._BaseListSpecs._get_http_options()
+
             request, metadata = self._interceptor.pre_list_specs(request, metadata)
             transcoded_request = (
                 _BaseApiHubRestTransport._BaseListSpecs._get_transcoded_request(
@@ -3801,6 +5118,33 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apihub_v1.ApiHubClient.ListSpecs",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHub",
+                        "rpcName": "ListSpecs",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ApiHubRestTransport._ListSpecs._get_response(
@@ -3822,7 +5166,31 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             pb_resp = apihub_service.ListSpecsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_specs(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = apihub_service.ListSpecsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apihub_v1.ApiHubClient.list_specs",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHub",
+                        "rpcName": "ListSpecs",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListVersions(_BaseApiHubRestTransport._BaseListVersions, ApiHubRestStub):
@@ -3857,7 +5225,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> apihub_service.ListVersionsResponse:
             r"""Call the list versions method over HTTP.
 
@@ -3869,8 +5237,10 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.apihub_service.ListVersionsResponse:
@@ -3883,6 +5253,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             http_options = (
                 _BaseApiHubRestTransport._BaseListVersions._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_versions(request, metadata)
             transcoded_request = (
                 _BaseApiHubRestTransport._BaseListVersions._get_transcoded_request(
@@ -3896,6 +5267,33 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apihub_v1.ApiHubClient.ListVersions",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHub",
+                        "rpcName": "ListVersions",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ApiHubRestTransport._ListVersions._get_response(
@@ -3917,7 +5315,31 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             pb_resp = apihub_service.ListVersionsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_versions(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = apihub_service.ListVersionsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apihub_v1.ApiHubClient.list_versions",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHub",
+                        "rpcName": "ListVersions",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _SearchResources(
@@ -3955,7 +5377,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> apihub_service.SearchResourcesResponse:
             r"""Call the search resources method over HTTP.
 
@@ -3967,8 +5389,10 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.apihub_service.SearchResourcesResponse:
@@ -3981,6 +5405,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             http_options = (
                 _BaseApiHubRestTransport._BaseSearchResources._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_search_resources(
                 request, metadata
             )
@@ -4000,6 +5425,33 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apihub_v1.ApiHubClient.SearchResources",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHub",
+                        "rpcName": "SearchResources",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ApiHubRestTransport._SearchResources._get_response(
@@ -4022,7 +5474,31 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             pb_resp = apihub_service.SearchResourcesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_search_resources(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = apihub_service.SearchResourcesResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apihub_v1.ApiHubClient.search_resources",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHub",
+                        "rpcName": "SearchResources",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateApi(_BaseApiHubRestTransport._BaseUpdateApi, ApiHubRestStub):
@@ -4058,7 +5534,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> common_fields.Api:
             r"""Call the update api method over HTTP.
 
@@ -4069,8 +5545,10 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.common_fields.Api:
@@ -4078,6 +5556,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             """
 
             http_options = _BaseApiHubRestTransport._BaseUpdateApi._get_http_options()
+
             request, metadata = self._interceptor.pre_update_api(request, metadata)
             transcoded_request = (
                 _BaseApiHubRestTransport._BaseUpdateApi._get_transcoded_request(
@@ -4095,6 +5574,33 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apihub_v1.ApiHubClient.UpdateApi",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHub",
+                        "rpcName": "UpdateApi",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ApiHubRestTransport._UpdateApi._get_response(
@@ -4117,7 +5623,29 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             pb_resp = common_fields.Api.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_api(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = common_fields.Api.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apihub_v1.ApiHubClient.update_api",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHub",
+                        "rpcName": "UpdateApi",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateAttribute(
@@ -4155,7 +5683,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> common_fields.Attribute:
             r"""Call the update attribute method over HTTP.
 
@@ -4167,8 +5695,10 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.common_fields.Attribute:
@@ -4185,6 +5715,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             http_options = (
                 _BaseApiHubRestTransport._BaseUpdateAttribute._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_attribute(
                 request, metadata
             )
@@ -4204,6 +5735,33 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apihub_v1.ApiHubClient.UpdateAttribute",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHub",
+                        "rpcName": "UpdateAttribute",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ApiHubRestTransport._UpdateAttribute._get_response(
@@ -4226,7 +5784,29 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             pb_resp = common_fields.Attribute.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_attribute(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = common_fields.Attribute.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apihub_v1.ApiHubClient.update_attribute",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHub",
+                        "rpcName": "UpdateAttribute",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateDeployment(
@@ -4264,7 +5844,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> common_fields.Deployment:
             r"""Call the update deployment method over HTTP.
 
@@ -4276,8 +5856,10 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.common_fields.Deployment:
@@ -4294,6 +5876,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             http_options = (
                 _BaseApiHubRestTransport._BaseUpdateDeployment._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_deployment(
                 request, metadata
             )
@@ -4316,6 +5899,33 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 )
             )
 
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apihub_v1.ApiHubClient.UpdateDeployment",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHub",
+                        "rpcName": "UpdateDeployment",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
             # Send the request
             response = ApiHubRestTransport._UpdateDeployment._get_response(
                 self._host,
@@ -4337,7 +5947,29 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             pb_resp = common_fields.Deployment.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_deployment(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = common_fields.Deployment.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apihub_v1.ApiHubClient.update_deployment",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHub",
+                        "rpcName": "UpdateDeployment",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateExternalApi(
@@ -4375,7 +6007,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> common_fields.ExternalApi:
             r"""Call the update external api method over HTTP.
 
@@ -4387,8 +6019,10 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.common_fields.ExternalApi:
@@ -4402,6 +6036,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             http_options = (
                 _BaseApiHubRestTransport._BaseUpdateExternalApi._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_external_api(
                 request, metadata
             )
@@ -4424,6 +6059,33 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 )
             )
 
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apihub_v1.ApiHubClient.UpdateExternalApi",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHub",
+                        "rpcName": "UpdateExternalApi",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
             # Send the request
             response = ApiHubRestTransport._UpdateExternalApi._get_response(
                 self._host,
@@ -4445,7 +6107,29 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             pb_resp = common_fields.ExternalApi.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_external_api(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = common_fields.ExternalApi.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apihub_v1.ApiHubClient.update_external_api",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHub",
+                        "rpcName": "UpdateExternalApi",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateSpec(_BaseApiHubRestTransport._BaseUpdateSpec, ApiHubRestStub):
@@ -4481,7 +6165,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> common_fields.Spec:
             r"""Call the update spec method over HTTP.
 
@@ -4493,8 +6177,10 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.common_fields.Spec:
@@ -4507,6 +6193,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             """
 
             http_options = _BaseApiHubRestTransport._BaseUpdateSpec._get_http_options()
+
             request, metadata = self._interceptor.pre_update_spec(request, metadata)
             transcoded_request = (
                 _BaseApiHubRestTransport._BaseUpdateSpec._get_transcoded_request(
@@ -4524,6 +6211,33 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apihub_v1.ApiHubClient.UpdateSpec",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHub",
+                        "rpcName": "UpdateSpec",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ApiHubRestTransport._UpdateSpec._get_response(
@@ -4546,7 +6260,29 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             pb_resp = common_fields.Spec.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_spec(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = common_fields.Spec.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apihub_v1.ApiHubClient.update_spec",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHub",
+                        "rpcName": "UpdateSpec",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateVersion(_BaseApiHubRestTransport._BaseUpdateVersion, ApiHubRestStub):
@@ -4582,7 +6318,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> common_fields.Version:
             r"""Call the update version method over HTTP.
 
@@ -4594,8 +6330,10 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.common_fields.Version:
@@ -4608,6 +6346,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             http_options = (
                 _BaseApiHubRestTransport._BaseUpdateVersion._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_version(request, metadata)
             transcoded_request = (
                 _BaseApiHubRestTransport._BaseUpdateVersion._get_transcoded_request(
@@ -4625,6 +6364,33 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apihub_v1.ApiHubClient.UpdateVersion",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHub",
+                        "rpcName": "UpdateVersion",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ApiHubRestTransport._UpdateVersion._get_response(
@@ -4647,7 +6413,29 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             pb_resp = common_fields.Version.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_version(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = common_fields.Version.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apihub_v1.ApiHubClient.update_version",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHub",
+                        "rpcName": "UpdateVersion",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -4976,7 +6764,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.Location:
             r"""Call the get location method over HTTP.
 
@@ -4986,14 +6774,17 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.Location: Response from GetLocation method.
             """
 
             http_options = _BaseApiHubRestTransport._BaseGetLocation._get_http_options()
+
             request, metadata = self._interceptor.pre_get_location(request, metadata)
             transcoded_request = (
                 _BaseApiHubRestTransport._BaseGetLocation._get_transcoded_request(
@@ -5007,6 +6798,33 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apihub_v1.ApiHubClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHub",
+                        "rpcName": "GetLocation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ApiHubRestTransport._GetLocation._get_response(
@@ -5027,6 +6845,27 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apihub_v1.ApiHubAsyncClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHub",
+                        "rpcName": "GetLocation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -5065,7 +6904,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.ListLocationsResponse:
             r"""Call the list locations method over HTTP.
 
@@ -5075,8 +6914,10 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
@@ -5085,6 +6926,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             http_options = (
                 _BaseApiHubRestTransport._BaseListLocations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
             transcoded_request = (
                 _BaseApiHubRestTransport._BaseListLocations._get_transcoded_request(
@@ -5098,6 +6940,33 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apihub_v1.ApiHubClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHub",
+                        "rpcName": "ListLocations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ApiHubRestTransport._ListLocations._get_response(
@@ -5118,6 +6987,27 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apihub_v1.ApiHubAsyncClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHub",
+                        "rpcName": "ListLocations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -5159,7 +7049,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the cancel operation method over HTTP.
 
@@ -5169,13 +7059,16 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseApiHubRestTransport._BaseCancelOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
@@ -5195,6 +7088,33 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apihub_v1.ApiHubClient.CancelOperation",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHub",
+                        "rpcName": "CancelOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ApiHubRestTransport._CancelOperation._get_response(
@@ -5252,7 +7172,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the delete operation method over HTTP.
 
@@ -5262,13 +7182,16 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseApiHubRestTransport._BaseDeleteOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
             )
@@ -5284,6 +7207,33 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apihub_v1.ApiHubClient.DeleteOperation",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHub",
+                        "rpcName": "DeleteOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ApiHubRestTransport._DeleteOperation._get_response(
@@ -5338,7 +7288,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the get operation method over HTTP.
 
@@ -5348,8 +7298,10 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.
@@ -5358,6 +7310,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             http_options = (
                 _BaseApiHubRestTransport._BaseGetOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = (
                 _BaseApiHubRestTransport._BaseGetOperation._get_transcoded_request(
@@ -5371,6 +7324,33 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apihub_v1.ApiHubClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHub",
+                        "rpcName": "GetOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ApiHubRestTransport._GetOperation._get_response(
@@ -5391,6 +7371,27 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apihub_v1.ApiHubAsyncClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHub",
+                        "rpcName": "GetOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -5429,7 +7430,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.ListOperationsResponse:
             r"""Call the list operations method over HTTP.
 
@@ -5439,8 +7440,10 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
@@ -5449,6 +7452,7 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             http_options = (
                 _BaseApiHubRestTransport._BaseListOperations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = (
                 _BaseApiHubRestTransport._BaseListOperations._get_transcoded_request(
@@ -5462,6 +7466,33 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.apihub_v1.ApiHubClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHub",
+                        "rpcName": "ListOperations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ApiHubRestTransport._ListOperations._get_response(
@@ -5482,6 +7513,27 @@ class ApiHubRestTransport(_BaseApiHubRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.apihub_v1.ApiHubAsyncClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.apihub.v1.ApiHub",
+                        "rpcName": "ListOperations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property

@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -37,6 +37,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -77,8 +85,10 @@ class PredictionServiceRestInterceptor:
     def pre_predict(
         self,
         request: prediction_service.PredictRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[prediction_service.PredictRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        prediction_service.PredictRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for predict
 
         Override in a subclass to manipulate the request or metadata
@@ -219,7 +229,7 @@ class PredictionServiceRestTransport(_BasePredictionServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> prediction_service.PredictResponse:
             r"""Call the predict method over HTTP.
 
@@ -229,8 +239,10 @@ class PredictionServiceRestTransport(_BasePredictionServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.prediction_service.PredictResponse:
@@ -240,6 +252,7 @@ class PredictionServiceRestTransport(_BasePredictionServiceRestTransport):
             http_options = (
                 _BasePredictionServiceRestTransport._BasePredict._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_predict(request, metadata)
             transcoded_request = _BasePredictionServiceRestTransport._BasePredict._get_transcoded_request(
                 http_options, request
@@ -257,6 +270,33 @@ class PredictionServiceRestTransport(_BasePredictionServiceRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.recommendationengine_v1beta1.PredictionServiceClient.Predict",
+                    extra={
+                        "serviceName": "google.cloud.recommendationengine.v1beta1.PredictionService",
+                        "rpcName": "Predict",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = PredictionServiceRestTransport._Predict._get_response(
@@ -279,7 +319,31 @@ class PredictionServiceRestTransport(_BasePredictionServiceRestTransport):
             pb_resp = prediction_service.PredictResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_predict(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = prediction_service.PredictResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.recommendationengine_v1beta1.PredictionServiceClient.predict",
+                    extra={
+                        "serviceName": "google.cloud.recommendationengine.v1beta1.PredictionService",
+                        "rpcName": "Predict",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property

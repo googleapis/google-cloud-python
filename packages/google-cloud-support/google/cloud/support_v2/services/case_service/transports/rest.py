@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -39,6 +39,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -135,8 +143,8 @@ class CaseServiceRestInterceptor:
     def pre_close_case(
         self,
         request: case_service.CloseCaseRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[case_service.CloseCaseRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[case_service.CloseCaseRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for close_case
 
         Override in a subclass to manipulate the request or metadata
@@ -156,8 +164,8 @@ class CaseServiceRestInterceptor:
     def pre_create_case(
         self,
         request: case_service.CreateCaseRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[case_service.CreateCaseRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[case_service.CreateCaseRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_case
 
         Override in a subclass to manipulate the request or metadata
@@ -177,8 +185,10 @@ class CaseServiceRestInterceptor:
     def pre_escalate_case(
         self,
         request: case_service.EscalateCaseRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[case_service.EscalateCaseRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        case_service.EscalateCaseRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for escalate_case
 
         Override in a subclass to manipulate the request or metadata
@@ -196,8 +206,10 @@ class CaseServiceRestInterceptor:
         return response
 
     def pre_get_case(
-        self, request: case_service.GetCaseRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[case_service.GetCaseRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: case_service.GetCaseRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[case_service.GetCaseRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_case
 
         Override in a subclass to manipulate the request or metadata
@@ -217,8 +229,8 @@ class CaseServiceRestInterceptor:
     def pre_list_cases(
         self,
         request: case_service.ListCasesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[case_service.ListCasesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[case_service.ListCasesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_cases
 
         Override in a subclass to manipulate the request or metadata
@@ -240,9 +252,10 @@ class CaseServiceRestInterceptor:
     def pre_search_case_classifications(
         self,
         request: case_service.SearchCaseClassificationsRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        case_service.SearchCaseClassificationsRequest, Sequence[Tuple[str, str]]
+        case_service.SearchCaseClassificationsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for search_case_classifications
 
@@ -265,8 +278,10 @@ class CaseServiceRestInterceptor:
     def pre_search_cases(
         self,
         request: case_service.SearchCasesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[case_service.SearchCasesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        case_service.SearchCasesRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for search_cases
 
         Override in a subclass to manipulate the request or metadata
@@ -288,8 +303,8 @@ class CaseServiceRestInterceptor:
     def pre_update_case(
         self,
         request: case_service.UpdateCaseRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[case_service.UpdateCaseRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[case_service.UpdateCaseRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_case
 
         Override in a subclass to manipulate the request or metadata
@@ -426,7 +441,7 @@ class CaseServiceRestTransport(_BaseCaseServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> case.Case:
             r"""Call the close case method over HTTP.
 
@@ -437,8 +452,10 @@ class CaseServiceRestTransport(_BaseCaseServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.case.Case:
@@ -448,6 +465,7 @@ class CaseServiceRestTransport(_BaseCaseServiceRestTransport):
             http_options = (
                 _BaseCaseServiceRestTransport._BaseCloseCase._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_close_case(request, metadata)
             transcoded_request = (
                 _BaseCaseServiceRestTransport._BaseCloseCase._get_transcoded_request(
@@ -465,6 +483,33 @@ class CaseServiceRestTransport(_BaseCaseServiceRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.support_v2.CaseServiceClient.CloseCase",
+                    extra={
+                        "serviceName": "google.cloud.support.v2.CaseService",
+                        "rpcName": "CloseCase",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CaseServiceRestTransport._CloseCase._get_response(
@@ -487,7 +532,29 @@ class CaseServiceRestTransport(_BaseCaseServiceRestTransport):
             pb_resp = case.Case.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_close_case(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = case.Case.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.support_v2.CaseServiceClient.close_case",
+                    extra={
+                        "serviceName": "google.cloud.support.v2.CaseService",
+                        "rpcName": "CloseCase",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateCase(
@@ -525,7 +592,7 @@ class CaseServiceRestTransport(_BaseCaseServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gcs_case.Case:
             r"""Call the create case method over HTTP.
 
@@ -536,8 +603,10 @@ class CaseServiceRestTransport(_BaseCaseServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.gcs_case.Case:
@@ -547,6 +616,7 @@ class CaseServiceRestTransport(_BaseCaseServiceRestTransport):
             http_options = (
                 _BaseCaseServiceRestTransport._BaseCreateCase._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_case(request, metadata)
             transcoded_request = (
                 _BaseCaseServiceRestTransport._BaseCreateCase._get_transcoded_request(
@@ -564,6 +634,33 @@ class CaseServiceRestTransport(_BaseCaseServiceRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.support_v2.CaseServiceClient.CreateCase",
+                    extra={
+                        "serviceName": "google.cloud.support.v2.CaseService",
+                        "rpcName": "CreateCase",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CaseServiceRestTransport._CreateCase._get_response(
@@ -586,7 +683,29 @@ class CaseServiceRestTransport(_BaseCaseServiceRestTransport):
             pb_resp = gcs_case.Case.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_case(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gcs_case.Case.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.support_v2.CaseServiceClient.create_case",
+                    extra={
+                        "serviceName": "google.cloud.support.v2.CaseService",
+                        "rpcName": "CreateCase",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _EscalateCase(
@@ -624,7 +743,7 @@ class CaseServiceRestTransport(_BaseCaseServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> case.Case:
             r"""Call the escalate case method over HTTP.
 
@@ -635,8 +754,10 @@ class CaseServiceRestTransport(_BaseCaseServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.case.Case:
@@ -646,6 +767,7 @@ class CaseServiceRestTransport(_BaseCaseServiceRestTransport):
             http_options = (
                 _BaseCaseServiceRestTransport._BaseEscalateCase._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_escalate_case(request, metadata)
             transcoded_request = (
                 _BaseCaseServiceRestTransport._BaseEscalateCase._get_transcoded_request(
@@ -665,6 +787,33 @@ class CaseServiceRestTransport(_BaseCaseServiceRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.support_v2.CaseServiceClient.EscalateCase",
+                    extra={
+                        "serviceName": "google.cloud.support.v2.CaseService",
+                        "rpcName": "EscalateCase",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CaseServiceRestTransport._EscalateCase._get_response(
@@ -687,7 +836,29 @@ class CaseServiceRestTransport(_BaseCaseServiceRestTransport):
             pb_resp = case.Case.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_escalate_case(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = case.Case.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.support_v2.CaseServiceClient.escalate_case",
+                    extra={
+                        "serviceName": "google.cloud.support.v2.CaseService",
+                        "rpcName": "EscalateCase",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetCase(_BaseCaseServiceRestTransport._BaseGetCase, CaseServiceRestStub):
@@ -722,7 +893,7 @@ class CaseServiceRestTransport(_BaseCaseServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> case.Case:
             r"""Call the get case method over HTTP.
 
@@ -733,8 +904,10 @@ class CaseServiceRestTransport(_BaseCaseServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.case.Case:
@@ -744,6 +917,7 @@ class CaseServiceRestTransport(_BaseCaseServiceRestTransport):
             http_options = (
                 _BaseCaseServiceRestTransport._BaseGetCase._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_case(request, metadata)
             transcoded_request = (
                 _BaseCaseServiceRestTransport._BaseGetCase._get_transcoded_request(
@@ -757,6 +931,33 @@ class CaseServiceRestTransport(_BaseCaseServiceRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.support_v2.CaseServiceClient.GetCase",
+                    extra={
+                        "serviceName": "google.cloud.support.v2.CaseService",
+                        "rpcName": "GetCase",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CaseServiceRestTransport._GetCase._get_response(
@@ -778,7 +979,29 @@ class CaseServiceRestTransport(_BaseCaseServiceRestTransport):
             pb_resp = case.Case.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_case(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = case.Case.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.support_v2.CaseServiceClient.get_case",
+                    extra={
+                        "serviceName": "google.cloud.support.v2.CaseService",
+                        "rpcName": "GetCase",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListCases(_BaseCaseServiceRestTransport._BaseListCases, CaseServiceRestStub):
@@ -813,7 +1036,7 @@ class CaseServiceRestTransport(_BaseCaseServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> case_service.ListCasesResponse:
             r"""Call the list cases method over HTTP.
 
@@ -824,8 +1047,10 @@ class CaseServiceRestTransport(_BaseCaseServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.case_service.ListCasesResponse:
@@ -837,6 +1062,7 @@ class CaseServiceRestTransport(_BaseCaseServiceRestTransport):
             http_options = (
                 _BaseCaseServiceRestTransport._BaseListCases._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_cases(request, metadata)
             transcoded_request = (
                 _BaseCaseServiceRestTransport._BaseListCases._get_transcoded_request(
@@ -850,6 +1076,33 @@ class CaseServiceRestTransport(_BaseCaseServiceRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.support_v2.CaseServiceClient.ListCases",
+                    extra={
+                        "serviceName": "google.cloud.support.v2.CaseService",
+                        "rpcName": "ListCases",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CaseServiceRestTransport._ListCases._get_response(
@@ -871,7 +1124,29 @@ class CaseServiceRestTransport(_BaseCaseServiceRestTransport):
             pb_resp = case_service.ListCasesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_cases(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = case_service.ListCasesResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.support_v2.CaseServiceClient.list_cases",
+                    extra={
+                        "serviceName": "google.cloud.support.v2.CaseService",
+                        "rpcName": "ListCases",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _SearchCaseClassifications(
@@ -909,7 +1184,7 @@ class CaseServiceRestTransport(_BaseCaseServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> case_service.SearchCaseClassificationsResponse:
             r"""Call the search case
             classifications method over HTTP.
@@ -921,8 +1196,10 @@ class CaseServiceRestTransport(_BaseCaseServiceRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.case_service.SearchCaseClassificationsResponse:
@@ -934,6 +1211,7 @@ class CaseServiceRestTransport(_BaseCaseServiceRestTransport):
             http_options = (
                 _BaseCaseServiceRestTransport._BaseSearchCaseClassifications._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_search_case_classifications(
                 request, metadata
             )
@@ -945,6 +1223,33 @@ class CaseServiceRestTransport(_BaseCaseServiceRestTransport):
             query_params = _BaseCaseServiceRestTransport._BaseSearchCaseClassifications._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.support_v2.CaseServiceClient.SearchCaseClassifications",
+                    extra={
+                        "serviceName": "google.cloud.support.v2.CaseService",
+                        "rpcName": "SearchCaseClassifications",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -968,7 +1273,31 @@ class CaseServiceRestTransport(_BaseCaseServiceRestTransport):
             pb_resp = case_service.SearchCaseClassificationsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_search_case_classifications(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        case_service.SearchCaseClassificationsResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.support_v2.CaseServiceClient.search_case_classifications",
+                    extra={
+                        "serviceName": "google.cloud.support.v2.CaseService",
+                        "rpcName": "SearchCaseClassifications",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _SearchCases(
@@ -1005,7 +1334,7 @@ class CaseServiceRestTransport(_BaseCaseServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> case_service.SearchCasesResponse:
             r"""Call the search cases method over HTTP.
 
@@ -1016,8 +1345,10 @@ class CaseServiceRestTransport(_BaseCaseServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.case_service.SearchCasesResponse:
@@ -1029,6 +1360,7 @@ class CaseServiceRestTransport(_BaseCaseServiceRestTransport):
             http_options = (
                 _BaseCaseServiceRestTransport._BaseSearchCases._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_search_cases(request, metadata)
             transcoded_request = (
                 _BaseCaseServiceRestTransport._BaseSearchCases._get_transcoded_request(
@@ -1042,6 +1374,33 @@ class CaseServiceRestTransport(_BaseCaseServiceRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.support_v2.CaseServiceClient.SearchCases",
+                    extra={
+                        "serviceName": "google.cloud.support.v2.CaseService",
+                        "rpcName": "SearchCases",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CaseServiceRestTransport._SearchCases._get_response(
@@ -1063,7 +1422,31 @@ class CaseServiceRestTransport(_BaseCaseServiceRestTransport):
             pb_resp = case_service.SearchCasesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_search_cases(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = case_service.SearchCasesResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.support_v2.CaseServiceClient.search_cases",
+                    extra={
+                        "serviceName": "google.cloud.support.v2.CaseService",
+                        "rpcName": "SearchCases",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateCase(
@@ -1101,7 +1484,7 @@ class CaseServiceRestTransport(_BaseCaseServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gcs_case.Case:
             r"""Call the update case method over HTTP.
 
@@ -1112,8 +1495,10 @@ class CaseServiceRestTransport(_BaseCaseServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.gcs_case.Case:
@@ -1123,6 +1508,7 @@ class CaseServiceRestTransport(_BaseCaseServiceRestTransport):
             http_options = (
                 _BaseCaseServiceRestTransport._BaseUpdateCase._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_case(request, metadata)
             transcoded_request = (
                 _BaseCaseServiceRestTransport._BaseUpdateCase._get_transcoded_request(
@@ -1140,6 +1526,33 @@ class CaseServiceRestTransport(_BaseCaseServiceRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.support_v2.CaseServiceClient.UpdateCase",
+                    extra={
+                        "serviceName": "google.cloud.support.v2.CaseService",
+                        "rpcName": "UpdateCase",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CaseServiceRestTransport._UpdateCase._get_response(
@@ -1162,7 +1575,29 @@ class CaseServiceRestTransport(_BaseCaseServiceRestTransport):
             pb_resp = gcs_case.Case.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_case(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gcs_case.Case.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.support_v2.CaseServiceClient.update_case",
+                    extra={
+                        "serviceName": "google.cloud.support.v2.CaseService",
+                        "rpcName": "UpdateCase",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property

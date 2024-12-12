@@ -8,7 +8,7 @@
     ],
     "language": "PYTHON",
     "name": "google-cloud-security-publicca",
-    "version": "0.3.14"
+    "version": "0.1.0"
   },
   "snippets": [
     {
@@ -51,7 +51,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.security.publicca_v1.types.ExternalAccountKey",
@@ -135,7 +135,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.security.publicca_v1.types.ExternalAccountKey",
