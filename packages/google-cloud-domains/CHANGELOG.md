@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.9.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-domains-v1.8.1...google-cloud-domains-v1.9.0) (2024-12-12)
+
+
+### Features
+
+* Add support for opt-in debug logging ([819e8fb](https://github.com/googleapis/google-cloud-python/commit/819e8fb3159c39f6c8eb6d7c0b75927134d6ceb2))
+
+
+### Bug Fixes
+
+* Fix typing issue with gRPC metadata when key ends in -bin ([819e8fb](https://github.com/googleapis/google-cloud-python/commit/819e8fb3159c39f6c8eb6d7c0b75927134d6ceb2))
+
 ## [1.8.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-domains-v1.8.0...google-cloud-domains-v1.8.1) (2024-11-11)
 
 

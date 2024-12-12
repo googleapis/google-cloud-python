@@ -1,5 +1,27 @@
 # Changelog
 
+## [2.5.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-deploy-v2.4.1...google-cloud-deploy-v2.5.0) (2024-12-12)
+
+
+### Features
+
+* A new field `dns_endpoint` is added to message `.google.cloud.deploy.v1.GkeCluster` ([a33d01b](https://github.com/googleapis/google-cloud-python/commit/a33d01b5f63a30bae8afaf90ad7f29f73c66a02d))
+* Add support for opt-in debug logging ([19ed3be](https://github.com/googleapis/google-cloud-python/commit/19ed3bec7fcbc09aa5828180778ffc828d3eafa3))
+
+
+### Bug Fixes
+
+* Fix typing issue with gRPC metadata when key ends in -bin ([19ed3be](https://github.com/googleapis/google-cloud-python/commit/19ed3bec7fcbc09aa5828180778ffc828d3eafa3))
+
+
+### Documentation
+
+* `skaffold_version` field is no longer explicitly marked as optional ([d26c55b](https://github.com/googleapis/google-cloud-python/commit/d26c55b78f1522dd3a1628dc41d4c76063334c25))
+* A comment for field `internal_ip` in message `.google.cloud.deploy.v1.GkeCluster` is changed ([a33d01b](https://github.com/googleapis/google-cloud-python/commit/a33d01b5f63a30bae8afaf90ad7f29f73c66a02d))
+* A comment for field `requested_cancellation` in message `.google.cloud.deploy.v1.OperationMetadata` is changed ([a33d01b](https://github.com/googleapis/google-cloud-python/commit/a33d01b5f63a30bae8afaf90ad7f29f73c66a02d))
+* A comment for field `skaffold_version` in message `.google.cloud.deploy.v1.Release` is changed ([a33d01b](https://github.com/googleapis/google-cloud-python/commit/a33d01b5f63a30bae8afaf90ad7f29f73c66a02d))
+* documentation improvements ([d26c55b](https://github.com/googleapis/google-cloud-python/commit/d26c55b78f1522dd3a1628dc41d4c76063334c25))
+
 ## [2.4.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-deploy-v2.4.0...google-cloud-deploy-v2.4.1) (2024-11-21)
 
 

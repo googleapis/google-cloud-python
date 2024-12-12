@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.5.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataplex-v2.4.0...google-cloud-dataplex-v2.5.0) (2024-12-12)
+
+
+### Features
+
+* Add support for opt-in debug logging ([19ed3be](https://github.com/googleapis/google-cloud-python/commit/19ed3bec7fcbc09aa5828180778ffc828d3eafa3))
+
+
+### Bug Fixes
+
+* Fix typing issue with gRPC metadata when key ends in -bin ([19ed3be](https://github.com/googleapis/google-cloud-python/commit/19ed3bec7fcbc09aa5828180778ffc828d3eafa3))
+
 ## [2.4.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataplex-v2.3.1...google-cloud-dataplex-v2.4.0) (2024-11-15)
 
 

@@ -4,6 +4,24 @@
 
 [1]: https://pypi.org/project/google-cloud-dialogflow/#history
 
+## [2.37.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dialogflow-v2.36.0...google-cloud-dialogflow-v2.37.0) (2024-12-12)
+
+
+### Features
+
+* Add support for opt-in debug logging ([247863d](https://github.com/googleapis/google-cloud-python/commit/247863d68bed85b452aff82b444bcef222e0c1c1))
+* properly mark TrainingPhrase name field output-only ([247863d](https://github.com/googleapis/google-cloud-python/commit/247863d68bed85b452aff82b444bcef222e0c1c1))
+
+
+### Bug Fixes
+
+* Fix typing issue with gRPC metadata when key ends in -bin ([247863d](https://github.com/googleapis/google-cloud-python/commit/247863d68bed85b452aff82b444bcef222e0c1c1))
+
+
+### Documentation
+
+* fixed the references to proto method / fields ([247863d](https://github.com/googleapis/google-cloud-python/commit/247863d68bed85b452aff82b444bcef222e0c1c1))
+
 ## [2.36.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dialogflow-v2.35.0...google-cloud-dialogflow-v2.36.0) (2024-11-14)
 
 
