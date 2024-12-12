@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -41,6 +41,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -125,9 +133,10 @@ class WorkflowTemplateServiceRestInterceptor:
     def pre_create_workflow_template(
         self,
         request: workflow_templates.CreateWorkflowTemplateRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        workflow_templates.CreateWorkflowTemplateRequest, Sequence[Tuple[str, str]]
+        workflow_templates.CreateWorkflowTemplateRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for create_workflow_template
 
@@ -150,9 +159,10 @@ class WorkflowTemplateServiceRestInterceptor:
     def pre_delete_workflow_template(
         self,
         request: workflow_templates.DeleteWorkflowTemplateRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        workflow_templates.DeleteWorkflowTemplateRequest, Sequence[Tuple[str, str]]
+        workflow_templates.DeleteWorkflowTemplateRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for delete_workflow_template
 
@@ -164,9 +174,10 @@ class WorkflowTemplateServiceRestInterceptor:
     def pre_get_workflow_template(
         self,
         request: workflow_templates.GetWorkflowTemplateRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        workflow_templates.GetWorkflowTemplateRequest, Sequence[Tuple[str, str]]
+        workflow_templates.GetWorkflowTemplateRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for get_workflow_template
 
@@ -189,10 +200,10 @@ class WorkflowTemplateServiceRestInterceptor:
     def pre_instantiate_inline_workflow_template(
         self,
         request: workflow_templates.InstantiateInlineWorkflowTemplateRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         workflow_templates.InstantiateInlineWorkflowTemplateRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for instantiate_inline_workflow_template
 
@@ -215,9 +226,10 @@ class WorkflowTemplateServiceRestInterceptor:
     def pre_instantiate_workflow_template(
         self,
         request: workflow_templates.InstantiateWorkflowTemplateRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        workflow_templates.InstantiateWorkflowTemplateRequest, Sequence[Tuple[str, str]]
+        workflow_templates.InstantiateWorkflowTemplateRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for instantiate_workflow_template
 
@@ -240,9 +252,10 @@ class WorkflowTemplateServiceRestInterceptor:
     def pre_list_workflow_templates(
         self,
         request: workflow_templates.ListWorkflowTemplatesRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        workflow_templates.ListWorkflowTemplatesRequest, Sequence[Tuple[str, str]]
+        workflow_templates.ListWorkflowTemplatesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for list_workflow_templates
 
@@ -265,9 +278,10 @@ class WorkflowTemplateServiceRestInterceptor:
     def pre_update_workflow_template(
         self,
         request: workflow_templates.UpdateWorkflowTemplateRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        workflow_templates.UpdateWorkflowTemplateRequest, Sequence[Tuple[str, str]]
+        workflow_templates.UpdateWorkflowTemplateRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for update_workflow_template
 
@@ -290,8 +304,10 @@ class WorkflowTemplateServiceRestInterceptor:
     def pre_get_iam_policy(
         self,
         request: iam_policy_pb2.GetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -311,8 +327,10 @@ class WorkflowTemplateServiceRestInterceptor:
     def pre_set_iam_policy(
         self,
         request: iam_policy_pb2.SetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -332,8 +350,11 @@ class WorkflowTemplateServiceRestInterceptor:
     def pre_test_iam_permissions(
         self,
         request: iam_policy_pb2.TestIamPermissionsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.TestIamPermissionsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -355,8 +376,10 @@ class WorkflowTemplateServiceRestInterceptor:
     def pre_cancel_operation(
         self,
         request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -376,8 +399,10 @@ class WorkflowTemplateServiceRestInterceptor:
     def pre_delete_operation(
         self,
         request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -397,8 +422,10 @@ class WorkflowTemplateServiceRestInterceptor:
     def pre_get_operation(
         self,
         request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -420,8 +447,10 @@ class WorkflowTemplateServiceRestInterceptor:
     def pre_list_operations(
         self,
         request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -633,7 +662,7 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> workflow_templates.WorkflowTemplate:
             r"""Call the create workflow template method over HTTP.
 
@@ -644,8 +673,10 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.workflow_templates.WorkflowTemplate:
@@ -657,6 +688,7 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
             http_options = (
                 _BaseWorkflowTemplateServiceRestTransport._BaseCreateWorkflowTemplate._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_workflow_template(
                 request, metadata
             )
@@ -672,6 +704,33 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
             query_params = _BaseWorkflowTemplateServiceRestTransport._BaseCreateWorkflowTemplate._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataproc_v1.WorkflowTemplateServiceClient.CreateWorkflowTemplate",
+                    extra={
+                        "serviceName": "google.cloud.dataproc.v1.WorkflowTemplateService",
+                        "rpcName": "CreateWorkflowTemplate",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = WorkflowTemplateServiceRestTransport._CreateWorkflowTemplate._get_response(
@@ -694,7 +753,31 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
             pb_resp = workflow_templates.WorkflowTemplate.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_workflow_template(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = workflow_templates.WorkflowTemplate.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dataproc_v1.WorkflowTemplateServiceClient.create_workflow_template",
+                    extra={
+                        "serviceName": "google.cloud.dataproc.v1.WorkflowTemplateService",
+                        "rpcName": "CreateWorkflowTemplate",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteWorkflowTemplate(
@@ -732,7 +815,7 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete workflow template method over HTTP.
 
@@ -745,13 +828,16 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseWorkflowTemplateServiceRestTransport._BaseDeleteWorkflowTemplate._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_workflow_template(
                 request, metadata
             )
@@ -763,6 +849,33 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
             query_params = _BaseWorkflowTemplateServiceRestTransport._BaseDeleteWorkflowTemplate._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataproc_v1.WorkflowTemplateServiceClient.DeleteWorkflowTemplate",
+                    extra={
+                        "serviceName": "google.cloud.dataproc.v1.WorkflowTemplateService",
+                        "rpcName": "DeleteWorkflowTemplate",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = WorkflowTemplateServiceRestTransport._DeleteWorkflowTemplate._get_response(
@@ -814,7 +927,7 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> workflow_templates.WorkflowTemplate:
             r"""Call the get workflow template method over HTTP.
 
@@ -825,8 +938,10 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.workflow_templates.WorkflowTemplate:
@@ -838,6 +953,7 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
             http_options = (
                 _BaseWorkflowTemplateServiceRestTransport._BaseGetWorkflowTemplate._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_workflow_template(
                 request, metadata
             )
@@ -849,6 +965,33 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
             query_params = _BaseWorkflowTemplateServiceRestTransport._BaseGetWorkflowTemplate._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataproc_v1.WorkflowTemplateServiceClient.GetWorkflowTemplate",
+                    extra={
+                        "serviceName": "google.cloud.dataproc.v1.WorkflowTemplateService",
+                        "rpcName": "GetWorkflowTemplate",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -872,7 +1015,31 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
             pb_resp = workflow_templates.WorkflowTemplate.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_workflow_template(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = workflow_templates.WorkflowTemplate.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dataproc_v1.WorkflowTemplateServiceClient.get_workflow_template",
+                    extra={
+                        "serviceName": "google.cloud.dataproc.v1.WorkflowTemplateService",
+                        "rpcName": "GetWorkflowTemplate",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _InstantiateInlineWorkflowTemplate(
@@ -913,7 +1080,7 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the instantiate inline
             workflow template method over HTTP.
@@ -925,8 +1092,10 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.operations_pb2.Operation:
@@ -939,6 +1108,7 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
             http_options = (
                 _BaseWorkflowTemplateServiceRestTransport._BaseInstantiateInlineWorkflowTemplate._get_http_options()
             )
+
             (
                 request,
                 metadata,
@@ -957,6 +1127,33 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
             query_params = _BaseWorkflowTemplateServiceRestTransport._BaseInstantiateInlineWorkflowTemplate._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataproc_v1.WorkflowTemplateServiceClient.InstantiateInlineWorkflowTemplate",
+                    extra={
+                        "serviceName": "google.cloud.dataproc.v1.WorkflowTemplateService",
+                        "rpcName": "InstantiateInlineWorkflowTemplate",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = WorkflowTemplateServiceRestTransport._InstantiateInlineWorkflowTemplate._get_response(
@@ -977,7 +1174,29 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_instantiate_inline_workflow_template(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dataproc_v1.WorkflowTemplateServiceClient.instantiate_inline_workflow_template",
+                    extra={
+                        "serviceName": "google.cloud.dataproc.v1.WorkflowTemplateService",
+                        "rpcName": "InstantiateInlineWorkflowTemplate",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _InstantiateWorkflowTemplate(
@@ -1018,7 +1237,7 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the instantiate workflow
             template method over HTTP.
@@ -1030,8 +1249,10 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.operations_pb2.Operation:
@@ -1044,6 +1265,7 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
             http_options = (
                 _BaseWorkflowTemplateServiceRestTransport._BaseInstantiateWorkflowTemplate._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_instantiate_workflow_template(
                 request, metadata
             )
@@ -1059,6 +1281,33 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
             query_params = _BaseWorkflowTemplateServiceRestTransport._BaseInstantiateWorkflowTemplate._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataproc_v1.WorkflowTemplateServiceClient.InstantiateWorkflowTemplate",
+                    extra={
+                        "serviceName": "google.cloud.dataproc.v1.WorkflowTemplateService",
+                        "rpcName": "InstantiateWorkflowTemplate",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = WorkflowTemplateServiceRestTransport._InstantiateWorkflowTemplate._get_response(
@@ -1079,7 +1328,29 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_instantiate_workflow_template(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dataproc_v1.WorkflowTemplateServiceClient.instantiate_workflow_template",
+                    extra={
+                        "serviceName": "google.cloud.dataproc.v1.WorkflowTemplateService",
+                        "rpcName": "InstantiateWorkflowTemplate",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListWorkflowTemplates(
@@ -1117,7 +1388,7 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> workflow_templates.ListWorkflowTemplatesResponse:
             r"""Call the list workflow templates method over HTTP.
 
@@ -1128,8 +1399,10 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.workflow_templates.ListWorkflowTemplatesResponse:
@@ -1141,6 +1414,7 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
             http_options = (
                 _BaseWorkflowTemplateServiceRestTransport._BaseListWorkflowTemplates._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_workflow_templates(
                 request, metadata
             )
@@ -1152,6 +1426,33 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
             query_params = _BaseWorkflowTemplateServiceRestTransport._BaseListWorkflowTemplates._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataproc_v1.WorkflowTemplateServiceClient.ListWorkflowTemplates",
+                    extra={
+                        "serviceName": "google.cloud.dataproc.v1.WorkflowTemplateService",
+                        "rpcName": "ListWorkflowTemplates",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = WorkflowTemplateServiceRestTransport._ListWorkflowTemplates._get_response(
@@ -1173,7 +1474,33 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
             pb_resp = workflow_templates.ListWorkflowTemplatesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_workflow_templates(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        workflow_templates.ListWorkflowTemplatesResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dataproc_v1.WorkflowTemplateServiceClient.list_workflow_templates",
+                    extra={
+                        "serviceName": "google.cloud.dataproc.v1.WorkflowTemplateService",
+                        "rpcName": "ListWorkflowTemplates",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateWorkflowTemplate(
@@ -1212,7 +1539,7 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> workflow_templates.WorkflowTemplate:
             r"""Call the update workflow template method over HTTP.
 
@@ -1223,8 +1550,10 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.workflow_templates.WorkflowTemplate:
@@ -1236,6 +1565,7 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
             http_options = (
                 _BaseWorkflowTemplateServiceRestTransport._BaseUpdateWorkflowTemplate._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_workflow_template(
                 request, metadata
             )
@@ -1251,6 +1581,33 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
             query_params = _BaseWorkflowTemplateServiceRestTransport._BaseUpdateWorkflowTemplate._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataproc_v1.WorkflowTemplateServiceClient.UpdateWorkflowTemplate",
+                    extra={
+                        "serviceName": "google.cloud.dataproc.v1.WorkflowTemplateService",
+                        "rpcName": "UpdateWorkflowTemplate",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = WorkflowTemplateServiceRestTransport._UpdateWorkflowTemplate._get_response(
@@ -1273,7 +1630,31 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
             pb_resp = workflow_templates.WorkflowTemplate.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_workflow_template(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = workflow_templates.WorkflowTemplate.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dataproc_v1.WorkflowTemplateServiceClient.update_workflow_template",
+                    extra={
+                        "serviceName": "google.cloud.dataproc.v1.WorkflowTemplateService",
+                        "rpcName": "UpdateWorkflowTemplate",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -1390,7 +1771,7 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> policy_pb2.Policy:
             r"""Call the get iam policy method over HTTP.
 
@@ -1400,8 +1781,10 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 policy_pb2.Policy: Response from GetIamPolicy method.
@@ -1410,6 +1793,7 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
             http_options = (
                 _BaseWorkflowTemplateServiceRestTransport._BaseGetIamPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
             transcoded_request = _BaseWorkflowTemplateServiceRestTransport._BaseGetIamPolicy._get_transcoded_request(
                 http_options, request
@@ -1423,6 +1807,33 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
             query_params = _BaseWorkflowTemplateServiceRestTransport._BaseGetIamPolicy._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataproc_v1.WorkflowTemplateServiceClient.GetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.dataproc.v1.WorkflowTemplateService",
+                        "rpcName": "GetIamPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = WorkflowTemplateServiceRestTransport._GetIamPolicy._get_response(
@@ -1444,6 +1855,27 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_iam_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dataproc_v1.WorkflowTemplateServiceAsyncClient.GetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.dataproc.v1.WorkflowTemplateService",
+                        "rpcName": "GetIamPolicy",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -1486,7 +1918,7 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> policy_pb2.Policy:
             r"""Call the set iam policy method over HTTP.
 
@@ -1496,8 +1928,10 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 policy_pb2.Policy: Response from SetIamPolicy method.
@@ -1506,6 +1940,7 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
             http_options = (
                 _BaseWorkflowTemplateServiceRestTransport._BaseSetIamPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
             transcoded_request = _BaseWorkflowTemplateServiceRestTransport._BaseSetIamPolicy._get_transcoded_request(
                 http_options, request
@@ -1519,6 +1954,33 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
             query_params = _BaseWorkflowTemplateServiceRestTransport._BaseSetIamPolicy._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataproc_v1.WorkflowTemplateServiceClient.SetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.dataproc.v1.WorkflowTemplateService",
+                        "rpcName": "SetIamPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = WorkflowTemplateServiceRestTransport._SetIamPolicy._get_response(
@@ -1540,6 +2002,27 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_set_iam_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dataproc_v1.WorkflowTemplateServiceAsyncClient.SetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.dataproc.v1.WorkflowTemplateService",
+                        "rpcName": "SetIamPolicy",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -1582,7 +2065,7 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> iam_policy_pb2.TestIamPermissionsResponse:
             r"""Call the test iam permissions method over HTTP.
 
@@ -1592,8 +2075,10 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 iam_policy_pb2.TestIamPermissionsResponse: Response from TestIamPermissions method.
@@ -1602,6 +2087,7 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
             http_options = (
                 _BaseWorkflowTemplateServiceRestTransport._BaseTestIamPermissions._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata
             )
@@ -1617,6 +2103,33 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
             query_params = _BaseWorkflowTemplateServiceRestTransport._BaseTestIamPermissions._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataproc_v1.WorkflowTemplateServiceClient.TestIamPermissions",
+                    extra={
+                        "serviceName": "google.cloud.dataproc.v1.WorkflowTemplateService",
+                        "rpcName": "TestIamPermissions",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1640,6 +2153,27 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
             resp = iam_policy_pb2.TestIamPermissionsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_test_iam_permissions(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dataproc_v1.WorkflowTemplateServiceAsyncClient.TestIamPermissions",
+                    extra={
+                        "serviceName": "google.cloud.dataproc.v1.WorkflowTemplateService",
+                        "rpcName": "TestIamPermissions",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -1681,7 +2215,7 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the cancel operation method over HTTP.
 
@@ -1691,13 +2225,16 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseWorkflowTemplateServiceRestTransport._BaseCancelOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
@@ -1709,6 +2246,33 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
             query_params = _BaseWorkflowTemplateServiceRestTransport._BaseCancelOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataproc_v1.WorkflowTemplateServiceClient.CancelOperation",
+                    extra={
+                        "serviceName": "google.cloud.dataproc.v1.WorkflowTemplateService",
+                        "rpcName": "CancelOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1768,7 +2332,7 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the delete operation method over HTTP.
 
@@ -1778,13 +2342,16 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseWorkflowTemplateServiceRestTransport._BaseDeleteOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
             )
@@ -1796,6 +2363,33 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
             query_params = _BaseWorkflowTemplateServiceRestTransport._BaseDeleteOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataproc_v1.WorkflowTemplateServiceClient.DeleteOperation",
+                    extra={
+                        "serviceName": "google.cloud.dataproc.v1.WorkflowTemplateService",
+                        "rpcName": "DeleteOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1855,7 +2449,7 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the get operation method over HTTP.
 
@@ -1865,8 +2459,10 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.
@@ -1875,6 +2471,7 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
             http_options = (
                 _BaseWorkflowTemplateServiceRestTransport._BaseGetOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseWorkflowTemplateServiceRestTransport._BaseGetOperation._get_transcoded_request(
                 http_options, request
@@ -1884,6 +2481,33 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
             query_params = _BaseWorkflowTemplateServiceRestTransport._BaseGetOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataproc_v1.WorkflowTemplateServiceClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.dataproc.v1.WorkflowTemplateService",
+                        "rpcName": "GetOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = WorkflowTemplateServiceRestTransport._GetOperation._get_response(
@@ -1904,6 +2528,27 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dataproc_v1.WorkflowTemplateServiceAsyncClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.dataproc.v1.WorkflowTemplateService",
+                        "rpcName": "GetOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -1945,7 +2590,7 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.ListOperationsResponse:
             r"""Call the list operations method over HTTP.
 
@@ -1955,8 +2600,10 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
@@ -1965,6 +2612,7 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
             http_options = (
                 _BaseWorkflowTemplateServiceRestTransport._BaseListOperations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseWorkflowTemplateServiceRestTransport._BaseListOperations._get_transcoded_request(
                 http_options, request
@@ -1974,6 +2622,33 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
             query_params = _BaseWorkflowTemplateServiceRestTransport._BaseListOperations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataproc_v1.WorkflowTemplateServiceClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.dataproc.v1.WorkflowTemplateService",
+                        "rpcName": "ListOperations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1996,6 +2671,27 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dataproc_v1.WorkflowTemplateServiceAsyncClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.dataproc.v1.WorkflowTemplateService",
+                        "rpcName": "ListOperations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property

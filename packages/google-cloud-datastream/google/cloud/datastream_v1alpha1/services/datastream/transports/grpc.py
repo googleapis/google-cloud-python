@@ -13,6 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import json
+import logging as std_logging
+import pickle
 from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -21,11 +24,89 @@ import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf.json_format import MessageToJson
+import google.protobuf.message
 import grpc  # type: ignore
+import proto  # type: ignore
 
 from google.cloud.datastream_v1alpha1.types import datastream, datastream_resources
 
 from .base import DEFAULT_CLIENT_INFO, DatastreamTransport
+
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = std_logging.getLogger(__name__)
+
+
+class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
+    def intercept_unary_unary(self, continuation, client_call_details, request):
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+            std_logging.DEBUG
+        )
+        if logging_enabled:  # pragma: NO COVER
+            request_metadata = client_call_details.metadata
+            if isinstance(request, proto.Message):
+                request_payload = type(request).to_json(request)
+            elif isinstance(request, google.protobuf.message.Message):
+                request_payload = MessageToJson(request)
+            else:
+                request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
+
+            request_metadata = {
+                key: value.decode("utf-8") if isinstance(value, bytes) else value
+                for key, value in request_metadata
+            }
+            grpc_request = {
+                "payload": request_payload,
+                "requestMethod": "grpc",
+                "metadata": dict(request_metadata),
+            }
+            _LOGGER.debug(
+                f"Sending request for {client_call_details.method}",
+                extra={
+                    "serviceName": "google.cloud.datastream.v1alpha1.Datastream",
+                    "rpcName": client_call_details.method,
+                    "request": grpc_request,
+                    "metadata": grpc_request["metadata"],
+                },
+            )
+
+        response = continuation(client_call_details, request)
+        if logging_enabled:  # pragma: NO COVER
+            response_metadata = response.trailing_metadata()
+            # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
+            metadata = (
+                dict([(k, str(v)) for k, v in response_metadata])
+                if response_metadata
+                else None
+            )
+            result = response.result()
+            if isinstance(result, proto.Message):
+                response_payload = type(result).to_json(result)
+            elif isinstance(result, google.protobuf.message.Message):
+                response_payload = MessageToJson(result)
+            else:
+                response_payload = f"{type(result).__name__}: {pickle.dumps(result)}"
+            grpc_response = {
+                "payload": response_payload,
+                "metadata": metadata,
+                "status": "OK",
+            }
+            _LOGGER.debug(
+                f"Received response for {client_call_details.method}.",
+                extra={
+                    "serviceName": "google.cloud.datastream.v1alpha1.Datastream",
+                    "rpcName": client_call_details.method,
+                    "response": grpc_response,
+                    "metadata": grpc_response["metadata"],
+                },
+            )
+        return response
 
 
 class DatastreamGrpcTransport(DatastreamTransport):
@@ -181,7 +262,12 @@ class DatastreamGrpcTransport(DatastreamTransport):
                 ],
             )
 
-        # Wrap messages. This must be done after self._grpc_channel exists
+        self._interceptor = _LoggingClientInterceptor()
+        self._logged_channel = grpc.intercept_channel(
+            self._grpc_channel, self._interceptor
+        )
+
+        # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
     @classmethod
@@ -245,7 +331,9 @@ class DatastreamGrpcTransport(DatastreamTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsClient(self.grpc_channel)
+            self._operations_client = operations_v1.OperationsClient(
+                self._logged_channel
+            )
 
         # Return the client from cache.
         return self._operations_client
@@ -273,7 +361,7 @@ class DatastreamGrpcTransport(DatastreamTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_connection_profiles" not in self._stubs:
-            self._stubs["list_connection_profiles"] = self.grpc_channel.unary_unary(
+            self._stubs["list_connection_profiles"] = self._logged_channel.unary_unary(
                 "/google.cloud.datastream.v1alpha1.Datastream/ListConnectionProfiles",
                 request_serializer=datastream.ListConnectionProfilesRequest.serialize,
                 response_deserializer=datastream.ListConnectionProfilesResponse.deserialize,
@@ -302,7 +390,7 @@ class DatastreamGrpcTransport(DatastreamTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_connection_profile" not in self._stubs:
-            self._stubs["get_connection_profile"] = self.grpc_channel.unary_unary(
+            self._stubs["get_connection_profile"] = self._logged_channel.unary_unary(
                 "/google.cloud.datastream.v1alpha1.Datastream/GetConnectionProfile",
                 request_serializer=datastream.GetConnectionProfileRequest.serialize,
                 response_deserializer=datastream_resources.ConnectionProfile.deserialize,
@@ -331,7 +419,7 @@ class DatastreamGrpcTransport(DatastreamTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_connection_profile" not in self._stubs:
-            self._stubs["create_connection_profile"] = self.grpc_channel.unary_unary(
+            self._stubs["create_connection_profile"] = self._logged_channel.unary_unary(
                 "/google.cloud.datastream.v1alpha1.Datastream/CreateConnectionProfile",
                 request_serializer=datastream.CreateConnectionProfileRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -360,7 +448,7 @@ class DatastreamGrpcTransport(DatastreamTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_connection_profile" not in self._stubs:
-            self._stubs["update_connection_profile"] = self.grpc_channel.unary_unary(
+            self._stubs["update_connection_profile"] = self._logged_channel.unary_unary(
                 "/google.cloud.datastream.v1alpha1.Datastream/UpdateConnectionProfile",
                 request_serializer=datastream.UpdateConnectionProfileRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -388,7 +476,7 @@ class DatastreamGrpcTransport(DatastreamTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_connection_profile" not in self._stubs:
-            self._stubs["delete_connection_profile"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_connection_profile"] = self._logged_channel.unary_unary(
                 "/google.cloud.datastream.v1alpha1.Datastream/DeleteConnectionProfile",
                 request_serializer=datastream.DeleteConnectionProfileRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -421,7 +509,9 @@ class DatastreamGrpcTransport(DatastreamTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "discover_connection_profile" not in self._stubs:
-            self._stubs["discover_connection_profile"] = self.grpc_channel.unary_unary(
+            self._stubs[
+                "discover_connection_profile"
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.datastream.v1alpha1.Datastream/DiscoverConnectionProfile",
                 request_serializer=datastream.DiscoverConnectionProfileRequest.serialize,
                 response_deserializer=datastream.DiscoverConnectionProfileResponse.deserialize,
@@ -448,7 +538,7 @@ class DatastreamGrpcTransport(DatastreamTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_streams" not in self._stubs:
-            self._stubs["list_streams"] = self.grpc_channel.unary_unary(
+            self._stubs["list_streams"] = self._logged_channel.unary_unary(
                 "/google.cloud.datastream.v1alpha1.Datastream/ListStreams",
                 request_serializer=datastream.ListStreamsRequest.serialize,
                 response_deserializer=datastream.ListStreamsResponse.deserialize,
@@ -474,7 +564,7 @@ class DatastreamGrpcTransport(DatastreamTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_stream" not in self._stubs:
-            self._stubs["get_stream"] = self.grpc_channel.unary_unary(
+            self._stubs["get_stream"] = self._logged_channel.unary_unary(
                 "/google.cloud.datastream.v1alpha1.Datastream/GetStream",
                 request_serializer=datastream.GetStreamRequest.serialize,
                 response_deserializer=datastream_resources.Stream.deserialize,
@@ -500,7 +590,7 @@ class DatastreamGrpcTransport(DatastreamTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_stream" not in self._stubs:
-            self._stubs["create_stream"] = self.grpc_channel.unary_unary(
+            self._stubs["create_stream"] = self._logged_channel.unary_unary(
                 "/google.cloud.datastream.v1alpha1.Datastream/CreateStream",
                 request_serializer=datastream.CreateStreamRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -527,7 +617,7 @@ class DatastreamGrpcTransport(DatastreamTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_stream" not in self._stubs:
-            self._stubs["update_stream"] = self.grpc_channel.unary_unary(
+            self._stubs["update_stream"] = self._logged_channel.unary_unary(
                 "/google.cloud.datastream.v1alpha1.Datastream/UpdateStream",
                 request_serializer=datastream.UpdateStreamRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -553,7 +643,7 @@ class DatastreamGrpcTransport(DatastreamTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_stream" not in self._stubs:
-            self._stubs["delete_stream"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_stream"] = self._logged_channel.unary_unary(
                 "/google.cloud.datastream.v1alpha1.Datastream/DeleteStream",
                 request_serializer=datastream.DeleteStreamRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -580,7 +670,7 @@ class DatastreamGrpcTransport(DatastreamTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "fetch_errors" not in self._stubs:
-            self._stubs["fetch_errors"] = self.grpc_channel.unary_unary(
+            self._stubs["fetch_errors"] = self._logged_channel.unary_unary(
                 "/google.cloud.datastream.v1alpha1.Datastream/FetchErrors",
                 request_serializer=datastream.FetchErrorsRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -611,7 +701,7 @@ class DatastreamGrpcTransport(DatastreamTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "fetch_static_ips" not in self._stubs:
-            self._stubs["fetch_static_ips"] = self.grpc_channel.unary_unary(
+            self._stubs["fetch_static_ips"] = self._logged_channel.unary_unary(
                 "/google.cloud.datastream.v1alpha1.Datastream/FetchStaticIps",
                 request_serializer=datastream.FetchStaticIpsRequest.serialize,
                 response_deserializer=datastream.FetchStaticIpsResponse.deserialize,
@@ -640,7 +730,7 @@ class DatastreamGrpcTransport(DatastreamTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_private_connection" not in self._stubs:
-            self._stubs["create_private_connection"] = self.grpc_channel.unary_unary(
+            self._stubs["create_private_connection"] = self._logged_channel.unary_unary(
                 "/google.cloud.datastream.v1alpha1.Datastream/CreatePrivateConnection",
                 request_serializer=datastream.CreatePrivateConnectionRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -669,7 +759,7 @@ class DatastreamGrpcTransport(DatastreamTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_private_connection" not in self._stubs:
-            self._stubs["get_private_connection"] = self.grpc_channel.unary_unary(
+            self._stubs["get_private_connection"] = self._logged_channel.unary_unary(
                 "/google.cloud.datastream.v1alpha1.Datastream/GetPrivateConnection",
                 request_serializer=datastream.GetPrivateConnectionRequest.serialize,
                 response_deserializer=datastream_resources.PrivateConnection.deserialize,
@@ -699,7 +789,7 @@ class DatastreamGrpcTransport(DatastreamTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_private_connections" not in self._stubs:
-            self._stubs["list_private_connections"] = self.grpc_channel.unary_unary(
+            self._stubs["list_private_connections"] = self._logged_channel.unary_unary(
                 "/google.cloud.datastream.v1alpha1.Datastream/ListPrivateConnections",
                 request_serializer=datastream.ListPrivateConnectionsRequest.serialize,
                 response_deserializer=datastream.ListPrivateConnectionsResponse.deserialize,
@@ -728,7 +818,7 @@ class DatastreamGrpcTransport(DatastreamTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_private_connection" not in self._stubs:
-            self._stubs["delete_private_connection"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_private_connection"] = self._logged_channel.unary_unary(
                 "/google.cloud.datastream.v1alpha1.Datastream/DeletePrivateConnection",
                 request_serializer=datastream.DeletePrivateConnectionRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -755,7 +845,7 @@ class DatastreamGrpcTransport(DatastreamTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_route" not in self._stubs:
-            self._stubs["create_route"] = self.grpc_channel.unary_unary(
+            self._stubs["create_route"] = self._logged_channel.unary_unary(
                 "/google.cloud.datastream.v1alpha1.Datastream/CreateRoute",
                 request_serializer=datastream.CreateRouteRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -781,7 +871,7 @@ class DatastreamGrpcTransport(DatastreamTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_route" not in self._stubs:
-            self._stubs["get_route"] = self.grpc_channel.unary_unary(
+            self._stubs["get_route"] = self._logged_channel.unary_unary(
                 "/google.cloud.datastream.v1alpha1.Datastream/GetRoute",
                 request_serializer=datastream.GetRouteRequest.serialize,
                 response_deserializer=datastream_resources.Route.deserialize,
@@ -808,7 +898,7 @@ class DatastreamGrpcTransport(DatastreamTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_routes" not in self._stubs:
-            self._stubs["list_routes"] = self.grpc_channel.unary_unary(
+            self._stubs["list_routes"] = self._logged_channel.unary_unary(
                 "/google.cloud.datastream.v1alpha1.Datastream/ListRoutes",
                 request_serializer=datastream.ListRoutesRequest.serialize,
                 response_deserializer=datastream.ListRoutesResponse.deserialize,
@@ -834,7 +924,7 @@ class DatastreamGrpcTransport(DatastreamTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_route" not in self._stubs:
-            self._stubs["delete_route"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_route"] = self._logged_channel.unary_unary(
                 "/google.cloud.datastream.v1alpha1.Datastream/DeleteRoute",
                 request_serializer=datastream.DeleteRouteRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -842,7 +932,7 @@ class DatastreamGrpcTransport(DatastreamTransport):
         return self._stubs["delete_route"]
 
     def close(self):
-        self.grpc_channel.close()
+        self._logged_channel.close()
 
     @property
     def kind(self) -> str:

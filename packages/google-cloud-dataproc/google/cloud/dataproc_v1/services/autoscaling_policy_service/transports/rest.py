@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -41,6 +41,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -109,9 +117,10 @@ class AutoscalingPolicyServiceRestInterceptor:
     def pre_create_autoscaling_policy(
         self,
         request: autoscaling_policies.CreateAutoscalingPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        autoscaling_policies.CreateAutoscalingPolicyRequest, Sequence[Tuple[str, str]]
+        autoscaling_policies.CreateAutoscalingPolicyRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for create_autoscaling_policy
 
@@ -134,9 +143,10 @@ class AutoscalingPolicyServiceRestInterceptor:
     def pre_delete_autoscaling_policy(
         self,
         request: autoscaling_policies.DeleteAutoscalingPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        autoscaling_policies.DeleteAutoscalingPolicyRequest, Sequence[Tuple[str, str]]
+        autoscaling_policies.DeleteAutoscalingPolicyRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for delete_autoscaling_policy
 
@@ -148,9 +158,10 @@ class AutoscalingPolicyServiceRestInterceptor:
     def pre_get_autoscaling_policy(
         self,
         request: autoscaling_policies.GetAutoscalingPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        autoscaling_policies.GetAutoscalingPolicyRequest, Sequence[Tuple[str, str]]
+        autoscaling_policies.GetAutoscalingPolicyRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for get_autoscaling_policy
 
@@ -173,9 +184,10 @@ class AutoscalingPolicyServiceRestInterceptor:
     def pre_list_autoscaling_policies(
         self,
         request: autoscaling_policies.ListAutoscalingPoliciesRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        autoscaling_policies.ListAutoscalingPoliciesRequest, Sequence[Tuple[str, str]]
+        autoscaling_policies.ListAutoscalingPoliciesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for list_autoscaling_policies
 
@@ -198,9 +210,10 @@ class AutoscalingPolicyServiceRestInterceptor:
     def pre_update_autoscaling_policy(
         self,
         request: autoscaling_policies.UpdateAutoscalingPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        autoscaling_policies.UpdateAutoscalingPolicyRequest, Sequence[Tuple[str, str]]
+        autoscaling_policies.UpdateAutoscalingPolicyRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for update_autoscaling_policy
 
@@ -223,8 +236,10 @@ class AutoscalingPolicyServiceRestInterceptor:
     def pre_get_iam_policy(
         self,
         request: iam_policy_pb2.GetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -244,8 +259,10 @@ class AutoscalingPolicyServiceRestInterceptor:
     def pre_set_iam_policy(
         self,
         request: iam_policy_pb2.SetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -265,8 +282,11 @@ class AutoscalingPolicyServiceRestInterceptor:
     def pre_test_iam_permissions(
         self,
         request: iam_policy_pb2.TestIamPermissionsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.TestIamPermissionsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -288,8 +308,10 @@ class AutoscalingPolicyServiceRestInterceptor:
     def pre_cancel_operation(
         self,
         request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -309,8 +331,10 @@ class AutoscalingPolicyServiceRestInterceptor:
     def pre_delete_operation(
         self,
         request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -330,8 +354,10 @@ class AutoscalingPolicyServiceRestInterceptor:
     def pre_get_operation(
         self,
         request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -353,8 +379,10 @@ class AutoscalingPolicyServiceRestInterceptor:
     def pre_list_operations(
         self,
         request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -497,7 +525,7 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> autoscaling_policies.AutoscalingPolicy:
             r"""Call the create autoscaling policy method over HTTP.
 
@@ -508,8 +536,10 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.autoscaling_policies.AutoscalingPolicy:
@@ -521,6 +551,7 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
             http_options = (
                 _BaseAutoscalingPolicyServiceRestTransport._BaseCreateAutoscalingPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_autoscaling_policy(
                 request, metadata
             )
@@ -536,6 +567,33 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
             query_params = _BaseAutoscalingPolicyServiceRestTransport._BaseCreateAutoscalingPolicy._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataproc_v1.AutoscalingPolicyServiceClient.CreateAutoscalingPolicy",
+                    extra={
+                        "serviceName": "google.cloud.dataproc.v1.AutoscalingPolicyService",
+                        "rpcName": "CreateAutoscalingPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AutoscalingPolicyServiceRestTransport._CreateAutoscalingPolicy._get_response(
@@ -558,7 +616,31 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
             pb_resp = autoscaling_policies.AutoscalingPolicy.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_autoscaling_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = autoscaling_policies.AutoscalingPolicy.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dataproc_v1.AutoscalingPolicyServiceClient.create_autoscaling_policy",
+                    extra={
+                        "serviceName": "google.cloud.dataproc.v1.AutoscalingPolicyService",
+                        "rpcName": "CreateAutoscalingPolicy",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteAutoscalingPolicy(
@@ -596,7 +678,7 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete autoscaling policy method over HTTP.
 
@@ -609,13 +691,16 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseAutoscalingPolicyServiceRestTransport._BaseDeleteAutoscalingPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_autoscaling_policy(
                 request, metadata
             )
@@ -627,6 +712,33 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
             query_params = _BaseAutoscalingPolicyServiceRestTransport._BaseDeleteAutoscalingPolicy._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataproc_v1.AutoscalingPolicyServiceClient.DeleteAutoscalingPolicy",
+                    extra={
+                        "serviceName": "google.cloud.dataproc.v1.AutoscalingPolicyService",
+                        "rpcName": "DeleteAutoscalingPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AutoscalingPolicyServiceRestTransport._DeleteAutoscalingPolicy._get_response(
@@ -678,7 +790,7 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> autoscaling_policies.AutoscalingPolicy:
             r"""Call the get autoscaling policy method over HTTP.
 
@@ -689,8 +801,10 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.autoscaling_policies.AutoscalingPolicy:
@@ -702,6 +816,7 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
             http_options = (
                 _BaseAutoscalingPolicyServiceRestTransport._BaseGetAutoscalingPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_autoscaling_policy(
                 request, metadata
             )
@@ -713,6 +828,33 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
             query_params = _BaseAutoscalingPolicyServiceRestTransport._BaseGetAutoscalingPolicy._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataproc_v1.AutoscalingPolicyServiceClient.GetAutoscalingPolicy",
+                    extra={
+                        "serviceName": "google.cloud.dataproc.v1.AutoscalingPolicyService",
+                        "rpcName": "GetAutoscalingPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AutoscalingPolicyServiceRestTransport._GetAutoscalingPolicy._get_response(
@@ -734,7 +876,31 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
             pb_resp = autoscaling_policies.AutoscalingPolicy.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_autoscaling_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = autoscaling_policies.AutoscalingPolicy.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dataproc_v1.AutoscalingPolicyServiceClient.get_autoscaling_policy",
+                    extra={
+                        "serviceName": "google.cloud.dataproc.v1.AutoscalingPolicyService",
+                        "rpcName": "GetAutoscalingPolicy",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListAutoscalingPolicies(
@@ -772,7 +938,7 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> autoscaling_policies.ListAutoscalingPoliciesResponse:
             r"""Call the list autoscaling policies method over HTTP.
 
@@ -783,8 +949,10 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.autoscaling_policies.ListAutoscalingPoliciesResponse:
@@ -796,6 +964,7 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
             http_options = (
                 _BaseAutoscalingPolicyServiceRestTransport._BaseListAutoscalingPolicies._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_autoscaling_policies(
                 request, metadata
             )
@@ -807,6 +976,33 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
             query_params = _BaseAutoscalingPolicyServiceRestTransport._BaseListAutoscalingPolicies._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataproc_v1.AutoscalingPolicyServiceClient.ListAutoscalingPolicies",
+                    extra={
+                        "serviceName": "google.cloud.dataproc.v1.AutoscalingPolicyService",
+                        "rpcName": "ListAutoscalingPolicies",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AutoscalingPolicyServiceRestTransport._ListAutoscalingPolicies._get_response(
@@ -828,7 +1024,33 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
             pb_resp = autoscaling_policies.ListAutoscalingPoliciesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_autoscaling_policies(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        autoscaling_policies.ListAutoscalingPoliciesResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dataproc_v1.AutoscalingPolicyServiceClient.list_autoscaling_policies",
+                    extra={
+                        "serviceName": "google.cloud.dataproc.v1.AutoscalingPolicyService",
+                        "rpcName": "ListAutoscalingPolicies",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateAutoscalingPolicy(
@@ -867,7 +1089,7 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> autoscaling_policies.AutoscalingPolicy:
             r"""Call the update autoscaling policy method over HTTP.
 
@@ -878,8 +1100,10 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.autoscaling_policies.AutoscalingPolicy:
@@ -891,6 +1115,7 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
             http_options = (
                 _BaseAutoscalingPolicyServiceRestTransport._BaseUpdateAutoscalingPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_autoscaling_policy(
                 request, metadata
             )
@@ -906,6 +1131,33 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
             query_params = _BaseAutoscalingPolicyServiceRestTransport._BaseUpdateAutoscalingPolicy._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataproc_v1.AutoscalingPolicyServiceClient.UpdateAutoscalingPolicy",
+                    extra={
+                        "serviceName": "google.cloud.dataproc.v1.AutoscalingPolicyService",
+                        "rpcName": "UpdateAutoscalingPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AutoscalingPolicyServiceRestTransport._UpdateAutoscalingPolicy._get_response(
@@ -928,7 +1180,31 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
             pb_resp = autoscaling_policies.AutoscalingPolicy.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_autoscaling_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = autoscaling_policies.AutoscalingPolicy.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dataproc_v1.AutoscalingPolicyServiceClient.update_autoscaling_policy",
+                    extra={
+                        "serviceName": "google.cloud.dataproc.v1.AutoscalingPolicyService",
+                        "rpcName": "UpdateAutoscalingPolicy",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -1025,7 +1301,7 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> policy_pb2.Policy:
             r"""Call the get iam policy method over HTTP.
 
@@ -1035,8 +1311,10 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 policy_pb2.Policy: Response from GetIamPolicy method.
@@ -1045,6 +1323,7 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
             http_options = (
                 _BaseAutoscalingPolicyServiceRestTransport._BaseGetIamPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
             transcoded_request = _BaseAutoscalingPolicyServiceRestTransport._BaseGetIamPolicy._get_transcoded_request(
                 http_options, request
@@ -1058,6 +1337,33 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
             query_params = _BaseAutoscalingPolicyServiceRestTransport._BaseGetIamPolicy._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataproc_v1.AutoscalingPolicyServiceClient.GetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.dataproc.v1.AutoscalingPolicyService",
+                        "rpcName": "GetIamPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1081,6 +1387,27 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_iam_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dataproc_v1.AutoscalingPolicyServiceAsyncClient.GetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.dataproc.v1.AutoscalingPolicyService",
+                        "rpcName": "GetIamPolicy",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -1123,7 +1450,7 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> policy_pb2.Policy:
             r"""Call the set iam policy method over HTTP.
 
@@ -1133,8 +1460,10 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 policy_pb2.Policy: Response from SetIamPolicy method.
@@ -1143,6 +1472,7 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
             http_options = (
                 _BaseAutoscalingPolicyServiceRestTransport._BaseSetIamPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
             transcoded_request = _BaseAutoscalingPolicyServiceRestTransport._BaseSetIamPolicy._get_transcoded_request(
                 http_options, request
@@ -1156,6 +1486,33 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
             query_params = _BaseAutoscalingPolicyServiceRestTransport._BaseSetIamPolicy._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataproc_v1.AutoscalingPolicyServiceClient.SetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.dataproc.v1.AutoscalingPolicyService",
+                        "rpcName": "SetIamPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1179,6 +1536,27 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_set_iam_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dataproc_v1.AutoscalingPolicyServiceAsyncClient.SetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.dataproc.v1.AutoscalingPolicyService",
+                        "rpcName": "SetIamPolicy",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -1221,7 +1599,7 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> iam_policy_pb2.TestIamPermissionsResponse:
             r"""Call the test iam permissions method over HTTP.
 
@@ -1231,8 +1609,10 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 iam_policy_pb2.TestIamPermissionsResponse: Response from TestIamPermissions method.
@@ -1241,6 +1621,7 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
             http_options = (
                 _BaseAutoscalingPolicyServiceRestTransport._BaseTestIamPermissions._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata
             )
@@ -1256,6 +1637,33 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
             query_params = _BaseAutoscalingPolicyServiceRestTransport._BaseTestIamPermissions._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataproc_v1.AutoscalingPolicyServiceClient.TestIamPermissions",
+                    extra={
+                        "serviceName": "google.cloud.dataproc.v1.AutoscalingPolicyService",
+                        "rpcName": "TestIamPermissions",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1279,6 +1687,27 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
             resp = iam_policy_pb2.TestIamPermissionsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_test_iam_permissions(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dataproc_v1.AutoscalingPolicyServiceAsyncClient.TestIamPermissions",
+                    extra={
+                        "serviceName": "google.cloud.dataproc.v1.AutoscalingPolicyService",
+                        "rpcName": "TestIamPermissions",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -1320,7 +1749,7 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the cancel operation method over HTTP.
 
@@ -1330,13 +1759,16 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseAutoscalingPolicyServiceRestTransport._BaseCancelOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
@@ -1348,6 +1780,33 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
             query_params = _BaseAutoscalingPolicyServiceRestTransport._BaseCancelOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataproc_v1.AutoscalingPolicyServiceClient.CancelOperation",
+                    extra={
+                        "serviceName": "google.cloud.dataproc.v1.AutoscalingPolicyService",
+                        "rpcName": "CancelOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1407,7 +1866,7 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the delete operation method over HTTP.
 
@@ -1417,13 +1876,16 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseAutoscalingPolicyServiceRestTransport._BaseDeleteOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
             )
@@ -1435,6 +1897,33 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
             query_params = _BaseAutoscalingPolicyServiceRestTransport._BaseDeleteOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataproc_v1.AutoscalingPolicyServiceClient.DeleteOperation",
+                    extra={
+                        "serviceName": "google.cloud.dataproc.v1.AutoscalingPolicyService",
+                        "rpcName": "DeleteOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1494,7 +1983,7 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the get operation method over HTTP.
 
@@ -1504,8 +1993,10 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.
@@ -1514,6 +2005,7 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
             http_options = (
                 _BaseAutoscalingPolicyServiceRestTransport._BaseGetOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseAutoscalingPolicyServiceRestTransport._BaseGetOperation._get_transcoded_request(
                 http_options, request
@@ -1523,6 +2015,33 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
             query_params = _BaseAutoscalingPolicyServiceRestTransport._BaseGetOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataproc_v1.AutoscalingPolicyServiceClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.dataproc.v1.AutoscalingPolicyService",
+                        "rpcName": "GetOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1545,6 +2064,27 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dataproc_v1.AutoscalingPolicyServiceAsyncClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.dataproc.v1.AutoscalingPolicyService",
+                        "rpcName": "GetOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -1586,7 +2126,7 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.ListOperationsResponse:
             r"""Call the list operations method over HTTP.
 
@@ -1596,8 +2136,10 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
@@ -1606,6 +2148,7 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
             http_options = (
                 _BaseAutoscalingPolicyServiceRestTransport._BaseListOperations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseAutoscalingPolicyServiceRestTransport._BaseListOperations._get_transcoded_request(
                 http_options, request
@@ -1615,6 +2158,33 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
             query_params = _BaseAutoscalingPolicyServiceRestTransport._BaseListOperations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dataproc_v1.AutoscalingPolicyServiceClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.dataproc.v1.AutoscalingPolicyService",
+                        "rpcName": "ListOperations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1637,6 +2207,27 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dataproc_v1.AutoscalingPolicyServiceAsyncClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.dataproc.v1.AutoscalingPolicyService",
+                        "rpcName": "ListOperations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property

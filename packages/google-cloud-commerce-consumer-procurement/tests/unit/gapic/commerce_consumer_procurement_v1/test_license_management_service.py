@@ -3134,6 +3134,7 @@ def test_get_license_pool_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_license_pool(request)
 
@@ -3179,6 +3180,7 @@ def test_get_license_pool_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_license_pool(**mock_args)
 
@@ -3312,6 +3314,7 @@ def test_update_license_pool_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_license_pool(request)
 
@@ -3370,6 +3373,7 @@ def test_update_license_pool_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_license_pool(**mock_args)
 
@@ -3507,6 +3511,7 @@ def test_assign_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.assign(request)
 
@@ -3563,6 +3568,7 @@ def test_assign_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.assign(**mock_args)
 
@@ -3700,6 +3706,7 @@ def test_unassign_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.unassign(request)
 
@@ -3756,6 +3763,7 @@ def test_unassign_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.unassign(**mock_args)
 
@@ -3902,6 +3910,7 @@ def test_enumerate_licensed_users_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.enumerate_licensed_users(request)
 
@@ -3959,6 +3968,7 @@ def test_enumerate_licensed_users_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.enumerate_licensed_users(**mock_args)
 
@@ -4452,6 +4462,7 @@ def test_get_license_pool_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_license_pool(request)
 
 
@@ -4489,6 +4500,7 @@ def test_get_license_pool_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_license_pool(request)
 
     # Establish that the response is the type that we expect.
@@ -4531,6 +4543,7 @@ def test_get_license_pool_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = license_management_service.LicensePool.to_json(
             license_management_service.LicensePool()
         )
@@ -4581,6 +4594,7 @@ def test_update_license_pool_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_license_pool(request)
 
 
@@ -4702,6 +4716,7 @@ def test_update_license_pool_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_license_pool(request)
 
     # Establish that the response is the type that we expect.
@@ -4744,6 +4759,7 @@ def test_update_license_pool_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = license_management_service.LicensePool.to_json(
             license_management_service.LicensePool()
         )
@@ -4788,6 +4804,7 @@ def test_assign_rest_bad_request(request_type=license_management_service.AssignR
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.assign(request)
 
 
@@ -4821,6 +4838,7 @@ def test_assign_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.assign(request)
 
     # Establish that the response is the type that we expect.
@@ -4860,6 +4878,7 @@ def test_assign_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = license_management_service.AssignResponse.to_json(
             license_management_service.AssignResponse()
         )
@@ -4906,6 +4925,7 @@ def test_unassign_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.unassign(request)
 
 
@@ -4939,6 +4959,7 @@ def test_unassign_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.unassign(request)
 
     # Establish that the response is the type that we expect.
@@ -4978,6 +4999,7 @@ def test_unassign_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = license_management_service.UnassignResponse.to_json(
             license_management_service.UnassignResponse()
         )
@@ -5024,6 +5046,7 @@ def test_enumerate_licensed_users_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.enumerate_licensed_users(request)
 
 
@@ -5061,6 +5084,7 @@ def test_enumerate_licensed_users_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.enumerate_licensed_users(request)
 
     # Establish that the response is the type that we expect.
@@ -5103,6 +5127,7 @@ def test_enumerate_licensed_users_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = (
             license_management_service.EnumerateLicensedUsersResponse.to_json(
                 license_management_service.EnumerateLicensedUsersResponse()
@@ -5153,6 +5178,7 @@ def test_get_operation_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_operation(request)
 
 
@@ -5183,6 +5209,7 @@ def test_get_operation_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.get_operation(request)
 
