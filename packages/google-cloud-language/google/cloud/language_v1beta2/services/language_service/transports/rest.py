@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -37,6 +37,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -125,8 +133,10 @@ class LanguageServiceRestInterceptor:
     def pre_analyze_entities(
         self,
         request: language_service.AnalyzeEntitiesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[language_service.AnalyzeEntitiesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        language_service.AnalyzeEntitiesRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for analyze_entities
 
         Override in a subclass to manipulate the request or metadata
@@ -148,9 +158,10 @@ class LanguageServiceRestInterceptor:
     def pre_analyze_entity_sentiment(
         self,
         request: language_service.AnalyzeEntitySentimentRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        language_service.AnalyzeEntitySentimentRequest, Sequence[Tuple[str, str]]
+        language_service.AnalyzeEntitySentimentRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for analyze_entity_sentiment
 
@@ -173,8 +184,11 @@ class LanguageServiceRestInterceptor:
     def pre_analyze_sentiment(
         self,
         request: language_service.AnalyzeSentimentRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[language_service.AnalyzeSentimentRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        language_service.AnalyzeSentimentRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for analyze_sentiment
 
         Override in a subclass to manipulate the request or metadata
@@ -196,8 +210,10 @@ class LanguageServiceRestInterceptor:
     def pre_analyze_syntax(
         self,
         request: language_service.AnalyzeSyntaxRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[language_service.AnalyzeSyntaxRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        language_service.AnalyzeSyntaxRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for analyze_syntax
 
         Override in a subclass to manipulate the request or metadata
@@ -219,8 +235,10 @@ class LanguageServiceRestInterceptor:
     def pre_annotate_text(
         self,
         request: language_service.AnnotateTextRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[language_service.AnnotateTextRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        language_service.AnnotateTextRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for annotate_text
 
         Override in a subclass to manipulate the request or metadata
@@ -242,8 +260,10 @@ class LanguageServiceRestInterceptor:
     def pre_classify_text(
         self,
         request: language_service.ClassifyTextRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[language_service.ClassifyTextRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        language_service.ClassifyTextRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for classify_text
 
         Override in a subclass to manipulate the request or metadata
@@ -265,8 +285,10 @@ class LanguageServiceRestInterceptor:
     def pre_moderate_text(
         self,
         request: language_service.ModerateTextRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[language_service.ModerateTextRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        language_service.ModerateTextRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for moderate_text
 
         Override in a subclass to manipulate the request or metadata
@@ -408,7 +430,7 @@ class LanguageServiceRestTransport(_BaseLanguageServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> language_service.AnalyzeEntitiesResponse:
             r"""Call the analyze entities method over HTTP.
 
@@ -418,8 +440,10 @@ class LanguageServiceRestTransport(_BaseLanguageServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.language_service.AnalyzeEntitiesResponse:
@@ -429,6 +453,7 @@ class LanguageServiceRestTransport(_BaseLanguageServiceRestTransport):
             http_options = (
                 _BaseLanguageServiceRestTransport._BaseAnalyzeEntities._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_analyze_entities(
                 request, metadata
             )
@@ -444,6 +469,33 @@ class LanguageServiceRestTransport(_BaseLanguageServiceRestTransport):
             query_params = _BaseLanguageServiceRestTransport._BaseAnalyzeEntities._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.language_v1beta2.LanguageServiceClient.AnalyzeEntities",
+                    extra={
+                        "serviceName": "google.cloud.language.v1beta2.LanguageService",
+                        "rpcName": "AnalyzeEntities",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = LanguageServiceRestTransport._AnalyzeEntities._get_response(
@@ -466,7 +518,31 @@ class LanguageServiceRestTransport(_BaseLanguageServiceRestTransport):
             pb_resp = language_service.AnalyzeEntitiesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_analyze_entities(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = language_service.AnalyzeEntitiesResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.language_v1beta2.LanguageServiceClient.analyze_entities",
+                    extra={
+                        "serviceName": "google.cloud.language.v1beta2.LanguageService",
+                        "rpcName": "AnalyzeEntities",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _AnalyzeEntitySentiment(
@@ -505,7 +581,7 @@ class LanguageServiceRestTransport(_BaseLanguageServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> language_service.AnalyzeEntitySentimentResponse:
             r"""Call the analyze entity sentiment method over HTTP.
 
@@ -516,8 +592,10 @@ class LanguageServiceRestTransport(_BaseLanguageServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.language_service.AnalyzeEntitySentimentResponse:
@@ -529,6 +607,7 @@ class LanguageServiceRestTransport(_BaseLanguageServiceRestTransport):
             http_options = (
                 _BaseLanguageServiceRestTransport._BaseAnalyzeEntitySentiment._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_analyze_entity_sentiment(
                 request, metadata
             )
@@ -544,6 +623,33 @@ class LanguageServiceRestTransport(_BaseLanguageServiceRestTransport):
             query_params = _BaseLanguageServiceRestTransport._BaseAnalyzeEntitySentiment._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.language_v1beta2.LanguageServiceClient.AnalyzeEntitySentiment",
+                    extra={
+                        "serviceName": "google.cloud.language.v1beta2.LanguageService",
+                        "rpcName": "AnalyzeEntitySentiment",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -568,7 +674,33 @@ class LanguageServiceRestTransport(_BaseLanguageServiceRestTransport):
             pb_resp = language_service.AnalyzeEntitySentimentResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_analyze_entity_sentiment(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        language_service.AnalyzeEntitySentimentResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.language_v1beta2.LanguageServiceClient.analyze_entity_sentiment",
+                    extra={
+                        "serviceName": "google.cloud.language.v1beta2.LanguageService",
+                        "rpcName": "AnalyzeEntitySentiment",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _AnalyzeSentiment(
@@ -606,7 +738,7 @@ class LanguageServiceRestTransport(_BaseLanguageServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> language_service.AnalyzeSentimentResponse:
             r"""Call the analyze sentiment method over HTTP.
 
@@ -617,8 +749,10 @@ class LanguageServiceRestTransport(_BaseLanguageServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.language_service.AnalyzeSentimentResponse:
@@ -630,6 +764,7 @@ class LanguageServiceRestTransport(_BaseLanguageServiceRestTransport):
             http_options = (
                 _BaseLanguageServiceRestTransport._BaseAnalyzeSentiment._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_analyze_sentiment(
                 request, metadata
             )
@@ -645,6 +780,33 @@ class LanguageServiceRestTransport(_BaseLanguageServiceRestTransport):
             query_params = _BaseLanguageServiceRestTransport._BaseAnalyzeSentiment._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.language_v1beta2.LanguageServiceClient.AnalyzeSentiment",
+                    extra={
+                        "serviceName": "google.cloud.language.v1beta2.LanguageService",
+                        "rpcName": "AnalyzeSentiment",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = LanguageServiceRestTransport._AnalyzeSentiment._get_response(
@@ -667,7 +829,31 @@ class LanguageServiceRestTransport(_BaseLanguageServiceRestTransport):
             pb_resp = language_service.AnalyzeSentimentResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_analyze_sentiment(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        language_service.AnalyzeSentimentResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.language_v1beta2.LanguageServiceClient.analyze_sentiment",
+                    extra={
+                        "serviceName": "google.cloud.language.v1beta2.LanguageService",
+                        "rpcName": "AnalyzeSentiment",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _AnalyzeSyntax(
@@ -705,7 +891,7 @@ class LanguageServiceRestTransport(_BaseLanguageServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> language_service.AnalyzeSyntaxResponse:
             r"""Call the analyze syntax method over HTTP.
 
@@ -715,8 +901,10 @@ class LanguageServiceRestTransport(_BaseLanguageServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.language_service.AnalyzeSyntaxResponse:
@@ -726,6 +914,7 @@ class LanguageServiceRestTransport(_BaseLanguageServiceRestTransport):
             http_options = (
                 _BaseLanguageServiceRestTransport._BaseAnalyzeSyntax._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_analyze_syntax(request, metadata)
             transcoded_request = _BaseLanguageServiceRestTransport._BaseAnalyzeSyntax._get_transcoded_request(
                 http_options, request
@@ -739,6 +928,33 @@ class LanguageServiceRestTransport(_BaseLanguageServiceRestTransport):
             query_params = _BaseLanguageServiceRestTransport._BaseAnalyzeSyntax._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.language_v1beta2.LanguageServiceClient.AnalyzeSyntax",
+                    extra={
+                        "serviceName": "google.cloud.language.v1beta2.LanguageService",
+                        "rpcName": "AnalyzeSyntax",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = LanguageServiceRestTransport._AnalyzeSyntax._get_response(
@@ -761,7 +977,31 @@ class LanguageServiceRestTransport(_BaseLanguageServiceRestTransport):
             pb_resp = language_service.AnalyzeSyntaxResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_analyze_syntax(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = language_service.AnalyzeSyntaxResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.language_v1beta2.LanguageServiceClient.analyze_syntax",
+                    extra={
+                        "serviceName": "google.cloud.language.v1beta2.LanguageService",
+                        "rpcName": "AnalyzeSyntax",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _AnnotateText(
@@ -799,7 +1039,7 @@ class LanguageServiceRestTransport(_BaseLanguageServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> language_service.AnnotateTextResponse:
             r"""Call the annotate text method over HTTP.
 
@@ -812,8 +1052,10 @@ class LanguageServiceRestTransport(_BaseLanguageServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.language_service.AnnotateTextResponse:
@@ -825,6 +1067,7 @@ class LanguageServiceRestTransport(_BaseLanguageServiceRestTransport):
             http_options = (
                 _BaseLanguageServiceRestTransport._BaseAnnotateText._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_annotate_text(request, metadata)
             transcoded_request = _BaseLanguageServiceRestTransport._BaseAnnotateText._get_transcoded_request(
                 http_options, request
@@ -838,6 +1081,33 @@ class LanguageServiceRestTransport(_BaseLanguageServiceRestTransport):
             query_params = _BaseLanguageServiceRestTransport._BaseAnnotateText._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.language_v1beta2.LanguageServiceClient.AnnotateText",
+                    extra={
+                        "serviceName": "google.cloud.language.v1beta2.LanguageService",
+                        "rpcName": "AnnotateText",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = LanguageServiceRestTransport._AnnotateText._get_response(
@@ -860,7 +1130,31 @@ class LanguageServiceRestTransport(_BaseLanguageServiceRestTransport):
             pb_resp = language_service.AnnotateTextResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_annotate_text(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = language_service.AnnotateTextResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.language_v1beta2.LanguageServiceClient.annotate_text",
+                    extra={
+                        "serviceName": "google.cloud.language.v1beta2.LanguageService",
+                        "rpcName": "AnnotateText",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ClassifyText(
@@ -898,7 +1192,7 @@ class LanguageServiceRestTransport(_BaseLanguageServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> language_service.ClassifyTextResponse:
             r"""Call the classify text method over HTTP.
 
@@ -909,8 +1203,10 @@ class LanguageServiceRestTransport(_BaseLanguageServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.language_service.ClassifyTextResponse:
@@ -922,6 +1218,7 @@ class LanguageServiceRestTransport(_BaseLanguageServiceRestTransport):
             http_options = (
                 _BaseLanguageServiceRestTransport._BaseClassifyText._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_classify_text(request, metadata)
             transcoded_request = _BaseLanguageServiceRestTransport._BaseClassifyText._get_transcoded_request(
                 http_options, request
@@ -935,6 +1232,33 @@ class LanguageServiceRestTransport(_BaseLanguageServiceRestTransport):
             query_params = _BaseLanguageServiceRestTransport._BaseClassifyText._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.language_v1beta2.LanguageServiceClient.ClassifyText",
+                    extra={
+                        "serviceName": "google.cloud.language.v1beta2.LanguageService",
+                        "rpcName": "ClassifyText",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = LanguageServiceRestTransport._ClassifyText._get_response(
@@ -957,7 +1281,31 @@ class LanguageServiceRestTransport(_BaseLanguageServiceRestTransport):
             pb_resp = language_service.ClassifyTextResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_classify_text(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = language_service.ClassifyTextResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.language_v1beta2.LanguageServiceClient.classify_text",
+                    extra={
+                        "serviceName": "google.cloud.language.v1beta2.LanguageService",
+                        "rpcName": "ClassifyText",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ModerateText(
@@ -995,7 +1343,7 @@ class LanguageServiceRestTransport(_BaseLanguageServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> language_service.ModerateTextResponse:
             r"""Call the moderate text method over HTTP.
 
@@ -1006,8 +1354,10 @@ class LanguageServiceRestTransport(_BaseLanguageServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.language_service.ModerateTextResponse:
@@ -1019,6 +1369,7 @@ class LanguageServiceRestTransport(_BaseLanguageServiceRestTransport):
             http_options = (
                 _BaseLanguageServiceRestTransport._BaseModerateText._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_moderate_text(request, metadata)
             transcoded_request = _BaseLanguageServiceRestTransport._BaseModerateText._get_transcoded_request(
                 http_options, request
@@ -1032,6 +1383,33 @@ class LanguageServiceRestTransport(_BaseLanguageServiceRestTransport):
             query_params = _BaseLanguageServiceRestTransport._BaseModerateText._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.language_v1beta2.LanguageServiceClient.ModerateText",
+                    extra={
+                        "serviceName": "google.cloud.language.v1beta2.LanguageService",
+                        "rpcName": "ModerateText",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = LanguageServiceRestTransport._ModerateText._get_response(
@@ -1054,7 +1432,31 @@ class LanguageServiceRestTransport(_BaseLanguageServiceRestTransport):
             pb_resp = language_service.ModerateTextResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_moderate_text(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = language_service.ModerateTextResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.language_v1beta2.LanguageServiceClient.moderate_text",
+                    extra={
+                        "serviceName": "google.cloud.language.v1beta2.LanguageService",
+                        "rpcName": "ModerateText",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property

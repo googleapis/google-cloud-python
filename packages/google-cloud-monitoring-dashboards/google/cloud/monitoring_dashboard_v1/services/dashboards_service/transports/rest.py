@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -40,6 +40,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -108,8 +116,11 @@ class DashboardsServiceRestInterceptor:
     def pre_create_dashboard(
         self,
         request: dashboards_service.CreateDashboardRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[dashboards_service.CreateDashboardRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        dashboards_service.CreateDashboardRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for create_dashboard
 
         Override in a subclass to manipulate the request or metadata
@@ -131,8 +142,11 @@ class DashboardsServiceRestInterceptor:
     def pre_delete_dashboard(
         self,
         request: dashboards_service.DeleteDashboardRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[dashboards_service.DeleteDashboardRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        dashboards_service.DeleteDashboardRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for delete_dashboard
 
         Override in a subclass to manipulate the request or metadata
@@ -143,8 +157,10 @@ class DashboardsServiceRestInterceptor:
     def pre_get_dashboard(
         self,
         request: dashboards_service.GetDashboardRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[dashboards_service.GetDashboardRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        dashboards_service.GetDashboardRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_dashboard
 
         Override in a subclass to manipulate the request or metadata
@@ -164,8 +180,11 @@ class DashboardsServiceRestInterceptor:
     def pre_list_dashboards(
         self,
         request: dashboards_service.ListDashboardsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[dashboards_service.ListDashboardsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        dashboards_service.ListDashboardsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for list_dashboards
 
         Override in a subclass to manipulate the request or metadata
@@ -187,8 +206,11 @@ class DashboardsServiceRestInterceptor:
     def pre_update_dashboard(
         self,
         request: dashboards_service.UpdateDashboardRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[dashboards_service.UpdateDashboardRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        dashboards_service.UpdateDashboardRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for update_dashboard
 
         Override in a subclass to manipulate the request or metadata
@@ -331,7 +353,7 @@ class DashboardsServiceRestTransport(_BaseDashboardsServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gmd_dashboard.Dashboard:
             r"""Call the create dashboard method over HTTP.
 
@@ -341,8 +363,10 @@ class DashboardsServiceRestTransport(_BaseDashboardsServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.gmd_dashboard.Dashboard:
@@ -356,6 +380,7 @@ class DashboardsServiceRestTransport(_BaseDashboardsServiceRestTransport):
             http_options = (
                 _BaseDashboardsServiceRestTransport._BaseCreateDashboard._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_dashboard(
                 request, metadata
             )
@@ -371,6 +396,33 @@ class DashboardsServiceRestTransport(_BaseDashboardsServiceRestTransport):
             query_params = _BaseDashboardsServiceRestTransport._BaseCreateDashboard._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.monitoring.dashboard_v1.DashboardsServiceClient.CreateDashboard",
+                    extra={
+                        "serviceName": "google.monitoring.dashboard.v1.DashboardsService",
+                        "rpcName": "CreateDashboard",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DashboardsServiceRestTransport._CreateDashboard._get_response(
@@ -393,7 +445,29 @@ class DashboardsServiceRestTransport(_BaseDashboardsServiceRestTransport):
             pb_resp = gmd_dashboard.Dashboard.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_dashboard(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gmd_dashboard.Dashboard.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.monitoring.dashboard_v1.DashboardsServiceClient.create_dashboard",
+                    extra={
+                        "serviceName": "google.monitoring.dashboard.v1.DashboardsService",
+                        "rpcName": "CreateDashboard",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteDashboard(
@@ -431,7 +505,7 @@ class DashboardsServiceRestTransport(_BaseDashboardsServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete dashboard method over HTTP.
 
@@ -441,13 +515,16 @@ class DashboardsServiceRestTransport(_BaseDashboardsServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseDashboardsServiceRestTransport._BaseDeleteDashboard._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_dashboard(
                 request, metadata
             )
@@ -459,6 +536,33 @@ class DashboardsServiceRestTransport(_BaseDashboardsServiceRestTransport):
             query_params = _BaseDashboardsServiceRestTransport._BaseDeleteDashboard._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.monitoring.dashboard_v1.DashboardsServiceClient.DeleteDashboard",
+                    extra={
+                        "serviceName": "google.monitoring.dashboard.v1.DashboardsService",
+                        "rpcName": "DeleteDashboard",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DashboardsServiceRestTransport._DeleteDashboard._get_response(
@@ -509,7 +613,7 @@ class DashboardsServiceRestTransport(_BaseDashboardsServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> dashboard.Dashboard:
             r"""Call the get dashboard method over HTTP.
 
@@ -519,8 +623,10 @@ class DashboardsServiceRestTransport(_BaseDashboardsServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.dashboard.Dashboard:
@@ -534,6 +640,7 @@ class DashboardsServiceRestTransport(_BaseDashboardsServiceRestTransport):
             http_options = (
                 _BaseDashboardsServiceRestTransport._BaseGetDashboard._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_dashboard(request, metadata)
             transcoded_request = _BaseDashboardsServiceRestTransport._BaseGetDashboard._get_transcoded_request(
                 http_options, request
@@ -543,6 +650,33 @@ class DashboardsServiceRestTransport(_BaseDashboardsServiceRestTransport):
             query_params = _BaseDashboardsServiceRestTransport._BaseGetDashboard._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.monitoring.dashboard_v1.DashboardsServiceClient.GetDashboard",
+                    extra={
+                        "serviceName": "google.monitoring.dashboard.v1.DashboardsService",
+                        "rpcName": "GetDashboard",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DashboardsServiceRestTransport._GetDashboard._get_response(
@@ -564,7 +698,29 @@ class DashboardsServiceRestTransport(_BaseDashboardsServiceRestTransport):
             pb_resp = dashboard.Dashboard.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_dashboard(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = dashboard.Dashboard.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.monitoring.dashboard_v1.DashboardsServiceClient.get_dashboard",
+                    extra={
+                        "serviceName": "google.monitoring.dashboard.v1.DashboardsService",
+                        "rpcName": "GetDashboard",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListDashboards(
@@ -602,7 +758,7 @@ class DashboardsServiceRestTransport(_BaseDashboardsServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> dashboards_service.ListDashboardsResponse:
             r"""Call the list dashboards method over HTTP.
 
@@ -612,8 +768,10 @@ class DashboardsServiceRestTransport(_BaseDashboardsServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.dashboards_service.ListDashboardsResponse:
@@ -623,6 +781,7 @@ class DashboardsServiceRestTransport(_BaseDashboardsServiceRestTransport):
             http_options = (
                 _BaseDashboardsServiceRestTransport._BaseListDashboards._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_dashboards(request, metadata)
             transcoded_request = _BaseDashboardsServiceRestTransport._BaseListDashboards._get_transcoded_request(
                 http_options, request
@@ -632,6 +791,33 @@ class DashboardsServiceRestTransport(_BaseDashboardsServiceRestTransport):
             query_params = _BaseDashboardsServiceRestTransport._BaseListDashboards._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.monitoring.dashboard_v1.DashboardsServiceClient.ListDashboards",
+                    extra={
+                        "serviceName": "google.monitoring.dashboard.v1.DashboardsService",
+                        "rpcName": "ListDashboards",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DashboardsServiceRestTransport._ListDashboards._get_response(
@@ -653,7 +839,31 @@ class DashboardsServiceRestTransport(_BaseDashboardsServiceRestTransport):
             pb_resp = dashboards_service.ListDashboardsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_dashboards(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        dashboards_service.ListDashboardsResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.monitoring.dashboard_v1.DashboardsServiceClient.list_dashboards",
+                    extra={
+                        "serviceName": "google.monitoring.dashboard.v1.DashboardsService",
+                        "rpcName": "ListDashboards",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateDashboard(
@@ -692,7 +902,7 @@ class DashboardsServiceRestTransport(_BaseDashboardsServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> dashboard.Dashboard:
             r"""Call the update dashboard method over HTTP.
 
@@ -702,8 +912,10 @@ class DashboardsServiceRestTransport(_BaseDashboardsServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.dashboard.Dashboard:
@@ -717,6 +929,7 @@ class DashboardsServiceRestTransport(_BaseDashboardsServiceRestTransport):
             http_options = (
                 _BaseDashboardsServiceRestTransport._BaseUpdateDashboard._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_dashboard(
                 request, metadata
             )
@@ -732,6 +945,33 @@ class DashboardsServiceRestTransport(_BaseDashboardsServiceRestTransport):
             query_params = _BaseDashboardsServiceRestTransport._BaseUpdateDashboard._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.monitoring.dashboard_v1.DashboardsServiceClient.UpdateDashboard",
+                    extra={
+                        "serviceName": "google.monitoring.dashboard.v1.DashboardsService",
+                        "rpcName": "UpdateDashboard",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DashboardsServiceRestTransport._UpdateDashboard._get_response(
@@ -754,7 +994,29 @@ class DashboardsServiceRestTransport(_BaseDashboardsServiceRestTransport):
             pb_resp = dashboard.Dashboard.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_dashboard(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = dashboard.Dashboard.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.monitoring.dashboard_v1.DashboardsServiceClient.update_dashboard",
+                    extra={
+                        "serviceName": "google.monitoring.dashboard.v1.DashboardsService",
+                        "rpcName": "UpdateDashboard",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property

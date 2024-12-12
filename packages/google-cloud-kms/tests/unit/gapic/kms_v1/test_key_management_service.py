@@ -11779,6 +11779,7 @@ def test_list_key_rings_rest_required_fields(request_type=service.ListKeyRingsRe
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_key_rings(request)
 
@@ -11834,6 +11835,7 @@ def test_list_key_rings_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_key_rings(**mock_args)
 
@@ -12037,6 +12039,7 @@ def test_list_crypto_keys_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_crypto_keys(request)
 
@@ -12095,6 +12098,7 @@ def test_list_crypto_keys_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_crypto_keys(**mock_args)
 
@@ -12304,6 +12308,7 @@ def test_list_crypto_key_versions_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_crypto_key_versions(request)
 
@@ -12362,6 +12367,7 @@ def test_list_crypto_key_versions_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_crypto_key_versions(**mock_args)
 
@@ -12569,6 +12575,7 @@ def test_list_import_jobs_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_import_jobs(request)
 
@@ -12626,6 +12633,7 @@ def test_list_import_jobs_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_import_jobs(**mock_args)
 
@@ -12818,6 +12826,7 @@ def test_get_key_ring_rest_required_fields(request_type=service.GetKeyRingReques
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_key_ring(request)
 
@@ -12863,6 +12872,7 @@ def test_get_key_ring_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_key_ring(**mock_args)
 
@@ -12991,6 +13001,7 @@ def test_get_crypto_key_rest_required_fields(request_type=service.GetCryptoKeyRe
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_crypto_key(request)
 
@@ -13038,6 +13049,7 @@ def test_get_crypto_key_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_crypto_key(**mock_args)
 
@@ -13174,6 +13186,7 @@ def test_get_crypto_key_version_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_crypto_key_version(request)
 
@@ -13221,6 +13234,7 @@ def test_get_crypto_key_version_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_crypto_key_version(**mock_args)
 
@@ -13350,6 +13364,7 @@ def test_get_public_key_rest_required_fields(request_type=service.GetPublicKeyRe
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_public_key(request)
 
@@ -13397,6 +13412,7 @@ def test_get_public_key_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_public_key(**mock_args)
 
@@ -13526,6 +13542,7 @@ def test_get_import_job_rest_required_fields(request_type=service.GetImportJobRe
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_import_job(request)
 
@@ -13573,6 +13590,7 @@ def test_get_import_job_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_import_job(**mock_args)
 
@@ -13714,6 +13732,7 @@ def test_create_key_ring_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_key_ring(request)
 
@@ -13776,6 +13795,7 @@ def test_create_key_ring_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_key_ring(**mock_args)
 
@@ -13925,6 +13945,7 @@ def test_create_crypto_key_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_crypto_key(request)
 
@@ -13994,6 +14015,7 @@ def test_create_crypto_key_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_crypto_key(**mock_args)
 
@@ -14133,6 +14155,7 @@ def test_create_crypto_key_version_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_crypto_key_version(request)
 
@@ -14189,6 +14212,7 @@ def test_create_crypto_key_version_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_crypto_key_version(**mock_args)
 
@@ -14331,6 +14355,7 @@ def test_import_crypto_key_version_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.import_crypto_key_version(request)
 
@@ -14471,6 +14496,7 @@ def test_create_import_job_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_import_job(request)
 
@@ -14535,6 +14561,7 @@ def test_create_import_job_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_import_job(**mock_args)
 
@@ -14668,6 +14695,7 @@ def test_update_crypto_key_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_crypto_key(request)
 
@@ -14726,6 +14754,7 @@ def test_update_crypto_key_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_crypto_key(**mock_args)
 
@@ -14861,6 +14890,7 @@ def test_update_crypto_key_version_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_crypto_key_version(request)
 
@@ -14919,6 +14949,7 @@ def test_update_crypto_key_version_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_crypto_key_version(**mock_args)
 
@@ -15061,6 +15092,7 @@ def test_update_crypto_key_primary_version_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_crypto_key_primary_version(request)
 
@@ -15119,6 +15151,7 @@ def test_update_crypto_key_primary_version_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_crypto_key_primary_version(**mock_args)
 
@@ -15259,6 +15292,7 @@ def test_destroy_crypto_key_version_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.destroy_crypto_key_version(request)
 
@@ -15306,6 +15340,7 @@ def test_destroy_crypto_key_version_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.destroy_crypto_key_version(**mock_args)
 
@@ -15443,6 +15478,7 @@ def test_restore_crypto_key_version_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.restore_crypto_key_version(request)
 
@@ -15490,6 +15526,7 @@ def test_restore_crypto_key_version_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.restore_crypto_key_version(**mock_args)
 
@@ -15624,6 +15661,7 @@ def test_encrypt_rest_required_fields(request_type=service.EncryptRequest):
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.encrypt(request)
 
@@ -15680,6 +15718,7 @@ def test_encrypt_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.encrypt(**mock_args)
 
@@ -15815,6 +15854,7 @@ def test_decrypt_rest_required_fields(request_type=service.DecryptRequest):
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.decrypt(request)
 
@@ -15871,6 +15911,7 @@ def test_decrypt_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.decrypt(**mock_args)
 
@@ -16006,6 +16047,7 @@ def test_raw_encrypt_rest_required_fields(request_type=service.RawEncryptRequest
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.raw_encrypt(request)
 
@@ -16140,6 +16182,7 @@ def test_raw_decrypt_rest_required_fields(request_type=service.RawDecryptRequest
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.raw_decrypt(request)
 
@@ -16269,6 +16312,7 @@ def test_asymmetric_sign_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.asymmetric_sign(request)
 
@@ -16317,6 +16361,7 @@ def test_asymmetric_sign_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.asymmetric_sign(**mock_args)
 
@@ -16458,6 +16503,7 @@ def test_asymmetric_decrypt_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.asymmetric_decrypt(request)
 
@@ -16514,6 +16560,7 @@ def test_asymmetric_decrypt_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.asymmetric_decrypt(**mock_args)
 
@@ -16649,6 +16696,7 @@ def test_mac_sign_rest_required_fields(request_type=service.MacSignRequest):
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.mac_sign(request)
 
@@ -16705,6 +16753,7 @@ def test_mac_sign_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.mac_sign(**mock_args)
 
@@ -16844,6 +16893,7 @@ def test_mac_verify_rest_required_fields(request_type=service.MacVerifyRequest):
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.mac_verify(request)
 
@@ -16902,6 +16952,7 @@ def test_mac_verify_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.mac_verify(**mock_args)
 
@@ -17004,6 +17055,7 @@ def test_generate_random_bytes_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.generate_random_bytes(**mock_args)
 
@@ -18681,6 +18733,7 @@ def test_list_key_rings_rest_bad_request(request_type=service.ListKeyRingsReques
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_key_rings(request)
 
 
@@ -18717,6 +18770,7 @@ def test_list_key_rings_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_key_rings(request)
 
     # Establish that the response is the type that we expect.
@@ -18756,6 +18810,7 @@ def test_list_key_rings_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = service.ListKeyRingsResponse.to_json(
             service.ListKeyRingsResponse()
         )
@@ -18800,6 +18855,7 @@ def test_list_crypto_keys_rest_bad_request(request_type=service.ListCryptoKeysRe
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_crypto_keys(request)
 
 
@@ -18836,6 +18892,7 @@ def test_list_crypto_keys_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_crypto_keys(request)
 
     # Establish that the response is the type that we expect.
@@ -18875,6 +18932,7 @@ def test_list_crypto_keys_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = service.ListCryptoKeysResponse.to_json(
             service.ListCryptoKeysResponse()
         )
@@ -18923,6 +18981,7 @@ def test_list_crypto_key_versions_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_crypto_key_versions(request)
 
 
@@ -18961,6 +19020,7 @@ def test_list_crypto_key_versions_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_crypto_key_versions(request)
 
     # Establish that the response is the type that we expect.
@@ -19002,6 +19062,7 @@ def test_list_crypto_key_versions_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = service.ListCryptoKeyVersionsResponse.to_json(
             service.ListCryptoKeyVersionsResponse()
         )
@@ -19046,6 +19107,7 @@ def test_list_import_jobs_rest_bad_request(request_type=service.ListImportJobsRe
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_import_jobs(request)
 
 
@@ -19082,6 +19144,7 @@ def test_list_import_jobs_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_import_jobs(request)
 
     # Establish that the response is the type that we expect.
@@ -19121,6 +19184,7 @@ def test_list_import_jobs_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = service.ListImportJobsResponse.to_json(
             service.ListImportJobsResponse()
         )
@@ -19165,6 +19229,7 @@ def test_get_key_ring_rest_bad_request(request_type=service.GetKeyRingRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_key_ring(request)
 
 
@@ -19200,6 +19265,7 @@ def test_get_key_ring_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_key_ring(request)
 
     # Establish that the response is the type that we expect.
@@ -19238,6 +19304,7 @@ def test_get_key_ring_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = resources.KeyRing.to_json(resources.KeyRing())
         req.return_value.content = return_value
 
@@ -19282,6 +19349,7 @@ def test_get_crypto_key_rest_bad_request(request_type=service.GetCryptoKeyReques
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_crypto_key(request)
 
 
@@ -19322,6 +19390,7 @@ def test_get_crypto_key_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_crypto_key(request)
 
     # Establish that the response is the type that we expect.
@@ -19363,6 +19432,7 @@ def test_get_crypto_key_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = resources.CryptoKey.to_json(resources.CryptoKey())
         req.return_value.content = return_value
 
@@ -19409,6 +19479,7 @@ def test_get_crypto_key_version_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_crypto_key_version(request)
 
 
@@ -19454,6 +19525,7 @@ def test_get_crypto_key_version_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_crypto_key_version(request)
 
     # Establish that the response is the type that we expect.
@@ -19511,6 +19583,7 @@ def test_get_crypto_key_version_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = resources.CryptoKeyVersion.to_json(resources.CryptoKeyVersion())
         req.return_value.content = return_value
 
@@ -19555,6 +19628,7 @@ def test_get_public_key_rest_bad_request(request_type=service.GetPublicKeyReques
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_public_key(request)
 
 
@@ -19595,6 +19669,7 @@ def test_get_public_key_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_public_key(request)
 
     # Establish that the response is the type that we expect.
@@ -19639,6 +19714,7 @@ def test_get_public_key_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = resources.PublicKey.to_json(resources.PublicKey())
         req.return_value.content = return_value
 
@@ -19683,6 +19759,7 @@ def test_get_import_job_rest_bad_request(request_type=service.GetImportJobReques
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_import_job(request)
 
 
@@ -19723,6 +19800,7 @@ def test_get_import_job_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_import_job(request)
 
     # Establish that the response is the type that we expect.
@@ -19767,6 +19845,7 @@ def test_get_import_job_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = resources.ImportJob.to_json(resources.ImportJob())
         req.return_value.content = return_value
 
@@ -19809,6 +19888,7 @@ def test_create_key_ring_rest_bad_request(request_type=service.CreateKeyRingRequ
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_key_ring(request)
 
 
@@ -19915,6 +19995,7 @@ def test_create_key_ring_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_key_ring(request)
 
     # Establish that the response is the type that we expect.
@@ -19953,6 +20034,7 @@ def test_create_key_ring_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = resources.KeyRing.to_json(resources.KeyRing())
         req.return_value.content = return_value
 
@@ -19997,6 +20079,7 @@ def test_create_crypto_key_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_crypto_key(request)
 
 
@@ -20150,6 +20233,7 @@ def test_create_crypto_key_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_crypto_key(request)
 
     # Establish that the response is the type that we expect.
@@ -20191,6 +20275,7 @@ def test_create_crypto_key_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = resources.CryptoKey.to_json(resources.CryptoKey())
         req.return_value.content = return_value
 
@@ -20237,6 +20322,7 @@ def test_create_crypto_key_version_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_crypto_key_version(request)
 
 
@@ -20384,6 +20470,7 @@ def test_create_crypto_key_version_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_crypto_key_version(request)
 
     # Establish that the response is the type that we expect.
@@ -20441,6 +20528,7 @@ def test_create_crypto_key_version_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = resources.CryptoKeyVersion.to_json(resources.CryptoKeyVersion())
         req.return_value.content = return_value
 
@@ -20487,6 +20575,7 @@ def test_import_crypto_key_version_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.import_crypto_key_version(request)
 
 
@@ -20532,6 +20621,7 @@ def test_import_crypto_key_version_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.import_crypto_key_version(request)
 
     # Establish that the response is the type that we expect.
@@ -20589,6 +20679,7 @@ def test_import_crypto_key_version_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = resources.CryptoKeyVersion.to_json(resources.CryptoKeyVersion())
         req.return_value.content = return_value
 
@@ -20633,6 +20724,7 @@ def test_create_import_job_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_import_job(request)
 
 
@@ -20764,6 +20856,7 @@ def test_create_import_job_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_import_job(request)
 
     # Establish that the response is the type that we expect.
@@ -20808,6 +20901,7 @@ def test_create_import_job_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = resources.ImportJob.to_json(resources.ImportJob())
         req.return_value.content = return_value
 
@@ -20856,6 +20950,7 @@ def test_update_crypto_key_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_crypto_key(request)
 
 
@@ -21013,6 +21108,7 @@ def test_update_crypto_key_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_crypto_key(request)
 
     # Establish that the response is the type that we expect.
@@ -21054,6 +21150,7 @@ def test_update_crypto_key_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = resources.CryptoKey.to_json(resources.CryptoKey())
         req.return_value.content = return_value
 
@@ -21102,6 +21199,7 @@ def test_update_crypto_key_version_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_crypto_key_version(request)
 
 
@@ -21251,6 +21349,7 @@ def test_update_crypto_key_version_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_crypto_key_version(request)
 
     # Establish that the response is the type that we expect.
@@ -21308,6 +21407,7 @@ def test_update_crypto_key_version_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = resources.CryptoKeyVersion.to_json(resources.CryptoKeyVersion())
         req.return_value.content = return_value
 
@@ -21354,6 +21454,7 @@ def test_update_crypto_key_primary_version_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_crypto_key_primary_version(request)
 
 
@@ -21394,6 +21495,7 @@ def test_update_crypto_key_primary_version_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_crypto_key_primary_version(request)
 
     # Establish that the response is the type that we expect.
@@ -21439,6 +21541,7 @@ def test_update_crypto_key_primary_version_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = resources.CryptoKey.to_json(resources.CryptoKey())
         req.return_value.content = return_value
 
@@ -21485,6 +21588,7 @@ def test_destroy_crypto_key_version_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.destroy_crypto_key_version(request)
 
 
@@ -21530,6 +21634,7 @@ def test_destroy_crypto_key_version_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.destroy_crypto_key_version(request)
 
     # Establish that the response is the type that we expect.
@@ -21588,6 +21693,7 @@ def test_destroy_crypto_key_version_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = resources.CryptoKeyVersion.to_json(resources.CryptoKeyVersion())
         req.return_value.content = return_value
 
@@ -21634,6 +21740,7 @@ def test_restore_crypto_key_version_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.restore_crypto_key_version(request)
 
 
@@ -21679,6 +21786,7 @@ def test_restore_crypto_key_version_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.restore_crypto_key_version(request)
 
     # Establish that the response is the type that we expect.
@@ -21737,6 +21845,7 @@ def test_restore_crypto_key_version_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = resources.CryptoKeyVersion.to_json(resources.CryptoKeyVersion())
         req.return_value.content = return_value
 
@@ -21781,6 +21890,7 @@ def test_encrypt_rest_bad_request(request_type=service.EncryptRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.encrypt(request)
 
 
@@ -21822,6 +21932,7 @@ def test_encrypt_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.encrypt(request)
 
     # Establish that the response is the type that we expect.
@@ -21864,6 +21975,7 @@ def test_encrypt_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = service.EncryptResponse.to_json(service.EncryptResponse())
         req.return_value.content = return_value
 
@@ -21908,6 +22020,7 @@ def test_decrypt_rest_bad_request(request_type=service.DecryptRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.decrypt(request)
 
 
@@ -21947,6 +22060,7 @@ def test_decrypt_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.decrypt(request)
 
     # Establish that the response is the type that we expect.
@@ -21987,6 +22101,7 @@ def test_decrypt_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = service.DecryptResponse.to_json(service.DecryptResponse())
         req.return_value.content = return_value
 
@@ -22031,6 +22146,7 @@ def test_raw_encrypt_rest_bad_request(request_type=service.RawEncryptRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.raw_encrypt(request)
 
 
@@ -22075,6 +22191,7 @@ def test_raw_encrypt_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.raw_encrypt(request)
 
     # Establish that the response is the type that we expect.
@@ -22120,6 +22237,7 @@ def test_raw_encrypt_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = service.RawEncryptResponse.to_json(service.RawEncryptResponse())
         req.return_value.content = return_value
 
@@ -22164,6 +22282,7 @@ def test_raw_decrypt_rest_bad_request(request_type=service.RawDecryptRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.raw_decrypt(request)
 
 
@@ -22205,6 +22324,7 @@ def test_raw_decrypt_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.raw_decrypt(request)
 
     # Establish that the response is the type that we expect.
@@ -22247,6 +22367,7 @@ def test_raw_decrypt_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = service.RawDecryptResponse.to_json(service.RawDecryptResponse())
         req.return_value.content = return_value
 
@@ -22291,6 +22412,7 @@ def test_asymmetric_sign_rest_bad_request(request_type=service.AsymmetricSignReq
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.asymmetric_sign(request)
 
 
@@ -22332,6 +22454,7 @@ def test_asymmetric_sign_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.asymmetric_sign(request)
 
     # Establish that the response is the type that we expect.
@@ -22374,6 +22497,7 @@ def test_asymmetric_sign_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = service.AsymmetricSignResponse.to_json(
             service.AsymmetricSignResponse()
         )
@@ -22422,6 +22546,7 @@ def test_asymmetric_decrypt_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.asymmetric_decrypt(request)
 
 
@@ -22461,6 +22586,7 @@ def test_asymmetric_decrypt_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.asymmetric_decrypt(request)
 
     # Establish that the response is the type that we expect.
@@ -22503,6 +22629,7 @@ def test_asymmetric_decrypt_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = service.AsymmetricDecryptResponse.to_json(
             service.AsymmetricDecryptResponse()
         )
@@ -22549,6 +22676,7 @@ def test_mac_sign_rest_bad_request(request_type=service.MacSignRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.mac_sign(request)
 
 
@@ -22589,6 +22717,7 @@ def test_mac_sign_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.mac_sign(request)
 
     # Establish that the response is the type that we expect.
@@ -22630,6 +22759,7 @@ def test_mac_sign_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = service.MacSignResponse.to_json(service.MacSignResponse())
         req.return_value.content = return_value
 
@@ -22674,6 +22804,7 @@ def test_mac_verify_rest_bad_request(request_type=service.MacVerifyRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.mac_verify(request)
 
 
@@ -22716,6 +22847,7 @@ def test_mac_verify_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.mac_verify(request)
 
     # Establish that the response is the type that we expect.
@@ -22759,6 +22891,7 @@ def test_mac_verify_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = service.MacVerifyResponse.to_json(service.MacVerifyResponse())
         req.return_value.content = return_value
 
@@ -22803,6 +22936,7 @@ def test_generate_random_bytes_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.generate_random_bytes(request)
 
 
@@ -22838,6 +22972,7 @@ def test_generate_random_bytes_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.generate_random_bytes(request)
 
     # Establish that the response is the type that we expect.
@@ -22878,6 +23013,7 @@ def test_generate_random_bytes_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = service.GenerateRandomBytesResponse.to_json(
             service.GenerateRandomBytesResponse()
         )
@@ -22924,6 +23060,7 @@ def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationReq
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_location(request)
 
 
@@ -22954,6 +23091,7 @@ def test_get_location_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.get_location(request)
 
@@ -22982,6 +23120,7 @@ def test_list_locations_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_locations(request)
 
 
@@ -23012,6 +23151,7 @@ def test_list_locations_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.list_locations(request)
 
@@ -23042,6 +23182,7 @@ def test_get_iam_policy_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_iam_policy(request)
 
 
@@ -23072,6 +23213,7 @@ def test_get_iam_policy_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.get_iam_policy(request)
 
@@ -23102,6 +23244,7 @@ def test_set_iam_policy_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.set_iam_policy(request)
 
 
@@ -23132,6 +23275,7 @@ def test_set_iam_policy_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.set_iam_policy(request)
 
@@ -23162,6 +23306,7 @@ def test_test_iam_permissions_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.test_iam_permissions(request)
 
 
@@ -23192,6 +23337,7 @@ def test_test_iam_permissions_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.test_iam_permissions(request)
 
@@ -23222,6 +23368,7 @@ def test_get_operation_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_operation(request)
 
 
@@ -23252,6 +23399,7 @@ def test_get_operation_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.get_operation(request)
 
