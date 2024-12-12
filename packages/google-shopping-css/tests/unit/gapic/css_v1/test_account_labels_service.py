@@ -2839,6 +2839,7 @@ def test_list_account_labels_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_account_labels(request)
 
@@ -2892,6 +2893,7 @@ def test_list_account_labels_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_account_labels(**mock_args)
 
@@ -3089,6 +3091,7 @@ def test_create_account_label_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_account_label(request)
 
@@ -3143,6 +3146,7 @@ def test_create_account_label_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_account_label(**mock_args)
 
@@ -3273,6 +3277,7 @@ def test_update_account_label_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_account_label(request)
 
@@ -3318,6 +3323,7 @@ def test_update_account_label_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_account_label(**mock_args)
 
@@ -3449,6 +3455,7 @@ def test_delete_account_label_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_account_label(request)
 
@@ -3492,6 +3499,7 @@ def test_delete_account_label_rest_flattened():
         json_return_value = ""
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_account_label(**mock_args)
 
@@ -3881,6 +3889,7 @@ def test_list_account_labels_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_account_labels(request)
 
 
@@ -3916,6 +3925,7 @@ def test_list_account_labels_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_account_labels(request)
 
     # Establish that the response is the type that we expect.
@@ -3956,6 +3966,7 @@ def test_list_account_labels_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = accounts_labels.ListAccountLabelsResponse.to_json(
             accounts_labels.ListAccountLabelsResponse()
         )
@@ -4002,6 +4013,7 @@ def test_create_account_label_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_account_label(request)
 
 
@@ -4117,6 +4129,7 @@ def test_create_account_label_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_account_label(request)
 
     # Establish that the response is the type that we expect.
@@ -4162,6 +4175,7 @@ def test_create_account_label_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = accounts_labels.AccountLabel.to_json(
             accounts_labels.AccountLabel()
         )
@@ -4208,6 +4222,7 @@ def test_update_account_label_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_account_label(request)
 
 
@@ -4323,6 +4338,7 @@ def test_update_account_label_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_account_label(request)
 
     # Establish that the response is the type that we expect.
@@ -4368,6 +4384,7 @@ def test_update_account_label_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = accounts_labels.AccountLabel.to_json(
             accounts_labels.AccountLabel()
         )
@@ -4414,6 +4431,7 @@ def test_delete_account_label_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_account_label(request)
 
 
@@ -4444,6 +4462,7 @@ def test_delete_account_label_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_account_label(request)
 
     # Establish that the response is the type that we expect.
@@ -4480,6 +4499,7 @@ def test_delete_account_label_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = accounts_labels.DeleteAccountLabelRequest()
         metadata = [

@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -38,6 +38,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -98,8 +106,11 @@ class AccountLabelsServiceRestInterceptor:
     def pre_create_account_label(
         self,
         request: accounts_labels.CreateAccountLabelRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[accounts_labels.CreateAccountLabelRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        accounts_labels.CreateAccountLabelRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for create_account_label
 
         Override in a subclass to manipulate the request or metadata
@@ -121,8 +132,11 @@ class AccountLabelsServiceRestInterceptor:
     def pre_delete_account_label(
         self,
         request: accounts_labels.DeleteAccountLabelRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[accounts_labels.DeleteAccountLabelRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        accounts_labels.DeleteAccountLabelRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for delete_account_label
 
         Override in a subclass to manipulate the request or metadata
@@ -133,8 +147,11 @@ class AccountLabelsServiceRestInterceptor:
     def pre_list_account_labels(
         self,
         request: accounts_labels.ListAccountLabelsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[accounts_labels.ListAccountLabelsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        accounts_labels.ListAccountLabelsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for list_account_labels
 
         Override in a subclass to manipulate the request or metadata
@@ -156,8 +173,11 @@ class AccountLabelsServiceRestInterceptor:
     def pre_update_account_label(
         self,
         request: accounts_labels.UpdateAccountLabelRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[accounts_labels.UpdateAccountLabelRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        accounts_labels.UpdateAccountLabelRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for update_account_label
 
         Override in a subclass to manipulate the request or metadata
@@ -299,7 +319,7 @@ class AccountLabelsServiceRestTransport(_BaseAccountLabelsServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> accounts_labels.AccountLabel:
             r"""Call the create account label method over HTTP.
 
@@ -310,8 +330,10 @@ class AccountLabelsServiceRestTransport(_BaseAccountLabelsServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.accounts_labels.AccountLabel:
@@ -323,6 +345,7 @@ class AccountLabelsServiceRestTransport(_BaseAccountLabelsServiceRestTransport):
             http_options = (
                 _BaseAccountLabelsServiceRestTransport._BaseCreateAccountLabel._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_account_label(
                 request, metadata
             )
@@ -338,6 +361,33 @@ class AccountLabelsServiceRestTransport(_BaseAccountLabelsServiceRestTransport):
             query_params = _BaseAccountLabelsServiceRestTransport._BaseCreateAccountLabel._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.shopping.css_v1.AccountLabelsServiceClient.CreateAccountLabel",
+                    extra={
+                        "serviceName": "google.shopping.css.v1.AccountLabelsService",
+                        "rpcName": "CreateAccountLabel",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -362,7 +412,29 @@ class AccountLabelsServiceRestTransport(_BaseAccountLabelsServiceRestTransport):
             pb_resp = accounts_labels.AccountLabel.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_account_label(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = accounts_labels.AccountLabel.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.shopping.css_v1.AccountLabelsServiceClient.create_account_label",
+                    extra={
+                        "serviceName": "google.shopping.css.v1.AccountLabelsService",
+                        "rpcName": "CreateAccountLabel",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteAccountLabel(
@@ -400,7 +472,7 @@ class AccountLabelsServiceRestTransport(_BaseAccountLabelsServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete account label method over HTTP.
 
@@ -411,13 +483,16 @@ class AccountLabelsServiceRestTransport(_BaseAccountLabelsServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseAccountLabelsServiceRestTransport._BaseDeleteAccountLabel._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_account_label(
                 request, metadata
             )
@@ -429,6 +504,33 @@ class AccountLabelsServiceRestTransport(_BaseAccountLabelsServiceRestTransport):
             query_params = _BaseAccountLabelsServiceRestTransport._BaseDeleteAccountLabel._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.shopping.css_v1.AccountLabelsServiceClient.DeleteAccountLabel",
+                    extra={
+                        "serviceName": "google.shopping.css.v1.AccountLabelsService",
+                        "rpcName": "DeleteAccountLabel",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -482,7 +584,7 @@ class AccountLabelsServiceRestTransport(_BaseAccountLabelsServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> accounts_labels.ListAccountLabelsResponse:
             r"""Call the list account labels method over HTTP.
 
@@ -492,8 +594,10 @@ class AccountLabelsServiceRestTransport(_BaseAccountLabelsServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.accounts_labels.ListAccountLabelsResponse:
@@ -503,6 +607,7 @@ class AccountLabelsServiceRestTransport(_BaseAccountLabelsServiceRestTransport):
             http_options = (
                 _BaseAccountLabelsServiceRestTransport._BaseListAccountLabels._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_account_labels(
                 request, metadata
             )
@@ -514,6 +619,33 @@ class AccountLabelsServiceRestTransport(_BaseAccountLabelsServiceRestTransport):
             query_params = _BaseAccountLabelsServiceRestTransport._BaseListAccountLabels._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.shopping.css_v1.AccountLabelsServiceClient.ListAccountLabels",
+                    extra={
+                        "serviceName": "google.shopping.css.v1.AccountLabelsService",
+                        "rpcName": "ListAccountLabels",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -537,7 +669,31 @@ class AccountLabelsServiceRestTransport(_BaseAccountLabelsServiceRestTransport):
             pb_resp = accounts_labels.ListAccountLabelsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_account_labels(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        accounts_labels.ListAccountLabelsResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.shopping.css_v1.AccountLabelsServiceClient.list_account_labels",
+                    extra={
+                        "serviceName": "google.shopping.css.v1.AccountLabelsService",
+                        "rpcName": "ListAccountLabels",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateAccountLabel(
@@ -576,7 +732,7 @@ class AccountLabelsServiceRestTransport(_BaseAccountLabelsServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> accounts_labels.AccountLabel:
             r"""Call the update account label method over HTTP.
 
@@ -586,8 +742,10 @@ class AccountLabelsServiceRestTransport(_BaseAccountLabelsServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.accounts_labels.AccountLabel:
@@ -599,6 +757,7 @@ class AccountLabelsServiceRestTransport(_BaseAccountLabelsServiceRestTransport):
             http_options = (
                 _BaseAccountLabelsServiceRestTransport._BaseUpdateAccountLabel._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_account_label(
                 request, metadata
             )
@@ -614,6 +773,33 @@ class AccountLabelsServiceRestTransport(_BaseAccountLabelsServiceRestTransport):
             query_params = _BaseAccountLabelsServiceRestTransport._BaseUpdateAccountLabel._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.shopping.css_v1.AccountLabelsServiceClient.UpdateAccountLabel",
+                    extra={
+                        "serviceName": "google.shopping.css.v1.AccountLabelsService",
+                        "rpcName": "UpdateAccountLabel",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -638,7 +824,29 @@ class AccountLabelsServiceRestTransport(_BaseAccountLabelsServiceRestTransport):
             pb_resp = accounts_labels.AccountLabel.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_account_label(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = accounts_labels.AccountLabel.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.shopping.css_v1.AccountLabelsServiceClient.update_account_label",
+                    extra={
+                        "serviceName": "google.shopping.css.v1.AccountLabelsService",
+                        "rpcName": "UpdateAccountLabel",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
