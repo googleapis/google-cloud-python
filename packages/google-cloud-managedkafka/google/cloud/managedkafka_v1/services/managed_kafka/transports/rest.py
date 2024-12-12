@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -40,6 +40,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -176,8 +184,10 @@ class ManagedKafkaRestInterceptor:
     def pre_create_cluster(
         self,
         request: managed_kafka.CreateClusterRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[managed_kafka.CreateClusterRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        managed_kafka.CreateClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_cluster
 
         Override in a subclass to manipulate the request or metadata
@@ -199,8 +209,10 @@ class ManagedKafkaRestInterceptor:
     def pre_create_topic(
         self,
         request: managed_kafka.CreateTopicRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[managed_kafka.CreateTopicRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        managed_kafka.CreateTopicRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_topic
 
         Override in a subclass to manipulate the request or metadata
@@ -220,8 +232,10 @@ class ManagedKafkaRestInterceptor:
     def pre_delete_cluster(
         self,
         request: managed_kafka.DeleteClusterRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[managed_kafka.DeleteClusterRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        managed_kafka.DeleteClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_cluster
 
         Override in a subclass to manipulate the request or metadata
@@ -243,8 +257,11 @@ class ManagedKafkaRestInterceptor:
     def pre_delete_consumer_group(
         self,
         request: managed_kafka.DeleteConsumerGroupRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[managed_kafka.DeleteConsumerGroupRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        managed_kafka.DeleteConsumerGroupRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for delete_consumer_group
 
         Override in a subclass to manipulate the request or metadata
@@ -255,8 +272,10 @@ class ManagedKafkaRestInterceptor:
     def pre_delete_topic(
         self,
         request: managed_kafka.DeleteTopicRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[managed_kafka.DeleteTopicRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        managed_kafka.DeleteTopicRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_topic
 
         Override in a subclass to manipulate the request or metadata
@@ -267,8 +286,10 @@ class ManagedKafkaRestInterceptor:
     def pre_get_cluster(
         self,
         request: managed_kafka.GetClusterRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[managed_kafka.GetClusterRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        managed_kafka.GetClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_cluster
 
         Override in a subclass to manipulate the request or metadata
@@ -288,8 +309,10 @@ class ManagedKafkaRestInterceptor:
     def pre_get_consumer_group(
         self,
         request: managed_kafka.GetConsumerGroupRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[managed_kafka.GetConsumerGroupRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        managed_kafka.GetConsumerGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_consumer_group
 
         Override in a subclass to manipulate the request or metadata
@@ -311,8 +334,8 @@ class ManagedKafkaRestInterceptor:
     def pre_get_topic(
         self,
         request: managed_kafka.GetTopicRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[managed_kafka.GetTopicRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[managed_kafka.GetTopicRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_topic
 
         Override in a subclass to manipulate the request or metadata
@@ -332,8 +355,10 @@ class ManagedKafkaRestInterceptor:
     def pre_list_clusters(
         self,
         request: managed_kafka.ListClustersRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[managed_kafka.ListClustersRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        managed_kafka.ListClustersRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_clusters
 
         Override in a subclass to manipulate the request or metadata
@@ -355,8 +380,10 @@ class ManagedKafkaRestInterceptor:
     def pre_list_consumer_groups(
         self,
         request: managed_kafka.ListConsumerGroupsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[managed_kafka.ListConsumerGroupsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        managed_kafka.ListConsumerGroupsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_consumer_groups
 
         Override in a subclass to manipulate the request or metadata
@@ -378,8 +405,10 @@ class ManagedKafkaRestInterceptor:
     def pre_list_topics(
         self,
         request: managed_kafka.ListTopicsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[managed_kafka.ListTopicsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        managed_kafka.ListTopicsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_topics
 
         Override in a subclass to manipulate the request or metadata
@@ -401,8 +430,10 @@ class ManagedKafkaRestInterceptor:
     def pre_update_cluster(
         self,
         request: managed_kafka.UpdateClusterRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[managed_kafka.UpdateClusterRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        managed_kafka.UpdateClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_cluster
 
         Override in a subclass to manipulate the request or metadata
@@ -424,8 +455,11 @@ class ManagedKafkaRestInterceptor:
     def pre_update_consumer_group(
         self,
         request: managed_kafka.UpdateConsumerGroupRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[managed_kafka.UpdateConsumerGroupRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        managed_kafka.UpdateConsumerGroupRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for update_consumer_group
 
         Override in a subclass to manipulate the request or metadata
@@ -447,8 +481,10 @@ class ManagedKafkaRestInterceptor:
     def pre_update_topic(
         self,
         request: managed_kafka.UpdateTopicRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[managed_kafka.UpdateTopicRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        managed_kafka.UpdateTopicRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_topic
 
         Override in a subclass to manipulate the request or metadata
@@ -468,8 +504,10 @@ class ManagedKafkaRestInterceptor:
     def pre_get_location(
         self,
         request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -491,8 +529,10 @@ class ManagedKafkaRestInterceptor:
     def pre_list_locations(
         self,
         request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -514,8 +554,10 @@ class ManagedKafkaRestInterceptor:
     def pre_cancel_operation(
         self,
         request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -535,8 +577,10 @@ class ManagedKafkaRestInterceptor:
     def pre_delete_operation(
         self,
         request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -556,8 +600,10 @@ class ManagedKafkaRestInterceptor:
     def pre_get_operation(
         self,
         request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -579,8 +625,10 @@ class ManagedKafkaRestInterceptor:
     def pre_list_operations(
         self,
         request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -776,7 +824,7 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create cluster method over HTTP.
 
@@ -786,8 +834,10 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -800,6 +850,7 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
             http_options = (
                 _BaseManagedKafkaRestTransport._BaseCreateCluster._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_cluster(request, metadata)
             transcoded_request = _BaseManagedKafkaRestTransport._BaseCreateCluster._get_transcoded_request(
                 http_options, request
@@ -813,6 +864,33 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
             query_params = _BaseManagedKafkaRestTransport._BaseCreateCluster._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.managedkafka_v1.ManagedKafkaClient.CreateCluster",
+                    extra={
+                        "serviceName": "google.cloud.managedkafka.v1.ManagedKafka",
+                        "rpcName": "CreateCluster",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ManagedKafkaRestTransport._CreateCluster._get_response(
@@ -833,7 +911,29 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_cluster(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.managedkafka_v1.ManagedKafkaClient.create_cluster",
+                    extra={
+                        "serviceName": "google.cloud.managedkafka.v1.ManagedKafka",
+                        "rpcName": "CreateCluster",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateTopic(
@@ -871,7 +971,7 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.Topic:
             r"""Call the create topic method over HTTP.
 
@@ -881,8 +981,10 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.Topic:
@@ -892,6 +994,7 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
             http_options = (
                 _BaseManagedKafkaRestTransport._BaseCreateTopic._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_topic(request, metadata)
             transcoded_request = (
                 _BaseManagedKafkaRestTransport._BaseCreateTopic._get_transcoded_request(
@@ -911,6 +1014,33 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.managedkafka_v1.ManagedKafkaClient.CreateTopic",
+                    extra={
+                        "serviceName": "google.cloud.managedkafka.v1.ManagedKafka",
+                        "rpcName": "CreateTopic",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ManagedKafkaRestTransport._CreateTopic._get_response(
@@ -933,7 +1063,29 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
             pb_resp = resources.Topic.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_topic(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.Topic.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.managedkafka_v1.ManagedKafkaClient.create_topic",
+                    extra={
+                        "serviceName": "google.cloud.managedkafka.v1.ManagedKafka",
+                        "rpcName": "CreateTopic",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteCluster(
@@ -970,7 +1122,7 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete cluster method over HTTP.
 
@@ -980,8 +1132,10 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -994,6 +1148,7 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
             http_options = (
                 _BaseManagedKafkaRestTransport._BaseDeleteCluster._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_cluster(request, metadata)
             transcoded_request = _BaseManagedKafkaRestTransport._BaseDeleteCluster._get_transcoded_request(
                 http_options, request
@@ -1003,6 +1158,33 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
             query_params = _BaseManagedKafkaRestTransport._BaseDeleteCluster._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.managedkafka_v1.ManagedKafkaClient.DeleteCluster",
+                    extra={
+                        "serviceName": "google.cloud.managedkafka.v1.ManagedKafka",
+                        "rpcName": "DeleteCluster",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ManagedKafkaRestTransport._DeleteCluster._get_response(
@@ -1022,7 +1204,29 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_cluster(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.managedkafka_v1.ManagedKafkaClient.delete_cluster",
+                    extra={
+                        "serviceName": "google.cloud.managedkafka.v1.ManagedKafka",
+                        "rpcName": "DeleteCluster",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteConsumerGroup(
@@ -1059,7 +1263,7 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete consumer group method over HTTP.
 
@@ -1069,13 +1273,16 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseManagedKafkaRestTransport._BaseDeleteConsumerGroup._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_consumer_group(
                 request, metadata
             )
@@ -1087,6 +1294,33 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
             query_params = _BaseManagedKafkaRestTransport._BaseDeleteConsumerGroup._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.managedkafka_v1.ManagedKafkaClient.DeleteConsumerGroup",
+                    extra={
+                        "serviceName": "google.cloud.managedkafka.v1.ManagedKafka",
+                        "rpcName": "DeleteConsumerGroup",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ManagedKafkaRestTransport._DeleteConsumerGroup._get_response(
@@ -1137,7 +1371,7 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete topic method over HTTP.
 
@@ -1147,13 +1381,16 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseManagedKafkaRestTransport._BaseDeleteTopic._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_topic(request, metadata)
             transcoded_request = (
                 _BaseManagedKafkaRestTransport._BaseDeleteTopic._get_transcoded_request(
@@ -1167,6 +1404,33 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.managedkafka_v1.ManagedKafkaClient.DeleteTopic",
+                    extra={
+                        "serviceName": "google.cloud.managedkafka.v1.ManagedKafka",
+                        "rpcName": "DeleteTopic",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ManagedKafkaRestTransport._DeleteTopic._get_response(
@@ -1217,7 +1481,7 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.Cluster:
             r"""Call the get cluster method over HTTP.
 
@@ -1227,8 +1491,10 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.Cluster:
@@ -1240,6 +1506,7 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
             http_options = (
                 _BaseManagedKafkaRestTransport._BaseGetCluster._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_cluster(request, metadata)
             transcoded_request = (
                 _BaseManagedKafkaRestTransport._BaseGetCluster._get_transcoded_request(
@@ -1253,6 +1520,33 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.managedkafka_v1.ManagedKafkaClient.GetCluster",
+                    extra={
+                        "serviceName": "google.cloud.managedkafka.v1.ManagedKafka",
+                        "rpcName": "GetCluster",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ManagedKafkaRestTransport._GetCluster._get_response(
@@ -1274,7 +1568,29 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
             pb_resp = resources.Cluster.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_cluster(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.Cluster.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.managedkafka_v1.ManagedKafkaClient.get_cluster",
+                    extra={
+                        "serviceName": "google.cloud.managedkafka.v1.ManagedKafka",
+                        "rpcName": "GetCluster",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetConsumerGroup(
@@ -1311,7 +1627,7 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.ConsumerGroup:
             r"""Call the get consumer group method over HTTP.
 
@@ -1321,8 +1637,10 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.ConsumerGroup:
@@ -1334,6 +1652,7 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
             http_options = (
                 _BaseManagedKafkaRestTransport._BaseGetConsumerGroup._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_consumer_group(
                 request, metadata
             )
@@ -1345,6 +1664,33 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
             query_params = _BaseManagedKafkaRestTransport._BaseGetConsumerGroup._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.managedkafka_v1.ManagedKafkaClient.GetConsumerGroup",
+                    extra={
+                        "serviceName": "google.cloud.managedkafka.v1.ManagedKafka",
+                        "rpcName": "GetConsumerGroup",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ManagedKafkaRestTransport._GetConsumerGroup._get_response(
@@ -1366,7 +1712,29 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
             pb_resp = resources.ConsumerGroup.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_consumer_group(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.ConsumerGroup.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.managedkafka_v1.ManagedKafkaClient.get_consumer_group",
+                    extra={
+                        "serviceName": "google.cloud.managedkafka.v1.ManagedKafka",
+                        "rpcName": "GetConsumerGroup",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetTopic(_BaseManagedKafkaRestTransport._BaseGetTopic, ManagedKafkaRestStub):
@@ -1401,7 +1769,7 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.Topic:
             r"""Call the get topic method over HTTP.
 
@@ -1411,8 +1779,10 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.Topic:
@@ -1422,6 +1792,7 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
             http_options = (
                 _BaseManagedKafkaRestTransport._BaseGetTopic._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_topic(request, metadata)
             transcoded_request = (
                 _BaseManagedKafkaRestTransport._BaseGetTopic._get_transcoded_request(
@@ -1435,6 +1806,33 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.managedkafka_v1.ManagedKafkaClient.GetTopic",
+                    extra={
+                        "serviceName": "google.cloud.managedkafka.v1.ManagedKafka",
+                        "rpcName": "GetTopic",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ManagedKafkaRestTransport._GetTopic._get_response(
@@ -1456,7 +1854,29 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
             pb_resp = resources.Topic.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_topic(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.Topic.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.managedkafka_v1.ManagedKafkaClient.get_topic",
+                    extra={
+                        "serviceName": "google.cloud.managedkafka.v1.ManagedKafka",
+                        "rpcName": "GetTopic",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListClusters(
@@ -1493,7 +1913,7 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> managed_kafka.ListClustersResponse:
             r"""Call the list clusters method over HTTP.
 
@@ -1503,8 +1923,10 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.managed_kafka.ListClustersResponse:
@@ -1514,6 +1936,7 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
             http_options = (
                 _BaseManagedKafkaRestTransport._BaseListClusters._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_clusters(request, metadata)
             transcoded_request = _BaseManagedKafkaRestTransport._BaseListClusters._get_transcoded_request(
                 http_options, request
@@ -1525,6 +1948,33 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.managedkafka_v1.ManagedKafkaClient.ListClusters",
+                    extra={
+                        "serviceName": "google.cloud.managedkafka.v1.ManagedKafka",
+                        "rpcName": "ListClusters",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ManagedKafkaRestTransport._ListClusters._get_response(
@@ -1546,7 +1996,31 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
             pb_resp = managed_kafka.ListClustersResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_clusters(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = managed_kafka.ListClustersResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.managedkafka_v1.ManagedKafkaClient.list_clusters",
+                    extra={
+                        "serviceName": "google.cloud.managedkafka.v1.ManagedKafka",
+                        "rpcName": "ListClusters",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListConsumerGroups(
@@ -1583,7 +2057,7 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> managed_kafka.ListConsumerGroupsResponse:
             r"""Call the list consumer groups method over HTTP.
 
@@ -1593,8 +2067,10 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.managed_kafka.ListConsumerGroupsResponse:
@@ -1604,6 +2080,7 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
             http_options = (
                 _BaseManagedKafkaRestTransport._BaseListConsumerGroups._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_consumer_groups(
                 request, metadata
             )
@@ -1615,6 +2092,33 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
             query_params = _BaseManagedKafkaRestTransport._BaseListConsumerGroups._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.managedkafka_v1.ManagedKafkaClient.ListConsumerGroups",
+                    extra={
+                        "serviceName": "google.cloud.managedkafka.v1.ManagedKafka",
+                        "rpcName": "ListConsumerGroups",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ManagedKafkaRestTransport._ListConsumerGroups._get_response(
@@ -1636,7 +2140,31 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
             pb_resp = managed_kafka.ListConsumerGroupsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_consumer_groups(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = managed_kafka.ListConsumerGroupsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.managedkafka_v1.ManagedKafkaClient.list_consumer_groups",
+                    extra={
+                        "serviceName": "google.cloud.managedkafka.v1.ManagedKafka",
+                        "rpcName": "ListConsumerGroups",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListTopics(
@@ -1673,7 +2201,7 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> managed_kafka.ListTopicsResponse:
             r"""Call the list topics method over HTTP.
 
@@ -1683,8 +2211,10 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.managed_kafka.ListTopicsResponse:
@@ -1694,6 +2224,7 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
             http_options = (
                 _BaseManagedKafkaRestTransport._BaseListTopics._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_topics(request, metadata)
             transcoded_request = (
                 _BaseManagedKafkaRestTransport._BaseListTopics._get_transcoded_request(
@@ -1707,6 +2238,33 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.managedkafka_v1.ManagedKafkaClient.ListTopics",
+                    extra={
+                        "serviceName": "google.cloud.managedkafka.v1.ManagedKafka",
+                        "rpcName": "ListTopics",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ManagedKafkaRestTransport._ListTopics._get_response(
@@ -1728,7 +2286,31 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
             pb_resp = managed_kafka.ListTopicsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_topics(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = managed_kafka.ListTopicsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.managedkafka_v1.ManagedKafkaClient.list_topics",
+                    extra={
+                        "serviceName": "google.cloud.managedkafka.v1.ManagedKafka",
+                        "rpcName": "ListTopics",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateCluster(
@@ -1766,7 +2348,7 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update cluster method over HTTP.
 
@@ -1776,8 +2358,10 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1790,6 +2374,7 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
             http_options = (
                 _BaseManagedKafkaRestTransport._BaseUpdateCluster._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_cluster(request, metadata)
             transcoded_request = _BaseManagedKafkaRestTransport._BaseUpdateCluster._get_transcoded_request(
                 http_options, request
@@ -1803,6 +2388,33 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
             query_params = _BaseManagedKafkaRestTransport._BaseUpdateCluster._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.managedkafka_v1.ManagedKafkaClient.UpdateCluster",
+                    extra={
+                        "serviceName": "google.cloud.managedkafka.v1.ManagedKafka",
+                        "rpcName": "UpdateCluster",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ManagedKafkaRestTransport._UpdateCluster._get_response(
@@ -1823,7 +2435,29 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_cluster(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.managedkafka_v1.ManagedKafkaClient.update_cluster",
+                    extra={
+                        "serviceName": "google.cloud.managedkafka.v1.ManagedKafka",
+                        "rpcName": "UpdateCluster",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateConsumerGroup(
@@ -1861,7 +2495,7 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.ConsumerGroup:
             r"""Call the update consumer group method over HTTP.
 
@@ -1871,8 +2505,10 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.ConsumerGroup:
@@ -1884,6 +2520,7 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
             http_options = (
                 _BaseManagedKafkaRestTransport._BaseUpdateConsumerGroup._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_consumer_group(
                 request, metadata
             )
@@ -1899,6 +2536,33 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
             query_params = _BaseManagedKafkaRestTransport._BaseUpdateConsumerGroup._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.managedkafka_v1.ManagedKafkaClient.UpdateConsumerGroup",
+                    extra={
+                        "serviceName": "google.cloud.managedkafka.v1.ManagedKafka",
+                        "rpcName": "UpdateConsumerGroup",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ManagedKafkaRestTransport._UpdateConsumerGroup._get_response(
@@ -1921,7 +2585,29 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
             pb_resp = resources.ConsumerGroup.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_consumer_group(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.ConsumerGroup.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.managedkafka_v1.ManagedKafkaClient.update_consumer_group",
+                    extra={
+                        "serviceName": "google.cloud.managedkafka.v1.ManagedKafka",
+                        "rpcName": "UpdateConsumerGroup",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateTopic(
@@ -1959,7 +2645,7 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> resources.Topic:
             r"""Call the update topic method over HTTP.
 
@@ -1969,8 +2655,10 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.resources.Topic:
@@ -1980,6 +2668,7 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
             http_options = (
                 _BaseManagedKafkaRestTransport._BaseUpdateTopic._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_topic(request, metadata)
             transcoded_request = (
                 _BaseManagedKafkaRestTransport._BaseUpdateTopic._get_transcoded_request(
@@ -1999,6 +2688,33 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.managedkafka_v1.ManagedKafkaClient.UpdateTopic",
+                    extra={
+                        "serviceName": "google.cloud.managedkafka.v1.ManagedKafka",
+                        "rpcName": "UpdateTopic",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ManagedKafkaRestTransport._UpdateTopic._get_response(
@@ -2021,7 +2737,29 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
             pb_resp = resources.Topic.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_topic(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = resources.Topic.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.managedkafka_v1.ManagedKafkaClient.update_topic",
+                    extra={
+                        "serviceName": "google.cloud.managedkafka.v1.ManagedKafka",
+                        "rpcName": "UpdateTopic",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -2177,7 +2915,7 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.Location:
             r"""Call the get location method over HTTP.
 
@@ -2187,8 +2925,10 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.Location: Response from GetLocation method.
@@ -2197,6 +2937,7 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
             http_options = (
                 _BaseManagedKafkaRestTransport._BaseGetLocation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_location(request, metadata)
             transcoded_request = (
                 _BaseManagedKafkaRestTransport._BaseGetLocation._get_transcoded_request(
@@ -2210,6 +2951,33 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.managedkafka_v1.ManagedKafkaClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.managedkafka.v1.ManagedKafka",
+                        "rpcName": "GetLocation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ManagedKafkaRestTransport._GetLocation._get_response(
@@ -2230,6 +2998,27 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.managedkafka_v1.ManagedKafkaAsyncClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.managedkafka.v1.ManagedKafka",
+                        "rpcName": "GetLocation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -2270,7 +3059,7 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.ListLocationsResponse:
             r"""Call the list locations method over HTTP.
 
@@ -2280,8 +3069,10 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
@@ -2290,6 +3081,7 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
             http_options = (
                 _BaseManagedKafkaRestTransport._BaseListLocations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
             transcoded_request = _BaseManagedKafkaRestTransport._BaseListLocations._get_transcoded_request(
                 http_options, request
@@ -2299,6 +3091,33 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
             query_params = _BaseManagedKafkaRestTransport._BaseListLocations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.managedkafka_v1.ManagedKafkaClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.managedkafka.v1.ManagedKafka",
+                        "rpcName": "ListLocations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ManagedKafkaRestTransport._ListLocations._get_response(
@@ -2319,6 +3138,27 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.managedkafka_v1.ManagedKafkaAsyncClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.managedkafka.v1.ManagedKafka",
+                        "rpcName": "ListLocations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -2360,7 +3200,7 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the cancel operation method over HTTP.
 
@@ -2370,13 +3210,16 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseManagedKafkaRestTransport._BaseCancelOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
@@ -2392,6 +3235,33 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
             query_params = _BaseManagedKafkaRestTransport._BaseCancelOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.managedkafka_v1.ManagedKafkaClient.CancelOperation",
+                    extra={
+                        "serviceName": "google.cloud.managedkafka.v1.ManagedKafka",
+                        "rpcName": "CancelOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ManagedKafkaRestTransport._CancelOperation._get_response(
@@ -2449,7 +3319,7 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the delete operation method over HTTP.
 
@@ -2459,13 +3329,16 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseManagedKafkaRestTransport._BaseDeleteOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
             )
@@ -2477,6 +3350,33 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
             query_params = _BaseManagedKafkaRestTransport._BaseDeleteOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.managedkafka_v1.ManagedKafkaClient.DeleteOperation",
+                    extra={
+                        "serviceName": "google.cloud.managedkafka.v1.ManagedKafka",
+                        "rpcName": "DeleteOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ManagedKafkaRestTransport._DeleteOperation._get_response(
@@ -2533,7 +3433,7 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the get operation method over HTTP.
 
@@ -2543,8 +3443,10 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.
@@ -2553,6 +3455,7 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
             http_options = (
                 _BaseManagedKafkaRestTransport._BaseGetOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseManagedKafkaRestTransport._BaseGetOperation._get_transcoded_request(
                 http_options, request
@@ -2564,6 +3467,33 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.managedkafka_v1.ManagedKafkaClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.managedkafka.v1.ManagedKafka",
+                        "rpcName": "GetOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ManagedKafkaRestTransport._GetOperation._get_response(
@@ -2584,6 +3514,27 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.managedkafka_v1.ManagedKafkaAsyncClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.managedkafka.v1.ManagedKafka",
+                        "rpcName": "GetOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -2624,7 +3575,7 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.ListOperationsResponse:
             r"""Call the list operations method over HTTP.
 
@@ -2634,8 +3585,10 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
@@ -2644,6 +3597,7 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
             http_options = (
                 _BaseManagedKafkaRestTransport._BaseListOperations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseManagedKafkaRestTransport._BaseListOperations._get_transcoded_request(
                 http_options, request
@@ -2653,6 +3607,33 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
             query_params = _BaseManagedKafkaRestTransport._BaseListOperations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.managedkafka_v1.ManagedKafkaClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.managedkafka.v1.ManagedKafka",
+                        "rpcName": "ListOperations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ManagedKafkaRestTransport._ListOperations._get_response(
@@ -2673,6 +3654,27 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.managedkafka_v1.ManagedKafkaAsyncClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.managedkafka.v1.ManagedKafka",
+                        "rpcName": "ListOperations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
