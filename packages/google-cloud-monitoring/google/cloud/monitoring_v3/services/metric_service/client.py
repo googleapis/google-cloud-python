@@ -14,7 +14,6 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-import logging as std_logging
 import os
 import re
 from typing import (
@@ -48,15 +47,6 @@ try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
-
-try:
-    from google.api_core import client_logging  # type: ignore
-
-    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    CLIENT_LOGGING_SUPPORTED = False
-
-_LOGGER = std_logging.getLogger(__name__)
 
 from google.api import label_pb2  # type: ignore
 from google.api import launch_stage_pb2  # type: ignore
@@ -631,10 +621,6 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
         # Initialize the universe domain validation.
         self._is_universe_domain_valid = False
 
-        if CLIENT_LOGGING_SUPPORTED:  # pragma: NO COVER
-            # Setup logging.
-            client_logging.initialize_logging()
-
         api_key_value = getattr(self._client_options, "api_key", None)
         if api_key_value and credentials:
             raise ValueError(
@@ -700,29 +686,6 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
                 api_audience=self._client_options.api_audience,
             )
 
-        if "async" not in str(self._transport):
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                std_logging.DEBUG
-            ):  # pragma: NO COVER
-                _LOGGER.debug(
-                    "Created client `google.monitoring_v3.MetricServiceClient`.",
-                    extra={
-                        "serviceName": "google.monitoring.v3.MetricService",
-                        "universeDomain": getattr(
-                            self._transport._credentials, "universe_domain", ""
-                        ),
-                        "credentialsType": f"{type(self._transport._credentials).__module__}.{type(self._transport._credentials).__qualname__}",
-                        "credentialsInfo": getattr(
-                            self.transport._credentials, "get_cred_info", lambda: None
-                        )(),
-                    }
-                    if hasattr(self._transport, "_credentials")
-                    else {
-                        "serviceName": "google.monitoring.v3.MetricService",
-                        "credentialsType": None,
-                    },
-                )
-
     def list_monitored_resource_descriptors(
         self,
         request: Optional[
@@ -732,7 +695,7 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListMonitoredResourceDescriptorsPager:
         r"""Lists monitored resource descriptors that match a
         filter.
@@ -782,10 +745,8 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                sent along with the request as metadata. Normally, each value must be of type `str`,
-                but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                be of type `bytes`.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
 
         Returns:
             google.cloud.monitoring_v3.services.metric_service.pagers.ListMonitoredResourceDescriptorsPager:
@@ -862,7 +823,7 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        metadata: Sequence[Tuple[str, str]] = (),
     ) -> monitored_resource_pb2.MonitoredResourceDescriptor:
         r"""Gets a single monitored resource descriptor.
 
@@ -912,10 +873,8 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                sent along with the request as metadata. Normally, each value must be of type `str`,
-                but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                be of type `bytes`.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
 
         Returns:
             google.api.monitored_resource_pb2.MonitoredResourceDescriptor:
@@ -990,7 +949,7 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListMetricDescriptorsPager:
         r"""Lists metric descriptors that match a filter.
 
@@ -1039,10 +998,8 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                sent along with the request as metadata. Normally, each value must be of type `str`,
-                but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                be of type `bytes`.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
 
         Returns:
             google.cloud.monitoring_v3.services.metric_service.pagers.ListMetricDescriptorsPager:
@@ -1115,7 +1072,7 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        metadata: Sequence[Tuple[str, str]] = (),
     ) -> metric_pb2.MetricDescriptor:
         r"""Gets a single metric descriptor.
 
@@ -1165,10 +1122,8 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                sent along with the request as metadata. Normally, each value must be of type `str`,
-                but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                be of type `bytes`.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
 
         Returns:
             google.api.metric_pb2.MetricDescriptor:
@@ -1232,7 +1187,7 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
         metric_descriptor: Optional[metric_pb2.MetricDescriptor] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        metadata: Sequence[Tuple[str, str]] = (),
     ) -> metric_pb2.MetricDescriptor:
         r"""Creates a new metric descriptor. The creation is executed
         asynchronously. User-created metric descriptors define `custom
@@ -1289,10 +1244,8 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                sent along with the request as metadata. Normally, each value must be of type `str`,
-                but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                be of type `bytes`.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
 
         Returns:
             google.api.metric_pb2.MetricDescriptor:
@@ -1357,7 +1310,7 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a metric descriptor. Only user-created `custom
         metrics <https://cloud.google.com/monitoring/custom-metrics>`__
@@ -1406,10 +1359,8 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                sent along with the request as metadata. Normally, each value must be of type `str`,
-                but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                be of type `bytes`.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
@@ -1461,7 +1412,7 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
         view: Optional[metric_service.ListTimeSeriesRequest.TimeSeriesView] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListTimeSeriesPager:
         r"""Lists time series that match a filter.
 
@@ -1548,10 +1499,8 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                sent along with the request as metadata. Normally, each value must be of type `str`,
-                but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                be of type `bytes`.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
 
         Returns:
             google.cloud.monitoring_v3.services.metric_service.pagers.ListTimeSeriesPager:
@@ -1629,7 +1578,7 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
         time_series: Optional[MutableSequence[gm_metric.TimeSeries]] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Creates or adds data to one or more time series. The response is
         empty if all time series in the request were written. If any
@@ -1694,10 +1643,8 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                sent along with the request as metadata. Normally, each value must be of type `str`,
-                but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                be of type `bytes`.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
@@ -1749,7 +1696,7 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
         time_series: Optional[MutableSequence[gm_metric.TimeSeries]] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Creates or adds data to one or more service time series. A
         service time series is a time series for a metric from a Google
@@ -1817,10 +1764,8 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                sent along with the request as metadata. Normally, each value must be of type `str`,
-                but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                be of type `bytes`.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have

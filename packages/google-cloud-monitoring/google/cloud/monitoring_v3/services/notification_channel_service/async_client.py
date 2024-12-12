@@ -14,7 +14,6 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-import logging as std_logging
 import re
 from typing import (
     Callable,
@@ -61,15 +60,6 @@ from google.cloud.monitoring_v3.types import (
 from .client import NotificationChannelServiceClient
 from .transports.base import DEFAULT_CLIENT_INFO, NotificationChannelServiceTransport
 from .transports.grpc_asyncio import NotificationChannelServiceGrpcAsyncIOTransport
-
-try:
-    from google.api_core import client_logging  # type: ignore
-
-    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    CLIENT_LOGGING_SUPPORTED = False
-
-_LOGGER = std_logging.getLogger(__name__)
 
 
 class NotificationChannelServiceAsyncClient:
@@ -300,28 +290,6 @@ class NotificationChannelServiceAsyncClient:
             client_info=client_info,
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        ):  # pragma: NO COVER
-            _LOGGER.debug(
-                "Created client `google.monitoring_v3.NotificationChannelServiceAsyncClient`.",
-                extra={
-                    "serviceName": "google.monitoring.v3.NotificationChannelService",
-                    "universeDomain": getattr(
-                        self._client._transport._credentials, "universe_domain", ""
-                    ),
-                    "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(
-                        self.transport._credentials, "get_cred_info", lambda: None
-                    )(),
-                }
-                if hasattr(self._client._transport, "_credentials")
-                else {
-                    "serviceName": "google.monitoring.v3.NotificationChannelService",
-                    "credentialsType": None,
-                },
-            )
-
     async def list_notification_channel_descriptors(
         self,
         request: Optional[
@@ -331,7 +299,7 @@ class NotificationChannelServiceAsyncClient:
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListNotificationChannelDescriptorsAsyncPager:
         r"""Lists the descriptors for supported channel types.
         The use of descriptors makes it possible for new channel
@@ -390,10 +358,8 @@ class NotificationChannelServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                sent along with the request as metadata. Normally, each value must be of type `str`,
-                but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                be of type `bytes`.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
 
         Returns:
             google.cloud.monitoring_v3.services.notification_channel_service.pagers.ListNotificationChannelDescriptorsAsyncPager:
@@ -473,7 +439,7 @@ class NotificationChannelServiceAsyncClient:
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        metadata: Sequence[Tuple[str, str]] = (),
     ) -> notification.NotificationChannelDescriptor:
         r"""Gets a single channel descriptor. The descriptor
         indicates which fields are expected / permitted for a
@@ -522,10 +488,8 @@ class NotificationChannelServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                sent along with the request as metadata. Normally, each value must be of type `str`,
-                but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                be of type `bytes`.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
 
         Returns:
             google.cloud.monitoring_v3.types.NotificationChannelDescriptor:
@@ -595,7 +559,7 @@ class NotificationChannelServiceAsyncClient:
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListNotificationChannelsAsyncPager:
         r"""Lists the notification channels that have been created for the
         project. To list the types of notification channels that are
@@ -654,10 +618,8 @@ class NotificationChannelServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                sent along with the request as metadata. Normally, each value must be of type `str`,
-                but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                be of type `bytes`.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
 
         Returns:
             google.cloud.monitoring_v3.services.notification_channel_service.pagers.ListNotificationChannelsAsyncPager:
@@ -735,7 +697,7 @@ class NotificationChannelServiceAsyncClient:
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        metadata: Sequence[Tuple[str, str]] = (),
     ) -> notification.NotificationChannel:
         r"""Gets a single notification channel. The channel
         includes the relevant configuration details with which
@@ -788,10 +750,8 @@ class NotificationChannelServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                sent along with the request as metadata. Normally, each value must be of type `str`,
-                but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                be of type `bytes`.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
 
         Returns:
             google.cloud.monitoring_v3.types.NotificationChannel:
@@ -860,7 +820,7 @@ class NotificationChannelServiceAsyncClient:
         notification_channel: Optional[notification.NotificationChannel] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        metadata: Sequence[Tuple[str, str]] = (),
     ) -> notification.NotificationChannel:
         r"""Creates a new notification channel, representing a
         single notification endpoint such as an email address,
@@ -930,10 +890,8 @@ class NotificationChannelServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                sent along with the request as metadata. Normally, each value must be of type `str`,
-                but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                be of type `bytes`.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
 
         Returns:
             google.cloud.monitoring_v3.types.NotificationChannel:
@@ -1006,7 +964,7 @@ class NotificationChannelServiceAsyncClient:
         notification_channel: Optional[notification.NotificationChannel] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        metadata: Sequence[Tuple[str, str]] = (),
     ) -> notification.NotificationChannel:
         r"""Updates a notification channel. Fields not specified
         in the field mask remain unchanged.
@@ -1063,10 +1021,8 @@ class NotificationChannelServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                sent along with the request as metadata. Normally, each value must be of type `str`,
-                but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                be of type `bytes`.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
 
         Returns:
             google.cloud.monitoring_v3.types.NotificationChannel:
@@ -1141,7 +1097,7 @@ class NotificationChannelServiceAsyncClient:
         force: Optional[bool] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a notification channel.
 
@@ -1203,10 +1159,8 @@ class NotificationChannelServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                sent along with the request as metadata. Normally, each value must be of type `str`,
-                but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                be of type `bytes`.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
@@ -1267,7 +1221,7 @@ class NotificationChannelServiceAsyncClient:
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Causes a verification code to be delivered to the channel. The
         code can then be supplied in ``VerifyNotificationChannel`` to
@@ -1309,10 +1263,8 @@ class NotificationChannelServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                sent along with the request as metadata. Normally, each value must be of type `str`,
-                but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                be of type `bytes`.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
@@ -1374,7 +1326,7 @@ class NotificationChannelServiceAsyncClient:
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        metadata: Sequence[Tuple[str, str]] = (),
     ) -> notification_service.GetNotificationChannelVerificationCodeResponse:
         r"""Requests a verification code for an already verified
         channel that can then be used in a call to
@@ -1448,10 +1400,8 @@ class NotificationChannelServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                sent along with the request as metadata. Normally, each value must be of type `str`,
-                but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                be of type `bytes`.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
 
         Returns:
             google.cloud.monitoring_v3.types.GetNotificationChannelVerificationCodeResponse:
@@ -1519,7 +1469,7 @@ class NotificationChannelServiceAsyncClient:
         code: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        metadata: Sequence[Tuple[str, str]] = (),
     ) -> notification.NotificationChannel:
         r"""Verifies a ``NotificationChannel`` by proving receipt of the
         code delivered to the channel as a result of calling
@@ -1579,10 +1529,8 @@ class NotificationChannelServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                sent along with the request as metadata. Normally, each value must be of type `str`,
-                but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                be of type `bytes`.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
 
         Returns:
             google.cloud.monitoring_v3.types.NotificationChannel:

@@ -14,7 +14,6 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-import logging as std_logging
 import re
 from typing import (
     Callable,
@@ -53,15 +52,6 @@ from google.cloud.monitoring_v3.types import uptime, uptime_service
 from .client import UptimeCheckServiceClient
 from .transports.base import DEFAULT_CLIENT_INFO, UptimeCheckServiceTransport
 from .transports.grpc_asyncio import UptimeCheckServiceGrpcAsyncIOTransport
-
-try:
-    from google.api_core import client_logging  # type: ignore
-
-    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    CLIENT_LOGGING_SUPPORTED = False
-
-_LOGGER = std_logging.getLogger(__name__)
 
 
 class UptimeCheckServiceAsyncClient:
@@ -286,28 +276,6 @@ class UptimeCheckServiceAsyncClient:
             client_info=client_info,
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        ):  # pragma: NO COVER
-            _LOGGER.debug(
-                "Created client `google.monitoring_v3.UptimeCheckServiceAsyncClient`.",
-                extra={
-                    "serviceName": "google.monitoring.v3.UptimeCheckService",
-                    "universeDomain": getattr(
-                        self._client._transport._credentials, "universe_domain", ""
-                    ),
-                    "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(
-                        self.transport._credentials, "get_cred_info", lambda: None
-                    )(),
-                }
-                if hasattr(self._client._transport, "_credentials")
-                else {
-                    "serviceName": "google.monitoring.v3.UptimeCheckService",
-                    "credentialsType": None,
-                },
-            )
-
     async def list_uptime_check_configs(
         self,
         request: Optional[
@@ -317,7 +285,7 @@ class UptimeCheckServiceAsyncClient:
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListUptimeCheckConfigsAsyncPager:
         r"""Lists the existing valid Uptime check configurations
         for the project (leaving out any invalid
@@ -369,10 +337,8 @@ class UptimeCheckServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                sent along with the request as metadata. Normally, each value must be of type `str`,
-                but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                be of type `bytes`.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
 
         Returns:
             google.cloud.monitoring_v3.services.uptime_check_service.pagers.ListUptimeCheckConfigsAsyncPager:
@@ -448,7 +414,7 @@ class UptimeCheckServiceAsyncClient:
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        metadata: Sequence[Tuple[str, str]] = (),
     ) -> uptime.UptimeCheckConfig:
         r"""Gets a single Uptime check configuration.
 
@@ -495,10 +461,8 @@ class UptimeCheckServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                sent along with the request as metadata. Normally, each value must be of type `str`,
-                but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                be of type `bytes`.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
 
         Returns:
             google.cloud.monitoring_v3.types.UptimeCheckConfig:
@@ -563,7 +527,7 @@ class UptimeCheckServiceAsyncClient:
         uptime_check_config: Optional[uptime.UptimeCheckConfig] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        metadata: Sequence[Tuple[str, str]] = (),
     ) -> uptime.UptimeCheckConfig:
         r"""Creates a new Uptime check configuration.
 
@@ -619,10 +583,8 @@ class UptimeCheckServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                sent along with the request as metadata. Normally, each value must be of type `str`,
-                but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                be of type `bytes`.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
 
         Returns:
             google.cloud.monitoring_v3.types.UptimeCheckConfig:
@@ -688,7 +650,7 @@ class UptimeCheckServiceAsyncClient:
         uptime_check_config: Optional[uptime.UptimeCheckConfig] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        metadata: Sequence[Tuple[str, str]] = (),
     ) -> uptime.UptimeCheckConfig:
         r"""Updates an Uptime check configuration. You can either replace
         the entire configuration with a new one or replace only certain
@@ -746,10 +708,8 @@ class UptimeCheckServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                sent along with the request as metadata. Normally, each value must be of type `str`,
-                but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                be of type `bytes`.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
 
         Returns:
             google.cloud.monitoring_v3.types.UptimeCheckConfig:
@@ -815,7 +775,7 @@ class UptimeCheckServiceAsyncClient:
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes an Uptime check configuration. Note that this
         method will fail if the Uptime check configuration is
@@ -863,10 +823,8 @@ class UptimeCheckServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                sent along with the request as metadata. Normally, each value must be of type `str`,
-                but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                be of type `bytes`.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
@@ -917,7 +875,7 @@ class UptimeCheckServiceAsyncClient:
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListUptimeCheckIpsAsyncPager:
         r"""Returns the list of IP addresses that checkers run
         from
@@ -954,10 +912,8 @@ class UptimeCheckServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
-                sent along with the request as metadata. Normally, each value must be of type `str`,
-                but for metadata keys ending with the suffix `-bin`, the corresponding values must
-                be of type `bytes`.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
 
         Returns:
             google.cloud.monitoring_v3.services.uptime_check_service.pagers.ListUptimeCheckIpsAsyncPager:
