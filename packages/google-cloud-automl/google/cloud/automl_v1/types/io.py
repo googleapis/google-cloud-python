@@ -55,13 +55,9 @@ class InputConfig(proto.Message):
     with non-terminal symbols defined near the end of this comment. The
     formats are:
 
-    .. raw:: html
+    AutoML Vision:
 
-        <h4>AutoML Vision</h4>
-
-    .. raw:: html
-
-        <div class="ds-selector-tabs"><section><h5>Classification</h5>
+    Classification:
 
     See `Preparing your training
     data <https://cloud.google.com/vision/automl/docs/prepare>`__ for
@@ -102,12 +98,11 @@ class InputConfig(proto.Message):
         UNASSIGNED,gs://folder/image3.jpg,daisy
         UNASSIGNED,gs://folder/image4.jpg
 
-    .. raw:: html
+    Object Detection:
 
-        </section><section><h5>Object Detection</h5>
-        See [Preparing your training
-        data](https://cloud.google.com/vision/automl/object-detection/docs/prepare)
-        for more information.
+    See `Preparing your training
+    data <https://cloud.google.com/vision/automl/object-detection/docs/prepare>`__
+    for more information.
 
     A CSV file(s) with each line in format:
 
@@ -153,13 +148,9 @@ class InputConfig(proto.Message):
           </section>
         </div>
 
-    .. raw:: html
+    AutoML Video Intelligence:
 
-        <h4>AutoML Video Intelligence</h4>
-
-    .. raw:: html
-
-        <div class="ds-selector-tabs"><section><h5>Classification</h5>
+    Classification:
 
     See `Preparing your training
     data <https://cloud.google.com/video-intelligence/automl/docs/prepare>`__
@@ -209,9 +200,7 @@ class InputConfig(proto.Message):
         gs://folder/vid2.avi,car,0,60.5
         gs://folder/vid3.avi,,,
 
-    .. raw:: html
-
-        </section><section><h5>Object Tracking</h5>
+    Object Tracking:
 
     See `Preparing your training
     data </video-intelligence/automl/object-tracking/docs/prepare>`__
@@ -274,18 +263,9 @@ class InputConfig(proto.Message):
          gs://folder/video2.avi,car,1,0,.1,.9,,,.9,.1,,
          gs://folder/video2.avi,,,,,,,,,,,
 
-    .. raw:: html
+    AutoML Natural Language:
 
-          </section>
-        </div>
-
-    .. raw:: html
-
-        <h4>AutoML Natural Language</h4>
-
-    .. raw:: html
-
-        <div class="ds-selector-tabs"><section><h5>Entity Extraction</h5>
+    Entity Extraction:
 
     See `Preparing your training
     data </natural-language/automl/entity-analysis/docs/prepare>`__ for
@@ -479,9 +459,7 @@ class InputConfig(proto.Message):
                   },
                 ],
 
-    .. raw:: html
-
-        </section><section><h5>Classification</h5>
+    Classification:
 
     See `Preparing your training
     data <https://cloud.google.com/natural-language/automl/docs/prepare>`__
@@ -533,9 +511,7 @@ class InputConfig(proto.Message):
         TEST,gs://folder/document.pdf
         VALIDATE,gs://folder/text_files.zip,BadFood
 
-    .. raw:: html
-
-        </section><section><h5>Sentiment Analysis</h5>
+    Sentiment Analysis:
 
     See `Preparing your training
     data <https://cloud.google.com/natural-language/automl/docs/prepare>`__
@@ -598,15 +574,7 @@ class InputConfig(proto.Message):
         TEST,gs://folder/document.pdf
         VALIDATE,gs://folder/text_files.zip,2
 
-    .. raw:: html
-
-          </section>
-        </div>
-
-    .. raw:: html
-
-        <h4>AutoML Tables</h4><div class="ui-datasection-main"><section
-        class="selected">
+    AutoML Tables:
 
     See `Preparing your training
     data <https://cloud.google.com/automl-tables/docs/prepare>`__ for
@@ -646,11 +614,6 @@ class InputConfig(proto.Message):
     An imported table must have between 2 and 1,000 columns, inclusive,
     and between 1000 and 100,000,000 rows, inclusive. There are at most
     5 import data running in parallel.
-
-    .. raw:: html
-
-          </section>
-        </div>
 
     **Input field definitions:**
 
@@ -728,9 +691,7 @@ class InputConfig(proto.Message):
             semantic of the imported data, any string must be up to
             25000 characters long.
 
-            .. raw:: html
-
-                <h4>AutoML Tables</h4>
+            AutoML Tables:
 
             ``schema_inference_version`` : (integer) This value must be
             supplied. The version of the algorithm to use for the
@@ -763,32 +724,9 @@ class BatchPredictInputConfig(proto.Message):
     with non-terminal symbols defined near the end of this comment. The
     formats are:
 
-    .. raw:: html
+    AutoML Vision:
 
-        <h4>AutoML Vision</h4>
-        <div class="ds-selector-tabs"><section><h5>Classification</h5>
-
-    One or more CSV files where each line is a single column:
-
-    ::
-
-        GCS_FILE_PATH
-
-    The Google Cloud Storage location of an image of up to 30MB in size.
-    Supported extensions: .JPEG, .GIF, .PNG. This path is treated as the
-    ID in the batch predict output.
-
-    Sample rows:
-
-    ::
-
-        gs://folder/image1.jpeg
-        gs://folder/image2.gif
-        gs://folder/image3.png
-
-    .. raw:: html
-
-        </section><section><h5>Object Detection</h5>
+    Classification:
 
     One or more CSV files where each line is a single column:
 
@@ -808,15 +746,29 @@ class BatchPredictInputConfig(proto.Message):
         gs://folder/image2.gif
         gs://folder/image3.png
 
-    .. raw:: html
+    Object Detection:
 
-          </section>
-        </div>
+    One or more CSV files where each line is a single column:
 
-    .. raw:: html
+    ::
 
-        <h4>AutoML Video Intelligence</h4>
-        <div class="ds-selector-tabs"><section><h5>Classification</h5>
+        GCS_FILE_PATH
+
+    The Google Cloud Storage location of an image of up to 30MB in size.
+    Supported extensions: .JPEG, .GIF, .PNG. This path is treated as the
+    ID in the batch predict output.
+
+    Sample rows:
+
+    ::
+
+        gs://folder/image1.jpeg
+        gs://folder/image2.gif
+        gs://folder/image3.png
+
+    AutoML Video Intelligence:
+
+    Classification:
 
     One or more CSV files where each line is a single column:
 
@@ -839,9 +791,7 @@ class BatchPredictInputConfig(proto.Message):
         gs://folder/video1.mp4,20,60
         gs://folder/vid2.mov,0,inf
 
-    .. raw:: html
-
-        </section><section><h5>Object Tracking</h5>
+    Object Tracking:
 
     One or more CSV files where each line is a single column:
 
@@ -864,15 +814,9 @@ class BatchPredictInputConfig(proto.Message):
         gs://folder/video1.mp4,20,60
         gs://folder/vid2.mov,0,inf
 
-    .. raw:: html
+    AutoML Natural Language:
 
-          </section>
-        </div>
-
-    .. raw:: html
-
-        <h4>AutoML Natural Language</h4>
-        <div class="ds-selector-tabs"><section><h5>Classification</h5>
+    Classification:
 
     One or more CSV files where each line is a single column:
 
@@ -893,10 +837,9 @@ class BatchPredictInputConfig(proto.Message):
         gs://folder/text2.pdf
         gs://folder/text3.tif
 
-    .. raw:: html
+    Sentiment Analysis:
 
-        </section><section><h5>Sentiment Analysis</h5>
-        One or more CSV files where each line is a single column:
+    One or more CSV files where each line is a single column:
 
     ::
 
@@ -915,9 +858,7 @@ class BatchPredictInputConfig(proto.Message):
         gs://folder/text2.pdf
         gs://folder/text3.tif
 
-    .. raw:: html
-
-        </section><section><h5>Entity Extraction</h5>
+    Entity Extraction:
 
     One or more JSONL (JSON Lines) files that either provide inline text
     or documents. You can only use one format, either inline text or
@@ -992,15 +933,7 @@ class BatchPredictInputConfig(proto.Message):
            }
          }
 
-    .. raw:: html
-
-          </section>
-        </div>
-
-    .. raw:: html
-
-        <h4>AutoML Tables</h4><div class="ui-datasection-main"><section
-        class="selected">
+    AutoML Tables:
 
     See `Preparing your training
     data <https://cloud.google.com/automl-tables/docs/predict-batch>`__
@@ -1048,11 +981,6 @@ class BatchPredictInputConfig(proto.Message):
     input feature column specs must contain values compatible with the
     column spec's data types. Prediction on all the rows of the table
     will be attempted.
-
-    .. raw:: html
-
-          </section>
-        </div>
 
     **Input field definitions:**
 

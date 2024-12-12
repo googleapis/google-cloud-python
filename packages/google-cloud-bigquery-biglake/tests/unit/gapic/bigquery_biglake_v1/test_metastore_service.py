@@ -6832,6 +6832,7 @@ def test_create_catalog_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_catalog(request)
 
@@ -6894,6 +6895,7 @@ def test_create_catalog_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_catalog(**mock_args)
 
@@ -7026,6 +7028,7 @@ def test_delete_catalog_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_catalog(request)
 
@@ -7071,6 +7074,7 @@ def test_delete_catalog_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_catalog(**mock_args)
 
@@ -7199,6 +7203,7 @@ def test_get_catalog_rest_required_fields(request_type=metastore.GetCatalogReque
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_catalog(request)
 
@@ -7244,6 +7249,7 @@ def test_get_catalog_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_catalog(**mock_args)
 
@@ -7379,6 +7385,7 @@ def test_list_catalogs_rest_required_fields(request_type=metastore.ListCatalogsR
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_catalogs(request)
 
@@ -7432,6 +7439,7 @@ def test_list_catalogs_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_catalogs(**mock_args)
 
@@ -7633,6 +7641,7 @@ def test_create_database_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_database(request)
 
@@ -7701,6 +7710,7 @@ def test_create_database_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_database(**mock_args)
 
@@ -7838,6 +7848,7 @@ def test_delete_database_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_database(request)
 
@@ -7885,6 +7896,7 @@ def test_delete_database_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_database(**mock_args)
 
@@ -8014,6 +8026,7 @@ def test_update_database_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_database(request)
 
@@ -8068,6 +8081,7 @@ def test_update_database_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_database(**mock_args)
 
@@ -8202,6 +8216,7 @@ def test_get_database_rest_required_fields(request_type=metastore.GetDatabaseReq
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_database(request)
 
@@ -8249,6 +8264,7 @@ def test_get_database_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_database(**mock_args)
 
@@ -8387,6 +8403,7 @@ def test_list_databases_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_databases(request)
 
@@ -8442,6 +8459,7 @@ def test_list_databases_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_databases(**mock_args)
 
@@ -8644,6 +8662,7 @@ def test_create_table_rest_required_fields(request_type=metastore.CreateTableReq
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_table(request)
 
@@ -8712,6 +8731,7 @@ def test_create_table_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_table(**mock_args)
 
@@ -8847,6 +8867,7 @@ def test_delete_table_rest_required_fields(request_type=metastore.DeleteTableReq
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_table(request)
 
@@ -8894,6 +8915,7 @@ def test_delete_table_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_table(**mock_args)
 
@@ -9021,6 +9043,7 @@ def test_update_table_rest_required_fields(request_type=metastore.UpdateTableReq
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_table(request)
 
@@ -9075,6 +9098,7 @@ def test_update_table_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_table(**mock_args)
 
@@ -9214,6 +9238,7 @@ def test_rename_table_rest_required_fields(request_type=metastore.RenameTableReq
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.rename_table(request)
 
@@ -9270,6 +9295,7 @@ def test_rename_table_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.rename_table(**mock_args)
 
@@ -9400,6 +9426,7 @@ def test_get_table_rest_required_fields(request_type=metastore.GetTableRequest):
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_table(request)
 
@@ -9447,6 +9474,7 @@ def test_get_table_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_table(**mock_args)
 
@@ -9584,6 +9612,7 @@ def test_list_tables_rest_required_fields(request_type=metastore.ListTablesReque
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_tables(request)
 
@@ -9640,6 +9669,7 @@ def test_list_tables_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_tables(**mock_args)
 
@@ -10612,6 +10642,7 @@ def test_create_catalog_rest_bad_request(request_type=metastore.CreateCatalogReq
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_catalog(request)
 
 
@@ -10721,6 +10752,7 @@ def test_create_catalog_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_catalog(request)
 
     # Establish that the response is the type that we expect.
@@ -10759,6 +10791,7 @@ def test_create_catalog_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = metastore.Catalog.to_json(metastore.Catalog())
         req.return_value.content = return_value
 
@@ -10801,6 +10834,7 @@ def test_delete_catalog_rest_bad_request(request_type=metastore.DeleteCatalogReq
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_catalog(request)
 
 
@@ -10836,6 +10870,7 @@ def test_delete_catalog_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_catalog(request)
 
     # Establish that the response is the type that we expect.
@@ -10874,6 +10909,7 @@ def test_delete_catalog_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = metastore.Catalog.to_json(metastore.Catalog())
         req.return_value.content = return_value
 
@@ -10916,6 +10952,7 @@ def test_get_catalog_rest_bad_request(request_type=metastore.GetCatalogRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_catalog(request)
 
 
@@ -10951,6 +10988,7 @@ def test_get_catalog_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_catalog(request)
 
     # Establish that the response is the type that we expect.
@@ -10989,6 +11027,7 @@ def test_get_catalog_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = metastore.Catalog.to_json(metastore.Catalog())
         req.return_value.content = return_value
 
@@ -11031,6 +11070,7 @@ def test_list_catalogs_rest_bad_request(request_type=metastore.ListCatalogsReque
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_catalogs(request)
 
 
@@ -11066,6 +11106,7 @@ def test_list_catalogs_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_catalogs(request)
 
     # Establish that the response is the type that we expect.
@@ -11104,6 +11145,7 @@ def test_list_catalogs_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = metastore.ListCatalogsResponse.to_json(
             metastore.ListCatalogsResponse()
         )
@@ -11148,6 +11190,7 @@ def test_create_database_rest_bad_request(request_type=metastore.CreateDatabaseR
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_database(request)
 
 
@@ -11260,6 +11303,7 @@ def test_create_database_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_database(request)
 
     # Establish that the response is the type that we expect.
@@ -11301,6 +11345,7 @@ def test_create_database_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = metastore.Database.to_json(metastore.Database())
         req.return_value.content = return_value
 
@@ -11345,6 +11390,7 @@ def test_delete_database_rest_bad_request(request_type=metastore.DeleteDatabaseR
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_database(request)
 
 
@@ -11383,6 +11429,7 @@ def test_delete_database_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_database(request)
 
     # Establish that the response is the type that we expect.
@@ -11424,6 +11471,7 @@ def test_delete_database_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = metastore.Database.to_json(metastore.Database())
         req.return_value.content = return_value
 
@@ -11470,6 +11518,7 @@ def test_update_database_rest_bad_request(request_type=metastore.UpdateDatabaseR
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_database(request)
 
 
@@ -11586,6 +11635,7 @@ def test_update_database_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_database(request)
 
     # Establish that the response is the type that we expect.
@@ -11627,6 +11677,7 @@ def test_update_database_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = metastore.Database.to_json(metastore.Database())
         req.return_value.content = return_value
 
@@ -11671,6 +11722,7 @@ def test_get_database_rest_bad_request(request_type=metastore.GetDatabaseRequest
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_database(request)
 
 
@@ -11709,6 +11761,7 @@ def test_get_database_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_database(request)
 
     # Establish that the response is the type that we expect.
@@ -11748,6 +11801,7 @@ def test_get_database_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = metastore.Database.to_json(metastore.Database())
         req.return_value.content = return_value
 
@@ -11790,6 +11844,7 @@ def test_list_databases_rest_bad_request(request_type=metastore.ListDatabasesReq
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_databases(request)
 
 
@@ -11825,6 +11880,7 @@ def test_list_databases_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_databases(request)
 
     # Establish that the response is the type that we expect.
@@ -11863,6 +11919,7 @@ def test_list_databases_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = metastore.ListDatabasesResponse.to_json(
             metastore.ListDatabasesResponse()
         )
@@ -11909,6 +11966,7 @@ def test_create_table_rest_bad_request(request_type=metastore.CreateTableRequest
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_table(request)
 
 
@@ -12034,6 +12092,7 @@ def test_create_table_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_table(request)
 
     # Establish that the response is the type that we expect.
@@ -12074,6 +12133,7 @@ def test_create_table_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = metastore.Table.to_json(metastore.Table())
         req.return_value.content = return_value
 
@@ -12118,6 +12178,7 @@ def test_delete_table_rest_bad_request(request_type=metastore.DeleteTableRequest
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_table(request)
 
 
@@ -12157,6 +12218,7 @@ def test_delete_table_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_table(request)
 
     # Establish that the response is the type that we expect.
@@ -12197,6 +12259,7 @@ def test_delete_table_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = metastore.Table.to_json(metastore.Table())
         req.return_value.content = return_value
 
@@ -12243,6 +12306,7 @@ def test_update_table_rest_bad_request(request_type=metastore.UpdateTableRequest
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_table(request)
 
 
@@ -12370,6 +12434,7 @@ def test_update_table_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_table(request)
 
     # Establish that the response is the type that we expect.
@@ -12410,6 +12475,7 @@ def test_update_table_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = metastore.Table.to_json(metastore.Table())
         req.return_value.content = return_value
 
@@ -12454,6 +12520,7 @@ def test_rename_table_rest_bad_request(request_type=metastore.RenameTableRequest
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.rename_table(request)
 
 
@@ -12493,6 +12560,7 @@ def test_rename_table_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.rename_table(request)
 
     # Establish that the response is the type that we expect.
@@ -12533,6 +12601,7 @@ def test_rename_table_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = metastore.Table.to_json(metastore.Table())
         req.return_value.content = return_value
 
@@ -12577,6 +12646,7 @@ def test_get_table_rest_bad_request(request_type=metastore.GetTableRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_table(request)
 
 
@@ -12616,6 +12686,7 @@ def test_get_table_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_table(request)
 
     # Establish that the response is the type that we expect.
@@ -12656,6 +12727,7 @@ def test_get_table_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = metastore.Table.to_json(metastore.Table())
         req.return_value.content = return_value
 
@@ -12700,6 +12772,7 @@ def test_list_tables_rest_bad_request(request_type=metastore.ListTablesRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_tables(request)
 
 
@@ -12737,6 +12810,7 @@ def test_list_tables_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_tables(request)
 
     # Establish that the response is the type that we expect.
@@ -12775,6 +12849,7 @@ def test_list_tables_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = metastore.ListTablesResponse.to_json(
             metastore.ListTablesResponse()
         )

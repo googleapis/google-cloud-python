@@ -13,6 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import json
+import logging as std_logging
+import pickle
 from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -23,11 +26,89 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
+from google.protobuf.json_format import MessageToJson
+import google.protobuf.message
 import grpc  # type: ignore
+import proto  # type: ignore
 
 from google.cloud.video.live_stream_v1.types import resources, service
 
 from .base import DEFAULT_CLIENT_INFO, LivestreamServiceTransport
+
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = std_logging.getLogger(__name__)
+
+
+class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
+    def intercept_unary_unary(self, continuation, client_call_details, request):
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+            std_logging.DEBUG
+        )
+        if logging_enabled:  # pragma: NO COVER
+            request_metadata = client_call_details.metadata
+            if isinstance(request, proto.Message):
+                request_payload = type(request).to_json(request)
+            elif isinstance(request, google.protobuf.message.Message):
+                request_payload = MessageToJson(request)
+            else:
+                request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
+
+            request_metadata = {
+                key: value.decode("utf-8") if isinstance(value, bytes) else value
+                for key, value in request_metadata
+            }
+            grpc_request = {
+                "payload": request_payload,
+                "requestMethod": "grpc",
+                "metadata": dict(request_metadata),
+            }
+            _LOGGER.debug(
+                f"Sending request for {client_call_details.method}",
+                extra={
+                    "serviceName": "google.cloud.video.livestream.v1.LivestreamService",
+                    "rpcName": client_call_details.method,
+                    "request": grpc_request,
+                    "metadata": grpc_request["metadata"],
+                },
+            )
+
+        response = continuation(client_call_details, request)
+        if logging_enabled:  # pragma: NO COVER
+            response_metadata = response.trailing_metadata()
+            # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
+            metadata = (
+                dict([(k, str(v)) for k, v in response_metadata])
+                if response_metadata
+                else None
+            )
+            result = response.result()
+            if isinstance(result, proto.Message):
+                response_payload = type(result).to_json(result)
+            elif isinstance(result, google.protobuf.message.Message):
+                response_payload = MessageToJson(result)
+            else:
+                response_payload = f"{type(result).__name__}: {pickle.dumps(result)}"
+            grpc_response = {
+                "payload": response_payload,
+                "metadata": metadata,
+                "status": "OK",
+            }
+            _LOGGER.debug(
+                f"Received response for {client_call_details.method}.",
+                extra={
+                    "serviceName": "google.cloud.video.livestream.v1.LivestreamService",
+                    "rpcName": client_call_details.method,
+                    "response": grpc_response,
+                    "metadata": grpc_response["metadata"],
+                },
+            )
+        return response
 
 
 class LivestreamServiceGrpcTransport(LivestreamServiceTransport):
@@ -188,7 +269,12 @@ class LivestreamServiceGrpcTransport(LivestreamServiceTransport):
                 ],
             )
 
-        # Wrap messages. This must be done after self._grpc_channel exists
+        self._interceptor = _LoggingClientInterceptor()
+        self._logged_channel = grpc.intercept_channel(
+            self._grpc_channel, self._interceptor
+        )
+
+        # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
     @classmethod
@@ -252,7 +338,9 @@ class LivestreamServiceGrpcTransport(LivestreamServiceTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsClient(self.grpc_channel)
+            self._operations_client = operations_v1.OperationsClient(
+                self._logged_channel
+            )
 
         # Return the client from cache.
         return self._operations_client
@@ -277,7 +365,7 @@ class LivestreamServiceGrpcTransport(LivestreamServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_channel_" not in self._stubs:
-            self._stubs["create_channel_"] = self.grpc_channel.unary_unary(
+            self._stubs["create_channel_"] = self._logged_channel.unary_unary(
                 "/google.cloud.video.livestream.v1.LivestreamService/CreateChannel",
                 request_serializer=service.CreateChannelRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -304,7 +392,7 @@ class LivestreamServiceGrpcTransport(LivestreamServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_channels" not in self._stubs:
-            self._stubs["list_channels"] = self.grpc_channel.unary_unary(
+            self._stubs["list_channels"] = self._logged_channel.unary_unary(
                 "/google.cloud.video.livestream.v1.LivestreamService/ListChannels",
                 request_serializer=service.ListChannelsRequest.serialize,
                 response_deserializer=service.ListChannelsResponse.deserialize,
@@ -328,7 +416,7 @@ class LivestreamServiceGrpcTransport(LivestreamServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_channel" not in self._stubs:
-            self._stubs["get_channel"] = self.grpc_channel.unary_unary(
+            self._stubs["get_channel"] = self._logged_channel.unary_unary(
                 "/google.cloud.video.livestream.v1.LivestreamService/GetChannel",
                 request_serializer=service.GetChannelRequest.serialize,
                 response_deserializer=resources.Channel.deserialize,
@@ -354,7 +442,7 @@ class LivestreamServiceGrpcTransport(LivestreamServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_channel" not in self._stubs:
-            self._stubs["delete_channel"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_channel"] = self._logged_channel.unary_unary(
                 "/google.cloud.video.livestream.v1.LivestreamService/DeleteChannel",
                 request_serializer=service.DeleteChannelRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -380,7 +468,7 @@ class LivestreamServiceGrpcTransport(LivestreamServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_channel" not in self._stubs:
-            self._stubs["update_channel"] = self.grpc_channel.unary_unary(
+            self._stubs["update_channel"] = self._logged_channel.unary_unary(
                 "/google.cloud.video.livestream.v1.LivestreamService/UpdateChannel",
                 request_serializer=service.UpdateChannelRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -408,7 +496,7 @@ class LivestreamServiceGrpcTransport(LivestreamServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "start_channel" not in self._stubs:
-            self._stubs["start_channel"] = self.grpc_channel.unary_unary(
+            self._stubs["start_channel"] = self._logged_channel.unary_unary(
                 "/google.cloud.video.livestream.v1.LivestreamService/StartChannel",
                 request_serializer=service.StartChannelRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -436,7 +524,7 @@ class LivestreamServiceGrpcTransport(LivestreamServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "stop_channel" not in self._stubs:
-            self._stubs["stop_channel"] = self.grpc_channel.unary_unary(
+            self._stubs["stop_channel"] = self._logged_channel.unary_unary(
                 "/google.cloud.video.livestream.v1.LivestreamService/StopChannel",
                 request_serializer=service.StopChannelRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -463,7 +551,7 @@ class LivestreamServiceGrpcTransport(LivestreamServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_input" not in self._stubs:
-            self._stubs["create_input"] = self.grpc_channel.unary_unary(
+            self._stubs["create_input"] = self._logged_channel.unary_unary(
                 "/google.cloud.video.livestream.v1.LivestreamService/CreateInput",
                 request_serializer=service.CreateInputRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -489,7 +577,7 @@ class LivestreamServiceGrpcTransport(LivestreamServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_inputs" not in self._stubs:
-            self._stubs["list_inputs"] = self.grpc_channel.unary_unary(
+            self._stubs["list_inputs"] = self._logged_channel.unary_unary(
                 "/google.cloud.video.livestream.v1.LivestreamService/ListInputs",
                 request_serializer=service.ListInputsRequest.serialize,
                 response_deserializer=service.ListInputsResponse.deserialize,
@@ -513,7 +601,7 @@ class LivestreamServiceGrpcTransport(LivestreamServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_input" not in self._stubs:
-            self._stubs["get_input"] = self.grpc_channel.unary_unary(
+            self._stubs["get_input"] = self._logged_channel.unary_unary(
                 "/google.cloud.video.livestream.v1.LivestreamService/GetInput",
                 request_serializer=service.GetInputRequest.serialize,
                 response_deserializer=resources.Input.deserialize,
@@ -539,7 +627,7 @@ class LivestreamServiceGrpcTransport(LivestreamServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_input" not in self._stubs:
-            self._stubs["delete_input"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_input"] = self._logged_channel.unary_unary(
                 "/google.cloud.video.livestream.v1.LivestreamService/DeleteInput",
                 request_serializer=service.DeleteInputRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -565,7 +653,7 @@ class LivestreamServiceGrpcTransport(LivestreamServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_input" not in self._stubs:
-            self._stubs["update_input"] = self.grpc_channel.unary_unary(
+            self._stubs["update_input"] = self._logged_channel.unary_unary(
                 "/google.cloud.video.livestream.v1.LivestreamService/UpdateInput",
                 request_serializer=service.UpdateInputRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -590,7 +678,7 @@ class LivestreamServiceGrpcTransport(LivestreamServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_event" not in self._stubs:
-            self._stubs["create_event"] = self.grpc_channel.unary_unary(
+            self._stubs["create_event"] = self._logged_channel.unary_unary(
                 "/google.cloud.video.livestream.v1.LivestreamService/CreateEvent",
                 request_serializer=service.CreateEventRequest.serialize,
                 response_deserializer=resources.Event.deserialize,
@@ -617,7 +705,7 @@ class LivestreamServiceGrpcTransport(LivestreamServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_events" not in self._stubs:
-            self._stubs["list_events"] = self.grpc_channel.unary_unary(
+            self._stubs["list_events"] = self._logged_channel.unary_unary(
                 "/google.cloud.video.livestream.v1.LivestreamService/ListEvents",
                 request_serializer=service.ListEventsRequest.serialize,
                 response_deserializer=service.ListEventsResponse.deserialize,
@@ -641,7 +729,7 @@ class LivestreamServiceGrpcTransport(LivestreamServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_event" not in self._stubs:
-            self._stubs["get_event"] = self.grpc_channel.unary_unary(
+            self._stubs["get_event"] = self._logged_channel.unary_unary(
                 "/google.cloud.video.livestream.v1.LivestreamService/GetEvent",
                 request_serializer=service.GetEventRequest.serialize,
                 response_deserializer=resources.Event.deserialize,
@@ -665,7 +753,7 @@ class LivestreamServiceGrpcTransport(LivestreamServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_event" not in self._stubs:
-            self._stubs["delete_event"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_event"] = self._logged_channel.unary_unary(
                 "/google.cloud.video.livestream.v1.LivestreamService/DeleteEvent",
                 request_serializer=service.DeleteEventRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -691,7 +779,7 @@ class LivestreamServiceGrpcTransport(LivestreamServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_clips" not in self._stubs:
-            self._stubs["list_clips"] = self.grpc_channel.unary_unary(
+            self._stubs["list_clips"] = self._logged_channel.unary_unary(
                 "/google.cloud.video.livestream.v1.LivestreamService/ListClips",
                 request_serializer=service.ListClipsRequest.serialize,
                 response_deserializer=service.ListClipsResponse.deserialize,
@@ -715,7 +803,7 @@ class LivestreamServiceGrpcTransport(LivestreamServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_clip" not in self._stubs:
-            self._stubs["get_clip"] = self.grpc_channel.unary_unary(
+            self._stubs["get_clip"] = self._logged_channel.unary_unary(
                 "/google.cloud.video.livestream.v1.LivestreamService/GetClip",
                 request_serializer=service.GetClipRequest.serialize,
                 response_deserializer=resources.Clip.deserialize,
@@ -742,7 +830,7 @@ class LivestreamServiceGrpcTransport(LivestreamServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_clip" not in self._stubs:
-            self._stubs["create_clip"] = self.grpc_channel.unary_unary(
+            self._stubs["create_clip"] = self._logged_channel.unary_unary(
                 "/google.cloud.video.livestream.v1.LivestreamService/CreateClip",
                 request_serializer=service.CreateClipRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -770,7 +858,7 @@ class LivestreamServiceGrpcTransport(LivestreamServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_clip" not in self._stubs:
-            self._stubs["delete_clip"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_clip"] = self._logged_channel.unary_unary(
                 "/google.cloud.video.livestream.v1.LivestreamService/DeleteClip",
                 request_serializer=service.DeleteClipRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -797,7 +885,7 @@ class LivestreamServiceGrpcTransport(LivestreamServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_asset" not in self._stubs:
-            self._stubs["create_asset"] = self.grpc_channel.unary_unary(
+            self._stubs["create_asset"] = self._logged_channel.unary_unary(
                 "/google.cloud.video.livestream.v1.LivestreamService/CreateAsset",
                 request_serializer=service.CreateAssetRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -823,7 +911,7 @@ class LivestreamServiceGrpcTransport(LivestreamServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_asset" not in self._stubs:
-            self._stubs["delete_asset"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_asset"] = self._logged_channel.unary_unary(
                 "/google.cloud.video.livestream.v1.LivestreamService/DeleteAsset",
                 request_serializer=service.DeleteAssetRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -847,7 +935,7 @@ class LivestreamServiceGrpcTransport(LivestreamServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_asset" not in self._stubs:
-            self._stubs["get_asset"] = self.grpc_channel.unary_unary(
+            self._stubs["get_asset"] = self._logged_channel.unary_unary(
                 "/google.cloud.video.livestream.v1.LivestreamService/GetAsset",
                 request_serializer=service.GetAssetRequest.serialize,
                 response_deserializer=resources.Asset.deserialize,
@@ -873,7 +961,7 @@ class LivestreamServiceGrpcTransport(LivestreamServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_assets" not in self._stubs:
-            self._stubs["list_assets"] = self.grpc_channel.unary_unary(
+            self._stubs["list_assets"] = self._logged_channel.unary_unary(
                 "/google.cloud.video.livestream.v1.LivestreamService/ListAssets",
                 request_serializer=service.ListAssetsRequest.serialize,
                 response_deserializer=service.ListAssetsResponse.deserialize,
@@ -897,7 +985,7 @@ class LivestreamServiceGrpcTransport(LivestreamServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_pool" not in self._stubs:
-            self._stubs["get_pool"] = self.grpc_channel.unary_unary(
+            self._stubs["get_pool"] = self._logged_channel.unary_unary(
                 "/google.cloud.video.livestream.v1.LivestreamService/GetPool",
                 request_serializer=service.GetPoolRequest.serialize,
                 response_deserializer=resources.Pool.deserialize,
@@ -923,7 +1011,7 @@ class LivestreamServiceGrpcTransport(LivestreamServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_pool" not in self._stubs:
-            self._stubs["update_pool"] = self.grpc_channel.unary_unary(
+            self._stubs["update_pool"] = self._logged_channel.unary_unary(
                 "/google.cloud.video.livestream.v1.LivestreamService/UpdatePool",
                 request_serializer=service.UpdatePoolRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -931,7 +1019,7 @@ class LivestreamServiceGrpcTransport(LivestreamServiceTransport):
         return self._stubs["update_pool"]
 
     def close(self):
-        self.grpc_channel.close()
+        self._logged_channel.close()
 
     @property
     def delete_operation(
@@ -943,7 +1031,7 @@ class LivestreamServiceGrpcTransport(LivestreamServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_operation" not in self._stubs:
-            self._stubs["delete_operation"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_operation"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/DeleteOperation",
                 request_serializer=operations_pb2.DeleteOperationRequest.SerializeToString,
                 response_deserializer=None,
@@ -960,7 +1048,7 @@ class LivestreamServiceGrpcTransport(LivestreamServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "cancel_operation" not in self._stubs:
-            self._stubs["cancel_operation"] = self.grpc_channel.unary_unary(
+            self._stubs["cancel_operation"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/CancelOperation",
                 request_serializer=operations_pb2.CancelOperationRequest.SerializeToString,
                 response_deserializer=None,
@@ -977,7 +1065,7 @@ class LivestreamServiceGrpcTransport(LivestreamServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_operation" not in self._stubs:
-            self._stubs["get_operation"] = self.grpc_channel.unary_unary(
+            self._stubs["get_operation"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/GetOperation",
                 request_serializer=operations_pb2.GetOperationRequest.SerializeToString,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -996,7 +1084,7 @@ class LivestreamServiceGrpcTransport(LivestreamServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_operations" not in self._stubs:
-            self._stubs["list_operations"] = self.grpc_channel.unary_unary(
+            self._stubs["list_operations"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/ListOperations",
                 request_serializer=operations_pb2.ListOperationsRequest.SerializeToString,
                 response_deserializer=operations_pb2.ListOperationsResponse.FromString,
@@ -1015,7 +1103,7 @@ class LivestreamServiceGrpcTransport(LivestreamServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_locations" not in self._stubs:
-            self._stubs["list_locations"] = self.grpc_channel.unary_unary(
+            self._stubs["list_locations"] = self._logged_channel.unary_unary(
                 "/google.cloud.location.Locations/ListLocations",
                 request_serializer=locations_pb2.ListLocationsRequest.SerializeToString,
                 response_deserializer=locations_pb2.ListLocationsResponse.FromString,
@@ -1032,7 +1120,7 @@ class LivestreamServiceGrpcTransport(LivestreamServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_location" not in self._stubs:
-            self._stubs["get_location"] = self.grpc_channel.unary_unary(
+            self._stubs["get_location"] = self._logged_channel.unary_unary(
                 "/google.cloud.location.Locations/GetLocation",
                 request_serializer=locations_pb2.GetLocationRequest.SerializeToString,
                 response_deserializer=locations_pb2.Location.FromString,

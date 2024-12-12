@@ -2900,6 +2900,7 @@ def test_list_policies_rest_required_fields(request_type=policy.ListPoliciesRequ
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_policies(request)
 
@@ -2953,6 +2954,7 @@ def test_list_policies_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_policies(**mock_args)
 
@@ -3141,6 +3143,7 @@ def test_get_policy_rest_required_fields(request_type=policy.GetPolicyRequest):
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_policy(request)
 
@@ -3186,6 +3189,7 @@ def test_get_policy_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_policy(**mock_args)
 
@@ -3317,6 +3321,7 @@ def test_create_policy_rest_required_fields(request_type=gi_policy.CreatePolicyR
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_policy(request)
 
@@ -3370,6 +3375,7 @@ def test_create_policy_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_policy(**mock_args)
 
@@ -3496,6 +3502,7 @@ def test_update_policy_rest_required_fields(request_type=policy.UpdatePolicyRequ
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_policy(request)
 
@@ -3616,6 +3623,7 @@ def test_delete_policy_rest_required_fields(request_type=policy.DeletePolicyRequ
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_policy(request)
 
@@ -3659,6 +3667,7 @@ def test_delete_policy_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_policy(**mock_args)
 
@@ -4071,6 +4080,7 @@ def test_list_policies_rest_bad_request(request_type=policy.ListPoliciesRequest)
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_policies(request)
 
 
@@ -4106,6 +4116,7 @@ def test_list_policies_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_policies(request)
 
     # Establish that the response is the type that we expect.
@@ -4142,6 +4153,7 @@ def test_list_policies_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = policy.ListPoliciesResponse.to_json(
             policy.ListPoliciesResponse()
         )
@@ -4186,6 +4198,7 @@ def test_get_policy_rest_bad_request(request_type=policy.GetPolicyRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_policy(request)
 
 
@@ -4226,6 +4239,7 @@ def test_get_policy_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_policy(request)
 
     # Establish that the response is the type that we expect.
@@ -4267,6 +4281,7 @@ def test_get_policy_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = policy.Policy.to_json(policy.Policy())
         req.return_value.content = return_value
 
@@ -4309,6 +4324,7 @@ def test_create_policy_rest_bad_request(request_type=gi_policy.CreatePolicyReque
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_policy(request)
 
 
@@ -4447,6 +4463,7 @@ def test_create_policy_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_policy(request)
 
     # Establish that the response is the type that we expect.
@@ -4484,6 +4501,7 @@ def test_create_policy_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -4526,6 +4544,7 @@ def test_update_policy_rest_bad_request(request_type=policy.UpdatePolicyRequest)
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_policy(request)
 
 
@@ -4664,6 +4683,7 @@ def test_update_policy_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_policy(request)
 
     # Establish that the response is the type that we expect.
@@ -4701,6 +4721,7 @@ def test_update_policy_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -4743,6 +4764,7 @@ def test_delete_policy_rest_bad_request(request_type=policy.DeletePolicyRequest)
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_policy(request)
 
 
@@ -4773,6 +4795,7 @@ def test_delete_policy_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_policy(request)
 
     # Establish that the response is the type that we expect.
@@ -4810,6 +4833,7 @@ def test_delete_policy_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -4856,6 +4880,7 @@ def test_get_operation_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_operation(request)
 
 
@@ -4886,6 +4911,7 @@ def test_get_operation_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.get_operation(request)
 

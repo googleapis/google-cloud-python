@@ -59,7 +59,9 @@ class networkconnectivityCallTransformer(cst.CSTTransformer):
         'list_routes': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
         'list_route_tables': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
         'list_spokes': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
+        'query_hub_status': ('name', 'page_size', 'page_token', 'filter', 'order_by', 'group_by', ),
         'reject_hub_spoke': ('name', 'spoke_uri', 'request_id', 'details', ),
+        'update_group': ('group', 'update_mask', 'request_id', ),
         'update_hub': ('hub', 'update_mask', 'request_id', ),
         'update_spoke': ('spoke', 'update_mask', 'request_id', ),
     }

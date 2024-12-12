@@ -4044,6 +4044,7 @@ def test_list_jobs_rest_required_fields(request_type=cloudscheduler.ListJobsRequ
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_jobs(request)
 
@@ -4099,6 +4100,7 @@ def test_list_jobs_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_jobs(**mock_args)
 
@@ -4288,6 +4290,7 @@ def test_get_job_rest_required_fields(request_type=cloudscheduler.GetJobRequest)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_job(request)
 
@@ -4333,6 +4336,7 @@ def test_get_job_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_job(**mock_args)
 
@@ -4462,6 +4466,7 @@ def test_create_job_rest_required_fields(request_type=cloudscheduler.CreateJobRe
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_job(request)
 
@@ -4516,6 +4521,7 @@ def test_create_job_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_job(**mock_args)
 
@@ -4643,6 +4649,7 @@ def test_update_job_rest_required_fields(request_type=cloudscheduler.UpdateJobRe
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_job(request)
 
@@ -4691,6 +4698,7 @@ def test_update_job_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_job(**mock_args)
 
@@ -4820,6 +4828,7 @@ def test_delete_job_rest_required_fields(request_type=cloudscheduler.DeleteJobRe
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_job(request)
 
@@ -4863,6 +4872,7 @@ def test_delete_job_rest_flattened():
         json_return_value = ""
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_job(**mock_args)
 
@@ -4992,6 +5002,7 @@ def test_pause_job_rest_required_fields(request_type=cloudscheduler.PauseJobRequ
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.pause_job(request)
 
@@ -5037,6 +5048,7 @@ def test_pause_job_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.pause_job(**mock_args)
 
@@ -5167,6 +5179,7 @@ def test_resume_job_rest_required_fields(request_type=cloudscheduler.ResumeJobRe
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.resume_job(request)
 
@@ -5212,6 +5225,7 @@ def test_resume_job_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.resume_job(**mock_args)
 
@@ -5342,6 +5356,7 @@ def test_run_job_rest_required_fields(request_type=cloudscheduler.RunJobRequest)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.run_job(request)
 
@@ -5387,6 +5402,7 @@ def test_run_job_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.run_job(**mock_args)
 
@@ -5972,6 +5988,7 @@ def test_list_jobs_rest_bad_request(request_type=cloudscheduler.ListJobsRequest)
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_jobs(request)
 
 
@@ -6007,6 +6024,7 @@ def test_list_jobs_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_jobs(request)
 
     # Establish that the response is the type that we expect.
@@ -6045,6 +6063,7 @@ def test_list_jobs_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = cloudscheduler.ListJobsResponse.to_json(
             cloudscheduler.ListJobsResponse()
         )
@@ -6089,6 +6108,7 @@ def test_get_job_rest_bad_request(request_type=cloudscheduler.GetJobRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_job(request)
 
 
@@ -6129,6 +6149,7 @@ def test_get_job_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_job(request)
 
     # Establish that the response is the type that we expect.
@@ -6172,6 +6193,7 @@ def test_get_job_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = job.Job.to_json(job.Job())
         req.return_value.content = return_value
 
@@ -6214,6 +6236,7 @@ def test_create_job_rest_bad_request(request_type=cloudscheduler.CreateJobReques
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_job(request)
 
 
@@ -6381,6 +6404,7 @@ def test_create_job_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_job(request)
 
     # Establish that the response is the type that we expect.
@@ -6426,6 +6450,7 @@ def test_create_job_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = gcs_job.Job.to_json(gcs_job.Job())
         req.return_value.content = return_value
 
@@ -6468,6 +6493,7 @@ def test_update_job_rest_bad_request(request_type=cloudscheduler.UpdateJobReques
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_job(request)
 
 
@@ -6635,6 +6661,7 @@ def test_update_job_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_job(request)
 
     # Establish that the response is the type that we expect.
@@ -6680,6 +6707,7 @@ def test_update_job_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = gcs_job.Job.to_json(gcs_job.Job())
         req.return_value.content = return_value
 
@@ -6722,6 +6750,7 @@ def test_delete_job_rest_bad_request(request_type=cloudscheduler.DeleteJobReques
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_job(request)
 
 
@@ -6752,6 +6781,7 @@ def test_delete_job_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_job(request)
 
     # Establish that the response is the type that we expect.
@@ -6788,6 +6818,7 @@ def test_delete_job_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = cloudscheduler.DeleteJobRequest()
         metadata = [
@@ -6826,6 +6857,7 @@ def test_pause_job_rest_bad_request(request_type=cloudscheduler.PauseJobRequest)
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.pause_job(request)
 
 
@@ -6866,6 +6898,7 @@ def test_pause_job_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.pause_job(request)
 
     # Establish that the response is the type that we expect.
@@ -6909,6 +6942,7 @@ def test_pause_job_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = job.Job.to_json(job.Job())
         req.return_value.content = return_value
 
@@ -6951,6 +6985,7 @@ def test_resume_job_rest_bad_request(request_type=cloudscheduler.ResumeJobReques
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.resume_job(request)
 
 
@@ -6991,6 +7026,7 @@ def test_resume_job_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.resume_job(request)
 
     # Establish that the response is the type that we expect.
@@ -7036,6 +7072,7 @@ def test_resume_job_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = job.Job.to_json(job.Job())
         req.return_value.content = return_value
 
@@ -7078,6 +7115,7 @@ def test_run_job_rest_bad_request(request_type=cloudscheduler.RunJobRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.run_job(request)
 
 
@@ -7118,6 +7156,7 @@ def test_run_job_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.run_job(request)
 
     # Establish that the response is the type that we expect.
@@ -7161,6 +7200,7 @@ def test_run_job_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = job.Job.to_json(job.Job())
         req.return_value.content = return_value
 
@@ -7205,6 +7245,7 @@ def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationReq
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_location(request)
 
 
@@ -7235,6 +7276,7 @@ def test_get_location_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.get_location(request)
 
@@ -7263,6 +7305,7 @@ def test_list_locations_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_locations(request)
 
 
@@ -7293,6 +7336,7 @@ def test_list_locations_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.list_locations(request)
 

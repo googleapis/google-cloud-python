@@ -13,6 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import json
+import logging as std_logging
+import pickle
 from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -21,11 +24,89 @@ import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
+from google.protobuf.json_format import MessageToJson
+import google.protobuf.message
 import grpc  # type: ignore
+import proto  # type: ignore
 
 from google.area120.tables_v1alpha1.types import tables
 
 from .base import DEFAULT_CLIENT_INFO, TablesServiceTransport
+
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = std_logging.getLogger(__name__)
+
+
+class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
+    def intercept_unary_unary(self, continuation, client_call_details, request):
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+            std_logging.DEBUG
+        )
+        if logging_enabled:  # pragma: NO COVER
+            request_metadata = client_call_details.metadata
+            if isinstance(request, proto.Message):
+                request_payload = type(request).to_json(request)
+            elif isinstance(request, google.protobuf.message.Message):
+                request_payload = MessageToJson(request)
+            else:
+                request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
+
+            request_metadata = {
+                key: value.decode("utf-8") if isinstance(value, bytes) else value
+                for key, value in request_metadata
+            }
+            grpc_request = {
+                "payload": request_payload,
+                "requestMethod": "grpc",
+                "metadata": dict(request_metadata),
+            }
+            _LOGGER.debug(
+                f"Sending request for {client_call_details.method}",
+                extra={
+                    "serviceName": "google.area120.tables.v1alpha1.TablesService",
+                    "rpcName": client_call_details.method,
+                    "request": grpc_request,
+                    "metadata": grpc_request["metadata"],
+                },
+            )
+
+        response = continuation(client_call_details, request)
+        if logging_enabled:  # pragma: NO COVER
+            response_metadata = response.trailing_metadata()
+            # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
+            metadata = (
+                dict([(k, str(v)) for k, v in response_metadata])
+                if response_metadata
+                else None
+            )
+            result = response.result()
+            if isinstance(result, proto.Message):
+                response_payload = type(result).to_json(result)
+            elif isinstance(result, google.protobuf.message.Message):
+                response_payload = MessageToJson(result)
+            else:
+                response_payload = f"{type(result).__name__}: {pickle.dumps(result)}"
+            grpc_response = {
+                "payload": response_payload,
+                "metadata": metadata,
+                "status": "OK",
+            }
+            _LOGGER.debug(
+                f"Received response for {client_call_details.method}.",
+                extra={
+                    "serviceName": "google.area120.tables.v1alpha1.TablesService",
+                    "rpcName": client_call_details.method,
+                    "response": grpc_response,
+                    "metadata": grpc_response["metadata"],
+                },
+            )
+        return response
 
 
 class TablesServiceGrpcTransport(TablesServiceTransport):
@@ -193,7 +274,12 @@ class TablesServiceGrpcTransport(TablesServiceTransport):
                 ],
             )
 
-        # Wrap messages. This must be done after self._grpc_channel exists
+        self._interceptor = _LoggingClientInterceptor()
+        self._logged_channel = grpc.intercept_channel(
+            self._grpc_channel, self._interceptor
+        )
+
+        # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
     @classmethod
@@ -265,7 +351,7 @@ class TablesServiceGrpcTransport(TablesServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_table" not in self._stubs:
-            self._stubs["get_table"] = self.grpc_channel.unary_unary(
+            self._stubs["get_table"] = self._logged_channel.unary_unary(
                 "/google.area120.tables.v1alpha1.TablesService/GetTable",
                 request_serializer=tables.GetTableRequest.serialize,
                 response_deserializer=tables.Table.deserialize,
@@ -291,7 +377,7 @@ class TablesServiceGrpcTransport(TablesServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_tables" not in self._stubs:
-            self._stubs["list_tables"] = self.grpc_channel.unary_unary(
+            self._stubs["list_tables"] = self._logged_channel.unary_unary(
                 "/google.area120.tables.v1alpha1.TablesService/ListTables",
                 request_serializer=tables.ListTablesRequest.serialize,
                 response_deserializer=tables.ListTablesResponse.deserialize,
@@ -316,7 +402,7 @@ class TablesServiceGrpcTransport(TablesServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_workspace" not in self._stubs:
-            self._stubs["get_workspace"] = self.grpc_channel.unary_unary(
+            self._stubs["get_workspace"] = self._logged_channel.unary_unary(
                 "/google.area120.tables.v1alpha1.TablesService/GetWorkspace",
                 request_serializer=tables.GetWorkspaceRequest.serialize,
                 response_deserializer=tables.Workspace.deserialize,
@@ -342,7 +428,7 @@ class TablesServiceGrpcTransport(TablesServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_workspaces" not in self._stubs:
-            self._stubs["list_workspaces"] = self.grpc_channel.unary_unary(
+            self._stubs["list_workspaces"] = self._logged_channel.unary_unary(
                 "/google.area120.tables.v1alpha1.TablesService/ListWorkspaces",
                 request_serializer=tables.ListWorkspacesRequest.serialize,
                 response_deserializer=tables.ListWorkspacesResponse.deserialize,
@@ -367,7 +453,7 @@ class TablesServiceGrpcTransport(TablesServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_row" not in self._stubs:
-            self._stubs["get_row"] = self.grpc_channel.unary_unary(
+            self._stubs["get_row"] = self._logged_channel.unary_unary(
                 "/google.area120.tables.v1alpha1.TablesService/GetRow",
                 request_serializer=tables.GetRowRequest.serialize,
                 response_deserializer=tables.Row.deserialize,
@@ -392,7 +478,7 @@ class TablesServiceGrpcTransport(TablesServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_rows" not in self._stubs:
-            self._stubs["list_rows"] = self.grpc_channel.unary_unary(
+            self._stubs["list_rows"] = self._logged_channel.unary_unary(
                 "/google.area120.tables.v1alpha1.TablesService/ListRows",
                 request_serializer=tables.ListRowsRequest.serialize,
                 response_deserializer=tables.ListRowsResponse.deserialize,
@@ -416,7 +502,7 @@ class TablesServiceGrpcTransport(TablesServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_row" not in self._stubs:
-            self._stubs["create_row"] = self.grpc_channel.unary_unary(
+            self._stubs["create_row"] = self._logged_channel.unary_unary(
                 "/google.area120.tables.v1alpha1.TablesService/CreateRow",
                 request_serializer=tables.CreateRowRequest.serialize,
                 response_deserializer=tables.Row.deserialize,
@@ -442,7 +528,7 @@ class TablesServiceGrpcTransport(TablesServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "batch_create_rows" not in self._stubs:
-            self._stubs["batch_create_rows"] = self.grpc_channel.unary_unary(
+            self._stubs["batch_create_rows"] = self._logged_channel.unary_unary(
                 "/google.area120.tables.v1alpha1.TablesService/BatchCreateRows",
                 request_serializer=tables.BatchCreateRowsRequest.serialize,
                 response_deserializer=tables.BatchCreateRowsResponse.deserialize,
@@ -466,7 +552,7 @@ class TablesServiceGrpcTransport(TablesServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_row" not in self._stubs:
-            self._stubs["update_row"] = self.grpc_channel.unary_unary(
+            self._stubs["update_row"] = self._logged_channel.unary_unary(
                 "/google.area120.tables.v1alpha1.TablesService/UpdateRow",
                 request_serializer=tables.UpdateRowRequest.serialize,
                 response_deserializer=tables.Row.deserialize,
@@ -492,7 +578,7 @@ class TablesServiceGrpcTransport(TablesServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "batch_update_rows" not in self._stubs:
-            self._stubs["batch_update_rows"] = self.grpc_channel.unary_unary(
+            self._stubs["batch_update_rows"] = self._logged_channel.unary_unary(
                 "/google.area120.tables.v1alpha1.TablesService/BatchUpdateRows",
                 request_serializer=tables.BatchUpdateRowsRequest.serialize,
                 response_deserializer=tables.BatchUpdateRowsResponse.deserialize,
@@ -516,7 +602,7 @@ class TablesServiceGrpcTransport(TablesServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_row" not in self._stubs:
-            self._stubs["delete_row"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_row"] = self._logged_channel.unary_unary(
                 "/google.area120.tables.v1alpha1.TablesService/DeleteRow",
                 request_serializer=tables.DeleteRowRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -542,7 +628,7 @@ class TablesServiceGrpcTransport(TablesServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "batch_delete_rows" not in self._stubs:
-            self._stubs["batch_delete_rows"] = self.grpc_channel.unary_unary(
+            self._stubs["batch_delete_rows"] = self._logged_channel.unary_unary(
                 "/google.area120.tables.v1alpha1.TablesService/BatchDeleteRows",
                 request_serializer=tables.BatchDeleteRowsRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -550,7 +636,7 @@ class TablesServiceGrpcTransport(TablesServiceTransport):
         return self._stubs["batch_delete_rows"]
 
     def close(self):
-        self.grpc_channel.close()
+        self._logged_channel.close()
 
     @property
     def kind(self) -> str:

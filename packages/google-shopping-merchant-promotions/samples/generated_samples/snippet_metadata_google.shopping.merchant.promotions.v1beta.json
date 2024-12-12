@@ -8,7 +8,7 @@
     ],
     "language": "PYTHON",
     "name": "google-shopping-merchant-promotions",
-    "version": "0.1.4"
+    "version": "0.1.0"
   },
   "snippets": [
     {
@@ -47,7 +47,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.shopping.merchant_promotions_v1beta.types.Promotion",
@@ -127,7 +127,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.shopping.merchant_promotions_v1beta.types.Promotion",
@@ -204,7 +204,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.shopping.merchant_promotions_v1beta.types.Promotion",
@@ -280,7 +280,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.shopping.merchant_promotions_v1beta.types.Promotion",
@@ -361,7 +361,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.shopping.merchant_promotions_v1beta.services.promotions_service.pagers.ListPromotionsAsyncPager",
@@ -441,7 +441,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.shopping.merchant_promotions_v1beta.services.promotions_service.pagers.ListPromotionsPager",

@@ -28,12 +28,15 @@ __protobuf__ = proto.module(
         "RouteType",
         "State",
         "SpokeType",
+        "PolicyMode",
+        "PresetTopology",
         "Hub",
         "RoutingVPC",
         "Spoke",
         "RouteTable",
         "Route",
         "Group",
+        "AutoAccept",
         "ListHubsRequest",
         "ListHubsResponse",
         "GetHubRequest",
@@ -42,6 +45,10 @@ __protobuf__ = proto.module(
         "DeleteHubRequest",
         "ListHubSpokesRequest",
         "ListHubSpokesResponse",
+        "QueryHubStatusRequest",
+        "QueryHubStatusResponse",
+        "HubStatusEntry",
+        "PscPropagationStatus",
         "ListSpokesRequest",
         "ListSpokesResponse",
         "GetSpokeRequest",
@@ -64,11 +71,16 @@ __protobuf__ = proto.module(
         "LinkedInterconnectAttachments",
         "LinkedRouterApplianceInstances",
         "LinkedVpcNetwork",
+        "LinkedProducerVpcNetwork",
         "RouterApplianceInstance",
         "LocationMetadata",
         "NextHopVpcNetwork",
+        "NextHopVPNTunnel",
+        "NextHopRouterApplianceInstance",
+        "NextHopInterconnectAttachment",
         "SpokeSummary",
         "GetGroupRequest",
+        "UpdateGroupRequest",
     },
 )
 
@@ -106,10 +118,16 @@ class RouteType(proto.Enum):
             The route leads to a destination within the
             secondary address range of the VPC network's
             subnet.
+        DYNAMIC_ROUTE (3):
+            The route leads to a destination in a dynamic
+            route. Dynamic routes are derived from Border
+            Gateway Protocol (BGP) advertisements received
+            from an NCC hybrid spoke.
     """
     ROUTE_TYPE_UNSPECIFIED = 0
     VPC_PRIMARY_SUBNET = 1
     VPC_SECONDARY_SUBNET = 2
+    DYNAMIC_ROUTE = 3
 
 
 class State(proto.Enum):
@@ -170,12 +188,51 @@ class SpokeType(proto.Enum):
             instances.
         VPC_NETWORK (4):
             Spokes associated with VPC networks.
+        PRODUCER_VPC_NETWORK (7):
+            Spokes that are backed by a producer VPC
+            network.
     """
     SPOKE_TYPE_UNSPECIFIED = 0
     VPN_TUNNEL = 1
     INTERCONNECT_ATTACHMENT = 2
     ROUTER_APPLIANCE = 3
     VPC_NETWORK = 4
+    PRODUCER_VPC_NETWORK = 7
+
+
+class PolicyMode(proto.Enum):
+    r"""This enum controls the policy mode used in a hub.
+
+    Values:
+        POLICY_MODE_UNSPECIFIED (0):
+            Policy mode is unspecified. It defaults to PRESET with
+            preset_topology = MESH.
+        PRESET (1):
+            Hub uses one of the preset topologies.
+    """
+    POLICY_MODE_UNSPECIFIED = 0
+    PRESET = 1
+
+
+class PresetTopology(proto.Enum):
+    r"""The list of available preset topologies.
+
+    Values:
+        PRESET_TOPOLOGY_UNSPECIFIED (0):
+            Preset topology is unspecified. When policy_mode = PRESET,
+            it defaults to MESH.
+        MESH (2):
+            Mesh topology is implemented. Group ``default`` is
+            automatically created. All spokes in the hub are added to
+            group ``default``.
+        STAR (3):
+            Star topology is implemented. Two groups, ``center`` and
+            ``edge``, are automatically created along with hub creation.
+            Spokes have to join one of the groups during creation.
+    """
+    PRESET_TOPOLOGY_UNSPECIFIED = 0
+    MESH = 2
+    STAR = 3
 
 
 class Hub(proto.Message):
@@ -186,6 +243,9 @@ class Hub(proto.Message):
     associated with those spokes must all be in the same VPC
     network. Spokes that do not use site-to-site data transfer can
     be associated with any VPC network in your project.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         name (str):
@@ -232,6 +292,26 @@ class Hub(proto.Message):
             to state. If any spokes are inactive, the
             summary also lists the reasons they are
             inactive, including a count for each reason.
+        policy_mode (google.cloud.networkconnectivity_v1.types.PolicyMode):
+            Optional. The policy mode of this hub. This field can be
+            either PRESET or CUSTOM. If unspecified, the policy_mode
+            defaults to PRESET.
+        preset_topology (google.cloud.networkconnectivity_v1.types.PresetTopology):
+            Optional. The topology implemented in this hub. Currently,
+            this field is only used when policy_mode = PRESET. The
+            available preset topologies are MESH and STAR. If
+            preset_topology is unspecified and policy_mode = PRESET, the
+            preset_topology defaults to MESH. When policy_mode = CUSTOM,
+            the preset_topology is set to PRESET_TOPOLOGY_UNSPECIFIED.
+        export_psc (bool):
+            Optional. Whether Private Service Connect
+            transitivity is enabled for the hub. If true,
+            Private Service Connect endpoints in VPC spokes
+            attached to the hub are made accessible to other
+            VPC spokes attached to the hub. The default
+            value is false.
+
+            This field is a member of `oneof`_ ``_export_psc``.
     """
 
     name: str = proto.Field(
@@ -279,6 +359,21 @@ class Hub(proto.Message):
         proto.MESSAGE,
         number=12,
         message="SpokeSummary",
+    )
+    policy_mode: "PolicyMode" = proto.Field(
+        proto.ENUM,
+        number=13,
+        enum="PolicyMode",
+    )
+    preset_topology: "PresetTopology" = proto.Field(
+        proto.ENUM,
+        number=14,
+        enum="PresetTopology",
+    )
+    export_psc: bool = proto.Field(
+        proto.BOOL,
+        number=15,
+        optional=True,
     )
 
 
@@ -354,6 +449,9 @@ class Spoke(proto.Message):
         linked_vpc_network (google.cloud.networkconnectivity_v1.types.LinkedVpcNetwork):
             Optional. VPC network that is associated with
             the spoke.
+        linked_producer_vpc_network (google.cloud.networkconnectivity_v1.types.LinkedProducerVpcNetwork):
+            Optional. The linked producer VPC that is
+            associated with the spoke.
         unique_id (str):
             Output only. The Google-generated UUID for the spoke. This
             value is unique across all spoke resources. If a spoke is
@@ -471,6 +569,11 @@ class Spoke(proto.Message):
         proto.MESSAGE,
         number=20,
         message="LinkedVpcNetwork",
+    )
+    linked_producer_vpc_network: "LinkedProducerVpcNetwork" = proto.Field(
+        proto.MESSAGE,
+        number=26,
+        message="LinkedProducerVpcNetwork",
     )
     unique_id: str = proto.Field(
         proto.STRING,
@@ -601,10 +704,25 @@ class Route(proto.Message):
             to. Example:
             projects/12345/locations/global/spokes/SPOKE
         location (str):
-            Output only. The location of the route.
-            Uses the following form:
+            Output only. The origin location of the
+            route. Uses the following form:
             "projects/{project}/locations/{location}"
             Example: projects/1234/locations/us-central1
+        priority (int):
+            Output only. The priority of this route.
+            Priority is used to break ties in cases where a
+            destination matches more than one route. In
+            these cases the route with the lowest-numbered
+            priority value wins.
+        next_hop_vpn_tunnel (google.cloud.networkconnectivity_v1.types.NextHopVPNTunnel):
+            Immutable. The next-hop VPN tunnel for
+            packets on this route.
+        next_hop_router_appliance_instance (google.cloud.networkconnectivity_v1.types.NextHopRouterApplianceInstance):
+            Immutable. The next-hop Router appliance
+            instance for packets on this route.
+        next_hop_interconnect_attachment (google.cloud.networkconnectivity_v1.types.NextHopInterconnectAttachment):
+            Immutable. The next-hop VLAN attachment for
+            packets on this route.
     """
 
     name: str = proto.Field(
@@ -661,6 +779,25 @@ class Route(proto.Message):
         proto.STRING,
         number=12,
     )
+    priority: int = proto.Field(
+        proto.INT64,
+        number=13,
+    )
+    next_hop_vpn_tunnel: "NextHopVPNTunnel" = proto.Field(
+        proto.MESSAGE,
+        number=14,
+        message="NextHopVPNTunnel",
+    )
+    next_hop_router_appliance_instance: "NextHopRouterApplianceInstance" = proto.Field(
+        proto.MESSAGE,
+        number=15,
+        message="NextHopRouterApplianceInstance",
+    )
+    next_hop_interconnect_attachment: "NextHopInterconnectAttachment" = proto.Field(
+        proto.MESSAGE,
+        number=16,
+        message="NextHopInterconnectAttachment",
+    )
 
 
 class Group(proto.Message):
@@ -690,6 +827,13 @@ class Group(proto.Message):
         state (google.cloud.networkconnectivity_v1.types.State):
             Output only. The current lifecycle state of
             this group.
+        auto_accept (google.cloud.networkconnectivity_v1.types.AutoAccept):
+            Optional. The auto-accept setting for this
+            group.
+        route_table (str):
+            Output only. The name of the route table that corresponds to
+            this group. They use the following form:
+            ``projects/{project_number}/locations/global/hubs/{hub_id}/routeTables/{route_table_id}``
     """
 
     name: str = proto.Field(
@@ -723,6 +867,38 @@ class Group(proto.Message):
         proto.ENUM,
         number=7,
         enum="State",
+    )
+    auto_accept: "AutoAccept" = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message="AutoAccept",
+    )
+    route_table: str = proto.Field(
+        proto.STRING,
+        number=9,
+    )
+
+
+class AutoAccept(proto.Message):
+    r"""The auto-accept setting for a group controls whether
+    proposed spokes are automatically attached to the hub. If
+    auto-accept is enabled, the spoke immediately is attached to the
+    hub and becomes part of the group. In this case, the new spoke
+    is in the ACTIVE state. If auto-accept is disabled, the spoke
+    goes to the INACTIVE state, and it must be reviewed and accepted
+    by a hub administrator.
+
+    Attributes:
+        auto_accept_projects (MutableSequence[str]):
+            A list of project ids or project numbers for
+            which you want to enable auto-accept. The
+            auto-accept setting is applied to spokes being
+            created or updated in these projects.
+    """
+
+    auto_accept_projects: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=1,
     )
 
 
@@ -1087,6 +1263,242 @@ class ListHubSpokesResponse(proto.Message):
     unreachable: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
+    )
+
+
+class QueryHubStatusRequest(proto.Message):
+    r"""The request for
+    [HubService.QueryHubStatus][google.cloud.networkconnectivity.v1.HubService.QueryHubStatus].
+
+    Attributes:
+        name (str):
+            Required. The name of the hub.
+        page_size (int):
+            Optional. The maximum number of results to
+            return per page.
+        page_token (str):
+            Optional. The page token.
+        filter (str):
+            Optional. An expression that filters the list of results.
+            The filter can be used to filter the results by the
+            following fields:
+
+            -  ``psc_propagation_status.source_spoke``
+            -  ``psc_propagation_status.source_group``
+            -  ``psc_propagation_status.source_forwarding_rule``
+            -  ``psc_propagation_status.target_spoke``
+            -  ``psc_propagation_status.target_group``
+            -  ``psc_propagation_status.code``
+            -  ``psc_propagation_status.message``
+        order_by (str):
+            Optional. Sort the results in ascending order by the
+            specified fields. A comma-separated list of any of these
+            fields:
+
+            -  ``psc_propagation_status.source_spoke``
+            -  ``psc_propagation_status.source_group``
+            -  ``psc_propagation_status.source_forwarding_rule``
+            -  ``psc_propagation_status.target_spoke``
+            -  ``psc_propagation_status.target_group``
+            -  ``psc_propagation_status.code`` If ``group_by`` is set,
+               the value of the ``order_by`` field must be the same as
+               or a subset of the ``group_by`` field.
+        group_by (str):
+            Optional. Aggregate the results by the specified fields. A
+            comma-separated list of any of these fields:
+
+            -  ``psc_propagation_status.source_spoke``
+            -  ``psc_propagation_status.source_group``
+            -  ``psc_propagation_status.source_forwarding_rule``
+            -  ``psc_propagation_status.target_spoke``
+            -  ``psc_propagation_status.target_group``
+            -  ``psc_propagation_status.code``
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    order_by: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    group_by: str = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+
+
+class QueryHubStatusResponse(proto.Message):
+    r"""The response for
+    [HubService.QueryHubStatus][google.cloud.networkconnectivity.v1.HubService.QueryHubStatus].
+
+    Attributes:
+        hub_status_entries (MutableSequence[google.cloud.networkconnectivity_v1.types.HubStatusEntry]):
+            The list of hub status.
+        next_page_token (str):
+            The token for the next page of the response. To see more
+            results, use this value as the page_token for your next
+            request. If this value is empty, there are no more results.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    hub_status_entries: MutableSequence["HubStatusEntry"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="HubStatusEntry",
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class HubStatusEntry(proto.Message):
+    r"""A hub status entry represents the status of a set of
+    propagated Private Service Connect connections grouped by
+    certain fields.
+
+    Attributes:
+        count (int):
+            The number of propagated Private Service Connect connections
+            with this status. If the ``group_by`` field was not set in
+            the request message, the value of this field is 1.
+        group_by (str):
+            The fields that this entry is grouped by. This has the same
+            value as the ``group_by`` field in the request message.
+        psc_propagation_status (google.cloud.networkconnectivity_v1.types.PscPropagationStatus):
+            The Private Service Connect propagation
+            status.
+    """
+
+    count: int = proto.Field(
+        proto.INT32,
+        number=1,
+    )
+    group_by: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    psc_propagation_status: "PscPropagationStatus" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="PscPropagationStatus",
+    )
+
+
+class PscPropagationStatus(proto.Message):
+    r"""The status of one or more propagated Private Service Connect
+    connections in a hub.
+
+    Attributes:
+        source_spoke (str):
+            The name of the spoke that the source
+            forwarding rule belongs to.
+        source_group (str):
+            The name of the group that the source spoke
+            belongs to.
+        source_forwarding_rule (str):
+            The name of the forwarding rule exported to
+            the hub.
+        target_spoke (str):
+            The name of the spoke that the source
+            forwarding rule propagates to.
+        target_group (str):
+            The name of the group that the target spoke
+            belongs to.
+        code (google.cloud.networkconnectivity_v1.types.PscPropagationStatus.Code):
+            The propagation status.
+        message (str):
+            The human-readable summary of the Private
+            Service Connect connection propagation status.
+    """
+
+    class Code(proto.Enum):
+        r"""The Code enum represents the state of the Private Service
+        Connect propagation.
+
+        Values:
+            CODE_UNSPECIFIED (0):
+                The code is unspecified.
+            READY (1):
+                The propagated Private Service Connect
+                connection is ready.
+            PROPAGATING (2):
+                The Private Service Connect connection is
+                propagating. This is a transient state.
+            ERROR_PRODUCER_PROPAGATED_CONNECTION_LIMIT_EXCEEDED (3):
+                The Private Service Connect connection
+                propagation failed because the VPC network or
+                the project of the target spoke has exceeded the
+                connection limit set by the producer.
+            ERROR_PRODUCER_NAT_IP_SPACE_EXHAUSTED (4):
+                The Private Service Connect connection propagation failed
+                because the NAT IP subnet space has been exhausted. It is
+                equivalent to the ``Needs attention`` status of the Private
+                Service Connect connection. See
+                https://cloud.google.com/vpc/docs/about-accessing-vpc-hosted-services-endpoints#connection-statuses.
+            ERROR_PRODUCER_QUOTA_EXCEEDED (5):
+                The Private Service Connect connection propagation failed
+                because the
+                ``PSC_ILB_CONSUMER_FORWARDING_RULES_PER_PRODUCER_NETWORK``
+                quota in the producer VPC network has been exceeded.
+            ERROR_CONSUMER_QUOTA_EXCEEDED (6):
+                The Private Service Connect connection propagation failed
+                because the ``PSC_PROPAGATED_CONNECTIONS_PER_VPC_NETWORK``
+                quota in the consumer VPC network has been exceeded.
+        """
+        CODE_UNSPECIFIED = 0
+        READY = 1
+        PROPAGATING = 2
+        ERROR_PRODUCER_PROPAGATED_CONNECTION_LIMIT_EXCEEDED = 3
+        ERROR_PRODUCER_NAT_IP_SPACE_EXHAUSTED = 4
+        ERROR_PRODUCER_QUOTA_EXCEEDED = 5
+        ERROR_CONSUMER_QUOTA_EXCEEDED = 6
+
+    source_spoke: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    source_group: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    source_forwarding_rule: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    target_spoke: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    target_group: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    code: Code = proto.Field(
+        proto.ENUM,
+        number=6,
+        enum=Code,
+    )
+    message: str = proto.Field(
+        proto.STRING,
+        number=7,
     )
 
 
@@ -1743,6 +2155,10 @@ class LinkedVpnTunnels(proto.Message):
         vpc_network (str):
             Output only. The VPC network where these VPN
             tunnels are located.
+        include_import_ranges (MutableSequence[str]):
+            Optional. IP ranges allowed to be included during import
+            from hub (does not control transit connectivity). The only
+            allowed value for now is "ALL_IPV4_RANGES".
     """
 
     uris: MutableSequence[str] = proto.RepeatedField(
@@ -1756,6 +2172,10 @@ class LinkedVpnTunnels(proto.Message):
     vpc_network: str = proto.Field(
         proto.STRING,
         number=3,
+    )
+    include_import_ranges: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=5,
     )
 
 
@@ -1778,6 +2198,10 @@ class LinkedInterconnectAttachments(proto.Message):
         vpc_network (str):
             Output only. The VPC network where these VLAN
             attachments are located.
+        include_import_ranges (MutableSequence[str]):
+            Optional. IP ranges allowed to be included during import
+            from hub (does not control transit connectivity). The only
+            allowed value for now is "ALL_IPV4_RANGES".
     """
 
     uris: MutableSequence[str] = proto.RepeatedField(
@@ -1791,6 +2215,10 @@ class LinkedInterconnectAttachments(proto.Message):
     vpc_network: str = proto.Field(
         proto.STRING,
         number=3,
+    )
+    include_import_ranges: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=5,
     )
 
 
@@ -1811,6 +2239,10 @@ class LinkedRouterApplianceInstances(proto.Message):
         vpc_network (str):
             Output only. The VPC network where these
             router appliance instances are located.
+        include_import_ranges (MutableSequence[str]):
+            Optional. IP ranges allowed to be included during import
+            from hub (does not control transit connectivity). The only
+            allowed value for now is "ALL_IPV4_RANGES".
     """
 
     instances: MutableSequence["RouterApplianceInstance"] = proto.RepeatedField(
@@ -1826,6 +2258,10 @@ class LinkedRouterApplianceInstances(proto.Message):
         proto.STRING,
         number=3,
     )
+    include_import_ranges: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=5,
+    )
 
 
 class LinkedVpcNetwork(proto.Message):
@@ -1838,6 +2274,15 @@ class LinkedVpcNetwork(proto.Message):
         exclude_export_ranges (MutableSequence[str]):
             Optional. IP ranges encompassing the subnets
             to be excluded from peering.
+        include_export_ranges (MutableSequence[str]):
+            Optional. IP ranges allowed to be included
+            from peering.
+        producer_vpc_spokes (MutableSequence[str]):
+            Output only. The list of Producer VPC spokes
+            that this VPC spoke is a service consumer VPC
+            spoke for. These producer VPCs are connected
+            through VPC peering to this spoke's backing VPC
+            network.
     """
 
     uri: str = proto.Field(
@@ -1847,6 +2292,66 @@ class LinkedVpcNetwork(proto.Message):
     exclude_export_ranges: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
+    )
+    include_export_ranges: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+    producer_vpc_spokes: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=4,
+    )
+
+
+class LinkedProducerVpcNetwork(proto.Message):
+    r"""
+
+    Attributes:
+        network (str):
+            Immutable. The URI of the Service Consumer
+            VPC that the Producer VPC is peered with.
+        service_consumer_vpc_spoke (str):
+            Output only. The Service Consumer Network
+            spoke.
+        peering (str):
+            Immutable. The name of the VPC peering
+            between the Service Consumer VPC and the
+            Producer VPC (defined in the Tenant project)
+            which is added to the NCC hub. This peering must
+            be in ACTIVE state.
+        producer_network (str):
+            Output only. The URI of the Producer VPC.
+        exclude_export_ranges (MutableSequence[str]):
+            Optional. IP ranges encompassing the subnets
+            to be excluded from peering.
+        include_export_ranges (MutableSequence[str]):
+            Optional. IP ranges allowed to be included
+            from peering.
+    """
+
+    network: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    service_consumer_vpc_spoke: str = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    peering: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    producer_network: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    exclude_export_ranges: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+    include_export_ranges: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=4,
     )
 
 
@@ -1899,6 +2404,97 @@ class NextHopVpcNetwork(proto.Message):
     uri: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+
+
+class NextHopVPNTunnel(proto.Message):
+    r"""A route next hop that leads to a VPN tunnel resource.
+
+    Attributes:
+        uri (str):
+            The URI of the VPN tunnel resource.
+        vpc_network (str):
+            The VPC network where this VPN tunnel is
+            located.
+        site_to_site_data_transfer (bool):
+            Indicates whether site-to-site data transfer is allowed for
+            this VPN tunnel resource. Data transfer is available only in
+            `supported
+            locations <https://cloud.google.com/network-connectivity/docs/network-connectivity-center/concepts/locations>`__.
+    """
+
+    uri: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    vpc_network: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    site_to_site_data_transfer: bool = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
+
+
+class NextHopRouterApplianceInstance(proto.Message):
+    r"""A route next hop that leads to a Router appliance instance.
+
+    Attributes:
+        uri (str):
+            The URI of the Router appliance instance.
+        vpc_network (str):
+            The VPC network where this VM is located.
+        site_to_site_data_transfer (bool):
+            Indicates whether site-to-site data transfer is allowed for
+            this Router appliance instance resource. Data transfer is
+            available only in `supported
+            locations <https://cloud.google.com/network-connectivity/docs/network-connectivity-center/concepts/locations>`__.
+    """
+
+    uri: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    vpc_network: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    site_to_site_data_transfer: bool = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
+
+
+class NextHopInterconnectAttachment(proto.Message):
+    r"""A route next hop that leads to an interconnect attachment
+    resource.
+
+    Attributes:
+        uri (str):
+            The URI of the interconnect attachment
+            resource.
+        vpc_network (str):
+            The VPC network where this interconnect
+            attachment is located.
+        site_to_site_data_transfer (bool):
+            Indicates whether site-to-site data transfer is allowed for
+            this interconnect attachment resource. Data transfer is
+            available only in `supported
+            locations <https://cloud.google.com/network-connectivity/docs/network-connectivity-center/concepts/locations>`__.
+    """
+
+    uri: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    vpc_network: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    site_to_site_data_transfer: bool = proto.Field(
+        proto.BOOL,
+        number=3,
     )
 
 
@@ -2026,6 +2622,61 @@ class GetGroupRequest(proto.Message):
     name: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+
+
+class UpdateGroupRequest(proto.Message):
+    r"""Request for
+    [HubService.UpdateGroup][google.cloud.networkconnectivity.v1.HubService.UpdateGroup]
+    method.
+
+    Attributes:
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Optional. In the case of an update to an existing group,
+            field mask is used to specify the fields to be overwritten.
+            The fields specified in the update_mask are relative to the
+            resource, not the full request. A field is overwritten if it
+            is in the mask. If the user does not provide a mask, then
+            all fields are overwritten.
+        group (google.cloud.networkconnectivity_v1.types.Group):
+            Required. The state that the group should be
+            in after the update.
+        request_id (str):
+            Optional. A request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server knows to ignore
+            the request if it has already been completed.
+            The server guarantees that a request doesn't
+            result in creation of duplicate commitments for
+            at least 60 minutes.
+
+            For example, consider a situation where you make
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server can check to see whether the
+            original operation was received. If it was, the
+            server ignores the second request. This behavior
+            prevents clients from mistakenly creating
+            duplicate commitments.
+
+            The request ID must be a valid UUID, with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
+    """
+
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=field_mask_pb2.FieldMask,
+    )
+    group: "Group" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="Group",
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=3,
     )
 
 

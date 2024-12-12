@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -40,6 +40,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -116,8 +124,11 @@ class MapsPlatformDatasetsRestInterceptor:
     def pre_create_dataset(
         self,
         request: maps_platform_datasets.CreateDatasetRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[maps_platform_datasets.CreateDatasetRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        maps_platform_datasets.CreateDatasetRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for create_dataset
 
         Override in a subclass to manipulate the request or metadata
@@ -137,8 +148,11 @@ class MapsPlatformDatasetsRestInterceptor:
     def pre_delete_dataset(
         self,
         request: maps_platform_datasets.DeleteDatasetRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[maps_platform_datasets.DeleteDatasetRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        maps_platform_datasets.DeleteDatasetRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for delete_dataset
 
         Override in a subclass to manipulate the request or metadata
@@ -149,9 +163,10 @@ class MapsPlatformDatasetsRestInterceptor:
     def pre_fetch_dataset_errors(
         self,
         request: maps_platform_datasets.FetchDatasetErrorsRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        maps_platform_datasets.FetchDatasetErrorsRequest, Sequence[Tuple[str, str]]
+        maps_platform_datasets.FetchDatasetErrorsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for fetch_dataset_errors
 
@@ -174,8 +189,11 @@ class MapsPlatformDatasetsRestInterceptor:
     def pre_get_dataset(
         self,
         request: maps_platform_datasets.GetDatasetRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[maps_platform_datasets.GetDatasetRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        maps_platform_datasets.GetDatasetRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for get_dataset
 
         Override in a subclass to manipulate the request or metadata
@@ -195,8 +213,11 @@ class MapsPlatformDatasetsRestInterceptor:
     def pre_list_datasets(
         self,
         request: maps_platform_datasets.ListDatasetsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[maps_platform_datasets.ListDatasetsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        maps_platform_datasets.ListDatasetsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for list_datasets
 
         Override in a subclass to manipulate the request or metadata
@@ -218,9 +239,10 @@ class MapsPlatformDatasetsRestInterceptor:
     def pre_update_dataset_metadata(
         self,
         request: maps_platform_datasets.UpdateDatasetMetadataRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        maps_platform_datasets.UpdateDatasetMetadataRequest, Sequence[Tuple[str, str]]
+        maps_platform_datasets.UpdateDatasetMetadataRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for update_dataset_metadata
 
@@ -363,7 +385,7 @@ class MapsPlatformDatasetsRestTransport(_BaseMapsPlatformDatasetsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gmm_dataset.Dataset:
             r"""Call the create dataset method over HTTP.
 
@@ -373,8 +395,10 @@ class MapsPlatformDatasetsRestTransport(_BaseMapsPlatformDatasetsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.gmm_dataset.Dataset:
@@ -386,6 +410,7 @@ class MapsPlatformDatasetsRestTransport(_BaseMapsPlatformDatasetsRestTransport):
             http_options = (
                 _BaseMapsPlatformDatasetsRestTransport._BaseCreateDataset._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_dataset(request, metadata)
             transcoded_request = _BaseMapsPlatformDatasetsRestTransport._BaseCreateDataset._get_transcoded_request(
                 http_options, request
@@ -399,6 +424,33 @@ class MapsPlatformDatasetsRestTransport(_BaseMapsPlatformDatasetsRestTransport):
             query_params = _BaseMapsPlatformDatasetsRestTransport._BaseCreateDataset._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.maps.mapsplatformdatasets_v1.MapsPlatformDatasetsClient.CreateDataset",
+                    extra={
+                        "serviceName": "google.maps.mapsplatformdatasets.v1.MapsPlatformDatasets",
+                        "rpcName": "CreateDataset",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = MapsPlatformDatasetsRestTransport._CreateDataset._get_response(
@@ -421,7 +473,29 @@ class MapsPlatformDatasetsRestTransport(_BaseMapsPlatformDatasetsRestTransport):
             pb_resp = gmm_dataset.Dataset.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_dataset(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gmm_dataset.Dataset.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.maps.mapsplatformdatasets_v1.MapsPlatformDatasetsClient.create_dataset",
+                    extra={
+                        "serviceName": "google.maps.mapsplatformdatasets.v1.MapsPlatformDatasets",
+                        "rpcName": "CreateDataset",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteDataset(
@@ -459,7 +533,7 @@ class MapsPlatformDatasetsRestTransport(_BaseMapsPlatformDatasetsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete dataset method over HTTP.
 
@@ -469,13 +543,16 @@ class MapsPlatformDatasetsRestTransport(_BaseMapsPlatformDatasetsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseMapsPlatformDatasetsRestTransport._BaseDeleteDataset._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_dataset(request, metadata)
             transcoded_request = _BaseMapsPlatformDatasetsRestTransport._BaseDeleteDataset._get_transcoded_request(
                 http_options, request
@@ -485,6 +562,33 @@ class MapsPlatformDatasetsRestTransport(_BaseMapsPlatformDatasetsRestTransport):
             query_params = _BaseMapsPlatformDatasetsRestTransport._BaseDeleteDataset._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.maps.mapsplatformdatasets_v1.MapsPlatformDatasetsClient.DeleteDataset",
+                    extra={
+                        "serviceName": "google.maps.mapsplatformdatasets.v1.MapsPlatformDatasets",
+                        "rpcName": "DeleteDataset",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = MapsPlatformDatasetsRestTransport._DeleteDataset._get_response(
@@ -536,7 +640,7 @@ class MapsPlatformDatasetsRestTransport(_BaseMapsPlatformDatasetsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> maps_platform_datasets.FetchDatasetErrorsResponse:
             r"""Call the fetch dataset errors method over HTTP.
 
@@ -547,8 +651,10 @@ class MapsPlatformDatasetsRestTransport(_BaseMapsPlatformDatasetsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.maps_platform_datasets.FetchDatasetErrorsResponse:
@@ -560,6 +666,7 @@ class MapsPlatformDatasetsRestTransport(_BaseMapsPlatformDatasetsRestTransport):
             http_options = (
                 _BaseMapsPlatformDatasetsRestTransport._BaseFetchDatasetErrors._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_fetch_dataset_errors(
                 request, metadata
             )
@@ -571,6 +678,33 @@ class MapsPlatformDatasetsRestTransport(_BaseMapsPlatformDatasetsRestTransport):
             query_params = _BaseMapsPlatformDatasetsRestTransport._BaseFetchDatasetErrors._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.maps.mapsplatformdatasets_v1.MapsPlatformDatasetsClient.FetchDatasetErrors",
+                    extra={
+                        "serviceName": "google.maps.mapsplatformdatasets.v1.MapsPlatformDatasets",
+                        "rpcName": "FetchDatasetErrors",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -594,7 +728,33 @@ class MapsPlatformDatasetsRestTransport(_BaseMapsPlatformDatasetsRestTransport):
             pb_resp = maps_platform_datasets.FetchDatasetErrorsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_fetch_dataset_errors(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        maps_platform_datasets.FetchDatasetErrorsResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.maps.mapsplatformdatasets_v1.MapsPlatformDatasetsClient.fetch_dataset_errors",
+                    extra={
+                        "serviceName": "google.maps.mapsplatformdatasets.v1.MapsPlatformDatasets",
+                        "rpcName": "FetchDatasetErrors",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetDataset(
@@ -632,7 +792,7 @@ class MapsPlatformDatasetsRestTransport(_BaseMapsPlatformDatasetsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> dataset.Dataset:
             r"""Call the get dataset method over HTTP.
 
@@ -642,8 +802,10 @@ class MapsPlatformDatasetsRestTransport(_BaseMapsPlatformDatasetsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.dataset.Dataset:
@@ -655,6 +817,7 @@ class MapsPlatformDatasetsRestTransport(_BaseMapsPlatformDatasetsRestTransport):
             http_options = (
                 _BaseMapsPlatformDatasetsRestTransport._BaseGetDataset._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_dataset(request, metadata)
             transcoded_request = _BaseMapsPlatformDatasetsRestTransport._BaseGetDataset._get_transcoded_request(
                 http_options, request
@@ -664,6 +827,33 @@ class MapsPlatformDatasetsRestTransport(_BaseMapsPlatformDatasetsRestTransport):
             query_params = _BaseMapsPlatformDatasetsRestTransport._BaseGetDataset._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.maps.mapsplatformdatasets_v1.MapsPlatformDatasetsClient.GetDataset",
+                    extra={
+                        "serviceName": "google.maps.mapsplatformdatasets.v1.MapsPlatformDatasets",
+                        "rpcName": "GetDataset",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = MapsPlatformDatasetsRestTransport._GetDataset._get_response(
@@ -685,7 +875,29 @@ class MapsPlatformDatasetsRestTransport(_BaseMapsPlatformDatasetsRestTransport):
             pb_resp = dataset.Dataset.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_dataset(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = dataset.Dataset.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.maps.mapsplatformdatasets_v1.MapsPlatformDatasetsClient.get_dataset",
+                    extra={
+                        "serviceName": "google.maps.mapsplatformdatasets.v1.MapsPlatformDatasets",
+                        "rpcName": "GetDataset",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListDatasets(
@@ -723,7 +935,7 @@ class MapsPlatformDatasetsRestTransport(_BaseMapsPlatformDatasetsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> maps_platform_datasets.ListDatasetsResponse:
             r"""Call the list datasets method over HTTP.
 
@@ -734,8 +946,10 @@ class MapsPlatformDatasetsRestTransport(_BaseMapsPlatformDatasetsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.maps_platform_datasets.ListDatasetsResponse:
@@ -745,6 +959,7 @@ class MapsPlatformDatasetsRestTransport(_BaseMapsPlatformDatasetsRestTransport):
             http_options = (
                 _BaseMapsPlatformDatasetsRestTransport._BaseListDatasets._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_datasets(request, metadata)
             transcoded_request = _BaseMapsPlatformDatasetsRestTransport._BaseListDatasets._get_transcoded_request(
                 http_options, request
@@ -754,6 +969,33 @@ class MapsPlatformDatasetsRestTransport(_BaseMapsPlatformDatasetsRestTransport):
             query_params = _BaseMapsPlatformDatasetsRestTransport._BaseListDatasets._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.maps.mapsplatformdatasets_v1.MapsPlatformDatasetsClient.ListDatasets",
+                    extra={
+                        "serviceName": "google.maps.mapsplatformdatasets.v1.MapsPlatformDatasets",
+                        "rpcName": "ListDatasets",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = MapsPlatformDatasetsRestTransport._ListDatasets._get_response(
@@ -775,7 +1017,31 @@ class MapsPlatformDatasetsRestTransport(_BaseMapsPlatformDatasetsRestTransport):
             pb_resp = maps_platform_datasets.ListDatasetsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_datasets(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        maps_platform_datasets.ListDatasetsResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.maps.mapsplatformdatasets_v1.MapsPlatformDatasetsClient.list_datasets",
+                    extra={
+                        "serviceName": "google.maps.mapsplatformdatasets.v1.MapsPlatformDatasets",
+                        "rpcName": "ListDatasets",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateDatasetMetadata(
@@ -814,7 +1080,7 @@ class MapsPlatformDatasetsRestTransport(_BaseMapsPlatformDatasetsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gmm_dataset.Dataset:
             r"""Call the update dataset metadata method over HTTP.
 
@@ -825,8 +1091,10 @@ class MapsPlatformDatasetsRestTransport(_BaseMapsPlatformDatasetsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.gmm_dataset.Dataset:
@@ -838,6 +1106,7 @@ class MapsPlatformDatasetsRestTransport(_BaseMapsPlatformDatasetsRestTransport):
             http_options = (
                 _BaseMapsPlatformDatasetsRestTransport._BaseUpdateDatasetMetadata._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_dataset_metadata(
                 request, metadata
             )
@@ -853,6 +1122,33 @@ class MapsPlatformDatasetsRestTransport(_BaseMapsPlatformDatasetsRestTransport):
             query_params = _BaseMapsPlatformDatasetsRestTransport._BaseUpdateDatasetMetadata._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.maps.mapsplatformdatasets_v1.MapsPlatformDatasetsClient.UpdateDatasetMetadata",
+                    extra={
+                        "serviceName": "google.maps.mapsplatformdatasets.v1.MapsPlatformDatasets",
+                        "rpcName": "UpdateDatasetMetadata",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -877,7 +1173,29 @@ class MapsPlatformDatasetsRestTransport(_BaseMapsPlatformDatasetsRestTransport):
             pb_resp = gmm_dataset.Dataset.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_dataset_metadata(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gmm_dataset.Dataset.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.maps.mapsplatformdatasets_v1.MapsPlatformDatasetsClient.update_dataset_metadata",
+                    extra={
+                        "serviceName": "google.maps.mapsplatformdatasets.v1.MapsPlatformDatasets",
+                        "rpcName": "UpdateDatasetMetadata",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property

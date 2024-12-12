@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -41,6 +41,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -185,8 +193,11 @@ class RepositoryManagerRestInterceptor:
     def pre_batch_create_repositories(
         self,
         request: repositories.BatchCreateRepositoriesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[repositories.BatchCreateRepositoriesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        repositories.BatchCreateRepositoriesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for batch_create_repositories
 
         Override in a subclass to manipulate the request or metadata
@@ -208,8 +219,10 @@ class RepositoryManagerRestInterceptor:
     def pre_create_connection(
         self,
         request: repositories.CreateConnectionRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[repositories.CreateConnectionRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        repositories.CreateConnectionRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_connection
 
         Override in a subclass to manipulate the request or metadata
@@ -231,8 +244,10 @@ class RepositoryManagerRestInterceptor:
     def pre_create_repository(
         self,
         request: repositories.CreateRepositoryRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[repositories.CreateRepositoryRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        repositories.CreateRepositoryRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_repository
 
         Override in a subclass to manipulate the request or metadata
@@ -254,8 +269,10 @@ class RepositoryManagerRestInterceptor:
     def pre_delete_connection(
         self,
         request: repositories.DeleteConnectionRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[repositories.DeleteConnectionRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        repositories.DeleteConnectionRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_connection
 
         Override in a subclass to manipulate the request or metadata
@@ -277,8 +294,10 @@ class RepositoryManagerRestInterceptor:
     def pre_delete_repository(
         self,
         request: repositories.DeleteRepositoryRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[repositories.DeleteRepositoryRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        repositories.DeleteRepositoryRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_repository
 
         Override in a subclass to manipulate the request or metadata
@@ -300,8 +319,10 @@ class RepositoryManagerRestInterceptor:
     def pre_fetch_git_refs(
         self,
         request: repositories.FetchGitRefsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[repositories.FetchGitRefsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        repositories.FetchGitRefsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for fetch_git_refs
 
         Override in a subclass to manipulate the request or metadata
@@ -323,9 +344,10 @@ class RepositoryManagerRestInterceptor:
     def pre_fetch_linkable_repositories(
         self,
         request: repositories.FetchLinkableRepositoriesRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        repositories.FetchLinkableRepositoriesRequest, Sequence[Tuple[str, str]]
+        repositories.FetchLinkableRepositoriesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for fetch_linkable_repositories
 
@@ -348,8 +370,10 @@ class RepositoryManagerRestInterceptor:
     def pre_fetch_read_token(
         self,
         request: repositories.FetchReadTokenRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[repositories.FetchReadTokenRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        repositories.FetchReadTokenRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for fetch_read_token
 
         Override in a subclass to manipulate the request or metadata
@@ -371,8 +395,10 @@ class RepositoryManagerRestInterceptor:
     def pre_fetch_read_write_token(
         self,
         request: repositories.FetchReadWriteTokenRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[repositories.FetchReadWriteTokenRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        repositories.FetchReadWriteTokenRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for fetch_read_write_token
 
         Override in a subclass to manipulate the request or metadata
@@ -394,8 +420,10 @@ class RepositoryManagerRestInterceptor:
     def pre_get_connection(
         self,
         request: repositories.GetConnectionRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[repositories.GetConnectionRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        repositories.GetConnectionRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_connection
 
         Override in a subclass to manipulate the request or metadata
@@ -417,8 +445,10 @@ class RepositoryManagerRestInterceptor:
     def pre_get_repository(
         self,
         request: repositories.GetRepositoryRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[repositories.GetRepositoryRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        repositories.GetRepositoryRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_repository
 
         Override in a subclass to manipulate the request or metadata
@@ -440,8 +470,10 @@ class RepositoryManagerRestInterceptor:
     def pre_list_connections(
         self,
         request: repositories.ListConnectionsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[repositories.ListConnectionsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        repositories.ListConnectionsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_connections
 
         Override in a subclass to manipulate the request or metadata
@@ -463,8 +495,10 @@ class RepositoryManagerRestInterceptor:
     def pre_list_repositories(
         self,
         request: repositories.ListRepositoriesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[repositories.ListRepositoriesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        repositories.ListRepositoriesRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_repositories
 
         Override in a subclass to manipulate the request or metadata
@@ -486,8 +520,10 @@ class RepositoryManagerRestInterceptor:
     def pre_update_connection(
         self,
         request: repositories.UpdateConnectionRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[repositories.UpdateConnectionRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        repositories.UpdateConnectionRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_connection
 
         Override in a subclass to manipulate the request or metadata
@@ -509,8 +545,10 @@ class RepositoryManagerRestInterceptor:
     def pre_get_iam_policy(
         self,
         request: iam_policy_pb2.GetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -530,8 +568,10 @@ class RepositoryManagerRestInterceptor:
     def pre_set_iam_policy(
         self,
         request: iam_policy_pb2.SetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -551,8 +591,11 @@ class RepositoryManagerRestInterceptor:
     def pre_test_iam_permissions(
         self,
         request: iam_policy_pb2.TestIamPermissionsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.TestIamPermissionsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -574,8 +617,10 @@ class RepositoryManagerRestInterceptor:
     def pre_cancel_operation(
         self,
         request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -595,8 +640,10 @@ class RepositoryManagerRestInterceptor:
     def pre_get_operation(
         self,
         request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -780,7 +827,7 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the batch create repositories method over HTTP.
 
@@ -791,8 +838,10 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -805,6 +854,7 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
             http_options = (
                 _BaseRepositoryManagerRestTransport._BaseBatchCreateRepositories._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_batch_create_repositories(
                 request, metadata
             )
@@ -820,6 +870,33 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
             query_params = _BaseRepositoryManagerRestTransport._BaseBatchCreateRepositories._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.devtools.cloudbuild_v2.RepositoryManagerClient.BatchCreateRepositories",
+                    extra={
+                        "serviceName": "google.devtools.cloudbuild.v2.RepositoryManager",
+                        "rpcName": "BatchCreateRepositories",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -842,7 +919,29 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_batch_create_repositories(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.devtools.cloudbuild_v2.RepositoryManagerClient.batch_create_repositories",
+                    extra={
+                        "serviceName": "google.devtools.cloudbuild.v2.RepositoryManager",
+                        "rpcName": "BatchCreateRepositories",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateConnection(
@@ -881,7 +980,7 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create connection method over HTTP.
 
@@ -891,8 +990,10 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -905,6 +1006,7 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
             http_options = (
                 _BaseRepositoryManagerRestTransport._BaseCreateConnection._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_connection(
                 request, metadata
             )
@@ -920,6 +1022,33 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
             query_params = _BaseRepositoryManagerRestTransport._BaseCreateConnection._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.devtools.cloudbuild_v2.RepositoryManagerClient.CreateConnection",
+                    extra={
+                        "serviceName": "google.devtools.cloudbuild.v2.RepositoryManager",
+                        "rpcName": "CreateConnection",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RepositoryManagerRestTransport._CreateConnection._get_response(
@@ -940,7 +1069,29 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_connection(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.devtools.cloudbuild_v2.RepositoryManagerClient.create_connection",
+                    extra={
+                        "serviceName": "google.devtools.cloudbuild.v2.RepositoryManager",
+                        "rpcName": "CreateConnection",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateRepository(
@@ -979,7 +1130,7 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create repository method over HTTP.
 
@@ -989,8 +1140,10 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1003,6 +1156,7 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
             http_options = (
                 _BaseRepositoryManagerRestTransport._BaseCreateRepository._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_repository(
                 request, metadata
             )
@@ -1018,6 +1172,33 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
             query_params = _BaseRepositoryManagerRestTransport._BaseCreateRepository._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.devtools.cloudbuild_v2.RepositoryManagerClient.CreateRepository",
+                    extra={
+                        "serviceName": "google.devtools.cloudbuild.v2.RepositoryManager",
+                        "rpcName": "CreateRepository",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RepositoryManagerRestTransport._CreateRepository._get_response(
@@ -1038,7 +1219,29 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_repository(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.devtools.cloudbuild_v2.RepositoryManagerClient.create_repository",
+                    extra={
+                        "serviceName": "google.devtools.cloudbuild.v2.RepositoryManager",
+                        "rpcName": "CreateRepository",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteConnection(
@@ -1076,7 +1279,7 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete connection method over HTTP.
 
@@ -1086,8 +1289,10 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1100,6 +1305,7 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
             http_options = (
                 _BaseRepositoryManagerRestTransport._BaseDeleteConnection._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_connection(
                 request, metadata
             )
@@ -1111,6 +1317,33 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
             query_params = _BaseRepositoryManagerRestTransport._BaseDeleteConnection._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.devtools.cloudbuild_v2.RepositoryManagerClient.DeleteConnection",
+                    extra={
+                        "serviceName": "google.devtools.cloudbuild.v2.RepositoryManager",
+                        "rpcName": "DeleteConnection",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RepositoryManagerRestTransport._DeleteConnection._get_response(
@@ -1130,7 +1363,29 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_connection(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.devtools.cloudbuild_v2.RepositoryManagerClient.delete_connection",
+                    extra={
+                        "serviceName": "google.devtools.cloudbuild.v2.RepositoryManager",
+                        "rpcName": "DeleteConnection",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteRepository(
@@ -1168,7 +1423,7 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete repository method over HTTP.
 
@@ -1178,8 +1433,10 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1192,6 +1449,7 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
             http_options = (
                 _BaseRepositoryManagerRestTransport._BaseDeleteRepository._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_repository(
                 request, metadata
             )
@@ -1203,6 +1461,33 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
             query_params = _BaseRepositoryManagerRestTransport._BaseDeleteRepository._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.devtools.cloudbuild_v2.RepositoryManagerClient.DeleteRepository",
+                    extra={
+                        "serviceName": "google.devtools.cloudbuild.v2.RepositoryManager",
+                        "rpcName": "DeleteRepository",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RepositoryManagerRestTransport._DeleteRepository._get_response(
@@ -1222,7 +1507,29 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_repository(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.devtools.cloudbuild_v2.RepositoryManagerClient.delete_repository",
+                    extra={
+                        "serviceName": "google.devtools.cloudbuild.v2.RepositoryManager",
+                        "rpcName": "DeleteRepository",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _FetchGitRefs(
@@ -1259,7 +1566,7 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> repositories.FetchGitRefsResponse:
             r"""Call the fetch git refs method over HTTP.
 
@@ -1269,8 +1576,10 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.repositories.FetchGitRefsResponse:
@@ -1280,6 +1589,7 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
             http_options = (
                 _BaseRepositoryManagerRestTransport._BaseFetchGitRefs._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_fetch_git_refs(request, metadata)
             transcoded_request = _BaseRepositoryManagerRestTransport._BaseFetchGitRefs._get_transcoded_request(
                 http_options, request
@@ -1289,6 +1599,33 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
             query_params = _BaseRepositoryManagerRestTransport._BaseFetchGitRefs._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.devtools.cloudbuild_v2.RepositoryManagerClient.FetchGitRefs",
+                    extra={
+                        "serviceName": "google.devtools.cloudbuild.v2.RepositoryManager",
+                        "rpcName": "FetchGitRefs",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RepositoryManagerRestTransport._FetchGitRefs._get_response(
@@ -1310,7 +1647,31 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
             pb_resp = repositories.FetchGitRefsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_fetch_git_refs(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = repositories.FetchGitRefsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.devtools.cloudbuild_v2.RepositoryManagerClient.fetch_git_refs",
+                    extra={
+                        "serviceName": "google.devtools.cloudbuild.v2.RepositoryManager",
+                        "rpcName": "FetchGitRefs",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _FetchLinkableRepositories(
@@ -1348,7 +1709,7 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> repositories.FetchLinkableRepositoriesResponse:
             r"""Call the fetch linkable
             repositories method over HTTP.
@@ -1360,8 +1721,10 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.repositories.FetchLinkableRepositoriesResponse:
@@ -1373,6 +1736,7 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
             http_options = (
                 _BaseRepositoryManagerRestTransport._BaseFetchLinkableRepositories._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_fetch_linkable_repositories(
                 request, metadata
             )
@@ -1384,6 +1748,33 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
             query_params = _BaseRepositoryManagerRestTransport._BaseFetchLinkableRepositories._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.devtools.cloudbuild_v2.RepositoryManagerClient.FetchLinkableRepositories",
+                    extra={
+                        "serviceName": "google.devtools.cloudbuild.v2.RepositoryManager",
+                        "rpcName": "FetchLinkableRepositories",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1407,7 +1798,31 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
             pb_resp = repositories.FetchLinkableRepositoriesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_fetch_linkable_repositories(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        repositories.FetchLinkableRepositoriesResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.devtools.cloudbuild_v2.RepositoryManagerClient.fetch_linkable_repositories",
+                    extra={
+                        "serviceName": "google.devtools.cloudbuild.v2.RepositoryManager",
+                        "rpcName": "FetchLinkableRepositories",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _FetchReadToken(
@@ -1446,7 +1861,7 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> repositories.FetchReadTokenResponse:
             r"""Call the fetch read token method over HTTP.
 
@@ -1456,8 +1871,10 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.repositories.FetchReadTokenResponse:
@@ -1469,6 +1886,7 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
             http_options = (
                 _BaseRepositoryManagerRestTransport._BaseFetchReadToken._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_fetch_read_token(
                 request, metadata
             )
@@ -1484,6 +1902,33 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
             query_params = _BaseRepositoryManagerRestTransport._BaseFetchReadToken._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.devtools.cloudbuild_v2.RepositoryManagerClient.FetchReadToken",
+                    extra={
+                        "serviceName": "google.devtools.cloudbuild.v2.RepositoryManager",
+                        "rpcName": "FetchReadToken",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RepositoryManagerRestTransport._FetchReadToken._get_response(
@@ -1506,7 +1951,31 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
             pb_resp = repositories.FetchReadTokenResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_fetch_read_token(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = repositories.FetchReadTokenResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.devtools.cloudbuild_v2.RepositoryManagerClient.fetch_read_token",
+                    extra={
+                        "serviceName": "google.devtools.cloudbuild.v2.RepositoryManager",
+                        "rpcName": "FetchReadToken",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _FetchReadWriteToken(
@@ -1545,7 +2014,7 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> repositories.FetchReadWriteTokenResponse:
             r"""Call the fetch read write token method over HTTP.
 
@@ -1556,8 +2025,10 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.repositories.FetchReadWriteTokenResponse:
@@ -1569,6 +2040,7 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
             http_options = (
                 _BaseRepositoryManagerRestTransport._BaseFetchReadWriteToken._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_fetch_read_write_token(
                 request, metadata
             )
@@ -1584,6 +2056,33 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
             query_params = _BaseRepositoryManagerRestTransport._BaseFetchReadWriteToken._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.devtools.cloudbuild_v2.RepositoryManagerClient.FetchReadWriteToken",
+                    extra={
+                        "serviceName": "google.devtools.cloudbuild.v2.RepositoryManager",
+                        "rpcName": "FetchReadWriteToken",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1608,7 +2107,31 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
             pb_resp = repositories.FetchReadWriteTokenResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_fetch_read_write_token(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = repositories.FetchReadWriteTokenResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.devtools.cloudbuild_v2.RepositoryManagerClient.fetch_read_write_token",
+                    extra={
+                        "serviceName": "google.devtools.cloudbuild.v2.RepositoryManager",
+                        "rpcName": "FetchReadWriteToken",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetConnection(
@@ -1646,7 +2169,7 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> repositories.Connection:
             r"""Call the get connection method over HTTP.
 
@@ -1657,8 +2180,10 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.repositories.Connection:
@@ -1671,6 +2196,7 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
             http_options = (
                 _BaseRepositoryManagerRestTransport._BaseGetConnection._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_connection(request, metadata)
             transcoded_request = _BaseRepositoryManagerRestTransport._BaseGetConnection._get_transcoded_request(
                 http_options, request
@@ -1680,6 +2206,33 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
             query_params = _BaseRepositoryManagerRestTransport._BaseGetConnection._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.devtools.cloudbuild_v2.RepositoryManagerClient.GetConnection",
+                    extra={
+                        "serviceName": "google.devtools.cloudbuild.v2.RepositoryManager",
+                        "rpcName": "GetConnection",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RepositoryManagerRestTransport._GetConnection._get_response(
@@ -1701,7 +2254,29 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
             pb_resp = repositories.Connection.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_connection(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = repositories.Connection.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.devtools.cloudbuild_v2.RepositoryManagerClient.get_connection",
+                    extra={
+                        "serviceName": "google.devtools.cloudbuild.v2.RepositoryManager",
+                        "rpcName": "GetConnection",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetRepository(
@@ -1739,7 +2314,7 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> repositories.Repository:
             r"""Call the get repository method over HTTP.
 
@@ -1750,8 +2325,10 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.repositories.Repository:
@@ -1763,6 +2340,7 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
             http_options = (
                 _BaseRepositoryManagerRestTransport._BaseGetRepository._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_repository(request, metadata)
             transcoded_request = _BaseRepositoryManagerRestTransport._BaseGetRepository._get_transcoded_request(
                 http_options, request
@@ -1772,6 +2350,33 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
             query_params = _BaseRepositoryManagerRestTransport._BaseGetRepository._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.devtools.cloudbuild_v2.RepositoryManagerClient.GetRepository",
+                    extra={
+                        "serviceName": "google.devtools.cloudbuild.v2.RepositoryManager",
+                        "rpcName": "GetRepository",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RepositoryManagerRestTransport._GetRepository._get_response(
@@ -1793,7 +2398,29 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
             pb_resp = repositories.Repository.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_repository(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = repositories.Repository.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.devtools.cloudbuild_v2.RepositoryManagerClient.get_repository",
+                    extra={
+                        "serviceName": "google.devtools.cloudbuild.v2.RepositoryManager",
+                        "rpcName": "GetRepository",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListConnections(
@@ -1831,7 +2458,7 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> repositories.ListConnectionsResponse:
             r"""Call the list connections method over HTTP.
 
@@ -1842,8 +2469,10 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.repositories.ListConnectionsResponse:
@@ -1855,6 +2484,7 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
             http_options = (
                 _BaseRepositoryManagerRestTransport._BaseListConnections._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_connections(
                 request, metadata
             )
@@ -1866,6 +2496,33 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
             query_params = _BaseRepositoryManagerRestTransport._BaseListConnections._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.devtools.cloudbuild_v2.RepositoryManagerClient.ListConnections",
+                    extra={
+                        "serviceName": "google.devtools.cloudbuild.v2.RepositoryManager",
+                        "rpcName": "ListConnections",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RepositoryManagerRestTransport._ListConnections._get_response(
@@ -1887,7 +2544,31 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
             pb_resp = repositories.ListConnectionsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_connections(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = repositories.ListConnectionsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.devtools.cloudbuild_v2.RepositoryManagerClient.list_connections",
+                    extra={
+                        "serviceName": "google.devtools.cloudbuild.v2.RepositoryManager",
+                        "rpcName": "ListConnections",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListRepositories(
@@ -1925,7 +2606,7 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> repositories.ListRepositoriesResponse:
             r"""Call the list repositories method over HTTP.
 
@@ -1936,8 +2617,10 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.repositories.ListRepositoriesResponse:
@@ -1949,6 +2632,7 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
             http_options = (
                 _BaseRepositoryManagerRestTransport._BaseListRepositories._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_repositories(
                 request, metadata
             )
@@ -1960,6 +2644,33 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
             query_params = _BaseRepositoryManagerRestTransport._BaseListRepositories._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.devtools.cloudbuild_v2.RepositoryManagerClient.ListRepositories",
+                    extra={
+                        "serviceName": "google.devtools.cloudbuild.v2.RepositoryManager",
+                        "rpcName": "ListRepositories",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RepositoryManagerRestTransport._ListRepositories._get_response(
@@ -1981,7 +2692,31 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
             pb_resp = repositories.ListRepositoriesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_repositories(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = repositories.ListRepositoriesResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.devtools.cloudbuild_v2.RepositoryManagerClient.list_repositories",
+                    extra={
+                        "serviceName": "google.devtools.cloudbuild.v2.RepositoryManager",
+                        "rpcName": "ListRepositories",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateConnection(
@@ -2020,7 +2755,7 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update connection method over HTTP.
 
@@ -2030,8 +2765,10 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2044,6 +2781,7 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
             http_options = (
                 _BaseRepositoryManagerRestTransport._BaseUpdateConnection._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_connection(
                 request, metadata
             )
@@ -2059,6 +2797,33 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
             query_params = _BaseRepositoryManagerRestTransport._BaseUpdateConnection._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.devtools.cloudbuild_v2.RepositoryManagerClient.UpdateConnection",
+                    extra={
+                        "serviceName": "google.devtools.cloudbuild.v2.RepositoryManager",
+                        "rpcName": "UpdateConnection",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RepositoryManagerRestTransport._UpdateConnection._get_response(
@@ -2079,7 +2844,29 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_connection(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.devtools.cloudbuild_v2.RepositoryManagerClient.update_connection",
+                    extra={
+                        "serviceName": "google.devtools.cloudbuild.v2.RepositoryManager",
+                        "rpcName": "UpdateConnection",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -2248,7 +3035,7 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> policy_pb2.Policy:
             r"""Call the get iam policy method over HTTP.
 
@@ -2258,8 +3045,10 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 policy_pb2.Policy: Response from GetIamPolicy method.
@@ -2268,6 +3057,7 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
             http_options = (
                 _BaseRepositoryManagerRestTransport._BaseGetIamPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
             transcoded_request = _BaseRepositoryManagerRestTransport._BaseGetIamPolicy._get_transcoded_request(
                 http_options, request
@@ -2277,6 +3067,33 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
             query_params = _BaseRepositoryManagerRestTransport._BaseGetIamPolicy._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.devtools.cloudbuild_v2.RepositoryManagerClient.GetIamPolicy",
+                    extra={
+                        "serviceName": "google.devtools.cloudbuild.v2.RepositoryManager",
+                        "rpcName": "GetIamPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RepositoryManagerRestTransport._GetIamPolicy._get_response(
@@ -2297,6 +3114,27 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_iam_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.devtools.cloudbuild_v2.RepositoryManagerAsyncClient.GetIamPolicy",
+                    extra={
+                        "serviceName": "google.devtools.cloudbuild.v2.RepositoryManager",
+                        "rpcName": "GetIamPolicy",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -2338,7 +3176,7 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> policy_pb2.Policy:
             r"""Call the set iam policy method over HTTP.
 
@@ -2348,8 +3186,10 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 policy_pb2.Policy: Response from SetIamPolicy method.
@@ -2358,6 +3198,7 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
             http_options = (
                 _BaseRepositoryManagerRestTransport._BaseSetIamPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
             transcoded_request = _BaseRepositoryManagerRestTransport._BaseSetIamPolicy._get_transcoded_request(
                 http_options, request
@@ -2371,6 +3212,33 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
             query_params = _BaseRepositoryManagerRestTransport._BaseSetIamPolicy._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.devtools.cloudbuild_v2.RepositoryManagerClient.SetIamPolicy",
+                    extra={
+                        "serviceName": "google.devtools.cloudbuild.v2.RepositoryManager",
+                        "rpcName": "SetIamPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RepositoryManagerRestTransport._SetIamPolicy._get_response(
@@ -2392,6 +3260,27 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_set_iam_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.devtools.cloudbuild_v2.RepositoryManagerAsyncClient.SetIamPolicy",
+                    extra={
+                        "serviceName": "google.devtools.cloudbuild.v2.RepositoryManager",
+                        "rpcName": "SetIamPolicy",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -2434,7 +3323,7 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> iam_policy_pb2.TestIamPermissionsResponse:
             r"""Call the test iam permissions method over HTTP.
 
@@ -2444,8 +3333,10 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 iam_policy_pb2.TestIamPermissionsResponse: Response from TestIamPermissions method.
@@ -2454,6 +3345,7 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
             http_options = (
                 _BaseRepositoryManagerRestTransport._BaseTestIamPermissions._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata
             )
@@ -2469,6 +3361,33 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
             query_params = _BaseRepositoryManagerRestTransport._BaseTestIamPermissions._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.devtools.cloudbuild_v2.RepositoryManagerClient.TestIamPermissions",
+                    extra={
+                        "serviceName": "google.devtools.cloudbuild.v2.RepositoryManager",
+                        "rpcName": "TestIamPermissions",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RepositoryManagerRestTransport._TestIamPermissions._get_response(
@@ -2490,6 +3409,27 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
             resp = iam_policy_pb2.TestIamPermissionsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_test_iam_permissions(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.devtools.cloudbuild_v2.RepositoryManagerAsyncClient.TestIamPermissions",
+                    extra={
+                        "serviceName": "google.devtools.cloudbuild.v2.RepositoryManager",
+                        "rpcName": "TestIamPermissions",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -2532,7 +3472,7 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the cancel operation method over HTTP.
 
@@ -2542,13 +3482,16 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseRepositoryManagerRestTransport._BaseCancelOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
@@ -2564,6 +3507,33 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
             query_params = _BaseRepositoryManagerRestTransport._BaseCancelOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.devtools.cloudbuild_v2.RepositoryManagerClient.CancelOperation",
+                    extra={
+                        "serviceName": "google.devtools.cloudbuild.v2.RepositoryManager",
+                        "rpcName": "CancelOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RepositoryManagerRestTransport._CancelOperation._get_response(
@@ -2621,7 +3591,7 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the get operation method over HTTP.
 
@@ -2631,8 +3601,10 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.
@@ -2641,6 +3613,7 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
             http_options = (
                 _BaseRepositoryManagerRestTransport._BaseGetOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseRepositoryManagerRestTransport._BaseGetOperation._get_transcoded_request(
                 http_options, request
@@ -2650,6 +3623,33 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
             query_params = _BaseRepositoryManagerRestTransport._BaseGetOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.devtools.cloudbuild_v2.RepositoryManagerClient.GetOperation",
+                    extra={
+                        "serviceName": "google.devtools.cloudbuild.v2.RepositoryManager",
+                        "rpcName": "GetOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = RepositoryManagerRestTransport._GetOperation._get_response(
@@ -2670,6 +3670,27 @@ class RepositoryManagerRestTransport(_BaseRepositoryManagerRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.devtools.cloudbuild_v2.RepositoryManagerAsyncClient.GetOperation",
+                    extra={
+                        "serviceName": "google.devtools.cloudbuild.v2.RepositoryManager",
+                        "rpcName": "GetOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property

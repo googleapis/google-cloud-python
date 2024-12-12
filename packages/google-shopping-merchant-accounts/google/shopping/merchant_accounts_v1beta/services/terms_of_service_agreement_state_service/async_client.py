@@ -14,6 +14,7 @@
 # limitations under the License.
 #
 from collections import OrderedDict
+import logging as std_logging
 import re
 from typing import (
     Callable,
@@ -55,6 +56,15 @@ from .transports.base import (
 from .transports.grpc_asyncio import (
     TermsOfServiceAgreementStateServiceGrpcAsyncIOTransport,
 )
+
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = std_logging.getLogger(__name__)
 
 
 class TermsOfServiceAgreementStateServiceAsyncClient:
@@ -289,6 +299,28 @@ class TermsOfServiceAgreementStateServiceAsyncClient:
             client_info=client_info,
         )
 
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+            std_logging.DEBUG
+        ):  # pragma: NO COVER
+            _LOGGER.debug(
+                "Created client `google.shopping.merchant.accounts_v1beta.TermsOfServiceAgreementStateServiceAsyncClient`.",
+                extra={
+                    "serviceName": "google.shopping.merchant.accounts.v1beta.TermsOfServiceAgreementStateService",
+                    "universeDomain": getattr(
+                        self._client._transport._credentials, "universe_domain", ""
+                    ),
+                    "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
+                    "credentialsInfo": getattr(
+                        self.transport._credentials, "get_cred_info", lambda: None
+                    )(),
+                }
+                if hasattr(self._client._transport, "_credentials")
+                else {
+                    "serviceName": "google.shopping.merchant.accounts.v1beta.TermsOfServiceAgreementStateService",
+                    "credentialsType": None,
+                },
+            )
+
     async def get_terms_of_service_agreement_state(
         self,
         request: Optional[
@@ -301,7 +333,7 @@ class TermsOfServiceAgreementStateServiceAsyncClient:
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> termsofserviceagreementstate.TermsOfServiceAgreementState:
         r"""Returns the state of a terms of service agreement.
 
@@ -348,8 +380,10 @@ class TermsOfServiceAgreementStateServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.shopping.merchant_accounts_v1beta.types.TermsOfServiceAgreementState:
@@ -446,7 +480,7 @@ class TermsOfServiceAgreementStateServiceAsyncClient:
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> termsofserviceagreementstate.TermsOfServiceAgreementState:
         r"""Retrieves the state of the agreement for the
         application terms of service.
@@ -493,8 +527,10 @@ class TermsOfServiceAgreementStateServiceAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.shopping.merchant_accounts_v1beta.types.TermsOfServiceAgreementState:

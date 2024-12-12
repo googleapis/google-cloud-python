@@ -13,6 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import json
+import logging as std_logging
+import pickle
 from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -22,7 +25,10 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf.json_format import MessageToJson
+import google.protobuf.message
 import grpc  # type: ignore
+import proto  # type: ignore
 
 from google.cloud.documentai_v1beta3.types import document_processor_service, evaluation
 from google.cloud.documentai_v1beta3.types import processor
@@ -30,6 +36,81 @@ from google.cloud.documentai_v1beta3.types import processor as gcd_processor
 from google.cloud.documentai_v1beta3.types import processor_type
 
 from .base import DEFAULT_CLIENT_INFO, DocumentProcessorServiceTransport
+
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = std_logging.getLogger(__name__)
+
+
+class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
+    def intercept_unary_unary(self, continuation, client_call_details, request):
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+            std_logging.DEBUG
+        )
+        if logging_enabled:  # pragma: NO COVER
+            request_metadata = client_call_details.metadata
+            if isinstance(request, proto.Message):
+                request_payload = type(request).to_json(request)
+            elif isinstance(request, google.protobuf.message.Message):
+                request_payload = MessageToJson(request)
+            else:
+                request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
+
+            request_metadata = {
+                key: value.decode("utf-8") if isinstance(value, bytes) else value
+                for key, value in request_metadata
+            }
+            grpc_request = {
+                "payload": request_payload,
+                "requestMethod": "grpc",
+                "metadata": dict(request_metadata),
+            }
+            _LOGGER.debug(
+                f"Sending request for {client_call_details.method}",
+                extra={
+                    "serviceName": "google.cloud.documentai.v1beta3.DocumentProcessorService",
+                    "rpcName": client_call_details.method,
+                    "request": grpc_request,
+                    "metadata": grpc_request["metadata"],
+                },
+            )
+
+        response = continuation(client_call_details, request)
+        if logging_enabled:  # pragma: NO COVER
+            response_metadata = response.trailing_metadata()
+            # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
+            metadata = (
+                dict([(k, str(v)) for k, v in response_metadata])
+                if response_metadata
+                else None
+            )
+            result = response.result()
+            if isinstance(result, proto.Message):
+                response_payload = type(result).to_json(result)
+            elif isinstance(result, google.protobuf.message.Message):
+                response_payload = MessageToJson(result)
+            else:
+                response_payload = f"{type(result).__name__}: {pickle.dumps(result)}"
+            grpc_response = {
+                "payload": response_payload,
+                "metadata": metadata,
+                "status": "OK",
+            }
+            _LOGGER.debug(
+                f"Received response for {client_call_details.method}.",
+                extra={
+                    "serviceName": "google.cloud.documentai.v1beta3.DocumentProcessorService",
+                    "rpcName": client_call_details.method,
+                    "response": grpc_response,
+                    "metadata": grpc_response["metadata"],
+                },
+            )
+        return response
 
 
 class DocumentProcessorServiceGrpcTransport(DocumentProcessorServiceTransport):
@@ -189,7 +270,12 @@ class DocumentProcessorServiceGrpcTransport(DocumentProcessorServiceTransport):
                 ],
             )
 
-        # Wrap messages. This must be done after self._grpc_channel exists
+        self._interceptor = _LoggingClientInterceptor()
+        self._logged_channel = grpc.intercept_channel(
+            self._grpc_channel, self._interceptor
+        )
+
+        # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
     @classmethod
@@ -253,7 +339,9 @@ class DocumentProcessorServiceGrpcTransport(DocumentProcessorServiceTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsClient(self.grpc_channel)
+            self._operations_client = operations_v1.OperationsClient(
+                self._logged_channel
+            )
 
         # Return the client from cache.
         return self._operations_client
@@ -280,7 +368,7 @@ class DocumentProcessorServiceGrpcTransport(DocumentProcessorServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "process_document" not in self._stubs:
-            self._stubs["process_document"] = self.grpc_channel.unary_unary(
+            self._stubs["process_document"] = self._logged_channel.unary_unary(
                 "/google.cloud.documentai.v1beta3.DocumentProcessorService/ProcessDocument",
                 request_serializer=document_processor_service.ProcessRequest.serialize,
                 response_deserializer=document_processor_service.ProcessResponse.deserialize,
@@ -309,7 +397,7 @@ class DocumentProcessorServiceGrpcTransport(DocumentProcessorServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "batch_process_documents" not in self._stubs:
-            self._stubs["batch_process_documents"] = self.grpc_channel.unary_unary(
+            self._stubs["batch_process_documents"] = self._logged_channel.unary_unary(
                 "/google.cloud.documentai.v1beta3.DocumentProcessorService/BatchProcessDocuments",
                 request_serializer=document_processor_service.BatchProcessRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -340,7 +428,7 @@ class DocumentProcessorServiceGrpcTransport(DocumentProcessorServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "fetch_processor_types" not in self._stubs:
-            self._stubs["fetch_processor_types"] = self.grpc_channel.unary_unary(
+            self._stubs["fetch_processor_types"] = self._logged_channel.unary_unary(
                 "/google.cloud.documentai.v1beta3.DocumentProcessorService/FetchProcessorTypes",
                 request_serializer=document_processor_service.FetchProcessorTypesRequest.serialize,
                 response_deserializer=document_processor_service.FetchProcessorTypesResponse.deserialize,
@@ -369,7 +457,7 @@ class DocumentProcessorServiceGrpcTransport(DocumentProcessorServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_processor_types" not in self._stubs:
-            self._stubs["list_processor_types"] = self.grpc_channel.unary_unary(
+            self._stubs["list_processor_types"] = self._logged_channel.unary_unary(
                 "/google.cloud.documentai.v1beta3.DocumentProcessorService/ListProcessorTypes",
                 request_serializer=document_processor_service.ListProcessorTypesRequest.serialize,
                 response_deserializer=document_processor_service.ListProcessorTypesResponse.deserialize,
@@ -398,7 +486,7 @@ class DocumentProcessorServiceGrpcTransport(DocumentProcessorServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_processor_type" not in self._stubs:
-            self._stubs["get_processor_type"] = self.grpc_channel.unary_unary(
+            self._stubs["get_processor_type"] = self._logged_channel.unary_unary(
                 "/google.cloud.documentai.v1beta3.DocumentProcessorService/GetProcessorType",
                 request_serializer=document_processor_service.GetProcessorTypeRequest.serialize,
                 response_deserializer=processor_type.ProcessorType.deserialize,
@@ -427,7 +515,7 @@ class DocumentProcessorServiceGrpcTransport(DocumentProcessorServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_processors" not in self._stubs:
-            self._stubs["list_processors"] = self.grpc_channel.unary_unary(
+            self._stubs["list_processors"] = self._logged_channel.unary_unary(
                 "/google.cloud.documentai.v1beta3.DocumentProcessorService/ListProcessors",
                 request_serializer=document_processor_service.ListProcessorsRequest.serialize,
                 response_deserializer=document_processor_service.ListProcessorsResponse.deserialize,
@@ -455,7 +543,7 @@ class DocumentProcessorServiceGrpcTransport(DocumentProcessorServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_processor" not in self._stubs:
-            self._stubs["get_processor"] = self.grpc_channel.unary_unary(
+            self._stubs["get_processor"] = self._logged_channel.unary_unary(
                 "/google.cloud.documentai.v1beta3.DocumentProcessorService/GetProcessor",
                 request_serializer=document_processor_service.GetProcessorRequest.serialize,
                 response_deserializer=processor.Processor.deserialize,
@@ -486,7 +574,7 @@ class DocumentProcessorServiceGrpcTransport(DocumentProcessorServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "train_processor_version" not in self._stubs:
-            self._stubs["train_processor_version"] = self.grpc_channel.unary_unary(
+            self._stubs["train_processor_version"] = self._logged_channel.unary_unary(
                 "/google.cloud.documentai.v1beta3.DocumentProcessorService/TrainProcessorVersion",
                 request_serializer=document_processor_service.TrainProcessorVersionRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -515,7 +603,7 @@ class DocumentProcessorServiceGrpcTransport(DocumentProcessorServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_processor_version" not in self._stubs:
-            self._stubs["get_processor_version"] = self.grpc_channel.unary_unary(
+            self._stubs["get_processor_version"] = self._logged_channel.unary_unary(
                 "/google.cloud.documentai.v1beta3.DocumentProcessorService/GetProcessorVersion",
                 request_serializer=document_processor_service.GetProcessorVersionRequest.serialize,
                 response_deserializer=processor.ProcessorVersion.deserialize,
@@ -544,7 +632,7 @@ class DocumentProcessorServiceGrpcTransport(DocumentProcessorServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_processor_versions" not in self._stubs:
-            self._stubs["list_processor_versions"] = self.grpc_channel.unary_unary(
+            self._stubs["list_processor_versions"] = self._logged_channel.unary_unary(
                 "/google.cloud.documentai.v1beta3.DocumentProcessorService/ListProcessorVersions",
                 request_serializer=document_processor_service.ListProcessorVersionsRequest.serialize,
                 response_deserializer=document_processor_service.ListProcessorVersionsResponse.deserialize,
@@ -574,7 +662,7 @@ class DocumentProcessorServiceGrpcTransport(DocumentProcessorServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_processor_version" not in self._stubs:
-            self._stubs["delete_processor_version"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_processor_version"] = self._logged_channel.unary_unary(
                 "/google.cloud.documentai.v1beta3.DocumentProcessorService/DeleteProcessorVersion",
                 request_serializer=document_processor_service.DeleteProcessorVersionRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -603,7 +691,7 @@ class DocumentProcessorServiceGrpcTransport(DocumentProcessorServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "deploy_processor_version" not in self._stubs:
-            self._stubs["deploy_processor_version"] = self.grpc_channel.unary_unary(
+            self._stubs["deploy_processor_version"] = self._logged_channel.unary_unary(
                 "/google.cloud.documentai.v1beta3.DocumentProcessorService/DeployProcessorVersion",
                 request_serializer=document_processor_service.DeployProcessorVersionRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -632,7 +720,9 @@ class DocumentProcessorServiceGrpcTransport(DocumentProcessorServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "undeploy_processor_version" not in self._stubs:
-            self._stubs["undeploy_processor_version"] = self.grpc_channel.unary_unary(
+            self._stubs[
+                "undeploy_processor_version"
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.documentai.v1beta3.DocumentProcessorService/UndeployProcessorVersion",
                 request_serializer=document_processor_service.UndeployProcessorVersionRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -667,7 +757,7 @@ class DocumentProcessorServiceGrpcTransport(DocumentProcessorServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_processor" not in self._stubs:
-            self._stubs["create_processor"] = self.grpc_channel.unary_unary(
+            self._stubs["create_processor"] = self._logged_channel.unary_unary(
                 "/google.cloud.documentai.v1beta3.DocumentProcessorService/CreateProcessor",
                 request_serializer=document_processor_service.CreateProcessorRequest.serialize,
                 response_deserializer=gcd_processor.Processor.deserialize,
@@ -697,7 +787,7 @@ class DocumentProcessorServiceGrpcTransport(DocumentProcessorServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_processor" not in self._stubs:
-            self._stubs["delete_processor"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_processor"] = self._logged_channel.unary_unary(
                 "/google.cloud.documentai.v1beta3.DocumentProcessorService/DeleteProcessor",
                 request_serializer=document_processor_service.DeleteProcessorRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -725,7 +815,7 @@ class DocumentProcessorServiceGrpcTransport(DocumentProcessorServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "enable_processor" not in self._stubs:
-            self._stubs["enable_processor"] = self.grpc_channel.unary_unary(
+            self._stubs["enable_processor"] = self._logged_channel.unary_unary(
                 "/google.cloud.documentai.v1beta3.DocumentProcessorService/EnableProcessor",
                 request_serializer=document_processor_service.EnableProcessorRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -753,7 +843,7 @@ class DocumentProcessorServiceGrpcTransport(DocumentProcessorServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "disable_processor" not in self._stubs:
-            self._stubs["disable_processor"] = self.grpc_channel.unary_unary(
+            self._stubs["disable_processor"] = self._logged_channel.unary_unary(
                 "/google.cloud.documentai.v1beta3.DocumentProcessorService/DisableProcessor",
                 request_serializer=document_processor_service.DisableProcessorRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -789,7 +879,7 @@ class DocumentProcessorServiceGrpcTransport(DocumentProcessorServiceTransport):
         if "set_default_processor_version" not in self._stubs:
             self._stubs[
                 "set_default_processor_version"
-            ] = self.grpc_channel.unary_unary(
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.documentai.v1beta3.DocumentProcessorService/SetDefaultProcessorVersion",
                 request_serializer=document_processor_service.SetDefaultProcessorVersionRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -818,7 +908,7 @@ class DocumentProcessorServiceGrpcTransport(DocumentProcessorServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "review_document" not in self._stubs:
-            self._stubs["review_document"] = self.grpc_channel.unary_unary(
+            self._stubs["review_document"] = self._logged_channel.unary_unary(
                 "/google.cloud.documentai.v1beta3.DocumentProcessorService/ReviewDocument",
                 request_serializer=document_processor_service.ReviewDocumentRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -848,7 +938,9 @@ class DocumentProcessorServiceGrpcTransport(DocumentProcessorServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "evaluate_processor_version" not in self._stubs:
-            self._stubs["evaluate_processor_version"] = self.grpc_channel.unary_unary(
+            self._stubs[
+                "evaluate_processor_version"
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.documentai.v1beta3.DocumentProcessorService/EvaluateProcessorVersion",
                 request_serializer=document_processor_service.EvaluateProcessorVersionRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -876,7 +968,7 @@ class DocumentProcessorServiceGrpcTransport(DocumentProcessorServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_evaluation" not in self._stubs:
-            self._stubs["get_evaluation"] = self.grpc_channel.unary_unary(
+            self._stubs["get_evaluation"] = self._logged_channel.unary_unary(
                 "/google.cloud.documentai.v1beta3.DocumentProcessorService/GetEvaluation",
                 request_serializer=document_processor_service.GetEvaluationRequest.serialize,
                 response_deserializer=evaluation.Evaluation.deserialize,
@@ -906,7 +998,7 @@ class DocumentProcessorServiceGrpcTransport(DocumentProcessorServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_evaluations" not in self._stubs:
-            self._stubs["list_evaluations"] = self.grpc_channel.unary_unary(
+            self._stubs["list_evaluations"] = self._logged_channel.unary_unary(
                 "/google.cloud.documentai.v1beta3.DocumentProcessorService/ListEvaluations",
                 request_serializer=document_processor_service.ListEvaluationsRequest.serialize,
                 response_deserializer=document_processor_service.ListEvaluationsResponse.deserialize,
@@ -936,7 +1028,7 @@ class DocumentProcessorServiceGrpcTransport(DocumentProcessorServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "import_processor_version" not in self._stubs:
-            self._stubs["import_processor_version"] = self.grpc_channel.unary_unary(
+            self._stubs["import_processor_version"] = self._logged_channel.unary_unary(
                 "/google.cloud.documentai.v1beta3.DocumentProcessorService/ImportProcessorVersion",
                 request_serializer=document_processor_service.ImportProcessorVersionRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -944,7 +1036,7 @@ class DocumentProcessorServiceGrpcTransport(DocumentProcessorServiceTransport):
         return self._stubs["import_processor_version"]
 
     def close(self):
-        self.grpc_channel.close()
+        self._logged_channel.close()
 
     @property
     def cancel_operation(
@@ -956,7 +1048,7 @@ class DocumentProcessorServiceGrpcTransport(DocumentProcessorServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "cancel_operation" not in self._stubs:
-            self._stubs["cancel_operation"] = self.grpc_channel.unary_unary(
+            self._stubs["cancel_operation"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/CancelOperation",
                 request_serializer=operations_pb2.CancelOperationRequest.SerializeToString,
                 response_deserializer=None,
@@ -973,7 +1065,7 @@ class DocumentProcessorServiceGrpcTransport(DocumentProcessorServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_operation" not in self._stubs:
-            self._stubs["get_operation"] = self.grpc_channel.unary_unary(
+            self._stubs["get_operation"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/GetOperation",
                 request_serializer=operations_pb2.GetOperationRequest.SerializeToString,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -992,7 +1084,7 @@ class DocumentProcessorServiceGrpcTransport(DocumentProcessorServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_operations" not in self._stubs:
-            self._stubs["list_operations"] = self.grpc_channel.unary_unary(
+            self._stubs["list_operations"] = self._logged_channel.unary_unary(
                 "/google.longrunning.Operations/ListOperations",
                 request_serializer=operations_pb2.ListOperationsRequest.SerializeToString,
                 response_deserializer=operations_pb2.ListOperationsResponse.FromString,
@@ -1011,7 +1103,7 @@ class DocumentProcessorServiceGrpcTransport(DocumentProcessorServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_locations" not in self._stubs:
-            self._stubs["list_locations"] = self.grpc_channel.unary_unary(
+            self._stubs["list_locations"] = self._logged_channel.unary_unary(
                 "/google.cloud.location.Locations/ListLocations",
                 request_serializer=locations_pb2.ListLocationsRequest.SerializeToString,
                 response_deserializer=locations_pb2.ListLocationsResponse.FromString,
@@ -1028,7 +1120,7 @@ class DocumentProcessorServiceGrpcTransport(DocumentProcessorServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_location" not in self._stubs:
-            self._stubs["get_location"] = self.grpc_channel.unary_unary(
+            self._stubs["get_location"] = self._logged_channel.unary_unary(
                 "/google.cloud.location.Locations/GetLocation",
                 request_serializer=locations_pb2.GetLocationRequest.SerializeToString,
                 response_deserializer=locations_pb2.Location.FromString,

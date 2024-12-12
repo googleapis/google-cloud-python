@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -41,6 +41,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -121,9 +129,10 @@ class AppConnectorsServiceRestInterceptor:
     def pre_create_app_connector(
         self,
         request: app_connectors_service.CreateAppConnectorRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        app_connectors_service.CreateAppConnectorRequest, Sequence[Tuple[str, str]]
+        app_connectors_service.CreateAppConnectorRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for create_app_connector
 
@@ -146,9 +155,10 @@ class AppConnectorsServiceRestInterceptor:
     def pre_delete_app_connector(
         self,
         request: app_connectors_service.DeleteAppConnectorRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        app_connectors_service.DeleteAppConnectorRequest, Sequence[Tuple[str, str]]
+        app_connectors_service.DeleteAppConnectorRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for delete_app_connector
 
@@ -171,9 +181,10 @@ class AppConnectorsServiceRestInterceptor:
     def pre_get_app_connector(
         self,
         request: app_connectors_service.GetAppConnectorRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        app_connectors_service.GetAppConnectorRequest, Sequence[Tuple[str, str]]
+        app_connectors_service.GetAppConnectorRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for get_app_connector
 
@@ -196,9 +207,10 @@ class AppConnectorsServiceRestInterceptor:
     def pre_list_app_connectors(
         self,
         request: app_connectors_service.ListAppConnectorsRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        app_connectors_service.ListAppConnectorsRequest, Sequence[Tuple[str, str]]
+        app_connectors_service.ListAppConnectorsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for list_app_connectors
 
@@ -221,8 +233,11 @@ class AppConnectorsServiceRestInterceptor:
     def pre_report_status(
         self,
         request: app_connectors_service.ReportStatusRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[app_connectors_service.ReportStatusRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        app_connectors_service.ReportStatusRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for report_status
 
         Override in a subclass to manipulate the request or metadata
@@ -244,9 +259,10 @@ class AppConnectorsServiceRestInterceptor:
     def pre_update_app_connector(
         self,
         request: app_connectors_service.UpdateAppConnectorRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        app_connectors_service.UpdateAppConnectorRequest, Sequence[Tuple[str, str]]
+        app_connectors_service.UpdateAppConnectorRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for update_app_connector
 
@@ -269,8 +285,10 @@ class AppConnectorsServiceRestInterceptor:
     def pre_get_location(
         self,
         request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -292,8 +310,10 @@ class AppConnectorsServiceRestInterceptor:
     def pre_list_locations(
         self,
         request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -315,8 +335,10 @@ class AppConnectorsServiceRestInterceptor:
     def pre_get_iam_policy(
         self,
         request: iam_policy_pb2.GetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -336,8 +358,10 @@ class AppConnectorsServiceRestInterceptor:
     def pre_set_iam_policy(
         self,
         request: iam_policy_pb2.SetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -357,8 +381,11 @@ class AppConnectorsServiceRestInterceptor:
     def pre_test_iam_permissions(
         self,
         request: iam_policy_pb2.TestIamPermissionsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.TestIamPermissionsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -380,8 +407,10 @@ class AppConnectorsServiceRestInterceptor:
     def pre_cancel_operation(
         self,
         request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -401,8 +430,10 @@ class AppConnectorsServiceRestInterceptor:
     def pre_delete_operation(
         self,
         request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -422,8 +453,10 @@ class AppConnectorsServiceRestInterceptor:
     def pre_get_operation(
         self,
         request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -445,8 +478,10 @@ class AppConnectorsServiceRestInterceptor:
     def pre_list_operations(
         self,
         request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -655,7 +690,7 @@ class AppConnectorsServiceRestTransport(_BaseAppConnectorsServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create app connector method over HTTP.
 
@@ -666,8 +701,10 @@ class AppConnectorsServiceRestTransport(_BaseAppConnectorsServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -680,6 +717,7 @@ class AppConnectorsServiceRestTransport(_BaseAppConnectorsServiceRestTransport):
             http_options = (
                 _BaseAppConnectorsServiceRestTransport._BaseCreateAppConnector._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_app_connector(
                 request, metadata
             )
@@ -695,6 +733,33 @@ class AppConnectorsServiceRestTransport(_BaseAppConnectorsServiceRestTransport):
             query_params = _BaseAppConnectorsServiceRestTransport._BaseCreateAppConnector._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.beyondcorp.appconnectors_v1.AppConnectorsServiceClient.CreateAppConnector",
+                    extra={
+                        "serviceName": "google.cloud.beyondcorp.appconnectors.v1.AppConnectorsService",
+                        "rpcName": "CreateAppConnector",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -717,7 +782,29 @@ class AppConnectorsServiceRestTransport(_BaseAppConnectorsServiceRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_app_connector(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.beyondcorp.appconnectors_v1.AppConnectorsServiceClient.create_app_connector",
+                    extra={
+                        "serviceName": "google.cloud.beyondcorp.appconnectors.v1.AppConnectorsService",
+                        "rpcName": "CreateAppConnector",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteAppConnector(
@@ -755,7 +842,7 @@ class AppConnectorsServiceRestTransport(_BaseAppConnectorsServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete app connector method over HTTP.
 
@@ -766,8 +853,10 @@ class AppConnectorsServiceRestTransport(_BaseAppConnectorsServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -780,6 +869,7 @@ class AppConnectorsServiceRestTransport(_BaseAppConnectorsServiceRestTransport):
             http_options = (
                 _BaseAppConnectorsServiceRestTransport._BaseDeleteAppConnector._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_app_connector(
                 request, metadata
             )
@@ -791,6 +881,33 @@ class AppConnectorsServiceRestTransport(_BaseAppConnectorsServiceRestTransport):
             query_params = _BaseAppConnectorsServiceRestTransport._BaseDeleteAppConnector._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.beyondcorp.appconnectors_v1.AppConnectorsServiceClient.DeleteAppConnector",
+                    extra={
+                        "serviceName": "google.cloud.beyondcorp.appconnectors.v1.AppConnectorsService",
+                        "rpcName": "DeleteAppConnector",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -812,7 +929,29 @@ class AppConnectorsServiceRestTransport(_BaseAppConnectorsServiceRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_app_connector(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.beyondcorp.appconnectors_v1.AppConnectorsServiceClient.delete_app_connector",
+                    extra={
+                        "serviceName": "google.cloud.beyondcorp.appconnectors.v1.AppConnectorsService",
+                        "rpcName": "DeleteAppConnector",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetAppConnector(
@@ -850,7 +989,7 @@ class AppConnectorsServiceRestTransport(_BaseAppConnectorsServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> app_connectors_service.AppConnector:
             r"""Call the get app connector method over HTTP.
 
@@ -861,8 +1000,10 @@ class AppConnectorsServiceRestTransport(_BaseAppConnectorsServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.app_connectors_service.AppConnector:
@@ -882,6 +1023,7 @@ class AppConnectorsServiceRestTransport(_BaseAppConnectorsServiceRestTransport):
             http_options = (
                 _BaseAppConnectorsServiceRestTransport._BaseGetAppConnector._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_app_connector(
                 request, metadata
             )
@@ -893,6 +1035,33 @@ class AppConnectorsServiceRestTransport(_BaseAppConnectorsServiceRestTransport):
             query_params = _BaseAppConnectorsServiceRestTransport._BaseGetAppConnector._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.beyondcorp.appconnectors_v1.AppConnectorsServiceClient.GetAppConnector",
+                    extra={
+                        "serviceName": "google.cloud.beyondcorp.appconnectors.v1.AppConnectorsService",
+                        "rpcName": "GetAppConnector",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AppConnectorsServiceRestTransport._GetAppConnector._get_response(
@@ -914,7 +1083,31 @@ class AppConnectorsServiceRestTransport(_BaseAppConnectorsServiceRestTransport):
             pb_resp = app_connectors_service.AppConnector.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_app_connector(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = app_connectors_service.AppConnector.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.beyondcorp.appconnectors_v1.AppConnectorsServiceClient.get_app_connector",
+                    extra={
+                        "serviceName": "google.cloud.beyondcorp.appconnectors.v1.AppConnectorsService",
+                        "rpcName": "GetAppConnector",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListAppConnectors(
@@ -952,7 +1145,7 @@ class AppConnectorsServiceRestTransport(_BaseAppConnectorsServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> app_connectors_service.ListAppConnectorsResponse:
             r"""Call the list app connectors method over HTTP.
 
@@ -963,8 +1156,10 @@ class AppConnectorsServiceRestTransport(_BaseAppConnectorsServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.app_connectors_service.ListAppConnectorsResponse:
@@ -976,6 +1171,7 @@ class AppConnectorsServiceRestTransport(_BaseAppConnectorsServiceRestTransport):
             http_options = (
                 _BaseAppConnectorsServiceRestTransport._BaseListAppConnectors._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_app_connectors(
                 request, metadata
             )
@@ -987,6 +1183,33 @@ class AppConnectorsServiceRestTransport(_BaseAppConnectorsServiceRestTransport):
             query_params = _BaseAppConnectorsServiceRestTransport._BaseListAppConnectors._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.beyondcorp.appconnectors_v1.AppConnectorsServiceClient.ListAppConnectors",
+                    extra={
+                        "serviceName": "google.cloud.beyondcorp.appconnectors.v1.AppConnectorsService",
+                        "rpcName": "ListAppConnectors",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1010,7 +1233,33 @@ class AppConnectorsServiceRestTransport(_BaseAppConnectorsServiceRestTransport):
             pb_resp = app_connectors_service.ListAppConnectorsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_app_connectors(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        app_connectors_service.ListAppConnectorsResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.beyondcorp.appconnectors_v1.AppConnectorsServiceClient.list_app_connectors",
+                    extra={
+                        "serviceName": "google.cloud.beyondcorp.appconnectors.v1.AppConnectorsService",
+                        "rpcName": "ListAppConnectors",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ReportStatus(
@@ -1049,7 +1298,7 @@ class AppConnectorsServiceRestTransport(_BaseAppConnectorsServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the report status method over HTTP.
 
@@ -1059,8 +1308,10 @@ class AppConnectorsServiceRestTransport(_BaseAppConnectorsServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1073,6 +1324,7 @@ class AppConnectorsServiceRestTransport(_BaseAppConnectorsServiceRestTransport):
             http_options = (
                 _BaseAppConnectorsServiceRestTransport._BaseReportStatus._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_report_status(request, metadata)
             transcoded_request = _BaseAppConnectorsServiceRestTransport._BaseReportStatus._get_transcoded_request(
                 http_options, request
@@ -1086,6 +1338,33 @@ class AppConnectorsServiceRestTransport(_BaseAppConnectorsServiceRestTransport):
             query_params = _BaseAppConnectorsServiceRestTransport._BaseReportStatus._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.beyondcorp.appconnectors_v1.AppConnectorsServiceClient.ReportStatus",
+                    extra={
+                        "serviceName": "google.cloud.beyondcorp.appconnectors.v1.AppConnectorsService",
+                        "rpcName": "ReportStatus",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AppConnectorsServiceRestTransport._ReportStatus._get_response(
@@ -1106,7 +1385,29 @@ class AppConnectorsServiceRestTransport(_BaseAppConnectorsServiceRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_report_status(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.beyondcorp.appconnectors_v1.AppConnectorsServiceClient.report_status",
+                    extra={
+                        "serviceName": "google.cloud.beyondcorp.appconnectors.v1.AppConnectorsService",
+                        "rpcName": "ReportStatus",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateAppConnector(
@@ -1145,7 +1446,7 @@ class AppConnectorsServiceRestTransport(_BaseAppConnectorsServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update app connector method over HTTP.
 
@@ -1156,8 +1457,10 @@ class AppConnectorsServiceRestTransport(_BaseAppConnectorsServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1170,6 +1473,7 @@ class AppConnectorsServiceRestTransport(_BaseAppConnectorsServiceRestTransport):
             http_options = (
                 _BaseAppConnectorsServiceRestTransport._BaseUpdateAppConnector._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_app_connector(
                 request, metadata
             )
@@ -1185,6 +1489,33 @@ class AppConnectorsServiceRestTransport(_BaseAppConnectorsServiceRestTransport):
             query_params = _BaseAppConnectorsServiceRestTransport._BaseUpdateAppConnector._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.beyondcorp.appconnectors_v1.AppConnectorsServiceClient.UpdateAppConnector",
+                    extra={
+                        "serviceName": "google.cloud.beyondcorp.appconnectors.v1.AppConnectorsService",
+                        "rpcName": "UpdateAppConnector",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1207,7 +1538,29 @@ class AppConnectorsServiceRestTransport(_BaseAppConnectorsServiceRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_app_connector(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.beyondcorp.appconnectors_v1.AppConnectorsServiceClient.update_app_connector",
+                    extra={
+                        "serviceName": "google.cloud.beyondcorp.appconnectors.v1.AppConnectorsService",
+                        "rpcName": "UpdateAppConnector",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -1311,7 +1664,7 @@ class AppConnectorsServiceRestTransport(_BaseAppConnectorsServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.Location:
             r"""Call the get location method over HTTP.
 
@@ -1321,8 +1674,10 @@ class AppConnectorsServiceRestTransport(_BaseAppConnectorsServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.Location: Response from GetLocation method.
@@ -1331,6 +1686,7 @@ class AppConnectorsServiceRestTransport(_BaseAppConnectorsServiceRestTransport):
             http_options = (
                 _BaseAppConnectorsServiceRestTransport._BaseGetLocation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_location(request, metadata)
             transcoded_request = _BaseAppConnectorsServiceRestTransport._BaseGetLocation._get_transcoded_request(
                 http_options, request
@@ -1340,6 +1696,33 @@ class AppConnectorsServiceRestTransport(_BaseAppConnectorsServiceRestTransport):
             query_params = _BaseAppConnectorsServiceRestTransport._BaseGetLocation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.beyondcorp.appconnectors_v1.AppConnectorsServiceClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.beyondcorp.appconnectors.v1.AppConnectorsService",
+                        "rpcName": "GetLocation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AppConnectorsServiceRestTransport._GetLocation._get_response(
@@ -1360,6 +1743,27 @@ class AppConnectorsServiceRestTransport(_BaseAppConnectorsServiceRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.beyondcorp.appconnectors_v1.AppConnectorsServiceAsyncClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.beyondcorp.appconnectors.v1.AppConnectorsService",
+                        "rpcName": "GetLocation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -1401,7 +1805,7 @@ class AppConnectorsServiceRestTransport(_BaseAppConnectorsServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.ListLocationsResponse:
             r"""Call the list locations method over HTTP.
 
@@ -1411,8 +1815,10 @@ class AppConnectorsServiceRestTransport(_BaseAppConnectorsServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
@@ -1421,6 +1827,7 @@ class AppConnectorsServiceRestTransport(_BaseAppConnectorsServiceRestTransport):
             http_options = (
                 _BaseAppConnectorsServiceRestTransport._BaseListLocations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
             transcoded_request = _BaseAppConnectorsServiceRestTransport._BaseListLocations._get_transcoded_request(
                 http_options, request
@@ -1430,6 +1837,33 @@ class AppConnectorsServiceRestTransport(_BaseAppConnectorsServiceRestTransport):
             query_params = _BaseAppConnectorsServiceRestTransport._BaseListLocations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.beyondcorp.appconnectors_v1.AppConnectorsServiceClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.beyondcorp.appconnectors.v1.AppConnectorsService",
+                        "rpcName": "ListLocations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AppConnectorsServiceRestTransport._ListLocations._get_response(
@@ -1450,6 +1884,27 @@ class AppConnectorsServiceRestTransport(_BaseAppConnectorsServiceRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.beyondcorp.appconnectors_v1.AppConnectorsServiceAsyncClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.beyondcorp.appconnectors.v1.AppConnectorsService",
+                        "rpcName": "ListLocations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -1491,7 +1946,7 @@ class AppConnectorsServiceRestTransport(_BaseAppConnectorsServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> policy_pb2.Policy:
             r"""Call the get iam policy method over HTTP.
 
@@ -1501,8 +1956,10 @@ class AppConnectorsServiceRestTransport(_BaseAppConnectorsServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 policy_pb2.Policy: Response from GetIamPolicy method.
@@ -1511,6 +1968,7 @@ class AppConnectorsServiceRestTransport(_BaseAppConnectorsServiceRestTransport):
             http_options = (
                 _BaseAppConnectorsServiceRestTransport._BaseGetIamPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
             transcoded_request = _BaseAppConnectorsServiceRestTransport._BaseGetIamPolicy._get_transcoded_request(
                 http_options, request
@@ -1520,6 +1978,33 @@ class AppConnectorsServiceRestTransport(_BaseAppConnectorsServiceRestTransport):
             query_params = _BaseAppConnectorsServiceRestTransport._BaseGetIamPolicy._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.beyondcorp.appconnectors_v1.AppConnectorsServiceClient.GetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.beyondcorp.appconnectors.v1.AppConnectorsService",
+                        "rpcName": "GetIamPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AppConnectorsServiceRestTransport._GetIamPolicy._get_response(
@@ -1540,6 +2025,27 @@ class AppConnectorsServiceRestTransport(_BaseAppConnectorsServiceRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_iam_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.beyondcorp.appconnectors_v1.AppConnectorsServiceAsyncClient.GetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.beyondcorp.appconnectors.v1.AppConnectorsService",
+                        "rpcName": "GetIamPolicy",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -1582,7 +2088,7 @@ class AppConnectorsServiceRestTransport(_BaseAppConnectorsServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> policy_pb2.Policy:
             r"""Call the set iam policy method over HTTP.
 
@@ -1592,8 +2098,10 @@ class AppConnectorsServiceRestTransport(_BaseAppConnectorsServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 policy_pb2.Policy: Response from SetIamPolicy method.
@@ -1602,6 +2110,7 @@ class AppConnectorsServiceRestTransport(_BaseAppConnectorsServiceRestTransport):
             http_options = (
                 _BaseAppConnectorsServiceRestTransport._BaseSetIamPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
             transcoded_request = _BaseAppConnectorsServiceRestTransport._BaseSetIamPolicy._get_transcoded_request(
                 http_options, request
@@ -1615,6 +2124,33 @@ class AppConnectorsServiceRestTransport(_BaseAppConnectorsServiceRestTransport):
             query_params = _BaseAppConnectorsServiceRestTransport._BaseSetIamPolicy._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.beyondcorp.appconnectors_v1.AppConnectorsServiceClient.SetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.beyondcorp.appconnectors.v1.AppConnectorsService",
+                        "rpcName": "SetIamPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AppConnectorsServiceRestTransport._SetIamPolicy._get_response(
@@ -1636,6 +2172,27 @@ class AppConnectorsServiceRestTransport(_BaseAppConnectorsServiceRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_set_iam_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.beyondcorp.appconnectors_v1.AppConnectorsServiceAsyncClient.SetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.beyondcorp.appconnectors.v1.AppConnectorsService",
+                        "rpcName": "SetIamPolicy",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -1678,7 +2235,7 @@ class AppConnectorsServiceRestTransport(_BaseAppConnectorsServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> iam_policy_pb2.TestIamPermissionsResponse:
             r"""Call the test iam permissions method over HTTP.
 
@@ -1688,8 +2245,10 @@ class AppConnectorsServiceRestTransport(_BaseAppConnectorsServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 iam_policy_pb2.TestIamPermissionsResponse: Response from TestIamPermissions method.
@@ -1698,6 +2257,7 @@ class AppConnectorsServiceRestTransport(_BaseAppConnectorsServiceRestTransport):
             http_options = (
                 _BaseAppConnectorsServiceRestTransport._BaseTestIamPermissions._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata
             )
@@ -1713,6 +2273,33 @@ class AppConnectorsServiceRestTransport(_BaseAppConnectorsServiceRestTransport):
             query_params = _BaseAppConnectorsServiceRestTransport._BaseTestIamPermissions._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.beyondcorp.appconnectors_v1.AppConnectorsServiceClient.TestIamPermissions",
+                    extra={
+                        "serviceName": "google.cloud.beyondcorp.appconnectors.v1.AppConnectorsService",
+                        "rpcName": "TestIamPermissions",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1736,6 +2323,27 @@ class AppConnectorsServiceRestTransport(_BaseAppConnectorsServiceRestTransport):
             resp = iam_policy_pb2.TestIamPermissionsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_test_iam_permissions(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.beyondcorp.appconnectors_v1.AppConnectorsServiceAsyncClient.TestIamPermissions",
+                    extra={
+                        "serviceName": "google.cloud.beyondcorp.appconnectors.v1.AppConnectorsService",
+                        "rpcName": "TestIamPermissions",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -1778,7 +2386,7 @@ class AppConnectorsServiceRestTransport(_BaseAppConnectorsServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the cancel operation method over HTTP.
 
@@ -1788,13 +2396,16 @@ class AppConnectorsServiceRestTransport(_BaseAppConnectorsServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseAppConnectorsServiceRestTransport._BaseCancelOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
@@ -1810,6 +2421,33 @@ class AppConnectorsServiceRestTransport(_BaseAppConnectorsServiceRestTransport):
             query_params = _BaseAppConnectorsServiceRestTransport._BaseCancelOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.beyondcorp.appconnectors_v1.AppConnectorsServiceClient.CancelOperation",
+                    extra={
+                        "serviceName": "google.cloud.beyondcorp.appconnectors.v1.AppConnectorsService",
+                        "rpcName": "CancelOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AppConnectorsServiceRestTransport._CancelOperation._get_response(
@@ -1868,7 +2506,7 @@ class AppConnectorsServiceRestTransport(_BaseAppConnectorsServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the delete operation method over HTTP.
 
@@ -1878,13 +2516,16 @@ class AppConnectorsServiceRestTransport(_BaseAppConnectorsServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseAppConnectorsServiceRestTransport._BaseDeleteOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
             )
@@ -1896,6 +2537,33 @@ class AppConnectorsServiceRestTransport(_BaseAppConnectorsServiceRestTransport):
             query_params = _BaseAppConnectorsServiceRestTransport._BaseDeleteOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.beyondcorp.appconnectors_v1.AppConnectorsServiceClient.DeleteOperation",
+                    extra={
+                        "serviceName": "google.cloud.beyondcorp.appconnectors.v1.AppConnectorsService",
+                        "rpcName": "DeleteOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AppConnectorsServiceRestTransport._DeleteOperation._get_response(
@@ -1953,7 +2621,7 @@ class AppConnectorsServiceRestTransport(_BaseAppConnectorsServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the get operation method over HTTP.
 
@@ -1963,8 +2631,10 @@ class AppConnectorsServiceRestTransport(_BaseAppConnectorsServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.
@@ -1973,6 +2643,7 @@ class AppConnectorsServiceRestTransport(_BaseAppConnectorsServiceRestTransport):
             http_options = (
                 _BaseAppConnectorsServiceRestTransport._BaseGetOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseAppConnectorsServiceRestTransport._BaseGetOperation._get_transcoded_request(
                 http_options, request
@@ -1982,6 +2653,33 @@ class AppConnectorsServiceRestTransport(_BaseAppConnectorsServiceRestTransport):
             query_params = _BaseAppConnectorsServiceRestTransport._BaseGetOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.beyondcorp.appconnectors_v1.AppConnectorsServiceClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.beyondcorp.appconnectors.v1.AppConnectorsService",
+                        "rpcName": "GetOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AppConnectorsServiceRestTransport._GetOperation._get_response(
@@ -2002,6 +2700,27 @@ class AppConnectorsServiceRestTransport(_BaseAppConnectorsServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.beyondcorp.appconnectors_v1.AppConnectorsServiceAsyncClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.beyondcorp.appconnectors.v1.AppConnectorsService",
+                        "rpcName": "GetOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -2043,7 +2762,7 @@ class AppConnectorsServiceRestTransport(_BaseAppConnectorsServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.ListOperationsResponse:
             r"""Call the list operations method over HTTP.
 
@@ -2053,8 +2772,10 @@ class AppConnectorsServiceRestTransport(_BaseAppConnectorsServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
@@ -2063,6 +2784,7 @@ class AppConnectorsServiceRestTransport(_BaseAppConnectorsServiceRestTransport):
             http_options = (
                 _BaseAppConnectorsServiceRestTransport._BaseListOperations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseAppConnectorsServiceRestTransport._BaseListOperations._get_transcoded_request(
                 http_options, request
@@ -2072,6 +2794,33 @@ class AppConnectorsServiceRestTransport(_BaseAppConnectorsServiceRestTransport):
             query_params = _BaseAppConnectorsServiceRestTransport._BaseListOperations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.beyondcorp.appconnectors_v1.AppConnectorsServiceClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.beyondcorp.appconnectors.v1.AppConnectorsService",
+                        "rpcName": "ListOperations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = AppConnectorsServiceRestTransport._ListOperations._get_response(
@@ -2092,6 +2841,27 @@ class AppConnectorsServiceRestTransport(_BaseAppConnectorsServiceRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.beyondcorp.appconnectors_v1.AppConnectorsServiceAsyncClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.beyondcorp.appconnectors.v1.AppConnectorsService",
+                        "rpcName": "ListOperations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property

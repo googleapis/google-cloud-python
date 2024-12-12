@@ -3778,6 +3778,7 @@ def test_create_contact_rest_required_fields(request_type=service.CreateContactR
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_contact(request)
 
@@ -3832,6 +3833,7 @@ def test_create_contact_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_contact(**mock_args)
 
@@ -3958,6 +3960,7 @@ def test_update_contact_rest_required_fields(request_type=service.UpdateContactR
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_contact(request)
 
@@ -4004,6 +4007,7 @@ def test_update_contact_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_contact(**mock_args)
 
@@ -4140,6 +4144,7 @@ def test_list_contacts_rest_required_fields(request_type=service.ListContactsReq
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_contacts(request)
 
@@ -4193,6 +4198,7 @@ def test_list_contacts_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_contacts(**mock_args)
 
@@ -4381,6 +4387,7 @@ def test_get_contact_rest_required_fields(request_type=service.GetContactRequest
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_contact(request)
 
@@ -4426,6 +4433,7 @@ def test_get_contact_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_contact(**mock_args)
 
@@ -4550,6 +4558,7 @@ def test_delete_contact_rest_required_fields(request_type=service.DeleteContactR
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_contact(request)
 
@@ -4593,6 +4602,7 @@ def test_delete_contact_rest_flattened():
         json_return_value = ""
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_contact(**mock_args)
 
@@ -4732,6 +4742,7 @@ def test_compute_contacts_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.compute_contacts(request)
 
@@ -4925,6 +4936,7 @@ def test_send_test_message_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.send_test_message(request)
 
@@ -5441,6 +5453,7 @@ def test_create_contact_rest_bad_request(request_type=service.CreateContactReque
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_contact(request)
 
 
@@ -5555,6 +5568,7 @@ def test_create_contact_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_contact(request)
 
     # Establish that the response is the type that we expect.
@@ -5599,6 +5613,7 @@ def test_create_contact_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = service.Contact.to_json(service.Contact())
         req.return_value.content = return_value
 
@@ -5641,6 +5656,7 @@ def test_update_contact_rest_bad_request(request_type=service.UpdateContactReque
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_contact(request)
 
 
@@ -5755,6 +5771,7 @@ def test_update_contact_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_contact(request)
 
     # Establish that the response is the type that we expect.
@@ -5799,6 +5816,7 @@ def test_update_contact_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = service.Contact.to_json(service.Contact())
         req.return_value.content = return_value
 
@@ -5841,6 +5859,7 @@ def test_list_contacts_rest_bad_request(request_type=service.ListContactsRequest
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_contacts(request)
 
 
@@ -5876,6 +5895,7 @@ def test_list_contacts_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_contacts(request)
 
     # Establish that the response is the type that we expect.
@@ -5914,6 +5934,7 @@ def test_list_contacts_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = service.ListContactsResponse.to_json(
             service.ListContactsResponse()
         )
@@ -5958,6 +5979,7 @@ def test_get_contact_rest_bad_request(request_type=service.GetContactRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_contact(request)
 
 
@@ -5997,6 +6019,7 @@ def test_get_contact_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_contact(request)
 
     # Establish that the response is the type that we expect.
@@ -6041,6 +6064,7 @@ def test_get_contact_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = service.Contact.to_json(service.Contact())
         req.return_value.content = return_value
 
@@ -6083,6 +6107,7 @@ def test_delete_contact_rest_bad_request(request_type=service.DeleteContactReque
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_contact(request)
 
 
@@ -6113,6 +6138,7 @@ def test_delete_contact_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_contact(request)
 
     # Establish that the response is the type that we expect.
@@ -6147,6 +6173,7 @@ def test_delete_contact_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = service.DeleteContactRequest()
         metadata = [
@@ -6185,6 +6212,7 @@ def test_compute_contacts_rest_bad_request(request_type=service.ComputeContactsR
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.compute_contacts(request)
 
 
@@ -6220,6 +6248,7 @@ def test_compute_contacts_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.compute_contacts(request)
 
     # Establish that the response is the type that we expect.
@@ -6258,6 +6287,7 @@ def test_compute_contacts_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = service.ComputeContactsResponse.to_json(
             service.ComputeContactsResponse()
         )
@@ -6304,6 +6334,7 @@ def test_send_test_message_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.send_test_message(request)
 
 
@@ -6334,6 +6365,7 @@ def test_send_test_message_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.send_test_message(request)
 
     # Establish that the response is the type that we expect.
@@ -6368,6 +6400,7 @@ def test_send_test_message_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = service.SendTestMessageRequest()
         metadata = [

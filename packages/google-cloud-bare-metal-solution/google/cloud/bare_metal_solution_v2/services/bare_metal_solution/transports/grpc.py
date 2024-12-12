@@ -13,6 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import json
+import logging as std_logging
+import pickle
 from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -25,7 +28,10 @@ from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
+from google.protobuf.json_format import MessageToJson
+import google.protobuf.message
 import grpc  # type: ignore
+import proto  # type: ignore
 
 from google.cloud.bare_metal_solution_v2.types import nfs_share as gcb_nfs_share
 from google.cloud.bare_metal_solution_v2.types import (
@@ -45,6 +51,81 @@ from google.cloud.bare_metal_solution_v2.types import volume as gcb_volume
 from google.cloud.bare_metal_solution_v2.types import volume_snapshot
 
 from .base import DEFAULT_CLIENT_INFO, BareMetalSolutionTransport
+
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = std_logging.getLogger(__name__)
+
+
+class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
+    def intercept_unary_unary(self, continuation, client_call_details, request):
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+            std_logging.DEBUG
+        )
+        if logging_enabled:  # pragma: NO COVER
+            request_metadata = client_call_details.metadata
+            if isinstance(request, proto.Message):
+                request_payload = type(request).to_json(request)
+            elif isinstance(request, google.protobuf.message.Message):
+                request_payload = MessageToJson(request)
+            else:
+                request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
+
+            request_metadata = {
+                key: value.decode("utf-8") if isinstance(value, bytes) else value
+                for key, value in request_metadata
+            }
+            grpc_request = {
+                "payload": request_payload,
+                "requestMethod": "grpc",
+                "metadata": dict(request_metadata),
+            }
+            _LOGGER.debug(
+                f"Sending request for {client_call_details.method}",
+                extra={
+                    "serviceName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                    "rpcName": client_call_details.method,
+                    "request": grpc_request,
+                    "metadata": grpc_request["metadata"],
+                },
+            )
+
+        response = continuation(client_call_details, request)
+        if logging_enabled:  # pragma: NO COVER
+            response_metadata = response.trailing_metadata()
+            # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
+            metadata = (
+                dict([(k, str(v)) for k, v in response_metadata])
+                if response_metadata
+                else None
+            )
+            result = response.result()
+            if isinstance(result, proto.Message):
+                response_payload = type(result).to_json(result)
+            elif isinstance(result, google.protobuf.message.Message):
+                response_payload = MessageToJson(result)
+            else:
+                response_payload = f"{type(result).__name__}: {pickle.dumps(result)}"
+            grpc_response = {
+                "payload": response_payload,
+                "metadata": metadata,
+                "status": "OK",
+            }
+            _LOGGER.debug(
+                f"Received response for {client_call_details.method}.",
+                extra={
+                    "serviceName": "google.cloud.baremetalsolution.v2.BareMetalSolution",
+                    "rpcName": client_call_details.method,
+                    "response": grpc_response,
+                    "metadata": grpc_response["metadata"],
+                },
+            )
+        return response
 
 
 class BareMetalSolutionGrpcTransport(BareMetalSolutionTransport):
@@ -208,7 +289,12 @@ class BareMetalSolutionGrpcTransport(BareMetalSolutionTransport):
                 ],
             )
 
-        # Wrap messages. This must be done after self._grpc_channel exists
+        self._interceptor = _LoggingClientInterceptor()
+        self._logged_channel = grpc.intercept_channel(
+            self._grpc_channel, self._interceptor
+        )
+
+        # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
     @classmethod
@@ -272,7 +358,9 @@ class BareMetalSolutionGrpcTransport(BareMetalSolutionTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsClient(self.grpc_channel)
+            self._operations_client = operations_v1.OperationsClient(
+                self._logged_channel
+            )
 
         # Return the client from cache.
         return self._operations_client
@@ -296,7 +384,7 @@ class BareMetalSolutionGrpcTransport(BareMetalSolutionTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_instances" not in self._stubs:
-            self._stubs["list_instances"] = self.grpc_channel.unary_unary(
+            self._stubs["list_instances"] = self._logged_channel.unary_unary(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/ListInstances",
                 request_serializer=instance.ListInstancesRequest.serialize,
                 response_deserializer=instance.ListInstancesResponse.deserialize,
@@ -322,7 +410,7 @@ class BareMetalSolutionGrpcTransport(BareMetalSolutionTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_instance" not in self._stubs:
-            self._stubs["get_instance"] = self.grpc_channel.unary_unary(
+            self._stubs["get_instance"] = self._logged_channel.unary_unary(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/GetInstance",
                 request_serializer=instance.GetInstanceRequest.serialize,
                 response_deserializer=instance.Instance.deserialize,
@@ -348,7 +436,7 @@ class BareMetalSolutionGrpcTransport(BareMetalSolutionTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_instance" not in self._stubs:
-            self._stubs["update_instance"] = self.grpc_channel.unary_unary(
+            self._stubs["update_instance"] = self._logged_channel.unary_unary(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/UpdateInstance",
                 request_serializer=gcb_instance.UpdateInstanceRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -376,7 +464,7 @@ class BareMetalSolutionGrpcTransport(BareMetalSolutionTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "rename_instance" not in self._stubs:
-            self._stubs["rename_instance"] = self.grpc_channel.unary_unary(
+            self._stubs["rename_instance"] = self._logged_channel.unary_unary(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/RenameInstance",
                 request_serializer=instance.RenameInstanceRequest.serialize,
                 response_deserializer=instance.Instance.deserialize,
@@ -404,7 +492,7 @@ class BareMetalSolutionGrpcTransport(BareMetalSolutionTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "reset_instance" not in self._stubs:
-            self._stubs["reset_instance"] = self.grpc_channel.unary_unary(
+            self._stubs["reset_instance"] = self._logged_channel.unary_unary(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/ResetInstance",
                 request_serializer=instance.ResetInstanceRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -430,7 +518,7 @@ class BareMetalSolutionGrpcTransport(BareMetalSolutionTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "start_instance" not in self._stubs:
-            self._stubs["start_instance"] = self.grpc_channel.unary_unary(
+            self._stubs["start_instance"] = self._logged_channel.unary_unary(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/StartInstance",
                 request_serializer=instance.StartInstanceRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -456,7 +544,7 @@ class BareMetalSolutionGrpcTransport(BareMetalSolutionTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "stop_instance" not in self._stubs:
-            self._stubs["stop_instance"] = self.grpc_channel.unary_unary(
+            self._stubs["stop_instance"] = self._logged_channel.unary_unary(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/StopInstance",
                 request_serializer=instance.StopInstanceRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -488,7 +576,7 @@ class BareMetalSolutionGrpcTransport(BareMetalSolutionTransport):
         if "enable_interactive_serial_console" not in self._stubs:
             self._stubs[
                 "enable_interactive_serial_console"
-            ] = self.grpc_channel.unary_unary(
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/EnableInteractiveSerialConsole",
                 request_serializer=instance.EnableInteractiveSerialConsoleRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -520,7 +608,7 @@ class BareMetalSolutionGrpcTransport(BareMetalSolutionTransport):
         if "disable_interactive_serial_console" not in self._stubs:
             self._stubs[
                 "disable_interactive_serial_console"
-            ] = self.grpc_channel.unary_unary(
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/DisableInteractiveSerialConsole",
                 request_serializer=instance.DisableInteractiveSerialConsoleRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -546,7 +634,7 @@ class BareMetalSolutionGrpcTransport(BareMetalSolutionTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "detach_lun" not in self._stubs:
-            self._stubs["detach_lun"] = self.grpc_channel.unary_unary(
+            self._stubs["detach_lun"] = self._logged_channel.unary_unary(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/DetachLun",
                 request_serializer=gcb_instance.DetachLunRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -574,7 +662,7 @@ class BareMetalSolutionGrpcTransport(BareMetalSolutionTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_ssh_keys" not in self._stubs:
-            self._stubs["list_ssh_keys"] = self.grpc_channel.unary_unary(
+            self._stubs["list_ssh_keys"] = self._logged_channel.unary_unary(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/ListSSHKeys",
                 request_serializer=ssh_key.ListSSHKeysRequest.serialize,
                 response_deserializer=ssh_key.ListSSHKeysResponse.deserialize,
@@ -601,7 +689,7 @@ class BareMetalSolutionGrpcTransport(BareMetalSolutionTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_ssh_key" not in self._stubs:
-            self._stubs["create_ssh_key"] = self.grpc_channel.unary_unary(
+            self._stubs["create_ssh_key"] = self._logged_channel.unary_unary(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/CreateSSHKey",
                 request_serializer=gcb_ssh_key.CreateSSHKeyRequest.serialize,
                 response_deserializer=gcb_ssh_key.SSHKey.deserialize,
@@ -628,7 +716,7 @@ class BareMetalSolutionGrpcTransport(BareMetalSolutionTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_ssh_key" not in self._stubs:
-            self._stubs["delete_ssh_key"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_ssh_key"] = self._logged_channel.unary_unary(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/DeleteSSHKey",
                 request_serializer=ssh_key.DeleteSSHKeyRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -654,7 +742,7 @@ class BareMetalSolutionGrpcTransport(BareMetalSolutionTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_volumes" not in self._stubs:
-            self._stubs["list_volumes"] = self.grpc_channel.unary_unary(
+            self._stubs["list_volumes"] = self._logged_channel.unary_unary(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/ListVolumes",
                 request_serializer=volume.ListVolumesRequest.serialize,
                 response_deserializer=volume.ListVolumesResponse.deserialize,
@@ -678,7 +766,7 @@ class BareMetalSolutionGrpcTransport(BareMetalSolutionTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_volume" not in self._stubs:
-            self._stubs["get_volume"] = self.grpc_channel.unary_unary(
+            self._stubs["get_volume"] = self._logged_channel.unary_unary(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/GetVolume",
                 request_serializer=volume.GetVolumeRequest.serialize,
                 response_deserializer=volume.Volume.deserialize,
@@ -704,7 +792,7 @@ class BareMetalSolutionGrpcTransport(BareMetalSolutionTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_volume" not in self._stubs:
-            self._stubs["update_volume"] = self.grpc_channel.unary_unary(
+            self._stubs["update_volume"] = self._logged_channel.unary_unary(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/UpdateVolume",
                 request_serializer=gcb_volume.UpdateVolumeRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -730,7 +818,7 @@ class BareMetalSolutionGrpcTransport(BareMetalSolutionTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "rename_volume" not in self._stubs:
-            self._stubs["rename_volume"] = self.grpc_channel.unary_unary(
+            self._stubs["rename_volume"] = self._logged_channel.unary_unary(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/RenameVolume",
                 request_serializer=volume.RenameVolumeRequest.serialize,
                 response_deserializer=volume.Volume.deserialize,
@@ -757,7 +845,7 @@ class BareMetalSolutionGrpcTransport(BareMetalSolutionTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "evict_volume" not in self._stubs:
-            self._stubs["evict_volume"] = self.grpc_channel.unary_unary(
+            self._stubs["evict_volume"] = self._logged_channel.unary_unary(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/EvictVolume",
                 request_serializer=volume.EvictVolumeRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -783,7 +871,7 @@ class BareMetalSolutionGrpcTransport(BareMetalSolutionTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "resize_volume" not in self._stubs:
-            self._stubs["resize_volume"] = self.grpc_channel.unary_unary(
+            self._stubs["resize_volume"] = self._logged_channel.unary_unary(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/ResizeVolume",
                 request_serializer=gcb_volume.ResizeVolumeRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -809,7 +897,7 @@ class BareMetalSolutionGrpcTransport(BareMetalSolutionTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_networks" not in self._stubs:
-            self._stubs["list_networks"] = self.grpc_channel.unary_unary(
+            self._stubs["list_networks"] = self._logged_channel.unary_unary(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/ListNetworks",
                 request_serializer=network.ListNetworksRequest.serialize,
                 response_deserializer=network.ListNetworksResponse.deserialize,
@@ -837,7 +925,7 @@ class BareMetalSolutionGrpcTransport(BareMetalSolutionTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_network_usage" not in self._stubs:
-            self._stubs["list_network_usage"] = self.grpc_channel.unary_unary(
+            self._stubs["list_network_usage"] = self._logged_channel.unary_unary(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/ListNetworkUsage",
                 request_serializer=network.ListNetworkUsageRequest.serialize,
                 response_deserializer=network.ListNetworkUsageResponse.deserialize,
@@ -861,7 +949,7 @@ class BareMetalSolutionGrpcTransport(BareMetalSolutionTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_network" not in self._stubs:
-            self._stubs["get_network"] = self.grpc_channel.unary_unary(
+            self._stubs["get_network"] = self._logged_channel.unary_unary(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/GetNetwork",
                 request_serializer=network.GetNetworkRequest.serialize,
                 response_deserializer=network.Network.deserialize,
@@ -887,7 +975,7 @@ class BareMetalSolutionGrpcTransport(BareMetalSolutionTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_network" not in self._stubs:
-            self._stubs["update_network"] = self.grpc_channel.unary_unary(
+            self._stubs["update_network"] = self._logged_channel.unary_unary(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/UpdateNetwork",
                 request_serializer=gcb_network.UpdateNetworkRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -917,7 +1005,7 @@ class BareMetalSolutionGrpcTransport(BareMetalSolutionTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_volume_snapshot" not in self._stubs:
-            self._stubs["create_volume_snapshot"] = self.grpc_channel.unary_unary(
+            self._stubs["create_volume_snapshot"] = self._logged_channel.unary_unary(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/CreateVolumeSnapshot",
                 request_serializer=gcb_volume_snapshot.CreateVolumeSnapshotRequest.serialize,
                 response_deserializer=gcb_volume_snapshot.VolumeSnapshot.deserialize,
@@ -946,7 +1034,7 @@ class BareMetalSolutionGrpcTransport(BareMetalSolutionTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "restore_volume_snapshot" not in self._stubs:
-            self._stubs["restore_volume_snapshot"] = self.grpc_channel.unary_unary(
+            self._stubs["restore_volume_snapshot"] = self._logged_channel.unary_unary(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/RestoreVolumeSnapshot",
                 request_serializer=gcb_volume_snapshot.RestoreVolumeSnapshotRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -973,7 +1061,7 @@ class BareMetalSolutionGrpcTransport(BareMetalSolutionTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_volume_snapshot" not in self._stubs:
-            self._stubs["delete_volume_snapshot"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_volume_snapshot"] = self._logged_channel.unary_unary(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/DeleteVolumeSnapshot",
                 request_serializer=volume_snapshot.DeleteVolumeSnapshotRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -1002,7 +1090,7 @@ class BareMetalSolutionGrpcTransport(BareMetalSolutionTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_volume_snapshot" not in self._stubs:
-            self._stubs["get_volume_snapshot"] = self.grpc_channel.unary_unary(
+            self._stubs["get_volume_snapshot"] = self._logged_channel.unary_unary(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/GetVolumeSnapshot",
                 request_serializer=volume_snapshot.GetVolumeSnapshotRequest.serialize,
                 response_deserializer=volume_snapshot.VolumeSnapshot.deserialize,
@@ -1033,7 +1121,7 @@ class BareMetalSolutionGrpcTransport(BareMetalSolutionTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_volume_snapshots" not in self._stubs:
-            self._stubs["list_volume_snapshots"] = self.grpc_channel.unary_unary(
+            self._stubs["list_volume_snapshots"] = self._logged_channel.unary_unary(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/ListVolumeSnapshots",
                 request_serializer=volume_snapshot.ListVolumeSnapshotsRequest.serialize,
                 response_deserializer=volume_snapshot.ListVolumeSnapshotsResponse.deserialize,
@@ -1058,7 +1146,7 @@ class BareMetalSolutionGrpcTransport(BareMetalSolutionTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_lun" not in self._stubs:
-            self._stubs["get_lun"] = self.grpc_channel.unary_unary(
+            self._stubs["get_lun"] = self._logged_channel.unary_unary(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/GetLun",
                 request_serializer=lun.GetLunRequest.serialize,
                 response_deserializer=lun.Lun.deserialize,
@@ -1082,7 +1170,7 @@ class BareMetalSolutionGrpcTransport(BareMetalSolutionTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_luns" not in self._stubs:
-            self._stubs["list_luns"] = self.grpc_channel.unary_unary(
+            self._stubs["list_luns"] = self._logged_channel.unary_unary(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/ListLuns",
                 request_serializer=lun.ListLunsRequest.serialize,
                 response_deserializer=lun.ListLunsResponse.deserialize,
@@ -1107,7 +1195,7 @@ class BareMetalSolutionGrpcTransport(BareMetalSolutionTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "evict_lun" not in self._stubs:
-            self._stubs["evict_lun"] = self.grpc_channel.unary_unary(
+            self._stubs["evict_lun"] = self._logged_channel.unary_unary(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/EvictLun",
                 request_serializer=lun.EvictLunRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1133,7 +1221,7 @@ class BareMetalSolutionGrpcTransport(BareMetalSolutionTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_nfs_share" not in self._stubs:
-            self._stubs["get_nfs_share"] = self.grpc_channel.unary_unary(
+            self._stubs["get_nfs_share"] = self._logged_channel.unary_unary(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/GetNfsShare",
                 request_serializer=nfs_share.GetNfsShareRequest.serialize,
                 response_deserializer=nfs_share.NfsShare.deserialize,
@@ -1159,7 +1247,7 @@ class BareMetalSolutionGrpcTransport(BareMetalSolutionTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_nfs_shares" not in self._stubs:
-            self._stubs["list_nfs_shares"] = self.grpc_channel.unary_unary(
+            self._stubs["list_nfs_shares"] = self._logged_channel.unary_unary(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/ListNfsShares",
                 request_serializer=nfs_share.ListNfsSharesRequest.serialize,
                 response_deserializer=nfs_share.ListNfsSharesResponse.deserialize,
@@ -1185,7 +1273,7 @@ class BareMetalSolutionGrpcTransport(BareMetalSolutionTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_nfs_share" not in self._stubs:
-            self._stubs["update_nfs_share"] = self.grpc_channel.unary_unary(
+            self._stubs["update_nfs_share"] = self._logged_channel.unary_unary(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/UpdateNfsShare",
                 request_serializer=gcb_nfs_share.UpdateNfsShareRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1211,7 +1299,7 @@ class BareMetalSolutionGrpcTransport(BareMetalSolutionTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_nfs_share" not in self._stubs:
-            self._stubs["create_nfs_share"] = self.grpc_channel.unary_unary(
+            self._stubs["create_nfs_share"] = self._logged_channel.unary_unary(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/CreateNfsShare",
                 request_serializer=gcb_nfs_share.CreateNfsShareRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1239,7 +1327,7 @@ class BareMetalSolutionGrpcTransport(BareMetalSolutionTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "rename_nfs_share" not in self._stubs:
-            self._stubs["rename_nfs_share"] = self.grpc_channel.unary_unary(
+            self._stubs["rename_nfs_share"] = self._logged_channel.unary_unary(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/RenameNfsShare",
                 request_serializer=nfs_share.RenameNfsShareRequest.serialize,
                 response_deserializer=nfs_share.NfsShare.deserialize,
@@ -1266,7 +1354,7 @@ class BareMetalSolutionGrpcTransport(BareMetalSolutionTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_nfs_share" not in self._stubs:
-            self._stubs["delete_nfs_share"] = self.grpc_channel.unary_unary(
+            self._stubs["delete_nfs_share"] = self._logged_channel.unary_unary(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/DeleteNfsShare",
                 request_serializer=nfs_share.DeleteNfsShareRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1296,7 +1384,7 @@ class BareMetalSolutionGrpcTransport(BareMetalSolutionTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_provisioning_quotas" not in self._stubs:
-            self._stubs["list_provisioning_quotas"] = self.grpc_channel.unary_unary(
+            self._stubs["list_provisioning_quotas"] = self._logged_channel.unary_unary(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/ListProvisioningQuotas",
                 request_serializer=provisioning.ListProvisioningQuotasRequest.serialize,
                 response_deserializer=provisioning.ListProvisioningQuotasResponse.deserialize,
@@ -1326,7 +1414,9 @@ class BareMetalSolutionGrpcTransport(BareMetalSolutionTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "submit_provisioning_config" not in self._stubs:
-            self._stubs["submit_provisioning_config"] = self.grpc_channel.unary_unary(
+            self._stubs[
+                "submit_provisioning_config"
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/SubmitProvisioningConfig",
                 request_serializer=provisioning.SubmitProvisioningConfigRequest.serialize,
                 response_deserializer=provisioning.SubmitProvisioningConfigResponse.deserialize,
@@ -1354,7 +1444,7 @@ class BareMetalSolutionGrpcTransport(BareMetalSolutionTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_provisioning_config" not in self._stubs:
-            self._stubs["get_provisioning_config"] = self.grpc_channel.unary_unary(
+            self._stubs["get_provisioning_config"] = self._logged_channel.unary_unary(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/GetProvisioningConfig",
                 request_serializer=provisioning.GetProvisioningConfigRequest.serialize,
                 response_deserializer=provisioning.ProvisioningConfig.deserialize,
@@ -1382,7 +1472,9 @@ class BareMetalSolutionGrpcTransport(BareMetalSolutionTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_provisioning_config" not in self._stubs:
-            self._stubs["create_provisioning_config"] = self.grpc_channel.unary_unary(
+            self._stubs[
+                "create_provisioning_config"
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/CreateProvisioningConfig",
                 request_serializer=provisioning.CreateProvisioningConfigRequest.serialize,
                 response_deserializer=provisioning.ProvisioningConfig.deserialize,
@@ -1410,7 +1502,9 @@ class BareMetalSolutionGrpcTransport(BareMetalSolutionTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_provisioning_config" not in self._stubs:
-            self._stubs["update_provisioning_config"] = self.grpc_channel.unary_unary(
+            self._stubs[
+                "update_provisioning_config"
+            ] = self._logged_channel.unary_unary(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/UpdateProvisioningConfig",
                 request_serializer=provisioning.UpdateProvisioningConfigRequest.serialize,
                 response_deserializer=provisioning.ProvisioningConfig.deserialize,
@@ -1438,7 +1532,7 @@ class BareMetalSolutionGrpcTransport(BareMetalSolutionTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "rename_network" not in self._stubs:
-            self._stubs["rename_network"] = self.grpc_channel.unary_unary(
+            self._stubs["rename_network"] = self._logged_channel.unary_unary(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/RenameNetwork",
                 request_serializer=network.RenameNetworkRequest.serialize,
                 response_deserializer=network.Network.deserialize,
@@ -1465,7 +1559,7 @@ class BareMetalSolutionGrpcTransport(BareMetalSolutionTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_os_images" not in self._stubs:
-            self._stubs["list_os_images"] = self.grpc_channel.unary_unary(
+            self._stubs["list_os_images"] = self._logged_channel.unary_unary(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/ListOSImages",
                 request_serializer=osimage.ListOSImagesRequest.serialize,
                 response_deserializer=osimage.ListOSImagesResponse.deserialize,
@@ -1473,7 +1567,7 @@ class BareMetalSolutionGrpcTransport(BareMetalSolutionTransport):
         return self._stubs["list_os_images"]
 
     def close(self):
-        self.grpc_channel.close()
+        self._logged_channel.close()
 
     @property
     def list_locations(
@@ -1487,7 +1581,7 @@ class BareMetalSolutionGrpcTransport(BareMetalSolutionTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_locations" not in self._stubs:
-            self._stubs["list_locations"] = self.grpc_channel.unary_unary(
+            self._stubs["list_locations"] = self._logged_channel.unary_unary(
                 "/google.cloud.location.Locations/ListLocations",
                 request_serializer=locations_pb2.ListLocationsRequest.SerializeToString,
                 response_deserializer=locations_pb2.ListLocationsResponse.FromString,
@@ -1504,7 +1598,7 @@ class BareMetalSolutionGrpcTransport(BareMetalSolutionTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_location" not in self._stubs:
-            self._stubs["get_location"] = self.grpc_channel.unary_unary(
+            self._stubs["get_location"] = self._logged_channel.unary_unary(
                 "/google.cloud.location.Locations/GetLocation",
                 request_serializer=locations_pb2.GetLocationRequest.SerializeToString,
                 response_deserializer=locations_pb2.Location.FromString,

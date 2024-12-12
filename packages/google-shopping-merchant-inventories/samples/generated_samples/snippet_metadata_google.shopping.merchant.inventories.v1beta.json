@@ -8,7 +8,7 @@
     ],
     "language": "PYTHON",
     "name": "google-shopping-merchant-inventories",
-    "version": "0.1.11"
+    "version": "0.1.0"
   },
   "snippets": [
     {
@@ -47,7 +47,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "shortName": "delete_local_inventory"
@@ -124,7 +124,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "shortName": "delete_local_inventory"
@@ -198,7 +198,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.shopping.merchant_inventories_v1beta.types.LocalInventory",
@@ -274,7 +274,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.shopping.merchant_inventories_v1beta.types.LocalInventory",
@@ -355,7 +355,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.shopping.merchant_inventories_v1beta.services.local_inventory_service.pagers.ListLocalInventoriesAsyncPager",
@@ -435,7 +435,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.shopping.merchant_inventories_v1beta.services.local_inventory_service.pagers.ListLocalInventoriesPager",
@@ -516,7 +516,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "shortName": "delete_regional_inventory"
@@ -593,7 +593,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "shortName": "delete_regional_inventory"
@@ -667,7 +667,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.shopping.merchant_inventories_v1beta.types.RegionalInventory",
@@ -743,7 +743,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.shopping.merchant_inventories_v1beta.types.RegionalInventory",
@@ -824,7 +824,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.shopping.merchant_inventories_v1beta.services.regional_inventory_service.pagers.ListRegionalInventoriesAsyncPager",
@@ -904,7 +904,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.shopping.merchant_inventories_v1beta.services.regional_inventory_service.pagers.ListRegionalInventoriesPager",

@@ -2951,6 +2951,7 @@ def test_get_user_rest_required_fields(request_type=user.GetUserRequest):
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_user(request)
 
@@ -2996,6 +2997,7 @@ def test_get_user_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_user(**mock_args)
 
@@ -3134,6 +3136,7 @@ def test_create_user_rest_required_fields(request_type=gsma_user.CreateUserReque
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_user(request)
 
@@ -3195,6 +3198,7 @@ def test_create_user_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_user(**mock_args)
 
@@ -3321,6 +3325,7 @@ def test_delete_user_rest_required_fields(request_type=user.DeleteUserRequest):
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_user(request)
 
@@ -3364,6 +3369,7 @@ def test_delete_user_rest_flattened():
         json_return_value = ""
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_user(**mock_args)
 
@@ -3490,6 +3496,7 @@ def test_update_user_rest_required_fields(request_type=gsma_user.UpdateUserReque
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_user(request)
 
@@ -3544,6 +3551,7 @@ def test_update_user_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_user(**mock_args)
 
@@ -3681,6 +3689,7 @@ def test_list_users_rest_required_fields(request_type=user.ListUsersRequest):
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_users(request)
 
@@ -3734,6 +3743,7 @@ def test_list_users_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_users(**mock_args)
 
@@ -4211,6 +4221,7 @@ def test_get_user_rest_bad_request(request_type=user.GetUserRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_user(request)
 
 
@@ -4248,6 +4259,7 @@ def test_get_user_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_user(request)
 
     # Establish that the response is the type that we expect.
@@ -4288,6 +4300,7 @@ def test_get_user_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = user.User.to_json(user.User())
         req.return_value.content = return_value
 
@@ -4330,6 +4343,7 @@ def test_create_user_rest_bad_request(request_type=gsma_user.CreateUserRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_user(request)
 
 
@@ -4435,6 +4449,7 @@ def test_create_user_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_user(request)
 
     # Establish that the response is the type that we expect.
@@ -4475,6 +4490,7 @@ def test_create_user_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = gsma_user.User.to_json(gsma_user.User())
         req.return_value.content = return_value
 
@@ -4517,6 +4533,7 @@ def test_delete_user_rest_bad_request(request_type=user.DeleteUserRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_user(request)
 
 
@@ -4547,6 +4564,7 @@ def test_delete_user_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_user(request)
 
     # Establish that the response is the type that we expect.
@@ -4581,6 +4599,7 @@ def test_delete_user_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = user.DeleteUserRequest()
         metadata = [
@@ -4619,6 +4638,7 @@ def test_update_user_rest_bad_request(request_type=gsma_user.UpdateUserRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_user(request)
 
 
@@ -4728,6 +4748,7 @@ def test_update_user_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_user(request)
 
     # Establish that the response is the type that we expect.
@@ -4768,6 +4789,7 @@ def test_update_user_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = gsma_user.User.to_json(gsma_user.User())
         req.return_value.content = return_value
 
@@ -4810,6 +4832,7 @@ def test_list_users_rest_bad_request(request_type=user.ListUsersRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_users(request)
 
 
@@ -4845,6 +4868,7 @@ def test_list_users_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_users(request)
 
     # Establish that the response is the type that we expect.
@@ -4883,6 +4907,7 @@ def test_list_users_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = user.ListUsersResponse.to_json(user.ListUsersResponse())
         req.return_value.content = return_value
 

@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -39,6 +39,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -467,8 +475,8 @@ class DlpServiceRestInterceptor:
     def pre_activate_job_trigger(
         self,
         request: dlp.ActivateJobTriggerRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[dlp.ActivateJobTriggerRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[dlp.ActivateJobTriggerRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for activate_job_trigger
 
         Override in a subclass to manipulate the request or metadata
@@ -486,8 +494,10 @@ class DlpServiceRestInterceptor:
         return response
 
     def pre_cancel_dlp_job(
-        self, request: dlp.CancelDlpJobRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[dlp.CancelDlpJobRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: dlp.CancelDlpJobRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[dlp.CancelDlpJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_dlp_job
 
         Override in a subclass to manipulate the request or metadata
@@ -496,8 +506,10 @@ class DlpServiceRestInterceptor:
         return request, metadata
 
     def pre_create_connection(
-        self, request: dlp.CreateConnectionRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[dlp.CreateConnectionRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: dlp.CreateConnectionRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[dlp.CreateConnectionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_connection
 
         Override in a subclass to manipulate the request or metadata
@@ -517,8 +529,10 @@ class DlpServiceRestInterceptor:
     def pre_create_deidentify_template(
         self,
         request: dlp.CreateDeidentifyTemplateRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[dlp.CreateDeidentifyTemplateRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        dlp.CreateDeidentifyTemplateRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_deidentify_template
 
         Override in a subclass to manipulate the request or metadata
@@ -540,8 +554,10 @@ class DlpServiceRestInterceptor:
     def pre_create_discovery_config(
         self,
         request: dlp.CreateDiscoveryConfigRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[dlp.CreateDiscoveryConfigRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        dlp.CreateDiscoveryConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_discovery_config
 
         Override in a subclass to manipulate the request or metadata
@@ -561,8 +577,10 @@ class DlpServiceRestInterceptor:
         return response
 
     def pre_create_dlp_job(
-        self, request: dlp.CreateDlpJobRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[dlp.CreateDlpJobRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: dlp.CreateDlpJobRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[dlp.CreateDlpJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_dlp_job
 
         Override in a subclass to manipulate the request or metadata
@@ -582,8 +600,10 @@ class DlpServiceRestInterceptor:
     def pre_create_inspect_template(
         self,
         request: dlp.CreateInspectTemplateRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[dlp.CreateInspectTemplateRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        dlp.CreateInspectTemplateRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_inspect_template
 
         Override in a subclass to manipulate the request or metadata
@@ -603,8 +623,10 @@ class DlpServiceRestInterceptor:
         return response
 
     def pre_create_job_trigger(
-        self, request: dlp.CreateJobTriggerRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[dlp.CreateJobTriggerRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: dlp.CreateJobTriggerRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[dlp.CreateJobTriggerRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_job_trigger
 
         Override in a subclass to manipulate the request or metadata
@@ -624,8 +646,10 @@ class DlpServiceRestInterceptor:
     def pre_create_stored_info_type(
         self,
         request: dlp.CreateStoredInfoTypeRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[dlp.CreateStoredInfoTypeRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        dlp.CreateStoredInfoTypeRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_stored_info_type
 
         Override in a subclass to manipulate the request or metadata
@@ -645,8 +669,10 @@ class DlpServiceRestInterceptor:
         return response
 
     def pre_deidentify_content(
-        self, request: dlp.DeidentifyContentRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[dlp.DeidentifyContentRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: dlp.DeidentifyContentRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[dlp.DeidentifyContentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for deidentify_content
 
         Override in a subclass to manipulate the request or metadata
@@ -666,8 +692,10 @@ class DlpServiceRestInterceptor:
         return response
 
     def pre_delete_connection(
-        self, request: dlp.DeleteConnectionRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[dlp.DeleteConnectionRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: dlp.DeleteConnectionRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[dlp.DeleteConnectionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_connection
 
         Override in a subclass to manipulate the request or metadata
@@ -678,8 +706,10 @@ class DlpServiceRestInterceptor:
     def pre_delete_deidentify_template(
         self,
         request: dlp.DeleteDeidentifyTemplateRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[dlp.DeleteDeidentifyTemplateRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        dlp.DeleteDeidentifyTemplateRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_deidentify_template
 
         Override in a subclass to manipulate the request or metadata
@@ -690,8 +720,10 @@ class DlpServiceRestInterceptor:
     def pre_delete_discovery_config(
         self,
         request: dlp.DeleteDiscoveryConfigRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[dlp.DeleteDiscoveryConfigRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        dlp.DeleteDiscoveryConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_discovery_config
 
         Override in a subclass to manipulate the request or metadata
@@ -700,8 +732,10 @@ class DlpServiceRestInterceptor:
         return request, metadata
 
     def pre_delete_dlp_job(
-        self, request: dlp.DeleteDlpJobRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[dlp.DeleteDlpJobRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: dlp.DeleteDlpJobRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[dlp.DeleteDlpJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_dlp_job
 
         Override in a subclass to manipulate the request or metadata
@@ -712,8 +746,10 @@ class DlpServiceRestInterceptor:
     def pre_delete_file_store_data_profile(
         self,
         request: dlp.DeleteFileStoreDataProfileRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[dlp.DeleteFileStoreDataProfileRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        dlp.DeleteFileStoreDataProfileRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_file_store_data_profile
 
         Override in a subclass to manipulate the request or metadata
@@ -724,8 +760,10 @@ class DlpServiceRestInterceptor:
     def pre_delete_inspect_template(
         self,
         request: dlp.DeleteInspectTemplateRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[dlp.DeleteInspectTemplateRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        dlp.DeleteInspectTemplateRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_inspect_template
 
         Override in a subclass to manipulate the request or metadata
@@ -734,8 +772,10 @@ class DlpServiceRestInterceptor:
         return request, metadata
 
     def pre_delete_job_trigger(
-        self, request: dlp.DeleteJobTriggerRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[dlp.DeleteJobTriggerRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: dlp.DeleteJobTriggerRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[dlp.DeleteJobTriggerRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_job_trigger
 
         Override in a subclass to manipulate the request or metadata
@@ -746,8 +786,10 @@ class DlpServiceRestInterceptor:
     def pre_delete_stored_info_type(
         self,
         request: dlp.DeleteStoredInfoTypeRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[dlp.DeleteStoredInfoTypeRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        dlp.DeleteStoredInfoTypeRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_stored_info_type
 
         Override in a subclass to manipulate the request or metadata
@@ -758,8 +800,10 @@ class DlpServiceRestInterceptor:
     def pre_delete_table_data_profile(
         self,
         request: dlp.DeleteTableDataProfileRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[dlp.DeleteTableDataProfileRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        dlp.DeleteTableDataProfileRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_table_data_profile
 
         Override in a subclass to manipulate the request or metadata
@@ -768,8 +812,10 @@ class DlpServiceRestInterceptor:
         return request, metadata
 
     def pre_finish_dlp_job(
-        self, request: dlp.FinishDlpJobRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[dlp.FinishDlpJobRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: dlp.FinishDlpJobRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[dlp.FinishDlpJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for finish_dlp_job
 
         Override in a subclass to manipulate the request or metadata
@@ -780,8 +826,10 @@ class DlpServiceRestInterceptor:
     def pre_get_column_data_profile(
         self,
         request: dlp.GetColumnDataProfileRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[dlp.GetColumnDataProfileRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        dlp.GetColumnDataProfileRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_column_data_profile
 
         Override in a subclass to manipulate the request or metadata
@@ -801,8 +849,10 @@ class DlpServiceRestInterceptor:
         return response
 
     def pre_get_connection(
-        self, request: dlp.GetConnectionRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[dlp.GetConnectionRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: dlp.GetConnectionRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[dlp.GetConnectionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_connection
 
         Override in a subclass to manipulate the request or metadata
@@ -822,8 +872,10 @@ class DlpServiceRestInterceptor:
     def pre_get_deidentify_template(
         self,
         request: dlp.GetDeidentifyTemplateRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[dlp.GetDeidentifyTemplateRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        dlp.GetDeidentifyTemplateRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_deidentify_template
 
         Override in a subclass to manipulate the request or metadata
@@ -845,8 +897,8 @@ class DlpServiceRestInterceptor:
     def pre_get_discovery_config(
         self,
         request: dlp.GetDiscoveryConfigRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[dlp.GetDiscoveryConfigRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[dlp.GetDiscoveryConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_discovery_config
 
         Override in a subclass to manipulate the request or metadata
@@ -866,8 +918,10 @@ class DlpServiceRestInterceptor:
         return response
 
     def pre_get_dlp_job(
-        self, request: dlp.GetDlpJobRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[dlp.GetDlpJobRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: dlp.GetDlpJobRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[dlp.GetDlpJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_dlp_job
 
         Override in a subclass to manipulate the request or metadata
@@ -887,8 +941,10 @@ class DlpServiceRestInterceptor:
     def pre_get_file_store_data_profile(
         self,
         request: dlp.GetFileStoreDataProfileRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[dlp.GetFileStoreDataProfileRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        dlp.GetFileStoreDataProfileRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_file_store_data_profile
 
         Override in a subclass to manipulate the request or metadata
@@ -910,8 +966,8 @@ class DlpServiceRestInterceptor:
     def pre_get_inspect_template(
         self,
         request: dlp.GetInspectTemplateRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[dlp.GetInspectTemplateRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[dlp.GetInspectTemplateRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_inspect_template
 
         Override in a subclass to manipulate the request or metadata
@@ -931,8 +987,10 @@ class DlpServiceRestInterceptor:
         return response
 
     def pre_get_job_trigger(
-        self, request: dlp.GetJobTriggerRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[dlp.GetJobTriggerRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: dlp.GetJobTriggerRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[dlp.GetJobTriggerRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_job_trigger
 
         Override in a subclass to manipulate the request or metadata
@@ -952,8 +1010,10 @@ class DlpServiceRestInterceptor:
     def pre_get_project_data_profile(
         self,
         request: dlp.GetProjectDataProfileRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[dlp.GetProjectDataProfileRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        dlp.GetProjectDataProfileRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_project_data_profile
 
         Override in a subclass to manipulate the request or metadata
@@ -973,8 +1033,10 @@ class DlpServiceRestInterceptor:
         return response
 
     def pre_get_stored_info_type(
-        self, request: dlp.GetStoredInfoTypeRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[dlp.GetStoredInfoTypeRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: dlp.GetStoredInfoTypeRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[dlp.GetStoredInfoTypeRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_stored_info_type
 
         Override in a subclass to manipulate the request or metadata
@@ -996,8 +1058,8 @@ class DlpServiceRestInterceptor:
     def pre_get_table_data_profile(
         self,
         request: dlp.GetTableDataProfileRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[dlp.GetTableDataProfileRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[dlp.GetTableDataProfileRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_table_data_profile
 
         Override in a subclass to manipulate the request or metadata
@@ -1019,8 +1081,8 @@ class DlpServiceRestInterceptor:
     def pre_hybrid_inspect_dlp_job(
         self,
         request: dlp.HybridInspectDlpJobRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[dlp.HybridInspectDlpJobRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[dlp.HybridInspectDlpJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for hybrid_inspect_dlp_job
 
         Override in a subclass to manipulate the request or metadata
@@ -1042,8 +1104,10 @@ class DlpServiceRestInterceptor:
     def pre_hybrid_inspect_job_trigger(
         self,
         request: dlp.HybridInspectJobTriggerRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[dlp.HybridInspectJobTriggerRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        dlp.HybridInspectJobTriggerRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for hybrid_inspect_job_trigger
 
         Override in a subclass to manipulate the request or metadata
@@ -1063,8 +1127,10 @@ class DlpServiceRestInterceptor:
         return response
 
     def pre_inspect_content(
-        self, request: dlp.InspectContentRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[dlp.InspectContentRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: dlp.InspectContentRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[dlp.InspectContentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for inspect_content
 
         Override in a subclass to manipulate the request or metadata
@@ -1086,8 +1152,10 @@ class DlpServiceRestInterceptor:
     def pre_list_column_data_profiles(
         self,
         request: dlp.ListColumnDataProfilesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[dlp.ListColumnDataProfilesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        dlp.ListColumnDataProfilesRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_column_data_profiles
 
         Override in a subclass to manipulate the request or metadata
@@ -1107,8 +1175,10 @@ class DlpServiceRestInterceptor:
         return response
 
     def pre_list_connections(
-        self, request: dlp.ListConnectionsRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[dlp.ListConnectionsRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: dlp.ListConnectionsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[dlp.ListConnectionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_connections
 
         Override in a subclass to manipulate the request or metadata
@@ -1130,8 +1200,10 @@ class DlpServiceRestInterceptor:
     def pre_list_deidentify_templates(
         self,
         request: dlp.ListDeidentifyTemplatesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[dlp.ListDeidentifyTemplatesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        dlp.ListDeidentifyTemplatesRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_deidentify_templates
 
         Override in a subclass to manipulate the request or metadata
@@ -1153,8 +1225,10 @@ class DlpServiceRestInterceptor:
     def pre_list_discovery_configs(
         self,
         request: dlp.ListDiscoveryConfigsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[dlp.ListDiscoveryConfigsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        dlp.ListDiscoveryConfigsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_discovery_configs
 
         Override in a subclass to manipulate the request or metadata
@@ -1174,8 +1248,10 @@ class DlpServiceRestInterceptor:
         return response
 
     def pre_list_dlp_jobs(
-        self, request: dlp.ListDlpJobsRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[dlp.ListDlpJobsRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: dlp.ListDlpJobsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[dlp.ListDlpJobsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_dlp_jobs
 
         Override in a subclass to manipulate the request or metadata
@@ -1197,8 +1273,10 @@ class DlpServiceRestInterceptor:
     def pre_list_file_store_data_profiles(
         self,
         request: dlp.ListFileStoreDataProfilesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[dlp.ListFileStoreDataProfilesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        dlp.ListFileStoreDataProfilesRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_file_store_data_profiles
 
         Override in a subclass to manipulate the request or metadata
@@ -1218,8 +1296,10 @@ class DlpServiceRestInterceptor:
         return response
 
     def pre_list_info_types(
-        self, request: dlp.ListInfoTypesRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[dlp.ListInfoTypesRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: dlp.ListInfoTypesRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[dlp.ListInfoTypesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_info_types
 
         Override in a subclass to manipulate the request or metadata
@@ -1241,8 +1321,10 @@ class DlpServiceRestInterceptor:
     def pre_list_inspect_templates(
         self,
         request: dlp.ListInspectTemplatesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[dlp.ListInspectTemplatesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        dlp.ListInspectTemplatesRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_inspect_templates
 
         Override in a subclass to manipulate the request or metadata
@@ -1262,8 +1344,10 @@ class DlpServiceRestInterceptor:
         return response
 
     def pre_list_job_triggers(
-        self, request: dlp.ListJobTriggersRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[dlp.ListJobTriggersRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: dlp.ListJobTriggersRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[dlp.ListJobTriggersRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_job_triggers
 
         Override in a subclass to manipulate the request or metadata
@@ -1285,8 +1369,10 @@ class DlpServiceRestInterceptor:
     def pre_list_project_data_profiles(
         self,
         request: dlp.ListProjectDataProfilesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[dlp.ListProjectDataProfilesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        dlp.ListProjectDataProfilesRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_project_data_profiles
 
         Override in a subclass to manipulate the request or metadata
@@ -1308,8 +1394,8 @@ class DlpServiceRestInterceptor:
     def pre_list_stored_info_types(
         self,
         request: dlp.ListStoredInfoTypesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[dlp.ListStoredInfoTypesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[dlp.ListStoredInfoTypesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_stored_info_types
 
         Override in a subclass to manipulate the request or metadata
@@ -1331,8 +1417,10 @@ class DlpServiceRestInterceptor:
     def pre_list_table_data_profiles(
         self,
         request: dlp.ListTableDataProfilesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[dlp.ListTableDataProfilesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        dlp.ListTableDataProfilesRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_table_data_profiles
 
         Override in a subclass to manipulate the request or metadata
@@ -1352,8 +1440,10 @@ class DlpServiceRestInterceptor:
         return response
 
     def pre_redact_image(
-        self, request: dlp.RedactImageRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[dlp.RedactImageRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: dlp.RedactImageRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[dlp.RedactImageRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for redact_image
 
         Override in a subclass to manipulate the request or metadata
@@ -1373,8 +1463,10 @@ class DlpServiceRestInterceptor:
         return response
 
     def pre_reidentify_content(
-        self, request: dlp.ReidentifyContentRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[dlp.ReidentifyContentRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: dlp.ReidentifyContentRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[dlp.ReidentifyContentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for reidentify_content
 
         Override in a subclass to manipulate the request or metadata
@@ -1394,8 +1486,10 @@ class DlpServiceRestInterceptor:
         return response
 
     def pre_search_connections(
-        self, request: dlp.SearchConnectionsRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[dlp.SearchConnectionsRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: dlp.SearchConnectionsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[dlp.SearchConnectionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for search_connections
 
         Override in a subclass to manipulate the request or metadata
@@ -1415,8 +1509,10 @@ class DlpServiceRestInterceptor:
         return response
 
     def pre_update_connection(
-        self, request: dlp.UpdateConnectionRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[dlp.UpdateConnectionRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: dlp.UpdateConnectionRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[dlp.UpdateConnectionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_connection
 
         Override in a subclass to manipulate the request or metadata
@@ -1436,8 +1532,10 @@ class DlpServiceRestInterceptor:
     def pre_update_deidentify_template(
         self,
         request: dlp.UpdateDeidentifyTemplateRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[dlp.UpdateDeidentifyTemplateRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        dlp.UpdateDeidentifyTemplateRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_deidentify_template
 
         Override in a subclass to manipulate the request or metadata
@@ -1459,8 +1557,10 @@ class DlpServiceRestInterceptor:
     def pre_update_discovery_config(
         self,
         request: dlp.UpdateDiscoveryConfigRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[dlp.UpdateDiscoveryConfigRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        dlp.UpdateDiscoveryConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_discovery_config
 
         Override in a subclass to manipulate the request or metadata
@@ -1482,8 +1582,10 @@ class DlpServiceRestInterceptor:
     def pre_update_inspect_template(
         self,
         request: dlp.UpdateInspectTemplateRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[dlp.UpdateInspectTemplateRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        dlp.UpdateInspectTemplateRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_inspect_template
 
         Override in a subclass to manipulate the request or metadata
@@ -1503,8 +1605,10 @@ class DlpServiceRestInterceptor:
         return response
 
     def pre_update_job_trigger(
-        self, request: dlp.UpdateJobTriggerRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[dlp.UpdateJobTriggerRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: dlp.UpdateJobTriggerRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[dlp.UpdateJobTriggerRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_job_trigger
 
         Override in a subclass to manipulate the request or metadata
@@ -1524,8 +1628,10 @@ class DlpServiceRestInterceptor:
     def pre_update_stored_info_type(
         self,
         request: dlp.UpdateStoredInfoTypeRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[dlp.UpdateStoredInfoTypeRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        dlp.UpdateStoredInfoTypeRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_stored_info_type
 
         Override in a subclass to manipulate the request or metadata
@@ -1671,7 +1777,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> dlp.DlpJob:
             r"""Call the activate job trigger method over HTTP.
 
@@ -1682,8 +1788,10 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.dlp.DlpJob:
@@ -1695,6 +1803,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             http_options = (
                 _BaseDlpServiceRestTransport._BaseActivateJobTrigger._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_activate_job_trigger(
                 request, metadata
             )
@@ -1710,6 +1819,33 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             query_params = _BaseDlpServiceRestTransport._BaseActivateJobTrigger._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.privacy.dlp_v2.DlpServiceClient.ActivateJobTrigger",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "ActivateJobTrigger",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DlpServiceRestTransport._ActivateJobTrigger._get_response(
@@ -1732,7 +1868,29 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             pb_resp = dlp.DlpJob.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_activate_job_trigger(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = dlp.DlpJob.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.privacy.dlp_v2.DlpServiceClient.activate_job_trigger",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "ActivateJobTrigger",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CancelDlpJob(
@@ -1770,7 +1928,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the cancel dlp job method over HTTP.
 
@@ -1781,13 +1939,16 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseDlpServiceRestTransport._BaseCancelDlpJob._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_cancel_dlp_job(request, metadata)
             transcoded_request = (
                 _BaseDlpServiceRestTransport._BaseCancelDlpJob._get_transcoded_request(
@@ -1807,6 +1968,33 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.privacy.dlp_v2.DlpServiceClient.CancelDlpJob",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "CancelDlpJob",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DlpServiceRestTransport._CancelDlpJob._get_response(
@@ -1859,7 +2047,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> dlp.Connection:
             r"""Call the create connection method over HTTP.
 
@@ -1869,8 +2057,10 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.dlp.Connection:
@@ -1883,6 +2073,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             http_options = (
                 _BaseDlpServiceRestTransport._BaseCreateConnection._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_connection(
                 request, metadata
             )
@@ -1898,6 +2089,33 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             query_params = _BaseDlpServiceRestTransport._BaseCreateConnection._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.privacy.dlp_v2.DlpServiceClient.CreateConnection",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "CreateConnection",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DlpServiceRestTransport._CreateConnection._get_response(
@@ -1920,7 +2138,29 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             pb_resp = dlp.Connection.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_connection(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = dlp.Connection.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.privacy.dlp_v2.DlpServiceClient.create_connection",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "CreateConnection",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateDeidentifyTemplate(
@@ -1958,7 +2198,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> dlp.DeidentifyTemplate:
             r"""Call the create deidentify
             template method over HTTP.
@@ -1970,8 +2210,10 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.dlp.DeidentifyTemplate:
@@ -1986,6 +2228,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             http_options = (
                 _BaseDlpServiceRestTransport._BaseCreateDeidentifyTemplate._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_deidentify_template(
                 request, metadata
             )
@@ -2001,6 +2244,33 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             query_params = _BaseDlpServiceRestTransport._BaseCreateDeidentifyTemplate._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.privacy.dlp_v2.DlpServiceClient.CreateDeidentifyTemplate",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "CreateDeidentifyTemplate",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DlpServiceRestTransport._CreateDeidentifyTemplate._get_response(
@@ -2023,7 +2293,29 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             pb_resp = dlp.DeidentifyTemplate.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_deidentify_template(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = dlp.DeidentifyTemplate.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.privacy.dlp_v2.DlpServiceClient.create_deidentify_template",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "CreateDeidentifyTemplate",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateDiscoveryConfig(
@@ -2061,7 +2353,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> dlp.DiscoveryConfig:
             r"""Call the create discovery config method over HTTP.
 
@@ -2072,8 +2364,10 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.dlp.DiscoveryConfig:
@@ -2090,6 +2384,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             http_options = (
                 _BaseDlpServiceRestTransport._BaseCreateDiscoveryConfig._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_discovery_config(
                 request, metadata
             )
@@ -2105,6 +2400,33 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             query_params = _BaseDlpServiceRestTransport._BaseCreateDiscoveryConfig._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.privacy.dlp_v2.DlpServiceClient.CreateDiscoveryConfig",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "CreateDiscoveryConfig",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DlpServiceRestTransport._CreateDiscoveryConfig._get_response(
@@ -2127,7 +2449,29 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             pb_resp = dlp.DiscoveryConfig.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_discovery_config(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = dlp.DiscoveryConfig.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.privacy.dlp_v2.DlpServiceClient.create_discovery_config",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "CreateDiscoveryConfig",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateDlpJob(
@@ -2165,7 +2509,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> dlp.DlpJob:
             r"""Call the create dlp job method over HTTP.
 
@@ -2179,8 +2523,10 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.dlp.DlpJob:
@@ -2192,6 +2538,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             http_options = (
                 _BaseDlpServiceRestTransport._BaseCreateDlpJob._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_dlp_job(request, metadata)
             transcoded_request = (
                 _BaseDlpServiceRestTransport._BaseCreateDlpJob._get_transcoded_request(
@@ -2211,6 +2558,33 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.privacy.dlp_v2.DlpServiceClient.CreateDlpJob",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "CreateDlpJob",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DlpServiceRestTransport._CreateDlpJob._get_response(
@@ -2233,7 +2607,29 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             pb_resp = dlp.DlpJob.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_dlp_job(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = dlp.DlpJob.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.privacy.dlp_v2.DlpServiceClient.create_dlp_job",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "CreateDlpJob",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateInspectTemplate(
@@ -2271,7 +2667,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> dlp.InspectTemplate:
             r"""Call the create inspect template method over HTTP.
 
@@ -2282,8 +2678,10 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.dlp.InspectTemplate:
@@ -2300,6 +2698,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             http_options = (
                 _BaseDlpServiceRestTransport._BaseCreateInspectTemplate._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_inspect_template(
                 request, metadata
             )
@@ -2315,6 +2714,33 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             query_params = _BaseDlpServiceRestTransport._BaseCreateInspectTemplate._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.privacy.dlp_v2.DlpServiceClient.CreateInspectTemplate",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "CreateInspectTemplate",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DlpServiceRestTransport._CreateInspectTemplate._get_response(
@@ -2337,7 +2763,29 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             pb_resp = dlp.InspectTemplate.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_inspect_template(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = dlp.InspectTemplate.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.privacy.dlp_v2.DlpServiceClient.create_inspect_template",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "CreateInspectTemplate",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateJobTrigger(
@@ -2375,7 +2823,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> dlp.JobTrigger:
             r"""Call the create job trigger method over HTTP.
 
@@ -2385,8 +2833,10 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.dlp.JobTrigger:
@@ -2400,6 +2850,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             http_options = (
                 _BaseDlpServiceRestTransport._BaseCreateJobTrigger._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_job_trigger(
                 request, metadata
             )
@@ -2415,6 +2866,33 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             query_params = _BaseDlpServiceRestTransport._BaseCreateJobTrigger._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.privacy.dlp_v2.DlpServiceClient.CreateJobTrigger",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "CreateJobTrigger",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DlpServiceRestTransport._CreateJobTrigger._get_response(
@@ -2437,7 +2915,29 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             pb_resp = dlp.JobTrigger.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_job_trigger(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = dlp.JobTrigger.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.privacy.dlp_v2.DlpServiceClient.create_job_trigger",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "CreateJobTrigger",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateStoredInfoType(
@@ -2475,7 +2975,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> dlp.StoredInfoType:
             r"""Call the create stored info type method over HTTP.
 
@@ -2486,8 +2986,10 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.dlp.StoredInfoType:
@@ -2500,6 +3002,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             http_options = (
                 _BaseDlpServiceRestTransport._BaseCreateStoredInfoType._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_stored_info_type(
                 request, metadata
             )
@@ -2515,6 +3018,33 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             query_params = _BaseDlpServiceRestTransport._BaseCreateStoredInfoType._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.privacy.dlp_v2.DlpServiceClient.CreateStoredInfoType",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "CreateStoredInfoType",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DlpServiceRestTransport._CreateStoredInfoType._get_response(
@@ -2537,7 +3067,29 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             pb_resp = dlp.StoredInfoType.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_stored_info_type(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = dlp.StoredInfoType.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.privacy.dlp_v2.DlpServiceClient.create_stored_info_type",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "CreateStoredInfoType",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeidentifyContent(
@@ -2575,7 +3127,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> dlp.DeidentifyContentResponse:
             r"""Call the deidentify content method over HTTP.
 
@@ -2585,8 +3137,10 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.dlp.DeidentifyContentResponse:
@@ -2598,6 +3152,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             http_options = (
                 _BaseDlpServiceRestTransport._BaseDeidentifyContent._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_deidentify_content(
                 request, metadata
             )
@@ -2613,6 +3168,33 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             query_params = _BaseDlpServiceRestTransport._BaseDeidentifyContent._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.privacy.dlp_v2.DlpServiceClient.DeidentifyContent",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "DeidentifyContent",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DlpServiceRestTransport._DeidentifyContent._get_response(
@@ -2635,7 +3217,29 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             pb_resp = dlp.DeidentifyContentResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_deidentify_content(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = dlp.DeidentifyContentResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.privacy.dlp_v2.DlpServiceClient.deidentify_content",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "DeidentifyContent",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteConnection(
@@ -2672,7 +3276,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete connection method over HTTP.
 
@@ -2682,13 +3286,16 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseDlpServiceRestTransport._BaseDeleteConnection._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_connection(
                 request, metadata
             )
@@ -2700,6 +3307,33 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             query_params = _BaseDlpServiceRestTransport._BaseDeleteConnection._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.privacy.dlp_v2.DlpServiceClient.DeleteConnection",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "DeleteConnection",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DlpServiceRestTransport._DeleteConnection._get_response(
@@ -2750,7 +3384,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete deidentify
             template method over HTTP.
@@ -2762,13 +3396,16 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
             """
 
             http_options = (
                 _BaseDlpServiceRestTransport._BaseDeleteDeidentifyTemplate._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_deidentify_template(
                 request, metadata
             )
@@ -2780,6 +3417,33 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             query_params = _BaseDlpServiceRestTransport._BaseDeleteDeidentifyTemplate._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.privacy.dlp_v2.DlpServiceClient.DeleteDeidentifyTemplate",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "DeleteDeidentifyTemplate",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DlpServiceRestTransport._DeleteDeidentifyTemplate._get_response(
@@ -2830,7 +3494,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete discovery config method over HTTP.
 
@@ -2841,13 +3505,16 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseDlpServiceRestTransport._BaseDeleteDiscoveryConfig._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_discovery_config(
                 request, metadata
             )
@@ -2859,6 +3526,33 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             query_params = _BaseDlpServiceRestTransport._BaseDeleteDiscoveryConfig._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.privacy.dlp_v2.DlpServiceClient.DeleteDiscoveryConfig",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "DeleteDiscoveryConfig",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DlpServiceRestTransport._DeleteDiscoveryConfig._get_response(
@@ -2909,7 +3603,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete dlp job method over HTTP.
 
@@ -2920,13 +3614,16 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseDlpServiceRestTransport._BaseDeleteDlpJob._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_dlp_job(request, metadata)
             transcoded_request = (
                 _BaseDlpServiceRestTransport._BaseDeleteDlpJob._get_transcoded_request(
@@ -2940,6 +3637,33 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.privacy.dlp_v2.DlpServiceClient.DeleteDlpJob",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "DeleteDlpJob",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DlpServiceRestTransport._DeleteDlpJob._get_response(
@@ -2990,7 +3714,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete file store data
             profile method over HTTP.
@@ -3002,13 +3726,16 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
             """
 
             http_options = (
                 _BaseDlpServiceRestTransport._BaseDeleteFileStoreDataProfile._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_file_store_data_profile(
                 request, metadata
             )
@@ -3020,6 +3747,33 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             query_params = _BaseDlpServiceRestTransport._BaseDeleteFileStoreDataProfile._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.privacy.dlp_v2.DlpServiceClient.DeleteFileStoreDataProfile",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "DeleteFileStoreDataProfile",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -3072,7 +3826,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete inspect template method over HTTP.
 
@@ -3083,13 +3837,16 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseDlpServiceRestTransport._BaseDeleteInspectTemplate._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_inspect_template(
                 request, metadata
             )
@@ -3101,6 +3858,33 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             query_params = _BaseDlpServiceRestTransport._BaseDeleteInspectTemplate._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.privacy.dlp_v2.DlpServiceClient.DeleteInspectTemplate",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "DeleteInspectTemplate",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DlpServiceRestTransport._DeleteInspectTemplate._get_response(
@@ -3151,7 +3935,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete job trigger method over HTTP.
 
@@ -3161,13 +3945,16 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseDlpServiceRestTransport._BaseDeleteJobTrigger._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_job_trigger(
                 request, metadata
             )
@@ -3179,6 +3966,33 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             query_params = _BaseDlpServiceRestTransport._BaseDeleteJobTrigger._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.privacy.dlp_v2.DlpServiceClient.DeleteJobTrigger",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "DeleteJobTrigger",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DlpServiceRestTransport._DeleteJobTrigger._get_response(
@@ -3229,7 +4043,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete stored info type method over HTTP.
 
@@ -3240,13 +4054,16 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseDlpServiceRestTransport._BaseDeleteStoredInfoType._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_stored_info_type(
                 request, metadata
             )
@@ -3258,6 +4075,33 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             query_params = _BaseDlpServiceRestTransport._BaseDeleteStoredInfoType._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.privacy.dlp_v2.DlpServiceClient.DeleteStoredInfoType",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "DeleteStoredInfoType",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DlpServiceRestTransport._DeleteStoredInfoType._get_response(
@@ -3308,7 +4152,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete table data profile method over HTTP.
 
@@ -3319,13 +4163,16 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseDlpServiceRestTransport._BaseDeleteTableDataProfile._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_table_data_profile(
                 request, metadata
             )
@@ -3337,6 +4184,33 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             query_params = _BaseDlpServiceRestTransport._BaseDeleteTableDataProfile._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.privacy.dlp_v2.DlpServiceClient.DeleteTableDataProfile",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "DeleteTableDataProfile",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DlpServiceRestTransport._DeleteTableDataProfile._get_response(
@@ -3388,7 +4262,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the finish dlp job method over HTTP.
 
@@ -3399,13 +4273,16 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseDlpServiceRestTransport._BaseFinishDlpJob._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_finish_dlp_job(request, metadata)
             transcoded_request = (
                 _BaseDlpServiceRestTransport._BaseFinishDlpJob._get_transcoded_request(
@@ -3425,6 +4302,33 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.privacy.dlp_v2.DlpServiceClient.FinishDlpJob",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "FinishDlpJob",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DlpServiceRestTransport._FinishDlpJob._get_response(
@@ -3476,7 +4380,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> dlp.ColumnDataProfile:
             r"""Call the get column data profile method over HTTP.
 
@@ -3486,8 +4390,10 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.dlp.ColumnDataProfile:
@@ -3499,6 +4405,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             http_options = (
                 _BaseDlpServiceRestTransport._BaseGetColumnDataProfile._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_column_data_profile(
                 request, metadata
             )
@@ -3510,6 +4417,33 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             query_params = _BaseDlpServiceRestTransport._BaseGetColumnDataProfile._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.privacy.dlp_v2.DlpServiceClient.GetColumnDataProfile",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "GetColumnDataProfile",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DlpServiceRestTransport._GetColumnDataProfile._get_response(
@@ -3531,7 +4465,29 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             pb_resp = dlp.ColumnDataProfile.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_column_data_profile(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = dlp.ColumnDataProfile.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.privacy.dlp_v2.DlpServiceClient.get_column_data_profile",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "GetColumnDataProfile",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetConnection(
@@ -3568,7 +4524,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> dlp.Connection:
             r"""Call the get connection method over HTTP.
 
@@ -3578,8 +4534,10 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.dlp.Connection:
@@ -3592,6 +4550,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             http_options = (
                 _BaseDlpServiceRestTransport._BaseGetConnection._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_connection(request, metadata)
             transcoded_request = (
                 _BaseDlpServiceRestTransport._BaseGetConnection._get_transcoded_request(
@@ -3605,6 +4564,33 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.privacy.dlp_v2.DlpServiceClient.GetConnection",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "GetConnection",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DlpServiceRestTransport._GetConnection._get_response(
@@ -3626,7 +4612,29 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             pb_resp = dlp.Connection.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_connection(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = dlp.Connection.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.privacy.dlp_v2.DlpServiceClient.get_connection",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "GetConnection",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetDeidentifyTemplate(
@@ -3663,7 +4671,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> dlp.DeidentifyTemplate:
             r"""Call the get deidentify template method over HTTP.
 
@@ -3674,8 +4682,10 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.dlp.DeidentifyTemplate:
@@ -3690,6 +4700,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             http_options = (
                 _BaseDlpServiceRestTransport._BaseGetDeidentifyTemplate._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_deidentify_template(
                 request, metadata
             )
@@ -3701,6 +4712,33 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             query_params = _BaseDlpServiceRestTransport._BaseGetDeidentifyTemplate._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.privacy.dlp_v2.DlpServiceClient.GetDeidentifyTemplate",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "GetDeidentifyTemplate",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DlpServiceRestTransport._GetDeidentifyTemplate._get_response(
@@ -3722,7 +4760,29 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             pb_resp = dlp.DeidentifyTemplate.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_deidentify_template(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = dlp.DeidentifyTemplate.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.privacy.dlp_v2.DlpServiceClient.get_deidentify_template",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "GetDeidentifyTemplate",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetDiscoveryConfig(
@@ -3759,7 +4819,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> dlp.DiscoveryConfig:
             r"""Call the get discovery config method over HTTP.
 
@@ -3770,8 +4830,10 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.dlp.DiscoveryConfig:
@@ -3788,6 +4850,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             http_options = (
                 _BaseDlpServiceRestTransport._BaseGetDiscoveryConfig._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_discovery_config(
                 request, metadata
             )
@@ -3799,6 +4862,33 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             query_params = _BaseDlpServiceRestTransport._BaseGetDiscoveryConfig._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.privacy.dlp_v2.DlpServiceClient.GetDiscoveryConfig",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "GetDiscoveryConfig",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DlpServiceRestTransport._GetDiscoveryConfig._get_response(
@@ -3820,7 +4910,29 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             pb_resp = dlp.DiscoveryConfig.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_discovery_config(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = dlp.DiscoveryConfig.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.privacy.dlp_v2.DlpServiceClient.get_discovery_config",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "GetDiscoveryConfig",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetDlpJob(_BaseDlpServiceRestTransport._BaseGetDlpJob, DlpServiceRestStub):
@@ -3855,7 +4967,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> dlp.DlpJob:
             r"""Call the get dlp job method over HTTP.
 
@@ -3865,8 +4977,10 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.dlp.DlpJob:
@@ -3878,6 +4992,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             http_options = (
                 _BaseDlpServiceRestTransport._BaseGetDlpJob._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_dlp_job(request, metadata)
             transcoded_request = (
                 _BaseDlpServiceRestTransport._BaseGetDlpJob._get_transcoded_request(
@@ -3891,6 +5006,33 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.privacy.dlp_v2.DlpServiceClient.GetDlpJob",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "GetDlpJob",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DlpServiceRestTransport._GetDlpJob._get_response(
@@ -3912,7 +5054,29 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             pb_resp = dlp.DlpJob.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_dlp_job(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = dlp.DlpJob.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.privacy.dlp_v2.DlpServiceClient.get_dlp_job",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "GetDlpJob",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetFileStoreDataProfile(
@@ -3949,7 +5113,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> dlp.FileStoreDataProfile:
             r"""Call the get file store data
             profile method over HTTP.
@@ -3961,8 +5125,10 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.dlp.FileStoreDataProfile:
@@ -3976,6 +5142,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             http_options = (
                 _BaseDlpServiceRestTransport._BaseGetFileStoreDataProfile._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_file_store_data_profile(
                 request, metadata
             )
@@ -3987,6 +5154,33 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             query_params = _BaseDlpServiceRestTransport._BaseGetFileStoreDataProfile._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.privacy.dlp_v2.DlpServiceClient.GetFileStoreDataProfile",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "GetFileStoreDataProfile",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DlpServiceRestTransport._GetFileStoreDataProfile._get_response(
@@ -4008,7 +5202,29 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             pb_resp = dlp.FileStoreDataProfile.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_file_store_data_profile(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = dlp.FileStoreDataProfile.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.privacy.dlp_v2.DlpServiceClient.get_file_store_data_profile",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "GetFileStoreDataProfile",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetInspectTemplate(
@@ -4045,7 +5261,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> dlp.InspectTemplate:
             r"""Call the get inspect template method over HTTP.
 
@@ -4056,8 +5272,10 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.dlp.InspectTemplate:
@@ -4074,6 +5292,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             http_options = (
                 _BaseDlpServiceRestTransport._BaseGetInspectTemplate._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_inspect_template(
                 request, metadata
             )
@@ -4085,6 +5304,33 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             query_params = _BaseDlpServiceRestTransport._BaseGetInspectTemplate._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.privacy.dlp_v2.DlpServiceClient.GetInspectTemplate",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "GetInspectTemplate",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DlpServiceRestTransport._GetInspectTemplate._get_response(
@@ -4106,7 +5352,29 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             pb_resp = dlp.InspectTemplate.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_inspect_template(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = dlp.InspectTemplate.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.privacy.dlp_v2.DlpServiceClient.get_inspect_template",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "GetInspectTemplate",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetJobTrigger(
@@ -4143,7 +5411,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> dlp.JobTrigger:
             r"""Call the get job trigger method over HTTP.
 
@@ -4153,8 +5421,10 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.dlp.JobTrigger:
@@ -4168,6 +5438,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             http_options = (
                 _BaseDlpServiceRestTransport._BaseGetJobTrigger._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_job_trigger(request, metadata)
             transcoded_request = (
                 _BaseDlpServiceRestTransport._BaseGetJobTrigger._get_transcoded_request(
@@ -4181,6 +5452,33 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.privacy.dlp_v2.DlpServiceClient.GetJobTrigger",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "GetJobTrigger",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DlpServiceRestTransport._GetJobTrigger._get_response(
@@ -4202,7 +5500,29 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             pb_resp = dlp.JobTrigger.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_job_trigger(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = dlp.JobTrigger.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.privacy.dlp_v2.DlpServiceClient.get_job_trigger",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "GetJobTrigger",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetProjectDataProfile(
@@ -4239,7 +5559,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> dlp.ProjectDataProfile:
             r"""Call the get project data profile method over HTTP.
 
@@ -4250,8 +5570,10 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.dlp.ProjectDataProfile:
@@ -4264,6 +5586,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             http_options = (
                 _BaseDlpServiceRestTransport._BaseGetProjectDataProfile._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_project_data_profile(
                 request, metadata
             )
@@ -4275,6 +5598,33 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             query_params = _BaseDlpServiceRestTransport._BaseGetProjectDataProfile._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.privacy.dlp_v2.DlpServiceClient.GetProjectDataProfile",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "GetProjectDataProfile",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DlpServiceRestTransport._GetProjectDataProfile._get_response(
@@ -4296,7 +5646,29 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             pb_resp = dlp.ProjectDataProfile.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_project_data_profile(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = dlp.ProjectDataProfile.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.privacy.dlp_v2.DlpServiceClient.get_project_data_profile",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "GetProjectDataProfile",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetStoredInfoType(
@@ -4333,7 +5705,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> dlp.StoredInfoType:
             r"""Call the get stored info type method over HTTP.
 
@@ -4344,8 +5716,10 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.dlp.StoredInfoType:
@@ -4358,6 +5732,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             http_options = (
                 _BaseDlpServiceRestTransport._BaseGetStoredInfoType._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_stored_info_type(
                 request, metadata
             )
@@ -4369,6 +5744,33 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             query_params = _BaseDlpServiceRestTransport._BaseGetStoredInfoType._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.privacy.dlp_v2.DlpServiceClient.GetStoredInfoType",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "GetStoredInfoType",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DlpServiceRestTransport._GetStoredInfoType._get_response(
@@ -4390,7 +5792,29 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             pb_resp = dlp.StoredInfoType.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_stored_info_type(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = dlp.StoredInfoType.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.privacy.dlp_v2.DlpServiceClient.get_stored_info_type",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "GetStoredInfoType",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetTableDataProfile(
@@ -4427,7 +5851,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> dlp.TableDataProfile:
             r"""Call the get table data profile method over HTTP.
 
@@ -4437,8 +5861,10 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.dlp.TableDataProfile:
@@ -4448,6 +5874,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             http_options = (
                 _BaseDlpServiceRestTransport._BaseGetTableDataProfile._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_table_data_profile(
                 request, metadata
             )
@@ -4459,6 +5886,33 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             query_params = _BaseDlpServiceRestTransport._BaseGetTableDataProfile._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.privacy.dlp_v2.DlpServiceClient.GetTableDataProfile",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "GetTableDataProfile",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DlpServiceRestTransport._GetTableDataProfile._get_response(
@@ -4480,7 +5934,29 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             pb_resp = dlp.TableDataProfile.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_table_data_profile(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = dlp.TableDataProfile.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.privacy.dlp_v2.DlpServiceClient.get_table_data_profile",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "GetTableDataProfile",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _HybridInspectDlpJob(
@@ -4518,7 +5994,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> dlp.HybridInspectResponse:
             r"""Call the hybrid inspect dlp job method over HTTP.
 
@@ -4529,8 +6005,10 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.dlp.HybridInspectResponse:
@@ -4542,6 +6020,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             http_options = (
                 _BaseDlpServiceRestTransport._BaseHybridInspectDlpJob._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_hybrid_inspect_dlp_job(
                 request, metadata
             )
@@ -4557,6 +6036,33 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             query_params = _BaseDlpServiceRestTransport._BaseHybridInspectDlpJob._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.privacy.dlp_v2.DlpServiceClient.HybridInspectDlpJob",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "HybridInspectDlpJob",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DlpServiceRestTransport._HybridInspectDlpJob._get_response(
@@ -4579,7 +6085,29 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             pb_resp = dlp.HybridInspectResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_hybrid_inspect_dlp_job(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = dlp.HybridInspectResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.privacy.dlp_v2.DlpServiceClient.hybrid_inspect_dlp_job",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "HybridInspectDlpJob",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _HybridInspectJobTrigger(
@@ -4617,7 +6145,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> dlp.HybridInspectResponse:
             r"""Call the hybrid inspect job
             trigger method over HTTP.
@@ -4629,8 +6157,10 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.dlp.HybridInspectResponse:
@@ -4642,6 +6172,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             http_options = (
                 _BaseDlpServiceRestTransport._BaseHybridInspectJobTrigger._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_hybrid_inspect_job_trigger(
                 request, metadata
             )
@@ -4657,6 +6188,33 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             query_params = _BaseDlpServiceRestTransport._BaseHybridInspectJobTrigger._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.privacy.dlp_v2.DlpServiceClient.HybridInspectJobTrigger",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "HybridInspectJobTrigger",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DlpServiceRestTransport._HybridInspectJobTrigger._get_response(
@@ -4679,7 +6237,29 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             pb_resp = dlp.HybridInspectResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_hybrid_inspect_job_trigger(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = dlp.HybridInspectResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.privacy.dlp_v2.DlpServiceClient.hybrid_inspect_job_trigger",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "HybridInspectJobTrigger",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _InspectContent(
@@ -4717,7 +6297,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> dlp.InspectContentResponse:
             r"""Call the inspect content method over HTTP.
 
@@ -4728,8 +6308,10 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.dlp.InspectContentResponse:
@@ -4739,6 +6321,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             http_options = (
                 _BaseDlpServiceRestTransport._BaseInspectContent._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_inspect_content(request, metadata)
             transcoded_request = _BaseDlpServiceRestTransport._BaseInspectContent._get_transcoded_request(
                 http_options, request
@@ -4756,6 +6339,33 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.privacy.dlp_v2.DlpServiceClient.InspectContent",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "InspectContent",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DlpServiceRestTransport._InspectContent._get_response(
@@ -4778,7 +6388,29 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             pb_resp = dlp.InspectContentResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_inspect_content(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = dlp.InspectContentResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.privacy.dlp_v2.DlpServiceClient.inspect_content",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "InspectContent",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListColumnDataProfiles(
@@ -4815,7 +6447,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> dlp.ListColumnDataProfilesResponse:
             r"""Call the list column data profiles method over HTTP.
 
@@ -4827,8 +6459,10 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.dlp.ListColumnDataProfilesResponse:
@@ -4840,6 +6474,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             http_options = (
                 _BaseDlpServiceRestTransport._BaseListColumnDataProfiles._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_column_data_profiles(
                 request, metadata
             )
@@ -4851,6 +6486,33 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             query_params = _BaseDlpServiceRestTransport._BaseListColumnDataProfiles._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.privacy.dlp_v2.DlpServiceClient.ListColumnDataProfiles",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "ListColumnDataProfiles",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DlpServiceRestTransport._ListColumnDataProfiles._get_response(
@@ -4872,7 +6534,31 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             pb_resp = dlp.ListColumnDataProfilesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_column_data_profiles(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = dlp.ListColumnDataProfilesResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.privacy.dlp_v2.DlpServiceClient.list_column_data_profiles",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "ListColumnDataProfiles",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListConnections(
@@ -4909,7 +6595,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> dlp.ListConnectionsResponse:
             r"""Call the list connections method over HTTP.
 
@@ -4919,8 +6605,10 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.dlp.ListConnectionsResponse:
@@ -4930,6 +6618,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             http_options = (
                 _BaseDlpServiceRestTransport._BaseListConnections._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_connections(
                 request, metadata
             )
@@ -4941,6 +6630,33 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             query_params = _BaseDlpServiceRestTransport._BaseListConnections._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.privacy.dlp_v2.DlpServiceClient.ListConnections",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "ListConnections",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DlpServiceRestTransport._ListConnections._get_response(
@@ -4962,7 +6678,29 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             pb_resp = dlp.ListConnectionsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_connections(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = dlp.ListConnectionsResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.privacy.dlp_v2.DlpServiceClient.list_connections",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "ListConnections",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListDeidentifyTemplates(
@@ -4999,7 +6737,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> dlp.ListDeidentifyTemplatesResponse:
             r"""Call the list deidentify templates method over HTTP.
 
@@ -5010,8 +6748,10 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.dlp.ListDeidentifyTemplatesResponse:
@@ -5023,6 +6763,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             http_options = (
                 _BaseDlpServiceRestTransport._BaseListDeidentifyTemplates._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_deidentify_templates(
                 request, metadata
             )
@@ -5034,6 +6775,33 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             query_params = _BaseDlpServiceRestTransport._BaseListDeidentifyTemplates._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.privacy.dlp_v2.DlpServiceClient.ListDeidentifyTemplates",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "ListDeidentifyTemplates",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DlpServiceRestTransport._ListDeidentifyTemplates._get_response(
@@ -5055,7 +6823,31 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             pb_resp = dlp.ListDeidentifyTemplatesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_deidentify_templates(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = dlp.ListDeidentifyTemplatesResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.privacy.dlp_v2.DlpServiceClient.list_deidentify_templates",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "ListDeidentifyTemplates",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListDiscoveryConfigs(
@@ -5092,7 +6884,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> dlp.ListDiscoveryConfigsResponse:
             r"""Call the list discovery configs method over HTTP.
 
@@ -5103,8 +6895,10 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.dlp.ListDiscoveryConfigsResponse:
@@ -5116,6 +6910,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             http_options = (
                 _BaseDlpServiceRestTransport._BaseListDiscoveryConfigs._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_discovery_configs(
                 request, metadata
             )
@@ -5127,6 +6922,33 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             query_params = _BaseDlpServiceRestTransport._BaseListDiscoveryConfigs._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.privacy.dlp_v2.DlpServiceClient.ListDiscoveryConfigs",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "ListDiscoveryConfigs",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DlpServiceRestTransport._ListDiscoveryConfigs._get_response(
@@ -5148,7 +6970,31 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             pb_resp = dlp.ListDiscoveryConfigsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_discovery_configs(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = dlp.ListDiscoveryConfigsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.privacy.dlp_v2.DlpServiceClient.list_discovery_configs",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "ListDiscoveryConfigs",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListDlpJobs(
@@ -5185,7 +7031,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> dlp.ListDlpJobsResponse:
             r"""Call the list dlp jobs method over HTTP.
 
@@ -5196,8 +7042,10 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.dlp.ListDlpJobsResponse:
@@ -5209,6 +7057,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             http_options = (
                 _BaseDlpServiceRestTransport._BaseListDlpJobs._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_dlp_jobs(request, metadata)
             transcoded_request = (
                 _BaseDlpServiceRestTransport._BaseListDlpJobs._get_transcoded_request(
@@ -5222,6 +7071,33 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.privacy.dlp_v2.DlpServiceClient.ListDlpJobs",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "ListDlpJobs",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DlpServiceRestTransport._ListDlpJobs._get_response(
@@ -5243,7 +7119,29 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             pb_resp = dlp.ListDlpJobsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_dlp_jobs(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = dlp.ListDlpJobsResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.privacy.dlp_v2.DlpServiceClient.list_dlp_jobs",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "ListDlpJobs",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListFileStoreDataProfiles(
@@ -5280,7 +7178,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> dlp.ListFileStoreDataProfilesResponse:
             r"""Call the list file store data
             profiles method over HTTP.
@@ -5293,8 +7191,10 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.dlp.ListFileStoreDataProfilesResponse:
@@ -5307,6 +7207,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             http_options = (
                 _BaseDlpServiceRestTransport._BaseListFileStoreDataProfiles._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_file_store_data_profiles(
                 request, metadata
             )
@@ -5318,6 +7219,33 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             query_params = _BaseDlpServiceRestTransport._BaseListFileStoreDataProfiles._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.privacy.dlp_v2.DlpServiceClient.ListFileStoreDataProfiles",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "ListFileStoreDataProfiles",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DlpServiceRestTransport._ListFileStoreDataProfiles._get_response(
@@ -5339,7 +7267,31 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             pb_resp = dlp.ListFileStoreDataProfilesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_file_store_data_profiles(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = dlp.ListFileStoreDataProfilesResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.privacy.dlp_v2.DlpServiceClient.list_file_store_data_profiles",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "ListFileStoreDataProfiles",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListInfoTypes(
@@ -5376,7 +7328,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> dlp.ListInfoTypesResponse:
             r"""Call the list info types method over HTTP.
 
@@ -5386,8 +7338,10 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.dlp.ListInfoTypesResponse:
@@ -5399,6 +7353,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             http_options = (
                 _BaseDlpServiceRestTransport._BaseListInfoTypes._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_info_types(request, metadata)
             transcoded_request = (
                 _BaseDlpServiceRestTransport._BaseListInfoTypes._get_transcoded_request(
@@ -5412,6 +7367,33 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.privacy.dlp_v2.DlpServiceClient.ListInfoTypes",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "ListInfoTypes",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DlpServiceRestTransport._ListInfoTypes._get_response(
@@ -5433,7 +7415,29 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             pb_resp = dlp.ListInfoTypesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_info_types(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = dlp.ListInfoTypesResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.privacy.dlp_v2.DlpServiceClient.list_info_types",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "ListInfoTypes",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListInspectTemplates(
@@ -5470,7 +7474,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> dlp.ListInspectTemplatesResponse:
             r"""Call the list inspect templates method over HTTP.
 
@@ -5481,8 +7485,10 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.dlp.ListInspectTemplatesResponse:
@@ -5494,6 +7500,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             http_options = (
                 _BaseDlpServiceRestTransport._BaseListInspectTemplates._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_inspect_templates(
                 request, metadata
             )
@@ -5505,6 +7512,33 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             query_params = _BaseDlpServiceRestTransport._BaseListInspectTemplates._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.privacy.dlp_v2.DlpServiceClient.ListInspectTemplates",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "ListInspectTemplates",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DlpServiceRestTransport._ListInspectTemplates._get_response(
@@ -5526,7 +7560,31 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             pb_resp = dlp.ListInspectTemplatesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_inspect_templates(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = dlp.ListInspectTemplatesResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.privacy.dlp_v2.DlpServiceClient.list_inspect_templates",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "ListInspectTemplates",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListJobTriggers(
@@ -5563,7 +7621,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> dlp.ListJobTriggersResponse:
             r"""Call the list job triggers method over HTTP.
 
@@ -5573,8 +7631,10 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.dlp.ListJobTriggersResponse:
@@ -5584,6 +7644,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             http_options = (
                 _BaseDlpServiceRestTransport._BaseListJobTriggers._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_job_triggers(
                 request, metadata
             )
@@ -5595,6 +7656,33 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             query_params = _BaseDlpServiceRestTransport._BaseListJobTriggers._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.privacy.dlp_v2.DlpServiceClient.ListJobTriggers",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "ListJobTriggers",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DlpServiceRestTransport._ListJobTriggers._get_response(
@@ -5616,7 +7704,29 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             pb_resp = dlp.ListJobTriggersResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_job_triggers(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = dlp.ListJobTriggersResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.privacy.dlp_v2.DlpServiceClient.list_job_triggers",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "ListJobTriggers",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListProjectDataProfiles(
@@ -5653,7 +7763,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> dlp.ListProjectDataProfilesResponse:
             r"""Call the list project data
             profiles method over HTTP.
@@ -5666,8 +7776,10 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.dlp.ListProjectDataProfilesResponse:
@@ -5679,6 +7791,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             http_options = (
                 _BaseDlpServiceRestTransport._BaseListProjectDataProfiles._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_project_data_profiles(
                 request, metadata
             )
@@ -5690,6 +7803,33 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             query_params = _BaseDlpServiceRestTransport._BaseListProjectDataProfiles._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.privacy.dlp_v2.DlpServiceClient.ListProjectDataProfiles",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "ListProjectDataProfiles",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DlpServiceRestTransport._ListProjectDataProfiles._get_response(
@@ -5711,7 +7851,31 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             pb_resp = dlp.ListProjectDataProfilesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_project_data_profiles(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = dlp.ListProjectDataProfilesResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.privacy.dlp_v2.DlpServiceClient.list_project_data_profiles",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "ListProjectDataProfiles",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListStoredInfoTypes(
@@ -5748,7 +7912,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> dlp.ListStoredInfoTypesResponse:
             r"""Call the list stored info types method over HTTP.
 
@@ -5759,8 +7923,10 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.dlp.ListStoredInfoTypesResponse:
@@ -5772,6 +7938,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             http_options = (
                 _BaseDlpServiceRestTransport._BaseListStoredInfoTypes._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_stored_info_types(
                 request, metadata
             )
@@ -5783,6 +7950,33 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             query_params = _BaseDlpServiceRestTransport._BaseListStoredInfoTypes._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.privacy.dlp_v2.DlpServiceClient.ListStoredInfoTypes",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "ListStoredInfoTypes",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DlpServiceRestTransport._ListStoredInfoTypes._get_response(
@@ -5804,7 +7998,29 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             pb_resp = dlp.ListStoredInfoTypesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_stored_info_types(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = dlp.ListStoredInfoTypesResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.privacy.dlp_v2.DlpServiceClient.list_stored_info_types",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "ListStoredInfoTypes",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListTableDataProfiles(
@@ -5841,7 +8057,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> dlp.ListTableDataProfilesResponse:
             r"""Call the list table data profiles method over HTTP.
 
@@ -5853,8 +8069,10 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.dlp.ListTableDataProfilesResponse:
@@ -5866,6 +8084,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             http_options = (
                 _BaseDlpServiceRestTransport._BaseListTableDataProfiles._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_table_data_profiles(
                 request, metadata
             )
@@ -5877,6 +8096,33 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             query_params = _BaseDlpServiceRestTransport._BaseListTableDataProfiles._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.privacy.dlp_v2.DlpServiceClient.ListTableDataProfiles",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "ListTableDataProfiles",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DlpServiceRestTransport._ListTableDataProfiles._get_response(
@@ -5898,7 +8144,31 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             pb_resp = dlp.ListTableDataProfilesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_table_data_profiles(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = dlp.ListTableDataProfilesResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.privacy.dlp_v2.DlpServiceClient.list_table_data_profiles",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "ListTableDataProfiles",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _RedactImage(
@@ -5936,7 +8206,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> dlp.RedactImageResponse:
             r"""Call the redact image method over HTTP.
 
@@ -5948,8 +8218,10 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.dlp.RedactImageResponse:
@@ -5959,6 +8231,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             http_options = (
                 _BaseDlpServiceRestTransport._BaseRedactImage._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_redact_image(request, metadata)
             transcoded_request = (
                 _BaseDlpServiceRestTransport._BaseRedactImage._get_transcoded_request(
@@ -5976,6 +8249,33 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.privacy.dlp_v2.DlpServiceClient.RedactImage",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "RedactImage",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DlpServiceRestTransport._RedactImage._get_response(
@@ -5998,7 +8298,29 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             pb_resp = dlp.RedactImageResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_redact_image(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = dlp.RedactImageResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.privacy.dlp_v2.DlpServiceClient.redact_image",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "RedactImage",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ReidentifyContent(
@@ -6036,7 +8358,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> dlp.ReidentifyContentResponse:
             r"""Call the reidentify content method over HTTP.
 
@@ -6046,8 +8368,10 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.dlp.ReidentifyContentResponse:
@@ -6057,6 +8381,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             http_options = (
                 _BaseDlpServiceRestTransport._BaseReidentifyContent._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_reidentify_content(
                 request, metadata
             )
@@ -6072,6 +8397,33 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             query_params = _BaseDlpServiceRestTransport._BaseReidentifyContent._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.privacy.dlp_v2.DlpServiceClient.ReidentifyContent",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "ReidentifyContent",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DlpServiceRestTransport._ReidentifyContent._get_response(
@@ -6094,7 +8446,29 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             pb_resp = dlp.ReidentifyContentResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_reidentify_content(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = dlp.ReidentifyContentResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.privacy.dlp_v2.DlpServiceClient.reidentify_content",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "ReidentifyContent",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _SearchConnections(
@@ -6131,7 +8505,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> dlp.SearchConnectionsResponse:
             r"""Call the search connections method over HTTP.
 
@@ -6142,8 +8516,10 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.dlp.SearchConnectionsResponse:
@@ -6155,6 +8531,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             http_options = (
                 _BaseDlpServiceRestTransport._BaseSearchConnections._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_search_connections(
                 request, metadata
             )
@@ -6166,6 +8543,33 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             query_params = _BaseDlpServiceRestTransport._BaseSearchConnections._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.privacy.dlp_v2.DlpServiceClient.SearchConnections",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "SearchConnections",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DlpServiceRestTransport._SearchConnections._get_response(
@@ -6187,7 +8591,29 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             pb_resp = dlp.SearchConnectionsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_search_connections(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = dlp.SearchConnectionsResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.privacy.dlp_v2.DlpServiceClient.search_connections",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "SearchConnections",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateConnection(
@@ -6225,7 +8651,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> dlp.Connection:
             r"""Call the update connection method over HTTP.
 
@@ -6235,8 +8661,10 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.dlp.Connection:
@@ -6249,6 +8677,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             http_options = (
                 _BaseDlpServiceRestTransport._BaseUpdateConnection._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_connection(
                 request, metadata
             )
@@ -6264,6 +8693,33 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             query_params = _BaseDlpServiceRestTransport._BaseUpdateConnection._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.privacy.dlp_v2.DlpServiceClient.UpdateConnection",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "UpdateConnection",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DlpServiceRestTransport._UpdateConnection._get_response(
@@ -6286,7 +8742,29 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             pb_resp = dlp.Connection.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_connection(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = dlp.Connection.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.privacy.dlp_v2.DlpServiceClient.update_connection",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "UpdateConnection",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateDeidentifyTemplate(
@@ -6324,7 +8802,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> dlp.DeidentifyTemplate:
             r"""Call the update deidentify
             template method over HTTP.
@@ -6336,8 +8814,10 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.dlp.DeidentifyTemplate:
@@ -6352,6 +8832,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             http_options = (
                 _BaseDlpServiceRestTransport._BaseUpdateDeidentifyTemplate._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_deidentify_template(
                 request, metadata
             )
@@ -6367,6 +8848,33 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             query_params = _BaseDlpServiceRestTransport._BaseUpdateDeidentifyTemplate._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.privacy.dlp_v2.DlpServiceClient.UpdateDeidentifyTemplate",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "UpdateDeidentifyTemplate",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DlpServiceRestTransport._UpdateDeidentifyTemplate._get_response(
@@ -6389,7 +8897,29 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             pb_resp = dlp.DeidentifyTemplate.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_deidentify_template(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = dlp.DeidentifyTemplate.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.privacy.dlp_v2.DlpServiceClient.update_deidentify_template",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "UpdateDeidentifyTemplate",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateDiscoveryConfig(
@@ -6427,7 +8957,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> dlp.DiscoveryConfig:
             r"""Call the update discovery config method over HTTP.
 
@@ -6438,8 +8968,10 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.dlp.DiscoveryConfig:
@@ -6456,6 +8988,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             http_options = (
                 _BaseDlpServiceRestTransport._BaseUpdateDiscoveryConfig._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_discovery_config(
                 request, metadata
             )
@@ -6471,6 +9004,33 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             query_params = _BaseDlpServiceRestTransport._BaseUpdateDiscoveryConfig._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.privacy.dlp_v2.DlpServiceClient.UpdateDiscoveryConfig",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "UpdateDiscoveryConfig",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DlpServiceRestTransport._UpdateDiscoveryConfig._get_response(
@@ -6493,7 +9053,29 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             pb_resp = dlp.DiscoveryConfig.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_discovery_config(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = dlp.DiscoveryConfig.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.privacy.dlp_v2.DlpServiceClient.update_discovery_config",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "UpdateDiscoveryConfig",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateInspectTemplate(
@@ -6531,7 +9113,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> dlp.InspectTemplate:
             r"""Call the update inspect template method over HTTP.
 
@@ -6542,8 +9124,10 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.dlp.InspectTemplate:
@@ -6560,6 +9144,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             http_options = (
                 _BaseDlpServiceRestTransport._BaseUpdateInspectTemplate._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_inspect_template(
                 request, metadata
             )
@@ -6575,6 +9160,33 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             query_params = _BaseDlpServiceRestTransport._BaseUpdateInspectTemplate._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.privacy.dlp_v2.DlpServiceClient.UpdateInspectTemplate",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "UpdateInspectTemplate",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DlpServiceRestTransport._UpdateInspectTemplate._get_response(
@@ -6597,7 +9209,29 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             pb_resp = dlp.InspectTemplate.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_inspect_template(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = dlp.InspectTemplate.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.privacy.dlp_v2.DlpServiceClient.update_inspect_template",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "UpdateInspectTemplate",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateJobTrigger(
@@ -6635,7 +9269,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> dlp.JobTrigger:
             r"""Call the update job trigger method over HTTP.
 
@@ -6645,8 +9279,10 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.dlp.JobTrigger:
@@ -6660,6 +9296,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             http_options = (
                 _BaseDlpServiceRestTransport._BaseUpdateJobTrigger._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_job_trigger(
                 request, metadata
             )
@@ -6675,6 +9312,33 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             query_params = _BaseDlpServiceRestTransport._BaseUpdateJobTrigger._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.privacy.dlp_v2.DlpServiceClient.UpdateJobTrigger",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "UpdateJobTrigger",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DlpServiceRestTransport._UpdateJobTrigger._get_response(
@@ -6697,7 +9361,29 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             pb_resp = dlp.JobTrigger.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_job_trigger(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = dlp.JobTrigger.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.privacy.dlp_v2.DlpServiceClient.update_job_trigger",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "UpdateJobTrigger",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateStoredInfoType(
@@ -6735,7 +9421,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> dlp.StoredInfoType:
             r"""Call the update stored info type method over HTTP.
 
@@ -6746,8 +9432,10 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.dlp.StoredInfoType:
@@ -6760,6 +9448,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             http_options = (
                 _BaseDlpServiceRestTransport._BaseUpdateStoredInfoType._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_stored_info_type(
                 request, metadata
             )
@@ -6775,6 +9464,33 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             query_params = _BaseDlpServiceRestTransport._BaseUpdateStoredInfoType._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.privacy.dlp_v2.DlpServiceClient.UpdateStoredInfoType",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "UpdateStoredInfoType",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DlpServiceRestTransport._UpdateStoredInfoType._get_response(
@@ -6797,7 +9513,29 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             pb_resp = dlp.StoredInfoType.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_stored_info_type(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = dlp.StoredInfoType.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.privacy.dlp_v2.DlpServiceClient.update_stored_info_type",
+                    extra={
+                        "serviceName": "google.privacy.dlp.v2.DlpService",
+                        "rpcName": "UpdateStoredInfoType",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property

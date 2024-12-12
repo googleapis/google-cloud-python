@@ -5620,6 +5620,7 @@ def test_get_occurrence_rest_required_fields(request_type=grafeas.GetOccurrenceR
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_occurrence(request)
 
@@ -5665,6 +5666,7 @@ def test_get_occurrence_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_occurrence(**mock_args)
 
@@ -5804,6 +5806,7 @@ def test_list_occurrences_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_occurrences(request)
 
@@ -5859,6 +5862,7 @@ def test_list_occurrences_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_occurrences(**mock_args)
 
@@ -6049,6 +6053,7 @@ def test_delete_occurrence_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_occurrence(request)
 
@@ -6092,6 +6097,7 @@ def test_delete_occurrence_rest_flattened():
         json_return_value = ""
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_occurrence(**mock_args)
 
@@ -6224,6 +6230,7 @@ def test_create_occurrence_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_occurrence(request)
 
@@ -6278,6 +6285,7 @@ def test_create_occurrence_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_occurrence(**mock_args)
 
@@ -6414,6 +6422,7 @@ def test_batch_create_occurrences_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.batch_create_occurrences(request)
 
@@ -6468,6 +6477,7 @@ def test_batch_create_occurrences_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.batch_create_occurrences(**mock_args)
 
@@ -6605,6 +6615,7 @@ def test_update_occurrence_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_occurrence(request)
 
@@ -6660,6 +6671,7 @@ def test_update_occurrence_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_occurrence(**mock_args)
 
@@ -6795,6 +6807,7 @@ def test_get_occurrence_note_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_occurrence_note(request)
 
@@ -6840,6 +6853,7 @@ def test_get_occurrence_note_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_occurrence_note(**mock_args)
 
@@ -6968,6 +6982,7 @@ def test_get_note_rest_required_fields(request_type=grafeas.GetNoteRequest):
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_note(request)
 
@@ -7013,6 +7028,7 @@ def test_get_note_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_note(**mock_args)
 
@@ -7148,6 +7164,7 @@ def test_list_notes_rest_required_fields(request_type=grafeas.ListNotesRequest):
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_notes(request)
 
@@ -7203,6 +7220,7 @@ def test_list_notes_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_notes(**mock_args)
 
@@ -7389,6 +7407,7 @@ def test_delete_note_rest_required_fields(request_type=grafeas.DeleteNoteRequest
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_note(request)
 
@@ -7432,6 +7451,7 @@ def test_delete_note_rest_flattened():
         json_return_value = ""
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_note(**mock_args)
 
@@ -7569,6 +7589,7 @@ def test_create_note_rest_required_fields(request_type=grafeas.CreateNoteRequest
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_note(request)
 
@@ -7631,6 +7652,7 @@ def test_create_note_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_note(**mock_args)
 
@@ -7767,6 +7789,7 @@ def test_batch_create_notes_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.batch_create_notes(request)
 
@@ -7821,6 +7844,7 @@ def test_batch_create_notes_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.batch_create_notes(**mock_args)
 
@@ -7953,6 +7977,7 @@ def test_update_note_rest_required_fields(request_type=grafeas.UpdateNoteRequest
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_note(request)
 
@@ -8008,6 +8033,7 @@ def test_update_note_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_note(**mock_args)
 
@@ -8152,6 +8178,7 @@ def test_list_note_occurrences_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_note_occurrences(request)
 
@@ -8207,6 +8234,7 @@ def test_list_note_occurrences_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_note_occurrences(**mock_args)
 
@@ -9109,6 +9137,7 @@ def test_get_occurrence_rest_bad_request(request_type=grafeas.GetOccurrenceReque
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_occurrence(request)
 
 
@@ -9148,6 +9177,7 @@ def test_get_occurrence_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_occurrence(request)
 
     # Establish that the response is the type that we expect.
@@ -9188,6 +9218,7 @@ def test_get_occurrence_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = grafeas.Occurrence.to_json(grafeas.Occurrence())
         req.return_value.content = return_value
 
@@ -9230,6 +9261,7 @@ def test_list_occurrences_rest_bad_request(request_type=grafeas.ListOccurrencesR
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_occurrences(request)
 
 
@@ -9265,6 +9297,7 @@ def test_list_occurrences_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_occurrences(request)
 
     # Establish that the response is the type that we expect.
@@ -9301,6 +9334,7 @@ def test_list_occurrences_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = grafeas.ListOccurrencesResponse.to_json(
             grafeas.ListOccurrencesResponse()
         )
@@ -9347,6 +9381,7 @@ def test_delete_occurrence_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_occurrence(request)
 
 
@@ -9377,6 +9412,7 @@ def test_delete_occurrence_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_occurrence(request)
 
     # Establish that the response is the type that we expect.
@@ -9411,6 +9447,7 @@ def test_delete_occurrence_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = grafeas.DeleteOccurrenceRequest()
         metadata = [
@@ -9451,6 +9488,7 @@ def test_create_occurrence_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_occurrence(request)
 
 
@@ -9927,6 +9965,7 @@ def test_create_occurrence_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_occurrence(request)
 
     # Establish that the response is the type that we expect.
@@ -9969,6 +10008,7 @@ def test_create_occurrence_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = grafeas.Occurrence.to_json(grafeas.Occurrence())
         req.return_value.content = return_value
 
@@ -10013,6 +10053,7 @@ def test_batch_create_occurrences_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.batch_create_occurrences(request)
 
 
@@ -10046,6 +10087,7 @@ def test_batch_create_occurrences_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.batch_create_occurrences(request)
 
     # Establish that the response is the type that we expect.
@@ -10083,6 +10125,7 @@ def test_batch_create_occurrences_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = grafeas.BatchCreateOccurrencesResponse.to_json(
             grafeas.BatchCreateOccurrencesResponse()
         )
@@ -10129,6 +10172,7 @@ def test_update_occurrence_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_occurrence(request)
 
 
@@ -10605,6 +10649,7 @@ def test_update_occurrence_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_occurrence(request)
 
     # Establish that the response is the type that we expect.
@@ -10647,6 +10692,7 @@ def test_update_occurrence_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = grafeas.Occurrence.to_json(grafeas.Occurrence())
         req.return_value.content = return_value
 
@@ -10691,6 +10737,7 @@ def test_get_occurrence_note_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_occurrence_note(request)
 
 
@@ -10730,6 +10777,7 @@ def test_get_occurrence_note_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_occurrence_note(request)
 
     # Establish that the response is the type that we expect.
@@ -10772,6 +10820,7 @@ def test_get_occurrence_note_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = grafeas.Note.to_json(grafeas.Note())
         req.return_value.content = return_value
 
@@ -10814,6 +10863,7 @@ def test_get_note_rest_bad_request(request_type=grafeas.GetNoteRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_note(request)
 
 
@@ -10853,6 +10903,7 @@ def test_get_note_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_note(request)
 
     # Establish that the response is the type that we expect.
@@ -10893,6 +10944,7 @@ def test_get_note_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = grafeas.Note.to_json(grafeas.Note())
         req.return_value.content = return_value
 
@@ -10935,6 +10987,7 @@ def test_list_notes_rest_bad_request(request_type=grafeas.ListNotesRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_notes(request)
 
 
@@ -10970,6 +11023,7 @@ def test_list_notes_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_notes(request)
 
     # Establish that the response is the type that we expect.
@@ -11006,6 +11060,7 @@ def test_list_notes_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = grafeas.ListNotesResponse.to_json(grafeas.ListNotesResponse())
         req.return_value.content = return_value
 
@@ -11048,6 +11103,7 @@ def test_delete_note_rest_bad_request(request_type=grafeas.DeleteNoteRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_note(request)
 
 
@@ -11078,6 +11134,7 @@ def test_delete_note_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_note(request)
 
     # Establish that the response is the type that we expect.
@@ -11110,6 +11167,7 @@ def test_delete_note_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = grafeas.DeleteNoteRequest()
         metadata = [
@@ -11148,6 +11206,7 @@ def test_create_note_rest_bad_request(request_type=grafeas.CreateNoteRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_note(request)
 
 
@@ -11447,6 +11506,7 @@ def test_create_note_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_note(request)
 
     # Establish that the response is the type that we expect.
@@ -11487,6 +11547,7 @@ def test_create_note_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = grafeas.Note.to_json(grafeas.Note())
         req.return_value.content = return_value
 
@@ -11531,6 +11592,7 @@ def test_batch_create_notes_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.batch_create_notes(request)
 
 
@@ -11564,6 +11626,7 @@ def test_batch_create_notes_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.batch_create_notes(request)
 
     # Establish that the response is the type that we expect.
@@ -11601,6 +11664,7 @@ def test_batch_create_notes_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = grafeas.BatchCreateNotesResponse.to_json(
             grafeas.BatchCreateNotesResponse()
         )
@@ -11645,6 +11709,7 @@ def test_update_note_rest_bad_request(request_type=grafeas.UpdateNoteRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_note(request)
 
 
@@ -11944,6 +12009,7 @@ def test_update_note_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_note(request)
 
     # Establish that the response is the type that we expect.
@@ -11984,6 +12050,7 @@ def test_update_note_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = grafeas.Note.to_json(grafeas.Note())
         req.return_value.content = return_value
 
@@ -12028,6 +12095,7 @@ def test_list_note_occurrences_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_note_occurrences(request)
 
 
@@ -12063,6 +12131,7 @@ def test_list_note_occurrences_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_note_occurrences(request)
 
     # Establish that the response is the type that we expect.
@@ -12101,6 +12170,7 @@ def test_list_note_occurrences_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = grafeas.ListNoteOccurrencesResponse.to_json(
             grafeas.ListNoteOccurrencesResponse()
         )

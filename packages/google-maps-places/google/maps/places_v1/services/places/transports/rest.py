@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -37,6 +37,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -109,8 +117,11 @@ class PlacesRestInterceptor:
     def pre_autocomplete_places(
         self,
         request: places_service.AutocompletePlacesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[places_service.AutocompletePlacesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        places_service.AutocompletePlacesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for autocomplete_places
 
         Override in a subclass to manipulate the request or metadata
@@ -132,8 +143,10 @@ class PlacesRestInterceptor:
     def pre_get_photo_media(
         self,
         request: places_service.GetPhotoMediaRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[places_service.GetPhotoMediaRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        places_service.GetPhotoMediaRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_photo_media
 
         Override in a subclass to manipulate the request or metadata
@@ -155,8 +168,8 @@ class PlacesRestInterceptor:
     def pre_get_place(
         self,
         request: places_service.GetPlaceRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[places_service.GetPlaceRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[places_service.GetPlaceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_place
 
         Override in a subclass to manipulate the request or metadata
@@ -176,8 +189,10 @@ class PlacesRestInterceptor:
     def pre_search_nearby(
         self,
         request: places_service.SearchNearbyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[places_service.SearchNearbyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        places_service.SearchNearbyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for search_nearby
 
         Override in a subclass to manipulate the request or metadata
@@ -199,8 +214,10 @@ class PlacesRestInterceptor:
     def pre_search_text(
         self,
         request: places_service.SearchTextRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[places_service.SearchTextRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        places_service.SearchTextRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for search_text
 
         Override in a subclass to manipulate the request or metadata
@@ -345,7 +362,7 @@ class PlacesRestTransport(_BasePlacesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> places_service.AutocompletePlacesResponse:
             r"""Call the autocomplete places method over HTTP.
 
@@ -355,8 +372,10 @@ class PlacesRestTransport(_BasePlacesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.places_service.AutocompletePlacesResponse:
@@ -368,6 +387,7 @@ class PlacesRestTransport(_BasePlacesRestTransport):
             http_options = (
                 _BasePlacesRestTransport._BaseAutocompletePlaces._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_autocomplete_places(
                 request, metadata
             )
@@ -387,6 +407,33 @@ class PlacesRestTransport(_BasePlacesRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.maps.places_v1.PlacesClient.AutocompletePlaces",
+                    extra={
+                        "serviceName": "google.maps.places.v1.Places",
+                        "rpcName": "AutocompletePlaces",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = PlacesRestTransport._AutocompletePlaces._get_response(
@@ -409,7 +456,31 @@ class PlacesRestTransport(_BasePlacesRestTransport):
             pb_resp = places_service.AutocompletePlacesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_autocomplete_places(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        places_service.AutocompletePlacesResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.maps.places_v1.PlacesClient.autocomplete_places",
+                    extra={
+                        "serviceName": "google.maps.places.v1.Places",
+                        "rpcName": "AutocompletePlaces",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetPhotoMedia(_BasePlacesRestTransport._BaseGetPhotoMedia, PlacesRestStub):
@@ -444,7 +515,7 @@ class PlacesRestTransport(_BasePlacesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> places_service.PhotoMedia:
             r"""Call the get photo media method over HTTP.
 
@@ -455,8 +526,10 @@ class PlacesRestTransport(_BasePlacesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.places_service.PhotoMedia:
@@ -466,6 +539,7 @@ class PlacesRestTransport(_BasePlacesRestTransport):
             http_options = (
                 _BasePlacesRestTransport._BaseGetPhotoMedia._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_photo_media(request, metadata)
             transcoded_request = (
                 _BasePlacesRestTransport._BaseGetPhotoMedia._get_transcoded_request(
@@ -479,6 +553,33 @@ class PlacesRestTransport(_BasePlacesRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.maps.places_v1.PlacesClient.GetPhotoMedia",
+                    extra={
+                        "serviceName": "google.maps.places.v1.Places",
+                        "rpcName": "GetPhotoMedia",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = PlacesRestTransport._GetPhotoMedia._get_response(
@@ -500,7 +601,29 @@ class PlacesRestTransport(_BasePlacesRestTransport):
             pb_resp = places_service.PhotoMedia.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_photo_media(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = places_service.PhotoMedia.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.maps.places_v1.PlacesClient.get_photo_media",
+                    extra={
+                        "serviceName": "google.maps.places.v1.Places",
+                        "rpcName": "GetPhotoMedia",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetPlace(_BasePlacesRestTransport._BaseGetPlace, PlacesRestStub):
@@ -535,7 +658,7 @@ class PlacesRestTransport(_BasePlacesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> place.Place:
             r"""Call the get place method over HTTP.
 
@@ -546,8 +669,10 @@ class PlacesRestTransport(_BasePlacesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.place.Place:
@@ -557,6 +682,7 @@ class PlacesRestTransport(_BasePlacesRestTransport):
             """
 
             http_options = _BasePlacesRestTransport._BaseGetPlace._get_http_options()
+
             request, metadata = self._interceptor.pre_get_place(request, metadata)
             transcoded_request = (
                 _BasePlacesRestTransport._BaseGetPlace._get_transcoded_request(
@@ -570,6 +696,33 @@ class PlacesRestTransport(_BasePlacesRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.maps.places_v1.PlacesClient.GetPlace",
+                    extra={
+                        "serviceName": "google.maps.places.v1.Places",
+                        "rpcName": "GetPlace",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = PlacesRestTransport._GetPlace._get_response(
@@ -591,7 +744,29 @@ class PlacesRestTransport(_BasePlacesRestTransport):
             pb_resp = place.Place.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_place(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = place.Place.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.maps.places_v1.PlacesClient.get_place",
+                    extra={
+                        "serviceName": "google.maps.places.v1.Places",
+                        "rpcName": "GetPlace",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _SearchNearby(_BasePlacesRestTransport._BaseSearchNearby, PlacesRestStub):
@@ -627,7 +802,7 @@ class PlacesRestTransport(_BasePlacesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> places_service.SearchNearbyResponse:
             r"""Call the search nearby method over HTTP.
 
@@ -637,8 +812,10 @@ class PlacesRestTransport(_BasePlacesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.places_service.SearchNearbyResponse:
@@ -648,6 +825,7 @@ class PlacesRestTransport(_BasePlacesRestTransport):
             http_options = (
                 _BasePlacesRestTransport._BaseSearchNearby._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_search_nearby(request, metadata)
             transcoded_request = (
                 _BasePlacesRestTransport._BaseSearchNearby._get_transcoded_request(
@@ -665,6 +843,33 @@ class PlacesRestTransport(_BasePlacesRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.maps.places_v1.PlacesClient.SearchNearby",
+                    extra={
+                        "serviceName": "google.maps.places.v1.Places",
+                        "rpcName": "SearchNearby",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = PlacesRestTransport._SearchNearby._get_response(
@@ -687,7 +892,31 @@ class PlacesRestTransport(_BasePlacesRestTransport):
             pb_resp = places_service.SearchNearbyResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_search_nearby(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = places_service.SearchNearbyResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.maps.places_v1.PlacesClient.search_nearby",
+                    extra={
+                        "serviceName": "google.maps.places.v1.Places",
+                        "rpcName": "SearchNearby",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _SearchText(_BasePlacesRestTransport._BaseSearchText, PlacesRestStub):
@@ -723,7 +952,7 @@ class PlacesRestTransport(_BasePlacesRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> places_service.SearchTextResponse:
             r"""Call the search text method over HTTP.
 
@@ -733,8 +962,10 @@ class PlacesRestTransport(_BasePlacesRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.places_service.SearchTextResponse:
@@ -742,6 +973,7 @@ class PlacesRestTransport(_BasePlacesRestTransport):
             """
 
             http_options = _BasePlacesRestTransport._BaseSearchText._get_http_options()
+
             request, metadata = self._interceptor.pre_search_text(request, metadata)
             transcoded_request = (
                 _BasePlacesRestTransport._BaseSearchText._get_transcoded_request(
@@ -759,6 +991,33 @@ class PlacesRestTransport(_BasePlacesRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.maps.places_v1.PlacesClient.SearchText",
+                    extra={
+                        "serviceName": "google.maps.places.v1.Places",
+                        "rpcName": "SearchText",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = PlacesRestTransport._SearchText._get_response(
@@ -781,7 +1040,31 @@ class PlacesRestTransport(_BasePlacesRestTransport):
             pb_resp = places_service.SearchTextResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_search_text(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = places_service.SearchTextResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.maps.places_v1.PlacesClient.search_text",
+                    extra={
+                        "serviceName": "google.maps.places.v1.Places",
+                        "rpcName": "SearchText",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property

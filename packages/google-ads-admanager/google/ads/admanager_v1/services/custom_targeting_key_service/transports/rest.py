@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -41,6 +41,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -89,10 +97,10 @@ class CustomTargetingKeyServiceRestInterceptor:
     def pre_get_custom_targeting_key(
         self,
         request: custom_targeting_key_service.GetCustomTargetingKeyRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         custom_targeting_key_service.GetCustomTargetingKeyRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for get_custom_targeting_key
 
@@ -115,10 +123,10 @@ class CustomTargetingKeyServiceRestInterceptor:
     def pre_list_custom_targeting_keys(
         self,
         request: custom_targeting_key_service.ListCustomTargetingKeysRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
         custom_targeting_key_service.ListCustomTargetingKeysRequest,
-        Sequence[Tuple[str, str]],
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for list_custom_targeting_keys
 
@@ -141,8 +149,10 @@ class CustomTargetingKeyServiceRestInterceptor:
     def pre_get_operation(
         self,
         request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -285,7 +295,7 @@ class CustomTargetingKeyServiceRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> custom_targeting_key_messages.CustomTargetingKey:
             r"""Call the get custom targeting key method over HTTP.
 
@@ -295,8 +305,10 @@ class CustomTargetingKeyServiceRestTransport(
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.custom_targeting_key_messages.CustomTargetingKey:
@@ -306,6 +318,7 @@ class CustomTargetingKeyServiceRestTransport(
             http_options = (
                 _BaseCustomTargetingKeyServiceRestTransport._BaseGetCustomTargetingKey._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_custom_targeting_key(
                 request, metadata
             )
@@ -317,6 +330,33 @@ class CustomTargetingKeyServiceRestTransport(
             query_params = _BaseCustomTargetingKeyServiceRestTransport._BaseGetCustomTargetingKey._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.ads.admanager_v1.CustomTargetingKeyServiceClient.GetCustomTargetingKey",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.CustomTargetingKeyService",
+                        "rpcName": "GetCustomTargetingKey",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CustomTargetingKeyServiceRestTransport._GetCustomTargetingKey._get_response(
@@ -338,7 +378,33 @@ class CustomTargetingKeyServiceRestTransport(
             pb_resp = custom_targeting_key_messages.CustomTargetingKey.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_custom_targeting_key(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        custom_targeting_key_messages.CustomTargetingKey.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.ads.admanager_v1.CustomTargetingKeyServiceClient.get_custom_targeting_key",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.CustomTargetingKeyService",
+                        "rpcName": "GetCustomTargetingKey",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListCustomTargetingKeys(
@@ -378,7 +444,7 @@ class CustomTargetingKeyServiceRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> custom_targeting_key_service.ListCustomTargetingKeysResponse:
             r"""Call the list custom targeting
             keys method over HTTP.
@@ -389,8 +455,10 @@ class CustomTargetingKeyServiceRestTransport(
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.custom_targeting_key_service.ListCustomTargetingKeysResponse:
@@ -402,6 +470,7 @@ class CustomTargetingKeyServiceRestTransport(
             http_options = (
                 _BaseCustomTargetingKeyServiceRestTransport._BaseListCustomTargetingKeys._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_custom_targeting_keys(
                 request, metadata
             )
@@ -413,6 +482,33 @@ class CustomTargetingKeyServiceRestTransport(
             query_params = _BaseCustomTargetingKeyServiceRestTransport._BaseListCustomTargetingKeys._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.ads.admanager_v1.CustomTargetingKeyServiceClient.ListCustomTargetingKeys",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.CustomTargetingKeyService",
+                        "rpcName": "ListCustomTargetingKeys",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = CustomTargetingKeyServiceRestTransport._ListCustomTargetingKeys._get_response(
@@ -436,7 +532,31 @@ class CustomTargetingKeyServiceRestTransport(
             )
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_custom_targeting_keys(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = custom_targeting_key_service.ListCustomTargetingKeysResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.ads.admanager_v1.CustomTargetingKeyServiceClient.list_custom_targeting_keys",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.CustomTargetingKeyService",
+                        "rpcName": "ListCustomTargetingKeys",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -500,7 +620,7 @@ class CustomTargetingKeyServiceRestTransport(
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the get operation method over HTTP.
 
@@ -510,8 +630,10 @@ class CustomTargetingKeyServiceRestTransport(
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.
@@ -520,6 +642,7 @@ class CustomTargetingKeyServiceRestTransport(
             http_options = (
                 _BaseCustomTargetingKeyServiceRestTransport._BaseGetOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseCustomTargetingKeyServiceRestTransport._BaseGetOperation._get_transcoded_request(
                 http_options, request
@@ -529,6 +652,33 @@ class CustomTargetingKeyServiceRestTransport(
             query_params = _BaseCustomTargetingKeyServiceRestTransport._BaseGetOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.ads.admanager_v1.CustomTargetingKeyServiceClient.GetOperation",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.CustomTargetingKeyService",
+                        "rpcName": "GetOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -551,6 +701,27 @@ class CustomTargetingKeyServiceRestTransport(
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.ads.admanager_v1.CustomTargetingKeyServiceAsyncClient.GetOperation",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.CustomTargetingKeyService",
+                        "rpcName": "GetOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property

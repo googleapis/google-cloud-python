@@ -14,6 +14,7 @@
 # limitations under the License.
 #
 from collections import OrderedDict
+import logging as std_logging
 import re
 from typing import (
     Callable,
@@ -48,6 +49,15 @@ from google.cloud.privatecatalog_v1beta1.types import private_catalog
 from .client import PrivateCatalogClient
 from .transports.base import DEFAULT_CLIENT_INFO, PrivateCatalogTransport
 from .transports.grpc_asyncio import PrivateCatalogGrpcAsyncIOTransport
+
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = std_logging.getLogger(__name__)
 
 
 class PrivateCatalogAsyncClient:
@@ -280,13 +290,35 @@ class PrivateCatalogAsyncClient:
             client_info=client_info,
         )
 
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+            std_logging.DEBUG
+        ):  # pragma: NO COVER
+            _LOGGER.debug(
+                "Created client `google.cloud.privatecatalog_v1beta1.PrivateCatalogAsyncClient`.",
+                extra={
+                    "serviceName": "google.cloud.privatecatalog.v1beta1.PrivateCatalog",
+                    "universeDomain": getattr(
+                        self._client._transport._credentials, "universe_domain", ""
+                    ),
+                    "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
+                    "credentialsInfo": getattr(
+                        self.transport._credentials, "get_cred_info", lambda: None
+                    )(),
+                }
+                if hasattr(self._client._transport, "_credentials")
+                else {
+                    "serviceName": "google.cloud.privatecatalog.v1beta1.PrivateCatalog",
+                    "credentialsType": None,
+                },
+            )
+
     async def search_catalogs(
         self,
         request: Optional[Union[private_catalog.SearchCatalogsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.SearchCatalogsAsyncPager:
         r"""Search [Catalog][google.cloud.privatecatalog.v1beta1.Catalog]
         resources that consumers have access to, within the scope of the
@@ -326,8 +358,10 @@ class PrivateCatalogAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.privatecatalog_v1beta1.services.private_catalog.pagers.SearchCatalogsAsyncPager:
@@ -387,7 +421,7 @@ class PrivateCatalogAsyncClient:
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.SearchProductsAsyncPager:
         r"""Search [Product][google.cloud.privatecatalog.v1beta1.Product]
         resources that consumers have access to, within the scope of the
@@ -427,8 +461,10 @@ class PrivateCatalogAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.privatecatalog_v1beta1.services.private_catalog.pagers.SearchProductsAsyncPager:
@@ -488,7 +524,7 @@ class PrivateCatalogAsyncClient:
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.SearchVersionsAsyncPager:
         r"""Search [Version][google.cloud.privatecatalog.v1beta1.Version]
         resources that consumers have access to, within the scope of the
@@ -529,8 +565,10 @@ class PrivateCatalogAsyncClient:
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
 
         Returns:
             google.cloud.privatecatalog_v1beta1.services.private_catalog.pagers.SearchVersionsAsyncPager:

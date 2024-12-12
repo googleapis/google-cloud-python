@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -40,6 +40,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -448,8 +456,10 @@ class MigrationCenterRestInterceptor:
     def pre_add_assets_to_group(
         self,
         request: migrationcenter.AddAssetsToGroupRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[migrationcenter.AddAssetsToGroupRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        migrationcenter.AddAssetsToGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for add_assets_to_group
 
         Override in a subclass to manipulate the request or metadata
@@ -471,8 +481,11 @@ class MigrationCenterRestInterceptor:
     def pre_aggregate_assets_values(
         self,
         request: migrationcenter.AggregateAssetsValuesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[migrationcenter.AggregateAssetsValuesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        migrationcenter.AggregateAssetsValuesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for aggregate_assets_values
 
         Override in a subclass to manipulate the request or metadata
@@ -494,8 +507,11 @@ class MigrationCenterRestInterceptor:
     def pre_batch_delete_assets(
         self,
         request: migrationcenter.BatchDeleteAssetsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[migrationcenter.BatchDeleteAssetsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        migrationcenter.BatchDeleteAssetsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for batch_delete_assets
 
         Override in a subclass to manipulate the request or metadata
@@ -506,8 +522,11 @@ class MigrationCenterRestInterceptor:
     def pre_batch_update_assets(
         self,
         request: migrationcenter.BatchUpdateAssetsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[migrationcenter.BatchUpdateAssetsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        migrationcenter.BatchUpdateAssetsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for batch_update_assets
 
         Override in a subclass to manipulate the request or metadata
@@ -529,8 +548,10 @@ class MigrationCenterRestInterceptor:
     def pre_create_group(
         self,
         request: migrationcenter.CreateGroupRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[migrationcenter.CreateGroupRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        migrationcenter.CreateGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_group
 
         Override in a subclass to manipulate the request or metadata
@@ -552,8 +573,11 @@ class MigrationCenterRestInterceptor:
     def pre_create_import_data_file(
         self,
         request: migrationcenter.CreateImportDataFileRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[migrationcenter.CreateImportDataFileRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        migrationcenter.CreateImportDataFileRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for create_import_data_file
 
         Override in a subclass to manipulate the request or metadata
@@ -575,8 +599,10 @@ class MigrationCenterRestInterceptor:
     def pre_create_import_job(
         self,
         request: migrationcenter.CreateImportJobRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[migrationcenter.CreateImportJobRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        migrationcenter.CreateImportJobRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_import_job
 
         Override in a subclass to manipulate the request or metadata
@@ -598,8 +624,11 @@ class MigrationCenterRestInterceptor:
     def pre_create_preference_set(
         self,
         request: migrationcenter.CreatePreferenceSetRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[migrationcenter.CreatePreferenceSetRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        migrationcenter.CreatePreferenceSetRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for create_preference_set
 
         Override in a subclass to manipulate the request or metadata
@@ -621,8 +650,10 @@ class MigrationCenterRestInterceptor:
     def pre_create_report(
         self,
         request: migrationcenter.CreateReportRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[migrationcenter.CreateReportRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        migrationcenter.CreateReportRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_report
 
         Override in a subclass to manipulate the request or metadata
@@ -644,8 +675,11 @@ class MigrationCenterRestInterceptor:
     def pre_create_report_config(
         self,
         request: migrationcenter.CreateReportConfigRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[migrationcenter.CreateReportConfigRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        migrationcenter.CreateReportConfigRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for create_report_config
 
         Override in a subclass to manipulate the request or metadata
@@ -667,8 +701,10 @@ class MigrationCenterRestInterceptor:
     def pre_create_source(
         self,
         request: migrationcenter.CreateSourceRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[migrationcenter.CreateSourceRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        migrationcenter.CreateSourceRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_source
 
         Override in a subclass to manipulate the request or metadata
@@ -690,8 +726,10 @@ class MigrationCenterRestInterceptor:
     def pre_delete_asset(
         self,
         request: migrationcenter.DeleteAssetRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[migrationcenter.DeleteAssetRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        migrationcenter.DeleteAssetRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_asset
 
         Override in a subclass to manipulate the request or metadata
@@ -702,8 +740,10 @@ class MigrationCenterRestInterceptor:
     def pre_delete_group(
         self,
         request: migrationcenter.DeleteGroupRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[migrationcenter.DeleteGroupRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        migrationcenter.DeleteGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_group
 
         Override in a subclass to manipulate the request or metadata
@@ -725,8 +765,11 @@ class MigrationCenterRestInterceptor:
     def pre_delete_import_data_file(
         self,
         request: migrationcenter.DeleteImportDataFileRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[migrationcenter.DeleteImportDataFileRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        migrationcenter.DeleteImportDataFileRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for delete_import_data_file
 
         Override in a subclass to manipulate the request or metadata
@@ -748,8 +791,10 @@ class MigrationCenterRestInterceptor:
     def pre_delete_import_job(
         self,
         request: migrationcenter.DeleteImportJobRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[migrationcenter.DeleteImportJobRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        migrationcenter.DeleteImportJobRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_import_job
 
         Override in a subclass to manipulate the request or metadata
@@ -771,8 +816,11 @@ class MigrationCenterRestInterceptor:
     def pre_delete_preference_set(
         self,
         request: migrationcenter.DeletePreferenceSetRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[migrationcenter.DeletePreferenceSetRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        migrationcenter.DeletePreferenceSetRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for delete_preference_set
 
         Override in a subclass to manipulate the request or metadata
@@ -794,8 +842,10 @@ class MigrationCenterRestInterceptor:
     def pre_delete_report(
         self,
         request: migrationcenter.DeleteReportRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[migrationcenter.DeleteReportRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        migrationcenter.DeleteReportRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_report
 
         Override in a subclass to manipulate the request or metadata
@@ -817,8 +867,11 @@ class MigrationCenterRestInterceptor:
     def pre_delete_report_config(
         self,
         request: migrationcenter.DeleteReportConfigRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[migrationcenter.DeleteReportConfigRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        migrationcenter.DeleteReportConfigRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for delete_report_config
 
         Override in a subclass to manipulate the request or metadata
@@ -840,8 +893,10 @@ class MigrationCenterRestInterceptor:
     def pre_delete_source(
         self,
         request: migrationcenter.DeleteSourceRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[migrationcenter.DeleteSourceRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        migrationcenter.DeleteSourceRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_source
 
         Override in a subclass to manipulate the request or metadata
@@ -863,8 +918,10 @@ class MigrationCenterRestInterceptor:
     def pre_get_asset(
         self,
         request: migrationcenter.GetAssetRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[migrationcenter.GetAssetRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        migrationcenter.GetAssetRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_asset
 
         Override in a subclass to manipulate the request or metadata
@@ -884,8 +941,10 @@ class MigrationCenterRestInterceptor:
     def pre_get_error_frame(
         self,
         request: migrationcenter.GetErrorFrameRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[migrationcenter.GetErrorFrameRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        migrationcenter.GetErrorFrameRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_error_frame
 
         Override in a subclass to manipulate the request or metadata
@@ -907,8 +966,10 @@ class MigrationCenterRestInterceptor:
     def pre_get_group(
         self,
         request: migrationcenter.GetGroupRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[migrationcenter.GetGroupRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        migrationcenter.GetGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_group
 
         Override in a subclass to manipulate the request or metadata
@@ -928,8 +989,11 @@ class MigrationCenterRestInterceptor:
     def pre_get_import_data_file(
         self,
         request: migrationcenter.GetImportDataFileRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[migrationcenter.GetImportDataFileRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        migrationcenter.GetImportDataFileRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for get_import_data_file
 
         Override in a subclass to manipulate the request or metadata
@@ -951,8 +1015,10 @@ class MigrationCenterRestInterceptor:
     def pre_get_import_job(
         self,
         request: migrationcenter.GetImportJobRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[migrationcenter.GetImportJobRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        migrationcenter.GetImportJobRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_import_job
 
         Override in a subclass to manipulate the request or metadata
@@ -974,8 +1040,10 @@ class MigrationCenterRestInterceptor:
     def pre_get_preference_set(
         self,
         request: migrationcenter.GetPreferenceSetRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[migrationcenter.GetPreferenceSetRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        migrationcenter.GetPreferenceSetRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_preference_set
 
         Override in a subclass to manipulate the request or metadata
@@ -997,8 +1065,10 @@ class MigrationCenterRestInterceptor:
     def pre_get_report(
         self,
         request: migrationcenter.GetReportRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[migrationcenter.GetReportRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        migrationcenter.GetReportRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_report
 
         Override in a subclass to manipulate the request or metadata
@@ -1020,8 +1090,10 @@ class MigrationCenterRestInterceptor:
     def pre_get_report_config(
         self,
         request: migrationcenter.GetReportConfigRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[migrationcenter.GetReportConfigRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        migrationcenter.GetReportConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_report_config
 
         Override in a subclass to manipulate the request or metadata
@@ -1043,8 +1115,10 @@ class MigrationCenterRestInterceptor:
     def pre_get_settings(
         self,
         request: migrationcenter.GetSettingsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[migrationcenter.GetSettingsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        migrationcenter.GetSettingsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_settings
 
         Override in a subclass to manipulate the request or metadata
@@ -1066,8 +1140,10 @@ class MigrationCenterRestInterceptor:
     def pre_get_source(
         self,
         request: migrationcenter.GetSourceRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[migrationcenter.GetSourceRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        migrationcenter.GetSourceRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_source
 
         Override in a subclass to manipulate the request or metadata
@@ -1089,8 +1165,10 @@ class MigrationCenterRestInterceptor:
     def pre_list_assets(
         self,
         request: migrationcenter.ListAssetsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[migrationcenter.ListAssetsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        migrationcenter.ListAssetsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_assets
 
         Override in a subclass to manipulate the request or metadata
@@ -1112,8 +1190,10 @@ class MigrationCenterRestInterceptor:
     def pre_list_error_frames(
         self,
         request: migrationcenter.ListErrorFramesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[migrationcenter.ListErrorFramesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        migrationcenter.ListErrorFramesRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_error_frames
 
         Override in a subclass to manipulate the request or metadata
@@ -1135,8 +1215,10 @@ class MigrationCenterRestInterceptor:
     def pre_list_groups(
         self,
         request: migrationcenter.ListGroupsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[migrationcenter.ListGroupsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        migrationcenter.ListGroupsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_groups
 
         Override in a subclass to manipulate the request or metadata
@@ -1158,8 +1240,11 @@ class MigrationCenterRestInterceptor:
     def pre_list_import_data_files(
         self,
         request: migrationcenter.ListImportDataFilesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[migrationcenter.ListImportDataFilesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        migrationcenter.ListImportDataFilesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for list_import_data_files
 
         Override in a subclass to manipulate the request or metadata
@@ -1181,8 +1266,10 @@ class MigrationCenterRestInterceptor:
     def pre_list_import_jobs(
         self,
         request: migrationcenter.ListImportJobsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[migrationcenter.ListImportJobsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        migrationcenter.ListImportJobsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_import_jobs
 
         Override in a subclass to manipulate the request or metadata
@@ -1204,8 +1291,11 @@ class MigrationCenterRestInterceptor:
     def pre_list_preference_sets(
         self,
         request: migrationcenter.ListPreferenceSetsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[migrationcenter.ListPreferenceSetsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        migrationcenter.ListPreferenceSetsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for list_preference_sets
 
         Override in a subclass to manipulate the request or metadata
@@ -1227,8 +1317,11 @@ class MigrationCenterRestInterceptor:
     def pre_list_report_configs(
         self,
         request: migrationcenter.ListReportConfigsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[migrationcenter.ListReportConfigsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        migrationcenter.ListReportConfigsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for list_report_configs
 
         Override in a subclass to manipulate the request or metadata
@@ -1250,8 +1343,10 @@ class MigrationCenterRestInterceptor:
     def pre_list_reports(
         self,
         request: migrationcenter.ListReportsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[migrationcenter.ListReportsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        migrationcenter.ListReportsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_reports
 
         Override in a subclass to manipulate the request or metadata
@@ -1273,8 +1368,10 @@ class MigrationCenterRestInterceptor:
     def pre_list_sources(
         self,
         request: migrationcenter.ListSourcesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[migrationcenter.ListSourcesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        migrationcenter.ListSourcesRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_sources
 
         Override in a subclass to manipulate the request or metadata
@@ -1296,8 +1393,11 @@ class MigrationCenterRestInterceptor:
     def pre_remove_assets_from_group(
         self,
         request: migrationcenter.RemoveAssetsFromGroupRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[migrationcenter.RemoveAssetsFromGroupRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        migrationcenter.RemoveAssetsFromGroupRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for remove_assets_from_group
 
         Override in a subclass to manipulate the request or metadata
@@ -1319,8 +1419,11 @@ class MigrationCenterRestInterceptor:
     def pre_report_asset_frames(
         self,
         request: migrationcenter.ReportAssetFramesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[migrationcenter.ReportAssetFramesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        migrationcenter.ReportAssetFramesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for report_asset_frames
 
         Override in a subclass to manipulate the request or metadata
@@ -1342,8 +1445,10 @@ class MigrationCenterRestInterceptor:
     def pre_run_import_job(
         self,
         request: migrationcenter.RunImportJobRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[migrationcenter.RunImportJobRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        migrationcenter.RunImportJobRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for run_import_job
 
         Override in a subclass to manipulate the request or metadata
@@ -1365,8 +1470,10 @@ class MigrationCenterRestInterceptor:
     def pre_update_asset(
         self,
         request: migrationcenter.UpdateAssetRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[migrationcenter.UpdateAssetRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        migrationcenter.UpdateAssetRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_asset
 
         Override in a subclass to manipulate the request or metadata
@@ -1388,8 +1495,10 @@ class MigrationCenterRestInterceptor:
     def pre_update_group(
         self,
         request: migrationcenter.UpdateGroupRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[migrationcenter.UpdateGroupRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        migrationcenter.UpdateGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_group
 
         Override in a subclass to manipulate the request or metadata
@@ -1411,8 +1520,10 @@ class MigrationCenterRestInterceptor:
     def pre_update_import_job(
         self,
         request: migrationcenter.UpdateImportJobRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[migrationcenter.UpdateImportJobRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        migrationcenter.UpdateImportJobRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_import_job
 
         Override in a subclass to manipulate the request or metadata
@@ -1434,8 +1545,11 @@ class MigrationCenterRestInterceptor:
     def pre_update_preference_set(
         self,
         request: migrationcenter.UpdatePreferenceSetRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[migrationcenter.UpdatePreferenceSetRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        migrationcenter.UpdatePreferenceSetRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for update_preference_set
 
         Override in a subclass to manipulate the request or metadata
@@ -1457,8 +1571,10 @@ class MigrationCenterRestInterceptor:
     def pre_update_settings(
         self,
         request: migrationcenter.UpdateSettingsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[migrationcenter.UpdateSettingsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        migrationcenter.UpdateSettingsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_settings
 
         Override in a subclass to manipulate the request or metadata
@@ -1480,8 +1596,10 @@ class MigrationCenterRestInterceptor:
     def pre_update_source(
         self,
         request: migrationcenter.UpdateSourceRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[migrationcenter.UpdateSourceRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        migrationcenter.UpdateSourceRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_source
 
         Override in a subclass to manipulate the request or metadata
@@ -1503,8 +1621,11 @@ class MigrationCenterRestInterceptor:
     def pre_validate_import_job(
         self,
         request: migrationcenter.ValidateImportJobRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[migrationcenter.ValidateImportJobRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        migrationcenter.ValidateImportJobRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for validate_import_job
 
         Override in a subclass to manipulate the request or metadata
@@ -1526,8 +1647,10 @@ class MigrationCenterRestInterceptor:
     def pre_get_location(
         self,
         request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -1549,8 +1672,10 @@ class MigrationCenterRestInterceptor:
     def pre_list_locations(
         self,
         request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -1572,8 +1697,10 @@ class MigrationCenterRestInterceptor:
     def pre_cancel_operation(
         self,
         request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1593,8 +1720,10 @@ class MigrationCenterRestInterceptor:
     def pre_delete_operation(
         self,
         request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1614,8 +1743,10 @@ class MigrationCenterRestInterceptor:
     def pre_get_operation(
         self,
         request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1637,8 +1768,10 @@ class MigrationCenterRestInterceptor:
     def pre_list_operations(
         self,
         request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -1833,7 +1966,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the add assets to group method over HTTP.
 
@@ -1843,8 +1976,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1857,6 +1992,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             http_options = (
                 _BaseMigrationCenterRestTransport._BaseAddAssetsToGroup._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_add_assets_to_group(
                 request, metadata
             )
@@ -1872,6 +2008,33 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             query_params = _BaseMigrationCenterRestTransport._BaseAddAssetsToGroup._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.migrationcenter_v1.MigrationCenterClient.AddAssetsToGroup",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "AddAssetsToGroup",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = MigrationCenterRestTransport._AddAssetsToGroup._get_response(
@@ -1892,7 +2055,29 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_add_assets_to_group(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.migrationcenter_v1.MigrationCenterClient.add_assets_to_group",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "AddAssetsToGroup",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _AggregateAssetsValues(
@@ -1931,7 +2116,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> migrationcenter.AggregateAssetsValuesResponse:
             r"""Call the aggregate assets values method over HTTP.
 
@@ -1942,8 +2127,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.migrationcenter.AggregateAssetsValuesResponse:
@@ -1955,6 +2142,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             http_options = (
                 _BaseMigrationCenterRestTransport._BaseAggregateAssetsValues._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_aggregate_assets_values(
                 request, metadata
             )
@@ -1970,6 +2158,33 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             query_params = _BaseMigrationCenterRestTransport._BaseAggregateAssetsValues._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.migrationcenter_v1.MigrationCenterClient.AggregateAssetsValues",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "AggregateAssetsValues",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1994,7 +2209,31 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             pb_resp = migrationcenter.AggregateAssetsValuesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_aggregate_assets_values(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        migrationcenter.AggregateAssetsValuesResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.migrationcenter_v1.MigrationCenterClient.aggregate_assets_values",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "AggregateAssetsValues",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _BatchDeleteAssets(
@@ -2033,7 +2272,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the batch delete assets method over HTTP.
 
@@ -2043,13 +2282,16 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseMigrationCenterRestTransport._BaseBatchDeleteAssets._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_batch_delete_assets(
                 request, metadata
             )
@@ -2065,6 +2307,33 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             query_params = _BaseMigrationCenterRestTransport._BaseBatchDeleteAssets._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.migrationcenter_v1.MigrationCenterClient.BatchDeleteAssets",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "BatchDeleteAssets",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = MigrationCenterRestTransport._BatchDeleteAssets._get_response(
@@ -2118,7 +2387,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> migrationcenter.BatchUpdateAssetsResponse:
             r"""Call the batch update assets method over HTTP.
 
@@ -2128,8 +2397,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.migrationcenter.BatchUpdateAssetsResponse:
@@ -2141,6 +2412,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             http_options = (
                 _BaseMigrationCenterRestTransport._BaseBatchUpdateAssets._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_batch_update_assets(
                 request, metadata
             )
@@ -2156,6 +2428,33 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             query_params = _BaseMigrationCenterRestTransport._BaseBatchUpdateAssets._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.migrationcenter_v1.MigrationCenterClient.BatchUpdateAssets",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "BatchUpdateAssets",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = MigrationCenterRestTransport._BatchUpdateAssets._get_response(
@@ -2178,7 +2477,31 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             pb_resp = migrationcenter.BatchUpdateAssetsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_batch_update_assets(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        migrationcenter.BatchUpdateAssetsResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.migrationcenter_v1.MigrationCenterClient.batch_update_assets",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "BatchUpdateAssets",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateGroup(
@@ -2216,7 +2539,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create group method over HTTP.
 
@@ -2226,8 +2549,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2240,6 +2565,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             http_options = (
                 _BaseMigrationCenterRestTransport._BaseCreateGroup._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_group(request, metadata)
             transcoded_request = _BaseMigrationCenterRestTransport._BaseCreateGroup._get_transcoded_request(
                 http_options, request
@@ -2253,6 +2579,33 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             query_params = _BaseMigrationCenterRestTransport._BaseCreateGroup._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.migrationcenter_v1.MigrationCenterClient.CreateGroup",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "CreateGroup",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = MigrationCenterRestTransport._CreateGroup._get_response(
@@ -2273,7 +2626,29 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_group(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.migrationcenter_v1.MigrationCenterClient.create_group",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "CreateGroup",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateImportDataFile(
@@ -2312,7 +2687,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create import data file method over HTTP.
 
@@ -2322,8 +2697,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2336,6 +2713,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             http_options = (
                 _BaseMigrationCenterRestTransport._BaseCreateImportDataFile._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_import_data_file(
                 request, metadata
             )
@@ -2351,6 +2729,33 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             query_params = _BaseMigrationCenterRestTransport._BaseCreateImportDataFile._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.migrationcenter_v1.MigrationCenterClient.CreateImportDataFile",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "CreateImportDataFile",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = MigrationCenterRestTransport._CreateImportDataFile._get_response(
@@ -2371,7 +2776,29 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_import_data_file(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.migrationcenter_v1.MigrationCenterClient.create_import_data_file",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "CreateImportDataFile",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateImportJob(
@@ -2409,7 +2836,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create import job method over HTTP.
 
@@ -2419,8 +2846,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2433,6 +2862,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             http_options = (
                 _BaseMigrationCenterRestTransport._BaseCreateImportJob._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_import_job(
                 request, metadata
             )
@@ -2448,6 +2878,33 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             query_params = _BaseMigrationCenterRestTransport._BaseCreateImportJob._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.migrationcenter_v1.MigrationCenterClient.CreateImportJob",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "CreateImportJob",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = MigrationCenterRestTransport._CreateImportJob._get_response(
@@ -2468,7 +2925,29 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_import_job(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.migrationcenter_v1.MigrationCenterClient.create_import_job",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "CreateImportJob",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreatePreferenceSet(
@@ -2507,7 +2986,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create preference set method over HTTP.
 
@@ -2517,8 +2996,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2531,6 +3012,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             http_options = (
                 _BaseMigrationCenterRestTransport._BaseCreatePreferenceSet._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_preference_set(
                 request, metadata
             )
@@ -2546,6 +3028,33 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             query_params = _BaseMigrationCenterRestTransport._BaseCreatePreferenceSet._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.migrationcenter_v1.MigrationCenterClient.CreatePreferenceSet",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "CreatePreferenceSet",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = MigrationCenterRestTransport._CreatePreferenceSet._get_response(
@@ -2566,7 +3075,29 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_preference_set(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.migrationcenter_v1.MigrationCenterClient.create_preference_set",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "CreatePreferenceSet",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateReport(
@@ -2604,7 +3135,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create report method over HTTP.
 
@@ -2614,8 +3145,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2628,6 +3161,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             http_options = (
                 _BaseMigrationCenterRestTransport._BaseCreateReport._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_report(request, metadata)
             transcoded_request = _BaseMigrationCenterRestTransport._BaseCreateReport._get_transcoded_request(
                 http_options, request
@@ -2641,6 +3175,33 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             query_params = _BaseMigrationCenterRestTransport._BaseCreateReport._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.migrationcenter_v1.MigrationCenterClient.CreateReport",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "CreateReport",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = MigrationCenterRestTransport._CreateReport._get_response(
@@ -2661,7 +3222,29 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_report(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.migrationcenter_v1.MigrationCenterClient.create_report",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "CreateReport",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateReportConfig(
@@ -2700,7 +3283,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create report config method over HTTP.
 
@@ -2710,8 +3293,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2724,6 +3309,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             http_options = (
                 _BaseMigrationCenterRestTransport._BaseCreateReportConfig._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_report_config(
                 request, metadata
             )
@@ -2739,6 +3325,33 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             query_params = _BaseMigrationCenterRestTransport._BaseCreateReportConfig._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.migrationcenter_v1.MigrationCenterClient.CreateReportConfig",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "CreateReportConfig",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = MigrationCenterRestTransport._CreateReportConfig._get_response(
@@ -2759,7 +3372,29 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_report_config(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.migrationcenter_v1.MigrationCenterClient.create_report_config",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "CreateReportConfig",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateSource(
@@ -2797,7 +3432,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create source method over HTTP.
 
@@ -2807,8 +3442,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2821,6 +3458,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             http_options = (
                 _BaseMigrationCenterRestTransport._BaseCreateSource._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_source(request, metadata)
             transcoded_request = _BaseMigrationCenterRestTransport._BaseCreateSource._get_transcoded_request(
                 http_options, request
@@ -2834,6 +3472,33 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             query_params = _BaseMigrationCenterRestTransport._BaseCreateSource._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.migrationcenter_v1.MigrationCenterClient.CreateSource",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "CreateSource",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = MigrationCenterRestTransport._CreateSource._get_response(
@@ -2854,7 +3519,29 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_source(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.migrationcenter_v1.MigrationCenterClient.create_source",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "CreateSource",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteAsset(
@@ -2891,7 +3578,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete asset method over HTTP.
 
@@ -2901,13 +3588,16 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseMigrationCenterRestTransport._BaseDeleteAsset._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_asset(request, metadata)
             transcoded_request = _BaseMigrationCenterRestTransport._BaseDeleteAsset._get_transcoded_request(
                 http_options, request
@@ -2917,6 +3607,33 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             query_params = _BaseMigrationCenterRestTransport._BaseDeleteAsset._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.migrationcenter_v1.MigrationCenterClient.DeleteAsset",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "DeleteAsset",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = MigrationCenterRestTransport._DeleteAsset._get_response(
@@ -2967,7 +3684,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete group method over HTTP.
 
@@ -2977,8 +3694,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2991,6 +3710,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             http_options = (
                 _BaseMigrationCenterRestTransport._BaseDeleteGroup._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_group(request, metadata)
             transcoded_request = _BaseMigrationCenterRestTransport._BaseDeleteGroup._get_transcoded_request(
                 http_options, request
@@ -3000,6 +3720,33 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             query_params = _BaseMigrationCenterRestTransport._BaseDeleteGroup._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.migrationcenter_v1.MigrationCenterClient.DeleteGroup",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "DeleteGroup",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = MigrationCenterRestTransport._DeleteGroup._get_response(
@@ -3019,7 +3766,29 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_group(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.migrationcenter_v1.MigrationCenterClient.delete_group",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "DeleteGroup",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteImportDataFile(
@@ -3057,7 +3826,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete import data file method over HTTP.
 
@@ -3067,8 +3836,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -3081,6 +3852,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             http_options = (
                 _BaseMigrationCenterRestTransport._BaseDeleteImportDataFile._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_import_data_file(
                 request, metadata
             )
@@ -3092,6 +3864,33 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             query_params = _BaseMigrationCenterRestTransport._BaseDeleteImportDataFile._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.migrationcenter_v1.MigrationCenterClient.DeleteImportDataFile",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "DeleteImportDataFile",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = MigrationCenterRestTransport._DeleteImportDataFile._get_response(
@@ -3111,7 +3910,29 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_import_data_file(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.migrationcenter_v1.MigrationCenterClient.delete_import_data_file",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "DeleteImportDataFile",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteImportJob(
@@ -3148,7 +3969,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete import job method over HTTP.
 
@@ -3158,8 +3979,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -3172,6 +3995,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             http_options = (
                 _BaseMigrationCenterRestTransport._BaseDeleteImportJob._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_import_job(
                 request, metadata
             )
@@ -3183,6 +4007,33 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             query_params = _BaseMigrationCenterRestTransport._BaseDeleteImportJob._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.migrationcenter_v1.MigrationCenterClient.DeleteImportJob",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "DeleteImportJob",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = MigrationCenterRestTransport._DeleteImportJob._get_response(
@@ -3202,7 +4053,29 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_import_job(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.migrationcenter_v1.MigrationCenterClient.delete_import_job",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "DeleteImportJob",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeletePreferenceSet(
@@ -3240,7 +4113,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete preference set method over HTTP.
 
@@ -3250,8 +4123,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -3264,6 +4139,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             http_options = (
                 _BaseMigrationCenterRestTransport._BaseDeletePreferenceSet._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_preference_set(
                 request, metadata
             )
@@ -3275,6 +4151,33 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             query_params = _BaseMigrationCenterRestTransport._BaseDeletePreferenceSet._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.migrationcenter_v1.MigrationCenterClient.DeletePreferenceSet",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "DeletePreferenceSet",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = MigrationCenterRestTransport._DeletePreferenceSet._get_response(
@@ -3294,7 +4197,29 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_preference_set(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.migrationcenter_v1.MigrationCenterClient.delete_preference_set",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "DeletePreferenceSet",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteReport(
@@ -3331,7 +4256,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete report method over HTTP.
 
@@ -3341,8 +4266,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -3355,6 +4282,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             http_options = (
                 _BaseMigrationCenterRestTransport._BaseDeleteReport._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_report(request, metadata)
             transcoded_request = _BaseMigrationCenterRestTransport._BaseDeleteReport._get_transcoded_request(
                 http_options, request
@@ -3364,6 +4292,33 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             query_params = _BaseMigrationCenterRestTransport._BaseDeleteReport._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.migrationcenter_v1.MigrationCenterClient.DeleteReport",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "DeleteReport",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = MigrationCenterRestTransport._DeleteReport._get_response(
@@ -3383,7 +4338,29 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_report(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.migrationcenter_v1.MigrationCenterClient.delete_report",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "DeleteReport",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteReportConfig(
@@ -3421,7 +4398,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete report config method over HTTP.
 
@@ -3431,8 +4408,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -3445,6 +4424,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             http_options = (
                 _BaseMigrationCenterRestTransport._BaseDeleteReportConfig._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_report_config(
                 request, metadata
             )
@@ -3456,6 +4436,33 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             query_params = _BaseMigrationCenterRestTransport._BaseDeleteReportConfig._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.migrationcenter_v1.MigrationCenterClient.DeleteReportConfig",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "DeleteReportConfig",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = MigrationCenterRestTransport._DeleteReportConfig._get_response(
@@ -3475,7 +4482,29 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_report_config(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.migrationcenter_v1.MigrationCenterClient.delete_report_config",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "DeleteReportConfig",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteSource(
@@ -3512,7 +4541,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete source method over HTTP.
 
@@ -3522,8 +4551,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -3536,6 +4567,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             http_options = (
                 _BaseMigrationCenterRestTransport._BaseDeleteSource._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_source(request, metadata)
             transcoded_request = _BaseMigrationCenterRestTransport._BaseDeleteSource._get_transcoded_request(
                 http_options, request
@@ -3545,6 +4577,33 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             query_params = _BaseMigrationCenterRestTransport._BaseDeleteSource._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.migrationcenter_v1.MigrationCenterClient.DeleteSource",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "DeleteSource",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = MigrationCenterRestTransport._DeleteSource._get_response(
@@ -3564,7 +4623,29 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_source(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.migrationcenter_v1.MigrationCenterClient.delete_source",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "DeleteSource",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetAsset(
@@ -3601,7 +4682,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> migrationcenter.Asset:
             r"""Call the get asset method over HTTP.
 
@@ -3611,8 +4692,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.migrationcenter.Asset:
@@ -3625,6 +4708,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             http_options = (
                 _BaseMigrationCenterRestTransport._BaseGetAsset._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_asset(request, metadata)
             transcoded_request = (
                 _BaseMigrationCenterRestTransport._BaseGetAsset._get_transcoded_request(
@@ -3638,6 +4722,33 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.migrationcenter_v1.MigrationCenterClient.GetAsset",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "GetAsset",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = MigrationCenterRestTransport._GetAsset._get_response(
@@ -3659,7 +4770,29 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             pb_resp = migrationcenter.Asset.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_asset(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = migrationcenter.Asset.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.migrationcenter_v1.MigrationCenterClient.get_asset",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "GetAsset",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetErrorFrame(
@@ -3696,7 +4829,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> migrationcenter.ErrorFrame:
             r"""Call the get error frame method over HTTP.
 
@@ -3706,8 +4839,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.migrationcenter.ErrorFrame:
@@ -3719,6 +4854,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             http_options = (
                 _BaseMigrationCenterRestTransport._BaseGetErrorFrame._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_error_frame(request, metadata)
             transcoded_request = _BaseMigrationCenterRestTransport._BaseGetErrorFrame._get_transcoded_request(
                 http_options, request
@@ -3728,6 +4864,33 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             query_params = _BaseMigrationCenterRestTransport._BaseGetErrorFrame._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.migrationcenter_v1.MigrationCenterClient.GetErrorFrame",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "GetErrorFrame",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = MigrationCenterRestTransport._GetErrorFrame._get_response(
@@ -3749,7 +4912,29 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             pb_resp = migrationcenter.ErrorFrame.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_error_frame(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = migrationcenter.ErrorFrame.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.migrationcenter_v1.MigrationCenterClient.get_error_frame",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "GetErrorFrame",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetGroup(
@@ -3786,7 +4971,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> migrationcenter.Group:
             r"""Call the get group method over HTTP.
 
@@ -3796,8 +4981,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.migrationcenter.Group:
@@ -3813,6 +5000,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             http_options = (
                 _BaseMigrationCenterRestTransport._BaseGetGroup._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_group(request, metadata)
             transcoded_request = (
                 _BaseMigrationCenterRestTransport._BaseGetGroup._get_transcoded_request(
@@ -3826,6 +5014,33 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.migrationcenter_v1.MigrationCenterClient.GetGroup",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "GetGroup",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = MigrationCenterRestTransport._GetGroup._get_response(
@@ -3847,7 +5062,29 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             pb_resp = migrationcenter.Group.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_group(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = migrationcenter.Group.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.migrationcenter_v1.MigrationCenterClient.get_group",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "GetGroup",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetImportDataFile(
@@ -3885,7 +5122,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> migrationcenter.ImportDataFile:
             r"""Call the get import data file method over HTTP.
 
@@ -3895,8 +5132,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.migrationcenter.ImportDataFile:
@@ -3908,6 +5147,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             http_options = (
                 _BaseMigrationCenterRestTransport._BaseGetImportDataFile._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_import_data_file(
                 request, metadata
             )
@@ -3919,6 +5159,33 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             query_params = _BaseMigrationCenterRestTransport._BaseGetImportDataFile._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.migrationcenter_v1.MigrationCenterClient.GetImportDataFile",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "GetImportDataFile",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = MigrationCenterRestTransport._GetImportDataFile._get_response(
@@ -3940,7 +5207,29 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             pb_resp = migrationcenter.ImportDataFile.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_import_data_file(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = migrationcenter.ImportDataFile.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.migrationcenter_v1.MigrationCenterClient.get_import_data_file",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "GetImportDataFile",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetImportJob(
@@ -3977,7 +5266,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> migrationcenter.ImportJob:
             r"""Call the get import job method over HTTP.
 
@@ -3987,8 +5276,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.migrationcenter.ImportJob:
@@ -4001,6 +5292,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             http_options = (
                 _BaseMigrationCenterRestTransport._BaseGetImportJob._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_import_job(request, metadata)
             transcoded_request = _BaseMigrationCenterRestTransport._BaseGetImportJob._get_transcoded_request(
                 http_options, request
@@ -4010,6 +5302,33 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             query_params = _BaseMigrationCenterRestTransport._BaseGetImportJob._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.migrationcenter_v1.MigrationCenterClient.GetImportJob",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "GetImportJob",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = MigrationCenterRestTransport._GetImportJob._get_response(
@@ -4031,7 +5350,29 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             pb_resp = migrationcenter.ImportJob.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_import_job(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = migrationcenter.ImportJob.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.migrationcenter_v1.MigrationCenterClient.get_import_job",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "GetImportJob",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetPreferenceSet(
@@ -4068,7 +5409,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> migrationcenter.PreferenceSet:
             r"""Call the get preference set method over HTTP.
 
@@ -4078,8 +5419,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.migrationcenter.PreferenceSet:
@@ -4091,6 +5434,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             http_options = (
                 _BaseMigrationCenterRestTransport._BaseGetPreferenceSet._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_preference_set(
                 request, metadata
             )
@@ -4102,6 +5446,33 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             query_params = _BaseMigrationCenterRestTransport._BaseGetPreferenceSet._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.migrationcenter_v1.MigrationCenterClient.GetPreferenceSet",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "GetPreferenceSet",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = MigrationCenterRestTransport._GetPreferenceSet._get_response(
@@ -4123,7 +5494,29 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             pb_resp = migrationcenter.PreferenceSet.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_preference_set(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = migrationcenter.PreferenceSet.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.migrationcenter_v1.MigrationCenterClient.get_preference_set",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "GetPreferenceSet",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetReport(
@@ -4160,7 +5553,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> migrationcenter.Report:
             r"""Call the get report method over HTTP.
 
@@ -4170,8 +5563,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.migrationcenter.Report:
@@ -4183,6 +5578,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             http_options = (
                 _BaseMigrationCenterRestTransport._BaseGetReport._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_report(request, metadata)
             transcoded_request = _BaseMigrationCenterRestTransport._BaseGetReport._get_transcoded_request(
                 http_options, request
@@ -4194,6 +5590,33 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.migrationcenter_v1.MigrationCenterClient.GetReport",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "GetReport",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = MigrationCenterRestTransport._GetReport._get_response(
@@ -4215,7 +5638,29 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             pb_resp = migrationcenter.Report.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_report(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = migrationcenter.Report.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.migrationcenter_v1.MigrationCenterClient.get_report",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "GetReport",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetReportConfig(
@@ -4252,7 +5697,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> migrationcenter.ReportConfig:
             r"""Call the get report config method over HTTP.
 
@@ -4262,8 +5707,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.migrationcenter.ReportConfig:
@@ -4275,6 +5722,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             http_options = (
                 _BaseMigrationCenterRestTransport._BaseGetReportConfig._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_report_config(
                 request, metadata
             )
@@ -4286,6 +5734,33 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             query_params = _BaseMigrationCenterRestTransport._BaseGetReportConfig._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.migrationcenter_v1.MigrationCenterClient.GetReportConfig",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "GetReportConfig",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = MigrationCenterRestTransport._GetReportConfig._get_response(
@@ -4307,7 +5782,29 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             pb_resp = migrationcenter.ReportConfig.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_report_config(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = migrationcenter.ReportConfig.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.migrationcenter_v1.MigrationCenterClient.get_report_config",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "GetReportConfig",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetSettings(
@@ -4344,7 +5841,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> migrationcenter.Settings:
             r"""Call the get settings method over HTTP.
 
@@ -4354,8 +5851,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.migrationcenter.Settings:
@@ -4367,6 +5866,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             http_options = (
                 _BaseMigrationCenterRestTransport._BaseGetSettings._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_settings(request, metadata)
             transcoded_request = _BaseMigrationCenterRestTransport._BaseGetSettings._get_transcoded_request(
                 http_options, request
@@ -4376,6 +5876,33 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             query_params = _BaseMigrationCenterRestTransport._BaseGetSettings._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.migrationcenter_v1.MigrationCenterClient.GetSettings",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "GetSettings",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = MigrationCenterRestTransport._GetSettings._get_response(
@@ -4397,7 +5924,29 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             pb_resp = migrationcenter.Settings.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_settings(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = migrationcenter.Settings.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.migrationcenter_v1.MigrationCenterClient.get_settings",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "GetSettings",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetSource(
@@ -4434,7 +5983,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> migrationcenter.Source:
             r"""Call the get source method over HTTP.
 
@@ -4444,8 +5993,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.migrationcenter.Source:
@@ -4458,6 +6009,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             http_options = (
                 _BaseMigrationCenterRestTransport._BaseGetSource._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_source(request, metadata)
             transcoded_request = _BaseMigrationCenterRestTransport._BaseGetSource._get_transcoded_request(
                 http_options, request
@@ -4469,6 +6021,33 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.migrationcenter_v1.MigrationCenterClient.GetSource",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "GetSource",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = MigrationCenterRestTransport._GetSource._get_response(
@@ -4490,7 +6069,29 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             pb_resp = migrationcenter.Source.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_source(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = migrationcenter.Source.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.migrationcenter_v1.MigrationCenterClient.get_source",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "GetSource",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListAssets(
@@ -4527,7 +6128,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> migrationcenter.ListAssetsResponse:
             r"""Call the list assets method over HTTP.
 
@@ -4538,8 +6139,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.migrationcenter.ListAssetsResponse:
@@ -4549,6 +6152,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             http_options = (
                 _BaseMigrationCenterRestTransport._BaseListAssets._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_assets(request, metadata)
             transcoded_request = _BaseMigrationCenterRestTransport._BaseListAssets._get_transcoded_request(
                 http_options, request
@@ -4558,6 +6162,33 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             query_params = _BaseMigrationCenterRestTransport._BaseListAssets._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.migrationcenter_v1.MigrationCenterClient.ListAssets",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "ListAssets",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = MigrationCenterRestTransport._ListAssets._get_response(
@@ -4579,7 +6210,31 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             pb_resp = migrationcenter.ListAssetsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_assets(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = migrationcenter.ListAssetsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.migrationcenter_v1.MigrationCenterClient.list_assets",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "ListAssets",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListErrorFrames(
@@ -4616,7 +6271,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> migrationcenter.ListErrorFramesResponse:
             r"""Call the list error frames method over HTTP.
 
@@ -4627,8 +6282,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.migrationcenter.ListErrorFramesResponse:
@@ -4638,6 +6295,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             http_options = (
                 _BaseMigrationCenterRestTransport._BaseListErrorFrames._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_error_frames(
                 request, metadata
             )
@@ -4649,6 +6307,33 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             query_params = _BaseMigrationCenterRestTransport._BaseListErrorFrames._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.migrationcenter_v1.MigrationCenterClient.ListErrorFrames",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "ListErrorFrames",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = MigrationCenterRestTransport._ListErrorFrames._get_response(
@@ -4670,7 +6355,31 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             pb_resp = migrationcenter.ListErrorFramesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_error_frames(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = migrationcenter.ListErrorFramesResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.migrationcenter_v1.MigrationCenterClient.list_error_frames",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "ListErrorFrames",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListGroups(
@@ -4707,7 +6416,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> migrationcenter.ListGroupsResponse:
             r"""Call the list groups method over HTTP.
 
@@ -4717,8 +6426,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.migrationcenter.ListGroupsResponse:
@@ -4728,6 +6439,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             http_options = (
                 _BaseMigrationCenterRestTransport._BaseListGroups._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_groups(request, metadata)
             transcoded_request = _BaseMigrationCenterRestTransport._BaseListGroups._get_transcoded_request(
                 http_options, request
@@ -4737,6 +6449,33 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             query_params = _BaseMigrationCenterRestTransport._BaseListGroups._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.migrationcenter_v1.MigrationCenterClient.ListGroups",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "ListGroups",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = MigrationCenterRestTransport._ListGroups._get_response(
@@ -4758,7 +6497,31 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             pb_resp = migrationcenter.ListGroupsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_groups(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = migrationcenter.ListGroupsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.migrationcenter_v1.MigrationCenterClient.list_groups",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "ListGroups",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListImportDataFiles(
@@ -4796,7 +6559,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> migrationcenter.ListImportDataFilesResponse:
             r"""Call the list import data files method over HTTP.
 
@@ -4807,8 +6570,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.migrationcenter.ListImportDataFilesResponse:
@@ -4820,6 +6585,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             http_options = (
                 _BaseMigrationCenterRestTransport._BaseListImportDataFiles._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_import_data_files(
                 request, metadata
             )
@@ -4831,6 +6597,33 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             query_params = _BaseMigrationCenterRestTransport._BaseListImportDataFiles._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.migrationcenter_v1.MigrationCenterClient.ListImportDataFiles",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "ListImportDataFiles",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = MigrationCenterRestTransport._ListImportDataFiles._get_response(
@@ -4852,7 +6645,31 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             pb_resp = migrationcenter.ListImportDataFilesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_import_data_files(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        migrationcenter.ListImportDataFilesResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.migrationcenter_v1.MigrationCenterClient.list_import_data_files",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "ListImportDataFiles",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListImportJobs(
@@ -4889,7 +6706,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> migrationcenter.ListImportJobsResponse:
             r"""Call the list import jobs method over HTTP.
 
@@ -4899,8 +6716,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.migrationcenter.ListImportJobsResponse:
@@ -4910,6 +6729,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             http_options = (
                 _BaseMigrationCenterRestTransport._BaseListImportJobs._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_import_jobs(
                 request, metadata
             )
@@ -4921,6 +6741,33 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             query_params = _BaseMigrationCenterRestTransport._BaseListImportJobs._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.migrationcenter_v1.MigrationCenterClient.ListImportJobs",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "ListImportJobs",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = MigrationCenterRestTransport._ListImportJobs._get_response(
@@ -4942,7 +6789,31 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             pb_resp = migrationcenter.ListImportJobsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_import_jobs(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = migrationcenter.ListImportJobsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.migrationcenter_v1.MigrationCenterClient.list_import_jobs",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "ListImportJobs",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListPreferenceSets(
@@ -4980,7 +6851,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> migrationcenter.ListPreferenceSetsResponse:
             r"""Call the list preference sets method over HTTP.
 
@@ -4990,8 +6861,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.migrationcenter.ListPreferenceSetsResponse:
@@ -5003,6 +6876,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             http_options = (
                 _BaseMigrationCenterRestTransport._BaseListPreferenceSets._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_preference_sets(
                 request, metadata
             )
@@ -5014,6 +6888,33 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             query_params = _BaseMigrationCenterRestTransport._BaseListPreferenceSets._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.migrationcenter_v1.MigrationCenterClient.ListPreferenceSets",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "ListPreferenceSets",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = MigrationCenterRestTransport._ListPreferenceSets._get_response(
@@ -5035,7 +6936,31 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             pb_resp = migrationcenter.ListPreferenceSetsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_preference_sets(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        migrationcenter.ListPreferenceSetsResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.migrationcenter_v1.MigrationCenterClient.list_preference_sets",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "ListPreferenceSets",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListReportConfigs(
@@ -5073,7 +6998,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> migrationcenter.ListReportConfigsResponse:
             r"""Call the list report configs method over HTTP.
 
@@ -5083,8 +7008,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.migrationcenter.ListReportConfigsResponse:
@@ -5096,6 +7023,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             http_options = (
                 _BaseMigrationCenterRestTransport._BaseListReportConfigs._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_report_configs(
                 request, metadata
             )
@@ -5107,6 +7035,33 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             query_params = _BaseMigrationCenterRestTransport._BaseListReportConfigs._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.migrationcenter_v1.MigrationCenterClient.ListReportConfigs",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "ListReportConfigs",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = MigrationCenterRestTransport._ListReportConfigs._get_response(
@@ -5128,7 +7083,31 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             pb_resp = migrationcenter.ListReportConfigsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_report_configs(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        migrationcenter.ListReportConfigsResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.migrationcenter_v1.MigrationCenterClient.list_report_configs",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "ListReportConfigs",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListReports(
@@ -5165,7 +7144,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> migrationcenter.ListReportsResponse:
             r"""Call the list reports method over HTTP.
 
@@ -5175,8 +7154,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.migrationcenter.ListReportsResponse:
@@ -5186,6 +7167,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             http_options = (
                 _BaseMigrationCenterRestTransport._BaseListReports._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_reports(request, metadata)
             transcoded_request = _BaseMigrationCenterRestTransport._BaseListReports._get_transcoded_request(
                 http_options, request
@@ -5195,6 +7177,33 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             query_params = _BaseMigrationCenterRestTransport._BaseListReports._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.migrationcenter_v1.MigrationCenterClient.ListReports",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "ListReports",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = MigrationCenterRestTransport._ListReports._get_response(
@@ -5216,7 +7225,31 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             pb_resp = migrationcenter.ListReportsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_reports(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = migrationcenter.ListReportsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.migrationcenter_v1.MigrationCenterClient.list_reports",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "ListReports",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListSources(
@@ -5253,7 +7286,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> migrationcenter.ListSourcesResponse:
             r"""Call the list sources method over HTTP.
 
@@ -5263,8 +7296,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.migrationcenter.ListSourcesResponse:
@@ -5274,6 +7309,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             http_options = (
                 _BaseMigrationCenterRestTransport._BaseListSources._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_sources(request, metadata)
             transcoded_request = _BaseMigrationCenterRestTransport._BaseListSources._get_transcoded_request(
                 http_options, request
@@ -5283,6 +7319,33 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             query_params = _BaseMigrationCenterRestTransport._BaseListSources._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.migrationcenter_v1.MigrationCenterClient.ListSources",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "ListSources",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = MigrationCenterRestTransport._ListSources._get_response(
@@ -5304,7 +7367,31 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             pb_resp = migrationcenter.ListSourcesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_sources(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = migrationcenter.ListSourcesResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.migrationcenter_v1.MigrationCenterClient.list_sources",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "ListSources",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _RemoveAssetsFromGroup(
@@ -5343,7 +7430,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the remove assets from group method over HTTP.
 
@@ -5354,8 +7441,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -5368,6 +7457,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             http_options = (
                 _BaseMigrationCenterRestTransport._BaseRemoveAssetsFromGroup._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_remove_assets_from_group(
                 request, metadata
             )
@@ -5383,6 +7473,33 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             query_params = _BaseMigrationCenterRestTransport._BaseRemoveAssetsFromGroup._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.migrationcenter_v1.MigrationCenterClient.RemoveAssetsFromGroup",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "RemoveAssetsFromGroup",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -5405,7 +7522,29 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_remove_assets_from_group(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.migrationcenter_v1.MigrationCenterClient.remove_assets_from_group",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "RemoveAssetsFromGroup",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ReportAssetFrames(
@@ -5444,7 +7583,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> migrationcenter.ReportAssetFramesResponse:
             r"""Call the report asset frames method over HTTP.
 
@@ -5455,8 +7594,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.migrationcenter.ReportAssetFramesResponse:
@@ -5466,6 +7607,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             http_options = (
                 _BaseMigrationCenterRestTransport._BaseReportAssetFrames._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_report_asset_frames(
                 request, metadata
             )
@@ -5481,6 +7623,33 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             query_params = _BaseMigrationCenterRestTransport._BaseReportAssetFrames._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.migrationcenter_v1.MigrationCenterClient.ReportAssetFrames",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "ReportAssetFrames",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = MigrationCenterRestTransport._ReportAssetFrames._get_response(
@@ -5503,7 +7672,31 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             pb_resp = migrationcenter.ReportAssetFramesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_report_asset_frames(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        migrationcenter.ReportAssetFramesResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.migrationcenter_v1.MigrationCenterClient.report_asset_frames",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "ReportAssetFrames",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _RunImportJob(
@@ -5541,7 +7734,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the run import job method over HTTP.
 
@@ -5551,8 +7744,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -5565,6 +7760,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             http_options = (
                 _BaseMigrationCenterRestTransport._BaseRunImportJob._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_run_import_job(request, metadata)
             transcoded_request = _BaseMigrationCenterRestTransport._BaseRunImportJob._get_transcoded_request(
                 http_options, request
@@ -5578,6 +7774,33 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             query_params = _BaseMigrationCenterRestTransport._BaseRunImportJob._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.migrationcenter_v1.MigrationCenterClient.RunImportJob",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "RunImportJob",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = MigrationCenterRestTransport._RunImportJob._get_response(
@@ -5598,7 +7821,29 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_run_import_job(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.migrationcenter_v1.MigrationCenterClient.run_import_job",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "RunImportJob",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateAsset(
@@ -5636,7 +7881,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> migrationcenter.Asset:
             r"""Call the update asset method over HTTP.
 
@@ -5646,8 +7891,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.migrationcenter.Asset:
@@ -5660,6 +7907,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             http_options = (
                 _BaseMigrationCenterRestTransport._BaseUpdateAsset._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_asset(request, metadata)
             transcoded_request = _BaseMigrationCenterRestTransport._BaseUpdateAsset._get_transcoded_request(
                 http_options, request
@@ -5673,6 +7921,33 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             query_params = _BaseMigrationCenterRestTransport._BaseUpdateAsset._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.migrationcenter_v1.MigrationCenterClient.UpdateAsset",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "UpdateAsset",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = MigrationCenterRestTransport._UpdateAsset._get_response(
@@ -5695,7 +7970,29 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             pb_resp = migrationcenter.Asset.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_asset(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = migrationcenter.Asset.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.migrationcenter_v1.MigrationCenterClient.update_asset",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "UpdateAsset",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateGroup(
@@ -5733,7 +8030,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update group method over HTTP.
 
@@ -5743,8 +8040,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -5757,6 +8056,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             http_options = (
                 _BaseMigrationCenterRestTransport._BaseUpdateGroup._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_group(request, metadata)
             transcoded_request = _BaseMigrationCenterRestTransport._BaseUpdateGroup._get_transcoded_request(
                 http_options, request
@@ -5770,6 +8070,33 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             query_params = _BaseMigrationCenterRestTransport._BaseUpdateGroup._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.migrationcenter_v1.MigrationCenterClient.UpdateGroup",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "UpdateGroup",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = MigrationCenterRestTransport._UpdateGroup._get_response(
@@ -5790,7 +8117,29 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_group(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.migrationcenter_v1.MigrationCenterClient.update_group",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "UpdateGroup",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateImportJob(
@@ -5828,7 +8177,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update import job method over HTTP.
 
@@ -5838,8 +8187,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -5852,6 +8203,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             http_options = (
                 _BaseMigrationCenterRestTransport._BaseUpdateImportJob._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_import_job(
                 request, metadata
             )
@@ -5867,6 +8219,33 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             query_params = _BaseMigrationCenterRestTransport._BaseUpdateImportJob._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.migrationcenter_v1.MigrationCenterClient.UpdateImportJob",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "UpdateImportJob",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = MigrationCenterRestTransport._UpdateImportJob._get_response(
@@ -5887,7 +8266,29 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_import_job(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.migrationcenter_v1.MigrationCenterClient.update_import_job",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "UpdateImportJob",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdatePreferenceSet(
@@ -5926,7 +8327,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update preference set method over HTTP.
 
@@ -5936,8 +8337,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -5950,6 +8353,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             http_options = (
                 _BaseMigrationCenterRestTransport._BaseUpdatePreferenceSet._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_preference_set(
                 request, metadata
             )
@@ -5965,6 +8369,33 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             query_params = _BaseMigrationCenterRestTransport._BaseUpdatePreferenceSet._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.migrationcenter_v1.MigrationCenterClient.UpdatePreferenceSet",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "UpdatePreferenceSet",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = MigrationCenterRestTransport._UpdatePreferenceSet._get_response(
@@ -5985,7 +8416,29 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_preference_set(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.migrationcenter_v1.MigrationCenterClient.update_preference_set",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "UpdatePreferenceSet",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateSettings(
@@ -6023,7 +8476,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update settings method over HTTP.
 
@@ -6033,8 +8486,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -6047,6 +8502,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             http_options = (
                 _BaseMigrationCenterRestTransport._BaseUpdateSettings._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_settings(request, metadata)
             transcoded_request = _BaseMigrationCenterRestTransport._BaseUpdateSettings._get_transcoded_request(
                 http_options, request
@@ -6060,6 +8516,33 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             query_params = _BaseMigrationCenterRestTransport._BaseUpdateSettings._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.migrationcenter_v1.MigrationCenterClient.UpdateSettings",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "UpdateSettings",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = MigrationCenterRestTransport._UpdateSettings._get_response(
@@ -6080,7 +8563,29 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_settings(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.migrationcenter_v1.MigrationCenterClient.update_settings",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "UpdateSettings",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateSource(
@@ -6118,7 +8623,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update source method over HTTP.
 
@@ -6128,8 +8633,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -6142,6 +8649,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             http_options = (
                 _BaseMigrationCenterRestTransport._BaseUpdateSource._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_source(request, metadata)
             transcoded_request = _BaseMigrationCenterRestTransport._BaseUpdateSource._get_transcoded_request(
                 http_options, request
@@ -6155,6 +8663,33 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             query_params = _BaseMigrationCenterRestTransport._BaseUpdateSource._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.migrationcenter_v1.MigrationCenterClient.UpdateSource",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "UpdateSource",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = MigrationCenterRestTransport._UpdateSource._get_response(
@@ -6175,7 +8710,29 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_source(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.migrationcenter_v1.MigrationCenterClient.update_source",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "UpdateSource",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ValidateImportJob(
@@ -6214,7 +8771,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the validate import job method over HTTP.
 
@@ -6224,8 +8781,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -6238,6 +8797,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             http_options = (
                 _BaseMigrationCenterRestTransport._BaseValidateImportJob._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_validate_import_job(
                 request, metadata
             )
@@ -6253,6 +8813,33 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             query_params = _BaseMigrationCenterRestTransport._BaseValidateImportJob._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.migrationcenter_v1.MigrationCenterClient.ValidateImportJob",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "ValidateImportJob",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = MigrationCenterRestTransport._ValidateImportJob._get_response(
@@ -6273,7 +8860,29 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_validate_import_job(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.migrationcenter_v1.MigrationCenterClient.validate_import_job",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "ValidateImportJob",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -6751,7 +9360,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.Location:
             r"""Call the get location method over HTTP.
 
@@ -6761,8 +9370,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.Location: Response from GetLocation method.
@@ -6771,6 +9382,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             http_options = (
                 _BaseMigrationCenterRestTransport._BaseGetLocation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_location(request, metadata)
             transcoded_request = _BaseMigrationCenterRestTransport._BaseGetLocation._get_transcoded_request(
                 http_options, request
@@ -6780,6 +9392,33 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             query_params = _BaseMigrationCenterRestTransport._BaseGetLocation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.migrationcenter_v1.MigrationCenterClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "GetLocation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = MigrationCenterRestTransport._GetLocation._get_response(
@@ -6800,6 +9439,27 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.migrationcenter_v1.MigrationCenterAsyncClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "GetLocation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -6840,7 +9500,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.ListLocationsResponse:
             r"""Call the list locations method over HTTP.
 
@@ -6850,8 +9510,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
@@ -6860,6 +9522,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             http_options = (
                 _BaseMigrationCenterRestTransport._BaseListLocations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
             transcoded_request = _BaseMigrationCenterRestTransport._BaseListLocations._get_transcoded_request(
                 http_options, request
@@ -6869,6 +9532,33 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             query_params = _BaseMigrationCenterRestTransport._BaseListLocations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.migrationcenter_v1.MigrationCenterClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "ListLocations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = MigrationCenterRestTransport._ListLocations._get_response(
@@ -6889,6 +9579,27 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.migrationcenter_v1.MigrationCenterAsyncClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "ListLocations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -6930,7 +9641,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the cancel operation method over HTTP.
 
@@ -6940,13 +9651,16 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseMigrationCenterRestTransport._BaseCancelOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
@@ -6962,6 +9676,33 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             query_params = _BaseMigrationCenterRestTransport._BaseCancelOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.migrationcenter_v1.MigrationCenterClient.CancelOperation",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "CancelOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = MigrationCenterRestTransport._CancelOperation._get_response(
@@ -7019,7 +9760,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the delete operation method over HTTP.
 
@@ -7029,13 +9770,16 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseMigrationCenterRestTransport._BaseDeleteOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
             )
@@ -7047,6 +9791,33 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             query_params = _BaseMigrationCenterRestTransport._BaseDeleteOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.migrationcenter_v1.MigrationCenterClient.DeleteOperation",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "DeleteOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = MigrationCenterRestTransport._DeleteOperation._get_response(
@@ -7103,7 +9874,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the get operation method over HTTP.
 
@@ -7113,8 +9884,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.
@@ -7123,6 +9896,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             http_options = (
                 _BaseMigrationCenterRestTransport._BaseGetOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseMigrationCenterRestTransport._BaseGetOperation._get_transcoded_request(
                 http_options, request
@@ -7132,6 +9906,33 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             query_params = _BaseMigrationCenterRestTransport._BaseGetOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.migrationcenter_v1.MigrationCenterClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "GetOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = MigrationCenterRestTransport._GetOperation._get_response(
@@ -7152,6 +9953,27 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.migrationcenter_v1.MigrationCenterAsyncClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "GetOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -7192,7 +10014,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.ListOperationsResponse:
             r"""Call the list operations method over HTTP.
 
@@ -7202,8 +10024,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
@@ -7212,6 +10036,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             http_options = (
                 _BaseMigrationCenterRestTransport._BaseListOperations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseMigrationCenterRestTransport._BaseListOperations._get_transcoded_request(
                 http_options, request
@@ -7221,6 +10046,33 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             query_params = _BaseMigrationCenterRestTransport._BaseListOperations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.migrationcenter_v1.MigrationCenterClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "ListOperations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = MigrationCenterRestTransport._ListOperations._get_response(
@@ -7241,6 +10093,27 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.migrationcenter_v1.MigrationCenterAsyncClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.migrationcenter.v1.MigrationCenter",
+                        "rpcName": "ListOperations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property

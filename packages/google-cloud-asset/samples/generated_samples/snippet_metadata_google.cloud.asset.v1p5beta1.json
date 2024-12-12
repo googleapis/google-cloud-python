@@ -8,7 +8,7 @@
     ],
     "language": "PYTHON",
     "name": "google-cloud-asset",
-    "version": "3.27.1"
+    "version": "0.1.0"
   },
   "snippets": [
     {
@@ -47,7 +47,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.asset_v1p5beta1.services.asset_service.pagers.ListAssetsAsyncPager",
@@ -127,7 +127,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.cloud.asset_v1p5beta1.services.asset_service.pagers.ListAssetsPager",

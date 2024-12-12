@@ -966,6 +966,7 @@ def test_delete_rest_required_fields(request_type=compute.DeleteRouteRequest):
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete(request)
 
@@ -1020,6 +1021,7 @@ def test_delete_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete(**mock_args)
 
@@ -1160,6 +1162,7 @@ def test_delete_unary_rest_required_fields(request_type=compute.DeleteRouteReque
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_unary(request)
 
@@ -1214,6 +1217,7 @@ def test_delete_unary_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_unary(**mock_args)
 
@@ -1348,6 +1352,7 @@ def test_get_rest_required_fields(request_type=compute.GetRouteRequest):
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get(request)
 
@@ -1402,6 +1407,7 @@ def test_get_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get(**mock_args)
 
@@ -1539,6 +1545,7 @@ def test_insert_rest_required_fields(request_type=compute.InsertRouteRequest):
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.insert(request)
 
@@ -1595,6 +1602,7 @@ def test_insert_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.insert(**mock_args)
 
@@ -1733,6 +1741,7 @@ def test_insert_unary_rest_required_fields(request_type=compute.InsertRouteReque
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.insert_unary(request)
 
@@ -1789,6 +1798,7 @@ def test_insert_unary_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.insert_unary(**mock_args)
 
@@ -1930,6 +1940,7 @@ def test_list_rest_required_fields(request_type=compute.ListRoutesRequest):
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list(request)
 
@@ -1986,6 +1997,7 @@ def test_list_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list(**mock_args)
 
@@ -2176,6 +2188,7 @@ def test_delete_rest_bad_request(request_type=compute.DeleteRouteRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete(request)
 
 
@@ -2232,6 +2245,7 @@ def test_delete_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete(request)
 
     # Establish that the response is the type that we expect.
@@ -2289,6 +2303,7 @@ def test_delete_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = compute.Operation.to_json(compute.Operation())
         req.return_value.content = return_value
 
@@ -2331,6 +2346,7 @@ def test_get_rest_bad_request(request_type=compute.GetRouteRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get(request)
 
 
@@ -2365,8 +2381,11 @@ def test_get_rest_call_success(request_type):
             next_hop_hub="next_hop_hub_value",
             next_hop_ilb="next_hop_ilb_value",
             next_hop_instance="next_hop_instance_value",
+            next_hop_inter_region_cost=2785,
             next_hop_ip="next_hop_ip_value",
+            next_hop_med=1274,
             next_hop_network="next_hop_network_value",
+            next_hop_origin="next_hop_origin_value",
             next_hop_peering="next_hop_peering_value",
             next_hop_vpn_tunnel="next_hop_vpn_tunnel_value",
             priority=898,
@@ -2385,6 +2404,7 @@ def test_get_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get(request)
 
     # Establish that the response is the type that we expect.
@@ -2400,8 +2420,11 @@ def test_get_rest_call_success(request_type):
     assert response.next_hop_hub == "next_hop_hub_value"
     assert response.next_hop_ilb == "next_hop_ilb_value"
     assert response.next_hop_instance == "next_hop_instance_value"
+    assert response.next_hop_inter_region_cost == 2785
     assert response.next_hop_ip == "next_hop_ip_value"
+    assert response.next_hop_med == 1274
     assert response.next_hop_network == "next_hop_network_value"
+    assert response.next_hop_origin == "next_hop_origin_value"
     assert response.next_hop_peering == "next_hop_peering_value"
     assert response.next_hop_vpn_tunnel == "next_hop_vpn_tunnel_value"
     assert response.priority == 898
@@ -2440,6 +2463,7 @@ def test_get_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = compute.Route.to_json(compute.Route())
         req.return_value.content = return_value
 
@@ -2482,6 +2506,7 @@ def test_insert_rest_bad_request(request_type=compute.InsertRouteRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.insert(request)
 
 
@@ -2514,8 +2539,11 @@ def test_insert_rest_call_success(request_type):
         "next_hop_hub": "next_hop_hub_value",
         "next_hop_ilb": "next_hop_ilb_value",
         "next_hop_instance": "next_hop_instance_value",
+        "next_hop_inter_region_cost": 2785,
         "next_hop_ip": "next_hop_ip_value",
+        "next_hop_med": 1274,
         "next_hop_network": "next_hop_network_value",
+        "next_hop_origin": "next_hop_origin_value",
         "next_hop_peering": "next_hop_peering_value",
         "next_hop_vpn_tunnel": "next_hop_vpn_tunnel_value",
         "priority": 898,
@@ -2637,6 +2665,7 @@ def test_insert_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.insert(request)
 
     # Establish that the response is the type that we expect.
@@ -2694,6 +2723,7 @@ def test_insert_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = compute.Operation.to_json(compute.Operation())
         req.return_value.content = return_value
 
@@ -2736,6 +2766,7 @@ def test_list_rest_bad_request(request_type=compute.ListRoutesRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list(request)
 
 
@@ -2774,6 +2805,7 @@ def test_list_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list(request)
 
     # Establish that the response is the type that we expect.
@@ -2813,6 +2845,7 @@ def test_list_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = compute.RouteList.to_json(compute.RouteList())
         req.return_value.content = return_value
 

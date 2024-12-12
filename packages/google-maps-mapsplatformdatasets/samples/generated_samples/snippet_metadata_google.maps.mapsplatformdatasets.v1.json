@@ -8,7 +8,7 @@
     ],
     "language": "PYTHON",
     "name": "google-maps-mapsplatformdatasets",
-    "version": "0.4.4"
+    "version": "0.1.0"
   },
   "snippets": [
     {
@@ -51,7 +51,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.maps.mapsplatformdatasets_v1.types.Dataset",
@@ -135,7 +135,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.maps.mapsplatformdatasets_v1.types.Dataset",
@@ -216,7 +216,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "shortName": "delete_dataset"
@@ -293,7 +293,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "shortName": "delete_dataset"
@@ -371,7 +371,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.maps.mapsplatformdatasets_v1.services.maps_platform_datasets.pagers.FetchDatasetErrorsAsyncPager",
@@ -451,7 +451,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.maps.mapsplatformdatasets_v1.services.maps_platform_datasets.pagers.FetchDatasetErrorsPager",
@@ -532,7 +532,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.maps.mapsplatformdatasets_v1.types.Dataset",
@@ -612,7 +612,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.maps.mapsplatformdatasets_v1.types.Dataset",
@@ -693,7 +693,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.maps.mapsplatformdatasets_v1.services.maps_platform_datasets.pagers.ListDatasetsAsyncPager",
@@ -773,7 +773,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.maps.mapsplatformdatasets_v1.services.maps_platform_datasets.pagers.ListDatasetsPager",
@@ -858,7 +858,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.maps.mapsplatformdatasets_v1.types.Dataset",
@@ -942,7 +942,7 @@
           },
           {
             "name": "metadata",
-            "type": "Sequence[Tuple[str, str]"
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
           }
         ],
         "resultType": "google.maps.mapsplatformdatasets_v1.types.Dataset",

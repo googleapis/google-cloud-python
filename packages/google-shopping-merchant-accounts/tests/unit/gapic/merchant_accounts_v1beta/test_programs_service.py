@@ -2696,6 +2696,7 @@ def test_get_program_rest_required_fields(request_type=programs.GetProgramReques
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_program(request)
 
@@ -2741,6 +2742,7 @@ def test_get_program_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_program(**mock_args)
 
@@ -2876,6 +2878,7 @@ def test_list_programs_rest_required_fields(request_type=programs.ListProgramsRe
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_programs(request)
 
@@ -2929,6 +2932,7 @@ def test_list_programs_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_programs(**mock_args)
 
@@ -3121,6 +3125,7 @@ def test_enable_program_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.enable_program(request)
 
@@ -3166,6 +3171,7 @@ def test_enable_program_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.enable_program(**mock_args)
 
@@ -3298,6 +3304,7 @@ def test_disable_program_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.disable_program(request)
 
@@ -3343,6 +3350,7 @@ def test_disable_program_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.disable_program(**mock_args)
 
@@ -3719,6 +3727,7 @@ def test_get_program_rest_bad_request(request_type=programs.GetProgramRequest):
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_program(request)
 
 
@@ -3757,6 +3766,7 @@ def test_get_program_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_program(request)
 
     # Establish that the response is the type that we expect.
@@ -3798,6 +3808,7 @@ def test_get_program_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = programs.Program.to_json(programs.Program())
         req.return_value.content = return_value
 
@@ -3840,6 +3851,7 @@ def test_list_programs_rest_bad_request(request_type=programs.ListProgramsReques
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_programs(request)
 
 
@@ -3875,6 +3887,7 @@ def test_list_programs_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_programs(request)
 
     # Establish that the response is the type that we expect.
@@ -3913,6 +3926,7 @@ def test_list_programs_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = programs.ListProgramsResponse.to_json(
             programs.ListProgramsResponse()
         )
@@ -3957,6 +3971,7 @@ def test_enable_program_rest_bad_request(request_type=programs.EnableProgramRequ
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.enable_program(request)
 
 
@@ -3995,6 +4010,7 @@ def test_enable_program_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.enable_program(request)
 
     # Establish that the response is the type that we expect.
@@ -4036,6 +4052,7 @@ def test_enable_program_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = programs.Program.to_json(programs.Program())
         req.return_value.content = return_value
 
@@ -4078,6 +4095,7 @@ def test_disable_program_rest_bad_request(request_type=programs.DisableProgramRe
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.disable_program(request)
 
 
@@ -4116,6 +4134,7 @@ def test_disable_program_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.disable_program(request)
 
     # Establish that the response is the type that we expect.
@@ -4157,6 +4176,7 @@ def test_disable_program_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = programs.Program.to_json(programs.Program())
         req.return_value.content = return_value
 

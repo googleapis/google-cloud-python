@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -41,6 +41,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -125,8 +133,8 @@ class VersionsRestInterceptor:
     def pre_compare_versions(
         self,
         request: version.CompareVersionsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[version.CompareVersionsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[version.CompareVersionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for compare_versions
 
         Override in a subclass to manipulate the request or metadata
@@ -148,8 +156,10 @@ class VersionsRestInterceptor:
     def pre_create_version(
         self,
         request: gcdc_version.CreateVersionRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[gcdc_version.CreateVersionRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gcdc_version.CreateVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_version
 
         Override in a subclass to manipulate the request or metadata
@@ -169,8 +179,10 @@ class VersionsRestInterceptor:
         return response
 
     def pre_delete_version(
-        self, request: version.DeleteVersionRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[version.DeleteVersionRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: version.DeleteVersionRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[version.DeleteVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_version
 
         Override in a subclass to manipulate the request or metadata
@@ -179,8 +191,10 @@ class VersionsRestInterceptor:
         return request, metadata
 
     def pre_get_version(
-        self, request: version.GetVersionRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[version.GetVersionRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: version.GetVersionRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[version.GetVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_version
 
         Override in a subclass to manipulate the request or metadata
@@ -198,8 +212,10 @@ class VersionsRestInterceptor:
         return response
 
     def pre_list_versions(
-        self, request: version.ListVersionsRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[version.ListVersionsRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: version.ListVersionsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[version.ListVersionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_versions
 
         Override in a subclass to manipulate the request or metadata
@@ -219,8 +235,10 @@ class VersionsRestInterceptor:
         return response
 
     def pre_load_version(
-        self, request: version.LoadVersionRequest, metadata: Sequence[Tuple[str, str]]
-    ) -> Tuple[version.LoadVersionRequest, Sequence[Tuple[str, str]]]:
+        self,
+        request: version.LoadVersionRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[version.LoadVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for load_version
 
         Override in a subclass to manipulate the request or metadata
@@ -242,8 +260,10 @@ class VersionsRestInterceptor:
     def pre_update_version(
         self,
         request: gcdc_version.UpdateVersionRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[gcdc_version.UpdateVersionRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gcdc_version.UpdateVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_version
 
         Override in a subclass to manipulate the request or metadata
@@ -265,8 +285,10 @@ class VersionsRestInterceptor:
     def pre_get_location(
         self,
         request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -288,8 +310,10 @@ class VersionsRestInterceptor:
     def pre_list_locations(
         self,
         request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -311,8 +335,10 @@ class VersionsRestInterceptor:
     def pre_cancel_operation(
         self,
         request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -332,8 +358,10 @@ class VersionsRestInterceptor:
     def pre_get_operation(
         self,
         request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -355,8 +383,10 @@ class VersionsRestInterceptor:
     def pre_list_operations(
         self,
         request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -557,7 +587,7 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> version.CompareVersionsResponse:
             r"""Call the compare versions method over HTTP.
 
@@ -568,8 +598,10 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.version.CompareVersionsResponse:
@@ -581,6 +613,7 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
             http_options = (
                 _BaseVersionsRestTransport._BaseCompareVersions._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_compare_versions(
                 request, metadata
             )
@@ -603,6 +636,33 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
                 )
             )
 
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dialogflow.cx_v3.VersionsClient.CompareVersions",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.cx.v3.Versions",
+                        "rpcName": "CompareVersions",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
             # Send the request
             response = VersionsRestTransport._CompareVersions._get_response(
                 self._host,
@@ -624,7 +684,29 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
             pb_resp = version.CompareVersionsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_compare_versions(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = version.CompareVersionsResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dialogflow.cx_v3.VersionsClient.compare_versions",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.cx.v3.Versions",
+                        "rpcName": "CompareVersions",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateVersion(
@@ -662,7 +744,7 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create version method over HTTP.
 
@@ -673,8 +755,10 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -687,6 +771,7 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
             http_options = (
                 _BaseVersionsRestTransport._BaseCreateVersion._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_version(request, metadata)
             transcoded_request = (
                 _BaseVersionsRestTransport._BaseCreateVersion._get_transcoded_request(
@@ -704,6 +789,33 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dialogflow.cx_v3.VersionsClient.CreateVersion",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.cx.v3.Versions",
+                        "rpcName": "CreateVersion",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = VersionsRestTransport._CreateVersion._get_response(
@@ -724,7 +836,29 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_version(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dialogflow.cx_v3.VersionsClient.create_version",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.cx.v3.Versions",
+                        "rpcName": "CreateVersion",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteVersion(
@@ -761,7 +895,7 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete version method over HTTP.
 
@@ -772,13 +906,16 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseVersionsRestTransport._BaseDeleteVersion._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_version(request, metadata)
             transcoded_request = (
                 _BaseVersionsRestTransport._BaseDeleteVersion._get_transcoded_request(
@@ -792,6 +929,33 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dialogflow.cx_v3.VersionsClient.DeleteVersion",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.cx.v3.Versions",
+                        "rpcName": "DeleteVersion",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = VersionsRestTransport._DeleteVersion._get_response(
@@ -840,7 +1004,7 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> version.Version:
             r"""Call the get version method over HTTP.
 
@@ -851,8 +1015,10 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.version.Version:
@@ -862,6 +1028,7 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
             http_options = (
                 _BaseVersionsRestTransport._BaseGetVersion._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_version(request, metadata)
             transcoded_request = (
                 _BaseVersionsRestTransport._BaseGetVersion._get_transcoded_request(
@@ -875,6 +1042,33 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dialogflow.cx_v3.VersionsClient.GetVersion",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.cx.v3.Versions",
+                        "rpcName": "GetVersion",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = VersionsRestTransport._GetVersion._get_response(
@@ -896,7 +1090,29 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
             pb_resp = version.Version.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_version(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = version.Version.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dialogflow.cx_v3.VersionsClient.get_version",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.cx.v3.Versions",
+                        "rpcName": "GetVersion",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListVersions(_BaseVersionsRestTransport._BaseListVersions, VersionsRestStub):
@@ -931,7 +1147,7 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> version.ListVersionsResponse:
             r"""Call the list versions method over HTTP.
 
@@ -942,8 +1158,10 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.version.ListVersionsResponse:
@@ -955,6 +1173,7 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
             http_options = (
                 _BaseVersionsRestTransport._BaseListVersions._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_versions(request, metadata)
             transcoded_request = (
                 _BaseVersionsRestTransport._BaseListVersions._get_transcoded_request(
@@ -968,6 +1187,33 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dialogflow.cx_v3.VersionsClient.ListVersions",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.cx.v3.Versions",
+                        "rpcName": "ListVersions",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = VersionsRestTransport._ListVersions._get_response(
@@ -989,7 +1235,29 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
             pb_resp = version.ListVersionsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_versions(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = version.ListVersionsResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dialogflow.cx_v3.VersionsClient.list_versions",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.cx.v3.Versions",
+                        "rpcName": "ListVersions",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _LoadVersion(_BaseVersionsRestTransport._BaseLoadVersion, VersionsRestStub):
@@ -1025,7 +1293,7 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the load version method over HTTP.
 
@@ -1036,8 +1304,10 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1050,6 +1320,7 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
             http_options = (
                 _BaseVersionsRestTransport._BaseLoadVersion._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_load_version(request, metadata)
             transcoded_request = (
                 _BaseVersionsRestTransport._BaseLoadVersion._get_transcoded_request(
@@ -1067,6 +1338,33 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dialogflow.cx_v3.VersionsClient.LoadVersion",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.cx.v3.Versions",
+                        "rpcName": "LoadVersion",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = VersionsRestTransport._LoadVersion._get_response(
@@ -1087,7 +1385,29 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_load_version(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dialogflow.cx_v3.VersionsClient.load_version",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.cx.v3.Versions",
+                        "rpcName": "LoadVersion",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateVersion(
@@ -1125,7 +1445,7 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gcdc_version.Version:
             r"""Call the update version method over HTTP.
 
@@ -1136,8 +1456,10 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.gcdc_version.Version:
@@ -1147,6 +1469,7 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
             http_options = (
                 _BaseVersionsRestTransport._BaseUpdateVersion._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_version(request, metadata)
             transcoded_request = (
                 _BaseVersionsRestTransport._BaseUpdateVersion._get_transcoded_request(
@@ -1164,6 +1487,33 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dialogflow.cx_v3.VersionsClient.UpdateVersion",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.cx.v3.Versions",
+                        "rpcName": "UpdateVersion",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = VersionsRestTransport._UpdateVersion._get_response(
@@ -1186,7 +1536,29 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
             pb_resp = gcdc_version.Version.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_version(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gcdc_version.Version.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dialogflow.cx_v3.VersionsClient.update_version",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.cx.v3.Versions",
+                        "rpcName": "UpdateVersion",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -1279,7 +1651,7 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.Location:
             r"""Call the get location method over HTTP.
 
@@ -1289,8 +1661,10 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.Location: Response from GetLocation method.
@@ -1299,6 +1673,7 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
             http_options = (
                 _BaseVersionsRestTransport._BaseGetLocation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_location(request, metadata)
             transcoded_request = (
                 _BaseVersionsRestTransport._BaseGetLocation._get_transcoded_request(
@@ -1312,6 +1687,33 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dialogflow.cx_v3.VersionsClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.cx.v3.Versions",
+                        "rpcName": "GetLocation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = VersionsRestTransport._GetLocation._get_response(
@@ -1332,6 +1734,27 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dialogflow.cx_v3.VersionsAsyncClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.cx.v3.Versions",
+                        "rpcName": "GetLocation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -1372,7 +1795,7 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.ListLocationsResponse:
             r"""Call the list locations method over HTTP.
 
@@ -1382,8 +1805,10 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
@@ -1392,6 +1817,7 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
             http_options = (
                 _BaseVersionsRestTransport._BaseListLocations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
             transcoded_request = (
                 _BaseVersionsRestTransport._BaseListLocations._get_transcoded_request(
@@ -1405,6 +1831,33 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dialogflow.cx_v3.VersionsClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.cx.v3.Versions",
+                        "rpcName": "ListLocations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = VersionsRestTransport._ListLocations._get_response(
@@ -1425,6 +1878,27 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dialogflow.cx_v3.VersionsAsyncClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.cx.v3.Versions",
+                        "rpcName": "ListLocations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -1465,7 +1939,7 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the cancel operation method over HTTP.
 
@@ -1475,13 +1949,16 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseVersionsRestTransport._BaseCancelOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
@@ -1497,6 +1974,33 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dialogflow.cx_v3.VersionsClient.CancelOperation",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.cx.v3.Versions",
+                        "rpcName": "CancelOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = VersionsRestTransport._CancelOperation._get_response(
@@ -1551,7 +2055,7 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the get operation method over HTTP.
 
@@ -1561,8 +2065,10 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.
@@ -1571,6 +2077,7 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
             http_options = (
                 _BaseVersionsRestTransport._BaseGetOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = (
                 _BaseVersionsRestTransport._BaseGetOperation._get_transcoded_request(
@@ -1584,6 +2091,33 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dialogflow.cx_v3.VersionsClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.cx.v3.Versions",
+                        "rpcName": "GetOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = VersionsRestTransport._GetOperation._get_response(
@@ -1604,6 +2138,27 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dialogflow.cx_v3.VersionsAsyncClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.cx.v3.Versions",
+                        "rpcName": "GetOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -1644,7 +2199,7 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.ListOperationsResponse:
             r"""Call the list operations method over HTTP.
 
@@ -1654,8 +2209,10 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
@@ -1664,6 +2221,7 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
             http_options = (
                 _BaseVersionsRestTransport._BaseListOperations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = (
                 _BaseVersionsRestTransport._BaseListOperations._get_transcoded_request(
@@ -1677,6 +2235,33 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.dialogflow.cx_v3.VersionsClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.cx.v3.Versions",
+                        "rpcName": "ListOperations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = VersionsRestTransport._ListOperations._get_response(
@@ -1697,6 +2282,27 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.dialogflow.cx_v3.VersionsAsyncClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.dialogflow.cx.v3.Versions",
+                        "rpcName": "ListOperations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property

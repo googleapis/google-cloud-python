@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -37,6 +37,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -93,8 +101,8 @@ class PromotionsServiceRestInterceptor:
     def pre_get_promotion(
         self,
         request: promotions.GetPromotionRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[promotions.GetPromotionRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[promotions.GetPromotionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_promotion
 
         Override in a subclass to manipulate the request or metadata
@@ -116,8 +124,10 @@ class PromotionsServiceRestInterceptor:
     def pre_insert_promotion(
         self,
         request: promotions.InsertPromotionRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[promotions.InsertPromotionRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        promotions.InsertPromotionRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for insert_promotion
 
         Override in a subclass to manipulate the request or metadata
@@ -139,8 +149,10 @@ class PromotionsServiceRestInterceptor:
     def pre_list_promotions(
         self,
         request: promotions.ListPromotionsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[promotions.ListPromotionsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        promotions.ListPromotionsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_promotions
 
         Override in a subclass to manipulate the request or metadata
@@ -280,7 +292,7 @@ class PromotionsServiceRestTransport(_BasePromotionsServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> promotions.Promotion:
             r"""Call the get promotion method over HTTP.
 
@@ -290,8 +302,10 @@ class PromotionsServiceRestTransport(_BasePromotionsServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.promotions.Promotion:
@@ -315,6 +329,7 @@ class PromotionsServiceRestTransport(_BasePromotionsServiceRestTransport):
             http_options = (
                 _BasePromotionsServiceRestTransport._BaseGetPromotion._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_promotion(request, metadata)
             transcoded_request = _BasePromotionsServiceRestTransport._BaseGetPromotion._get_transcoded_request(
                 http_options, request
@@ -324,6 +339,33 @@ class PromotionsServiceRestTransport(_BasePromotionsServiceRestTransport):
             query_params = _BasePromotionsServiceRestTransport._BaseGetPromotion._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.shopping.merchant.promotions_v1beta.PromotionsServiceClient.GetPromotion",
+                    extra={
+                        "serviceName": "google.shopping.merchant.promotions.v1beta.PromotionsService",
+                        "rpcName": "GetPromotion",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = PromotionsServiceRestTransport._GetPromotion._get_response(
@@ -345,7 +387,29 @@ class PromotionsServiceRestTransport(_BasePromotionsServiceRestTransport):
             pb_resp = promotions.Promotion.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_promotion(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = promotions.Promotion.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.shopping.merchant.promotions_v1beta.PromotionsServiceClient.get_promotion",
+                    extra={
+                        "serviceName": "google.shopping.merchant.promotions.v1beta.PromotionsService",
+                        "rpcName": "GetPromotion",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _InsertPromotion(
@@ -384,7 +448,7 @@ class PromotionsServiceRestTransport(_BasePromotionsServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> promotions.Promotion:
             r"""Call the insert promotion method over HTTP.
 
@@ -394,8 +458,10 @@ class PromotionsServiceRestTransport(_BasePromotionsServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.promotions.Promotion:
@@ -419,6 +485,7 @@ class PromotionsServiceRestTransport(_BasePromotionsServiceRestTransport):
             http_options = (
                 _BasePromotionsServiceRestTransport._BaseInsertPromotion._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_insert_promotion(
                 request, metadata
             )
@@ -434,6 +501,33 @@ class PromotionsServiceRestTransport(_BasePromotionsServiceRestTransport):
             query_params = _BasePromotionsServiceRestTransport._BaseInsertPromotion._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.shopping.merchant.promotions_v1beta.PromotionsServiceClient.InsertPromotion",
+                    extra={
+                        "serviceName": "google.shopping.merchant.promotions.v1beta.PromotionsService",
+                        "rpcName": "InsertPromotion",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = PromotionsServiceRestTransport._InsertPromotion._get_response(
@@ -456,7 +550,29 @@ class PromotionsServiceRestTransport(_BasePromotionsServiceRestTransport):
             pb_resp = promotions.Promotion.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_insert_promotion(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = promotions.Promotion.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.shopping.merchant.promotions_v1beta.PromotionsServiceClient.insert_promotion",
+                    extra={
+                        "serviceName": "google.shopping.merchant.promotions.v1beta.PromotionsService",
+                        "rpcName": "InsertPromotion",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListPromotions(
@@ -494,7 +610,7 @@ class PromotionsServiceRestTransport(_BasePromotionsServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> promotions.ListPromotionsResponse:
             r"""Call the list promotions method over HTTP.
 
@@ -504,8 +620,10 @@ class PromotionsServiceRestTransport(_BasePromotionsServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.promotions.ListPromotionsResponse:
@@ -515,6 +633,7 @@ class PromotionsServiceRestTransport(_BasePromotionsServiceRestTransport):
             http_options = (
                 _BasePromotionsServiceRestTransport._BaseListPromotions._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_promotions(request, metadata)
             transcoded_request = _BasePromotionsServiceRestTransport._BaseListPromotions._get_transcoded_request(
                 http_options, request
@@ -524,6 +643,33 @@ class PromotionsServiceRestTransport(_BasePromotionsServiceRestTransport):
             query_params = _BasePromotionsServiceRestTransport._BaseListPromotions._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.shopping.merchant.promotions_v1beta.PromotionsServiceClient.ListPromotions",
+                    extra={
+                        "serviceName": "google.shopping.merchant.promotions.v1beta.PromotionsService",
+                        "rpcName": "ListPromotions",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = PromotionsServiceRestTransport._ListPromotions._get_response(
@@ -545,7 +691,31 @@ class PromotionsServiceRestTransport(_BasePromotionsServiceRestTransport):
             pb_resp = promotions.ListPromotionsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_promotions(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = promotions.ListPromotionsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.shopping.merchant.promotions_v1beta.PromotionsServiceClient.list_promotions",
+                    extra={
+                        "serviceName": "google.shopping.merchant.promotions.v1beta.PromotionsService",
+                        "rpcName": "ListPromotions",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property

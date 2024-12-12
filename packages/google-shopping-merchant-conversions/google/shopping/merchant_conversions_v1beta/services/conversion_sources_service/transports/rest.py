@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -38,6 +38,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -114,9 +122,10 @@ class ConversionSourcesServiceRestInterceptor:
     def pre_create_conversion_source(
         self,
         request: conversionsources.CreateConversionSourceRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        conversionsources.CreateConversionSourceRequest, Sequence[Tuple[str, str]]
+        conversionsources.CreateConversionSourceRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for create_conversion_source
 
@@ -139,9 +148,10 @@ class ConversionSourcesServiceRestInterceptor:
     def pre_delete_conversion_source(
         self,
         request: conversionsources.DeleteConversionSourceRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        conversionsources.DeleteConversionSourceRequest, Sequence[Tuple[str, str]]
+        conversionsources.DeleteConversionSourceRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for delete_conversion_source
 
@@ -153,8 +163,11 @@ class ConversionSourcesServiceRestInterceptor:
     def pre_get_conversion_source(
         self,
         request: conversionsources.GetConversionSourceRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[conversionsources.GetConversionSourceRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        conversionsources.GetConversionSourceRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for get_conversion_source
 
         Override in a subclass to manipulate the request or metadata
@@ -176,9 +189,10 @@ class ConversionSourcesServiceRestInterceptor:
     def pre_list_conversion_sources(
         self,
         request: conversionsources.ListConversionSourcesRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        conversionsources.ListConversionSourcesRequest, Sequence[Tuple[str, str]]
+        conversionsources.ListConversionSourcesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for list_conversion_sources
 
@@ -201,9 +215,10 @@ class ConversionSourcesServiceRestInterceptor:
     def pre_undelete_conversion_source(
         self,
         request: conversionsources.UndeleteConversionSourceRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        conversionsources.UndeleteConversionSourceRequest, Sequence[Tuple[str, str]]
+        conversionsources.UndeleteConversionSourceRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for undelete_conversion_source
 
@@ -226,9 +241,10 @@ class ConversionSourcesServiceRestInterceptor:
     def pre_update_conversion_source(
         self,
         request: conversionsources.UpdateConversionSourceRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        conversionsources.UpdateConversionSourceRequest, Sequence[Tuple[str, str]]
+        conversionsources.UpdateConversionSourceRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for update_conversion_source
 
@@ -372,7 +388,7 @@ class ConversionSourcesServiceRestTransport(_BaseConversionSourcesServiceRestTra
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> conversionsources.ConversionSource:
             r"""Call the create conversion source method over HTTP.
 
@@ -383,8 +399,10 @@ class ConversionSourcesServiceRestTransport(_BaseConversionSourcesServiceRestTra
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.conversionsources.ConversionSource:
@@ -398,6 +416,7 @@ class ConversionSourcesServiceRestTransport(_BaseConversionSourcesServiceRestTra
             http_options = (
                 _BaseConversionSourcesServiceRestTransport._BaseCreateConversionSource._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_conversion_source(
                 request, metadata
             )
@@ -413,6 +432,33 @@ class ConversionSourcesServiceRestTransport(_BaseConversionSourcesServiceRestTra
             query_params = _BaseConversionSourcesServiceRestTransport._BaseCreateConversionSource._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.shopping.merchant.conversions_v1beta.ConversionSourcesServiceClient.CreateConversionSource",
+                    extra={
+                        "serviceName": "google.shopping.merchant.conversions.v1beta.ConversionSourcesService",
+                        "rpcName": "CreateConversionSource",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ConversionSourcesServiceRestTransport._CreateConversionSource._get_response(
@@ -435,7 +481,31 @@ class ConversionSourcesServiceRestTransport(_BaseConversionSourcesServiceRestTra
             pb_resp = conversionsources.ConversionSource.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_conversion_source(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = conversionsources.ConversionSource.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.shopping.merchant.conversions_v1beta.ConversionSourcesServiceClient.create_conversion_source",
+                    extra={
+                        "serviceName": "google.shopping.merchant.conversions.v1beta.ConversionSourcesService",
+                        "rpcName": "CreateConversionSource",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteConversionSource(
@@ -473,7 +543,7 @@ class ConversionSourcesServiceRestTransport(_BaseConversionSourcesServiceRestTra
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete conversion source method over HTTP.
 
@@ -484,13 +554,16 @@ class ConversionSourcesServiceRestTransport(_BaseConversionSourcesServiceRestTra
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseConversionSourcesServiceRestTransport._BaseDeleteConversionSource._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_conversion_source(
                 request, metadata
             )
@@ -502,6 +575,33 @@ class ConversionSourcesServiceRestTransport(_BaseConversionSourcesServiceRestTra
             query_params = _BaseConversionSourcesServiceRestTransport._BaseDeleteConversionSource._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.shopping.merchant.conversions_v1beta.ConversionSourcesServiceClient.DeleteConversionSource",
+                    extra={
+                        "serviceName": "google.shopping.merchant.conversions.v1beta.ConversionSourcesService",
+                        "rpcName": "DeleteConversionSource",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ConversionSourcesServiceRestTransport._DeleteConversionSource._get_response(
@@ -553,7 +653,7 @@ class ConversionSourcesServiceRestTransport(_BaseConversionSourcesServiceRestTra
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> conversionsources.ConversionSource:
             r"""Call the get conversion source method over HTTP.
 
@@ -564,8 +664,10 @@ class ConversionSourcesServiceRestTransport(_BaseConversionSourcesServiceRestTra
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.conversionsources.ConversionSource:
@@ -579,6 +681,7 @@ class ConversionSourcesServiceRestTransport(_BaseConversionSourcesServiceRestTra
             http_options = (
                 _BaseConversionSourcesServiceRestTransport._BaseGetConversionSource._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_conversion_source(
                 request, metadata
             )
@@ -590,6 +693,33 @@ class ConversionSourcesServiceRestTransport(_BaseConversionSourcesServiceRestTra
             query_params = _BaseConversionSourcesServiceRestTransport._BaseGetConversionSource._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.shopping.merchant.conversions_v1beta.ConversionSourcesServiceClient.GetConversionSource",
+                    extra={
+                        "serviceName": "google.shopping.merchant.conversions.v1beta.ConversionSourcesService",
+                        "rpcName": "GetConversionSource",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ConversionSourcesServiceRestTransport._GetConversionSource._get_response(
@@ -611,7 +741,31 @@ class ConversionSourcesServiceRestTransport(_BaseConversionSourcesServiceRestTra
             pb_resp = conversionsources.ConversionSource.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_conversion_source(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = conversionsources.ConversionSource.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.shopping.merchant.conversions_v1beta.ConversionSourcesServiceClient.get_conversion_source",
+                    extra={
+                        "serviceName": "google.shopping.merchant.conversions.v1beta.ConversionSourcesService",
+                        "rpcName": "GetConversionSource",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListConversionSources(
@@ -649,7 +803,7 @@ class ConversionSourcesServiceRestTransport(_BaseConversionSourcesServiceRestTra
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> conversionsources.ListConversionSourcesResponse:
             r"""Call the list conversion sources method over HTTP.
 
@@ -660,8 +814,10 @@ class ConversionSourcesServiceRestTransport(_BaseConversionSourcesServiceRestTra
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.conversionsources.ListConversionSourcesResponse:
@@ -673,6 +829,7 @@ class ConversionSourcesServiceRestTransport(_BaseConversionSourcesServiceRestTra
             http_options = (
                 _BaseConversionSourcesServiceRestTransport._BaseListConversionSources._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_conversion_sources(
                 request, metadata
             )
@@ -684,6 +841,33 @@ class ConversionSourcesServiceRestTransport(_BaseConversionSourcesServiceRestTra
             query_params = _BaseConversionSourcesServiceRestTransport._BaseListConversionSources._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.shopping.merchant.conversions_v1beta.ConversionSourcesServiceClient.ListConversionSources",
+                    extra={
+                        "serviceName": "google.shopping.merchant.conversions.v1beta.ConversionSourcesService",
+                        "rpcName": "ListConversionSources",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ConversionSourcesServiceRestTransport._ListConversionSources._get_response(
@@ -705,7 +889,33 @@ class ConversionSourcesServiceRestTransport(_BaseConversionSourcesServiceRestTra
             pb_resp = conversionsources.ListConversionSourcesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_conversion_sources(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        conversionsources.ListConversionSourcesResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.shopping.merchant.conversions_v1beta.ConversionSourcesServiceClient.list_conversion_sources",
+                    extra={
+                        "serviceName": "google.shopping.merchant.conversions.v1beta.ConversionSourcesService",
+                        "rpcName": "ListConversionSources",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UndeleteConversionSource(
@@ -746,7 +956,7 @@ class ConversionSourcesServiceRestTransport(_BaseConversionSourcesServiceRestTra
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> conversionsources.ConversionSource:
             r"""Call the undelete conversion
             source method over HTTP.
@@ -758,8 +968,10 @@ class ConversionSourcesServiceRestTransport(_BaseConversionSourcesServiceRestTra
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.conversionsources.ConversionSource:
@@ -773,6 +985,7 @@ class ConversionSourcesServiceRestTransport(_BaseConversionSourcesServiceRestTra
             http_options = (
                 _BaseConversionSourcesServiceRestTransport._BaseUndeleteConversionSource._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_undelete_conversion_source(
                 request, metadata
             )
@@ -788,6 +1001,33 @@ class ConversionSourcesServiceRestTransport(_BaseConversionSourcesServiceRestTra
             query_params = _BaseConversionSourcesServiceRestTransport._BaseUndeleteConversionSource._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.shopping.merchant.conversions_v1beta.ConversionSourcesServiceClient.UndeleteConversionSource",
+                    extra={
+                        "serviceName": "google.shopping.merchant.conversions.v1beta.ConversionSourcesService",
+                        "rpcName": "UndeleteConversionSource",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ConversionSourcesServiceRestTransport._UndeleteConversionSource._get_response(
@@ -810,7 +1050,31 @@ class ConversionSourcesServiceRestTransport(_BaseConversionSourcesServiceRestTra
             pb_resp = conversionsources.ConversionSource.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_undelete_conversion_source(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = conversionsources.ConversionSource.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.shopping.merchant.conversions_v1beta.ConversionSourcesServiceClient.undelete_conversion_source",
+                    extra={
+                        "serviceName": "google.shopping.merchant.conversions.v1beta.ConversionSourcesService",
+                        "rpcName": "UndeleteConversionSource",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateConversionSource(
@@ -849,7 +1113,7 @@ class ConversionSourcesServiceRestTransport(_BaseConversionSourcesServiceRestTra
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> conversionsources.ConversionSource:
             r"""Call the update conversion source method over HTTP.
 
@@ -860,8 +1124,10 @@ class ConversionSourcesServiceRestTransport(_BaseConversionSourcesServiceRestTra
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.conversionsources.ConversionSource:
@@ -875,6 +1141,7 @@ class ConversionSourcesServiceRestTransport(_BaseConversionSourcesServiceRestTra
             http_options = (
                 _BaseConversionSourcesServiceRestTransport._BaseUpdateConversionSource._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_conversion_source(
                 request, metadata
             )
@@ -890,6 +1157,33 @@ class ConversionSourcesServiceRestTransport(_BaseConversionSourcesServiceRestTra
             query_params = _BaseConversionSourcesServiceRestTransport._BaseUpdateConversionSource._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.shopping.merchant.conversions_v1beta.ConversionSourcesServiceClient.UpdateConversionSource",
+                    extra={
+                        "serviceName": "google.shopping.merchant.conversions.v1beta.ConversionSourcesService",
+                        "rpcName": "UpdateConversionSource",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ConversionSourcesServiceRestTransport._UpdateConversionSource._get_response(
@@ -912,7 +1206,31 @@ class ConversionSourcesServiceRestTransport(_BaseConversionSourcesServiceRestTra
             pb_resp = conversionsources.ConversionSource.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_conversion_source(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = conversionsources.ConversionSource.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.shopping.merchant.conversions_v1beta.ConversionSourcesServiceClient.update_conversion_source",
+                    extra={
+                        "serviceName": "google.shopping.merchant.conversions.v1beta.ConversionSourcesService",
+                        "rpcName": "UpdateConversionSource",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property

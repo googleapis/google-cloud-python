@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -41,6 +41,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -201,9 +209,10 @@ class SecureSourceManagerRestInterceptor:
     def pre_create_branch_rule(
         self,
         request: secure_source_manager.CreateBranchRuleRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        secure_source_manager.CreateBranchRuleRequest, Sequence[Tuple[str, str]]
+        secure_source_manager.CreateBranchRuleRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for create_branch_rule
 
@@ -226,8 +235,11 @@ class SecureSourceManagerRestInterceptor:
     def pre_create_instance(
         self,
         request: secure_source_manager.CreateInstanceRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[secure_source_manager.CreateInstanceRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        secure_source_manager.CreateInstanceRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for create_instance
 
         Override in a subclass to manipulate the request or metadata
@@ -249,9 +261,10 @@ class SecureSourceManagerRestInterceptor:
     def pre_create_repository(
         self,
         request: secure_source_manager.CreateRepositoryRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        secure_source_manager.CreateRepositoryRequest, Sequence[Tuple[str, str]]
+        secure_source_manager.CreateRepositoryRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for create_repository
 
@@ -274,9 +287,10 @@ class SecureSourceManagerRestInterceptor:
     def pre_delete_branch_rule(
         self,
         request: secure_source_manager.DeleteBranchRuleRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        secure_source_manager.DeleteBranchRuleRequest, Sequence[Tuple[str, str]]
+        secure_source_manager.DeleteBranchRuleRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for delete_branch_rule
 
@@ -299,8 +313,11 @@ class SecureSourceManagerRestInterceptor:
     def pre_delete_instance(
         self,
         request: secure_source_manager.DeleteInstanceRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[secure_source_manager.DeleteInstanceRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        secure_source_manager.DeleteInstanceRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for delete_instance
 
         Override in a subclass to manipulate the request or metadata
@@ -322,9 +339,10 @@ class SecureSourceManagerRestInterceptor:
     def pre_delete_repository(
         self,
         request: secure_source_manager.DeleteRepositoryRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        secure_source_manager.DeleteRepositoryRequest, Sequence[Tuple[str, str]]
+        secure_source_manager.DeleteRepositoryRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for delete_repository
 
@@ -347,8 +365,11 @@ class SecureSourceManagerRestInterceptor:
     def pre_get_branch_rule(
         self,
         request: secure_source_manager.GetBranchRuleRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[secure_source_manager.GetBranchRuleRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        secure_source_manager.GetBranchRuleRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for get_branch_rule
 
         Override in a subclass to manipulate the request or metadata
@@ -370,8 +391,10 @@ class SecureSourceManagerRestInterceptor:
     def pre_get_iam_policy_repo(
         self,
         request: iam_policy_pb2.GetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_iam_policy_repo
 
         Override in a subclass to manipulate the request or metadata
@@ -393,8 +416,11 @@ class SecureSourceManagerRestInterceptor:
     def pre_get_instance(
         self,
         request: secure_source_manager.GetInstanceRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[secure_source_manager.GetInstanceRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        secure_source_manager.GetInstanceRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for get_instance
 
         Override in a subclass to manipulate the request or metadata
@@ -416,8 +442,11 @@ class SecureSourceManagerRestInterceptor:
     def pre_get_repository(
         self,
         request: secure_source_manager.GetRepositoryRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[secure_source_manager.GetRepositoryRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        secure_source_manager.GetRepositoryRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for get_repository
 
         Override in a subclass to manipulate the request or metadata
@@ -439,8 +468,11 @@ class SecureSourceManagerRestInterceptor:
     def pre_list_branch_rules(
         self,
         request: secure_source_manager.ListBranchRulesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[secure_source_manager.ListBranchRulesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        secure_source_manager.ListBranchRulesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for list_branch_rules
 
         Override in a subclass to manipulate the request or metadata
@@ -462,8 +494,11 @@ class SecureSourceManagerRestInterceptor:
     def pre_list_instances(
         self,
         request: secure_source_manager.ListInstancesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[secure_source_manager.ListInstancesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        secure_source_manager.ListInstancesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for list_instances
 
         Override in a subclass to manipulate the request or metadata
@@ -485,9 +520,10 @@ class SecureSourceManagerRestInterceptor:
     def pre_list_repositories(
         self,
         request: secure_source_manager.ListRepositoriesRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        secure_source_manager.ListRepositoriesRequest, Sequence[Tuple[str, str]]
+        secure_source_manager.ListRepositoriesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for list_repositories
 
@@ -510,8 +546,10 @@ class SecureSourceManagerRestInterceptor:
     def pre_set_iam_policy_repo(
         self,
         request: iam_policy_pb2.SetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for set_iam_policy_repo
 
         Override in a subclass to manipulate the request or metadata
@@ -533,8 +571,11 @@ class SecureSourceManagerRestInterceptor:
     def pre_test_iam_permissions_repo(
         self,
         request: iam_policy_pb2.TestIamPermissionsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.TestIamPermissionsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for test_iam_permissions_repo
 
         Override in a subclass to manipulate the request or metadata
@@ -556,9 +597,10 @@ class SecureSourceManagerRestInterceptor:
     def pre_update_branch_rule(
         self,
         request: secure_source_manager.UpdateBranchRuleRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        secure_source_manager.UpdateBranchRuleRequest, Sequence[Tuple[str, str]]
+        secure_source_manager.UpdateBranchRuleRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for update_branch_rule
 
@@ -581,8 +623,10 @@ class SecureSourceManagerRestInterceptor:
     def pre_get_location(
         self,
         request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -604,8 +648,10 @@ class SecureSourceManagerRestInterceptor:
     def pre_list_locations(
         self,
         request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -627,8 +673,10 @@ class SecureSourceManagerRestInterceptor:
     def pre_get_iam_policy(
         self,
         request: iam_policy_pb2.GetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -648,8 +696,10 @@ class SecureSourceManagerRestInterceptor:
     def pre_set_iam_policy(
         self,
         request: iam_policy_pb2.SetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -669,8 +719,11 @@ class SecureSourceManagerRestInterceptor:
     def pre_test_iam_permissions(
         self,
         request: iam_policy_pb2.TestIamPermissionsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        iam_policy_pb2.TestIamPermissionsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -692,8 +745,10 @@ class SecureSourceManagerRestInterceptor:
     def pre_cancel_operation(
         self,
         request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -713,8 +768,10 @@ class SecureSourceManagerRestInterceptor:
     def pre_delete_operation(
         self,
         request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -734,8 +791,10 @@ class SecureSourceManagerRestInterceptor:
     def pre_get_operation(
         self,
         request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -757,8 +816,10 @@ class SecureSourceManagerRestInterceptor:
     def pre_list_operations(
         self,
         request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -978,7 +1039,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create branch rule method over HTTP.
 
@@ -989,8 +1050,10 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1003,6 +1066,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             http_options = (
                 _BaseSecureSourceManagerRestTransport._BaseCreateBranchRule._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_branch_rule(
                 request, metadata
             )
@@ -1018,6 +1082,33 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             query_params = _BaseSecureSourceManagerRestTransport._BaseCreateBranchRule._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.CreateBranchRule",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "CreateBranchRule",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SecureSourceManagerRestTransport._CreateBranchRule._get_response(
@@ -1038,7 +1129,29 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_branch_rule(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.create_branch_rule",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "CreateBranchRule",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateInstance(
@@ -1077,7 +1190,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create instance method over HTTP.
 
@@ -1088,8 +1201,10 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1102,6 +1217,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             http_options = (
                 _BaseSecureSourceManagerRestTransport._BaseCreateInstance._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_instance(request, metadata)
             transcoded_request = _BaseSecureSourceManagerRestTransport._BaseCreateInstance._get_transcoded_request(
                 http_options, request
@@ -1115,6 +1231,33 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             query_params = _BaseSecureSourceManagerRestTransport._BaseCreateInstance._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.CreateInstance",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "CreateInstance",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SecureSourceManagerRestTransport._CreateInstance._get_response(
@@ -1135,7 +1278,29 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_instance(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.create_instance",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "CreateInstance",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateRepository(
@@ -1174,7 +1339,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create repository method over HTTP.
 
@@ -1185,8 +1350,10 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1199,6 +1366,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             http_options = (
                 _BaseSecureSourceManagerRestTransport._BaseCreateRepository._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_repository(
                 request, metadata
             )
@@ -1214,6 +1382,33 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             query_params = _BaseSecureSourceManagerRestTransport._BaseCreateRepository._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.CreateRepository",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "CreateRepository",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SecureSourceManagerRestTransport._CreateRepository._get_response(
@@ -1234,7 +1429,29 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_repository(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.create_repository",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "CreateRepository",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteBranchRule(
@@ -1272,7 +1489,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete branch rule method over HTTP.
 
@@ -1283,8 +1500,10 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1297,6 +1516,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             http_options = (
                 _BaseSecureSourceManagerRestTransport._BaseDeleteBranchRule._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_branch_rule(
                 request, metadata
             )
@@ -1308,6 +1528,33 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             query_params = _BaseSecureSourceManagerRestTransport._BaseDeleteBranchRule._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.DeleteBranchRule",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "DeleteBranchRule",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SecureSourceManagerRestTransport._DeleteBranchRule._get_response(
@@ -1327,7 +1574,29 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_branch_rule(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.delete_branch_rule",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "DeleteBranchRule",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteInstance(
@@ -1365,7 +1634,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete instance method over HTTP.
 
@@ -1376,8 +1645,10 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1390,6 +1661,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             http_options = (
                 _BaseSecureSourceManagerRestTransport._BaseDeleteInstance._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_instance(request, metadata)
             transcoded_request = _BaseSecureSourceManagerRestTransport._BaseDeleteInstance._get_transcoded_request(
                 http_options, request
@@ -1399,6 +1671,33 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             query_params = _BaseSecureSourceManagerRestTransport._BaseDeleteInstance._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.DeleteInstance",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "DeleteInstance",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SecureSourceManagerRestTransport._DeleteInstance._get_response(
@@ -1418,7 +1717,29 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_instance(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.delete_instance",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "DeleteInstance",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteRepository(
@@ -1456,7 +1777,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete repository method over HTTP.
 
@@ -1467,8 +1788,10 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1481,6 +1804,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             http_options = (
                 _BaseSecureSourceManagerRestTransport._BaseDeleteRepository._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_repository(
                 request, metadata
             )
@@ -1492,6 +1816,33 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             query_params = _BaseSecureSourceManagerRestTransport._BaseDeleteRepository._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.DeleteRepository",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "DeleteRepository",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SecureSourceManagerRestTransport._DeleteRepository._get_response(
@@ -1511,7 +1862,29 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_repository(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.delete_repository",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "DeleteRepository",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetBranchRule(
@@ -1549,7 +1922,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> secure_source_manager.BranchRule:
             r"""Call the get branch rule method over HTTP.
 
@@ -1560,8 +1933,10 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.secure_source_manager.BranchRule:
@@ -1575,6 +1950,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             http_options = (
                 _BaseSecureSourceManagerRestTransport._BaseGetBranchRule._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_branch_rule(request, metadata)
             transcoded_request = _BaseSecureSourceManagerRestTransport._BaseGetBranchRule._get_transcoded_request(
                 http_options, request
@@ -1584,6 +1960,33 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             query_params = _BaseSecureSourceManagerRestTransport._BaseGetBranchRule._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.GetBranchRule",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "GetBranchRule",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SecureSourceManagerRestTransport._GetBranchRule._get_response(
@@ -1605,7 +2008,31 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             pb_resp = secure_source_manager.BranchRule.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_branch_rule(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = secure_source_manager.BranchRule.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.get_branch_rule",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "GetBranchRule",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetIamPolicyRepo(
@@ -1643,7 +2070,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> policy_pb2.Policy:
             r"""Call the get iam policy repo method over HTTP.
 
@@ -1653,8 +2080,10 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.policy_pb2.Policy:
@@ -1739,6 +2168,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             http_options = (
                 _BaseSecureSourceManagerRestTransport._BaseGetIamPolicyRepo._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_iam_policy_repo(
                 request, metadata
             )
@@ -1750,6 +2180,33 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             query_params = _BaseSecureSourceManagerRestTransport._BaseGetIamPolicyRepo._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.GetIamPolicyRepo",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "GetIamPolicyRepo",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SecureSourceManagerRestTransport._GetIamPolicyRepo._get_response(
@@ -1771,7 +2228,29 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             pb_resp = resp
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_iam_policy_repo(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.get_iam_policy_repo",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "GetIamPolicyRepo",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetInstance(
@@ -1809,7 +2288,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> secure_source_manager.Instance:
             r"""Call the get instance method over HTTP.
 
@@ -1820,8 +2299,10 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.secure_source_manager.Instance:
@@ -1833,6 +2314,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             http_options = (
                 _BaseSecureSourceManagerRestTransport._BaseGetInstance._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_instance(request, metadata)
             transcoded_request = _BaseSecureSourceManagerRestTransport._BaseGetInstance._get_transcoded_request(
                 http_options, request
@@ -1842,6 +2324,33 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             query_params = _BaseSecureSourceManagerRestTransport._BaseGetInstance._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.GetInstance",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "GetInstance",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SecureSourceManagerRestTransport._GetInstance._get_response(
@@ -1863,7 +2372,29 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             pb_resp = secure_source_manager.Instance.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_instance(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = secure_source_manager.Instance.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.get_instance",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "GetInstance",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetRepository(
@@ -1901,7 +2432,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> secure_source_manager.Repository:
             r"""Call the get repository method over HTTP.
 
@@ -1912,8 +2443,10 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.secure_source_manager.Repository:
@@ -1925,6 +2458,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             http_options = (
                 _BaseSecureSourceManagerRestTransport._BaseGetRepository._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_repository(request, metadata)
             transcoded_request = _BaseSecureSourceManagerRestTransport._BaseGetRepository._get_transcoded_request(
                 http_options, request
@@ -1934,6 +2468,33 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             query_params = _BaseSecureSourceManagerRestTransport._BaseGetRepository._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.GetRepository",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "GetRepository",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SecureSourceManagerRestTransport._GetRepository._get_response(
@@ -1955,7 +2516,31 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             pb_resp = secure_source_manager.Repository.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_repository(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = secure_source_manager.Repository.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.get_repository",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "GetRepository",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListBranchRules(
@@ -1993,7 +2578,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> secure_source_manager.ListBranchRulesResponse:
             r"""Call the list branch rules method over HTTP.
 
@@ -2004,8 +2589,10 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.secure_source_manager.ListBranchRulesResponse:
@@ -2017,6 +2604,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             http_options = (
                 _BaseSecureSourceManagerRestTransport._BaseListBranchRules._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_branch_rules(
                 request, metadata
             )
@@ -2028,6 +2616,33 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             query_params = _BaseSecureSourceManagerRestTransport._BaseListBranchRules._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.ListBranchRules",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "ListBranchRules",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SecureSourceManagerRestTransport._ListBranchRules._get_response(
@@ -2049,7 +2664,31 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             pb_resp = secure_source_manager.ListBranchRulesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_branch_rules(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        secure_source_manager.ListBranchRulesResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.list_branch_rules",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "ListBranchRules",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListInstances(
@@ -2087,7 +2726,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> secure_source_manager.ListInstancesResponse:
             r"""Call the list instances method over HTTP.
 
@@ -2098,8 +2737,10 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.secure_source_manager.ListInstancesResponse:
@@ -2109,6 +2750,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             http_options = (
                 _BaseSecureSourceManagerRestTransport._BaseListInstances._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_instances(request, metadata)
             transcoded_request = _BaseSecureSourceManagerRestTransport._BaseListInstances._get_transcoded_request(
                 http_options, request
@@ -2118,6 +2760,33 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             query_params = _BaseSecureSourceManagerRestTransport._BaseListInstances._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.ListInstances",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "ListInstances",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SecureSourceManagerRestTransport._ListInstances._get_response(
@@ -2139,7 +2808,31 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             pb_resp = secure_source_manager.ListInstancesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_instances(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        secure_source_manager.ListInstancesResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.list_instances",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "ListInstances",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListRepositories(
@@ -2177,7 +2870,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> secure_source_manager.ListRepositoriesResponse:
             r"""Call the list repositories method over HTTP.
 
@@ -2188,8 +2881,10 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.secure_source_manager.ListRepositoriesResponse:
@@ -2199,6 +2894,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             http_options = (
                 _BaseSecureSourceManagerRestTransport._BaseListRepositories._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_repositories(
                 request, metadata
             )
@@ -2210,6 +2906,33 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             query_params = _BaseSecureSourceManagerRestTransport._BaseListRepositories._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.ListRepositories",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "ListRepositories",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SecureSourceManagerRestTransport._ListRepositories._get_response(
@@ -2231,7 +2954,31 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             pb_resp = secure_source_manager.ListRepositoriesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_repositories(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        secure_source_manager.ListRepositoriesResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.list_repositories",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "ListRepositories",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _SetIamPolicyRepo(
@@ -2270,7 +3017,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> policy_pb2.Policy:
             r"""Call the set iam policy repo method over HTTP.
 
@@ -2280,8 +3027,10 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.policy_pb2.Policy:
@@ -2366,6 +3115,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             http_options = (
                 _BaseSecureSourceManagerRestTransport._BaseSetIamPolicyRepo._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_set_iam_policy_repo(
                 request, metadata
             )
@@ -2381,6 +3131,33 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             query_params = _BaseSecureSourceManagerRestTransport._BaseSetIamPolicyRepo._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.SetIamPolicyRepo",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "SetIamPolicyRepo",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SecureSourceManagerRestTransport._SetIamPolicyRepo._get_response(
@@ -2403,7 +3180,29 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             pb_resp = resp
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_set_iam_policy_repo(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.set_iam_policy_repo",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "SetIamPolicyRepo",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _TestIamPermissionsRepo(
@@ -2442,7 +3241,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> iam_policy_pb2.TestIamPermissionsResponse:
             r"""Call the test iam permissions repo method over HTTP.
 
@@ -2452,8 +3251,10 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.iam_policy_pb2.TestIamPermissionsResponse:
@@ -2463,6 +3264,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             http_options = (
                 _BaseSecureSourceManagerRestTransport._BaseTestIamPermissionsRepo._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_test_iam_permissions_repo(
                 request, metadata
             )
@@ -2478,6 +3280,33 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             query_params = _BaseSecureSourceManagerRestTransport._BaseTestIamPermissionsRepo._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.TestIamPermissionsRepo",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "TestIamPermissionsRepo",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -2502,7 +3331,29 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             pb_resp = resp
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_test_iam_permissions_repo(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.test_iam_permissions_repo",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "TestIamPermissionsRepo",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateBranchRule(
@@ -2541,7 +3392,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update branch rule method over HTTP.
 
@@ -2552,8 +3403,10 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2566,6 +3419,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             http_options = (
                 _BaseSecureSourceManagerRestTransport._BaseUpdateBranchRule._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_branch_rule(
                 request, metadata
             )
@@ -2581,6 +3435,33 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             query_params = _BaseSecureSourceManagerRestTransport._BaseUpdateBranchRule._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.UpdateBranchRule",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "UpdateBranchRule",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SecureSourceManagerRestTransport._UpdateBranchRule._get_response(
@@ -2601,7 +3482,29 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_branch_rule(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.update_branch_rule",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "UpdateBranchRule",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -2803,7 +3706,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.Location:
             r"""Call the get location method over HTTP.
 
@@ -2813,8 +3716,10 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.Location: Response from GetLocation method.
@@ -2823,6 +3728,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             http_options = (
                 _BaseSecureSourceManagerRestTransport._BaseGetLocation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_location(request, metadata)
             transcoded_request = _BaseSecureSourceManagerRestTransport._BaseGetLocation._get_transcoded_request(
                 http_options, request
@@ -2832,6 +3738,33 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             query_params = _BaseSecureSourceManagerRestTransport._BaseGetLocation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "GetLocation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SecureSourceManagerRestTransport._GetLocation._get_response(
@@ -2852,6 +3785,27 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securesourcemanager_v1.SecureSourceManagerAsyncClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "GetLocation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -2893,7 +3847,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.ListLocationsResponse:
             r"""Call the list locations method over HTTP.
 
@@ -2903,8 +3857,10 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
@@ -2913,6 +3869,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             http_options = (
                 _BaseSecureSourceManagerRestTransport._BaseListLocations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
             transcoded_request = _BaseSecureSourceManagerRestTransport._BaseListLocations._get_transcoded_request(
                 http_options, request
@@ -2922,6 +3879,33 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             query_params = _BaseSecureSourceManagerRestTransport._BaseListLocations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "ListLocations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SecureSourceManagerRestTransport._ListLocations._get_response(
@@ -2942,6 +3926,27 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securesourcemanager_v1.SecureSourceManagerAsyncClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "ListLocations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -2983,7 +3988,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> policy_pb2.Policy:
             r"""Call the get iam policy method over HTTP.
 
@@ -2993,8 +3998,10 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 policy_pb2.Policy: Response from GetIamPolicy method.
@@ -3003,6 +4010,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             http_options = (
                 _BaseSecureSourceManagerRestTransport._BaseGetIamPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
             transcoded_request = _BaseSecureSourceManagerRestTransport._BaseGetIamPolicy._get_transcoded_request(
                 http_options, request
@@ -3012,6 +4020,33 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             query_params = _BaseSecureSourceManagerRestTransport._BaseGetIamPolicy._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.GetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "GetIamPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SecureSourceManagerRestTransport._GetIamPolicy._get_response(
@@ -3032,6 +4067,27 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_iam_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securesourcemanager_v1.SecureSourceManagerAsyncClient.GetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "GetIamPolicy",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -3074,7 +4130,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> policy_pb2.Policy:
             r"""Call the set iam policy method over HTTP.
 
@@ -3084,8 +4140,10 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 policy_pb2.Policy: Response from SetIamPolicy method.
@@ -3094,6 +4152,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             http_options = (
                 _BaseSecureSourceManagerRestTransport._BaseSetIamPolicy._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
             transcoded_request = _BaseSecureSourceManagerRestTransport._BaseSetIamPolicy._get_transcoded_request(
                 http_options, request
@@ -3107,6 +4166,33 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             query_params = _BaseSecureSourceManagerRestTransport._BaseSetIamPolicy._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.SetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "SetIamPolicy",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SecureSourceManagerRestTransport._SetIamPolicy._get_response(
@@ -3128,6 +4214,27 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_set_iam_policy(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securesourcemanager_v1.SecureSourceManagerAsyncClient.SetIamPolicy",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "SetIamPolicy",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -3170,7 +4277,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> iam_policy_pb2.TestIamPermissionsResponse:
             r"""Call the test iam permissions method over HTTP.
 
@@ -3180,8 +4287,10 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 iam_policy_pb2.TestIamPermissionsResponse: Response from TestIamPermissions method.
@@ -3190,6 +4299,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             http_options = (
                 _BaseSecureSourceManagerRestTransport._BaseTestIamPermissions._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata
             )
@@ -3205,6 +4315,33 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             query_params = _BaseSecureSourceManagerRestTransport._BaseTestIamPermissions._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.TestIamPermissions",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "TestIamPermissions",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -3228,6 +4365,27 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             resp = iam_policy_pb2.TestIamPermissionsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_test_iam_permissions(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securesourcemanager_v1.SecureSourceManagerAsyncClient.TestIamPermissions",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "TestIamPermissions",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -3270,7 +4428,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the cancel operation method over HTTP.
 
@@ -3280,13 +4438,16 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseSecureSourceManagerRestTransport._BaseCancelOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
@@ -3302,6 +4463,33 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             query_params = _BaseSecureSourceManagerRestTransport._BaseCancelOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.CancelOperation",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "CancelOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SecureSourceManagerRestTransport._CancelOperation._get_response(
@@ -3360,7 +4548,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the delete operation method over HTTP.
 
@@ -3370,13 +4558,16 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseSecureSourceManagerRestTransport._BaseDeleteOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
             )
@@ -3388,6 +4579,33 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             query_params = _BaseSecureSourceManagerRestTransport._BaseDeleteOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.DeleteOperation",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "DeleteOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SecureSourceManagerRestTransport._DeleteOperation._get_response(
@@ -3445,7 +4663,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the get operation method over HTTP.
 
@@ -3455,8 +4673,10 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.
@@ -3465,6 +4685,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             http_options = (
                 _BaseSecureSourceManagerRestTransport._BaseGetOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseSecureSourceManagerRestTransport._BaseGetOperation._get_transcoded_request(
                 http_options, request
@@ -3474,6 +4695,33 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             query_params = _BaseSecureSourceManagerRestTransport._BaseGetOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "GetOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SecureSourceManagerRestTransport._GetOperation._get_response(
@@ -3494,6 +4742,27 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securesourcemanager_v1.SecureSourceManagerAsyncClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "GetOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -3535,7 +4804,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.ListOperationsResponse:
             r"""Call the list operations method over HTTP.
 
@@ -3545,8 +4814,10 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
@@ -3555,6 +4826,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             http_options = (
                 _BaseSecureSourceManagerRestTransport._BaseListOperations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseSecureSourceManagerRestTransport._BaseListOperations._get_transcoded_request(
                 http_options, request
@@ -3564,6 +4836,33 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             query_params = _BaseSecureSourceManagerRestTransport._BaseListOperations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.securesourcemanager_v1.SecureSourceManagerClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "ListOperations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = SecureSourceManagerRestTransport._ListOperations._get_response(
@@ -3584,6 +4883,27 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.securesourcemanager_v1.SecureSourceManagerAsyncClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "rpcName": "ListOperations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property

@@ -5527,6 +5527,7 @@ def test_get_google_service_account_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_google_service_account(request)
 
@@ -5646,6 +5647,7 @@ def test_create_transfer_job_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_transfer_job(request)
 
@@ -5774,6 +5776,7 @@ def test_update_transfer_job_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_transfer_job(request)
 
@@ -5913,6 +5916,7 @@ def test_get_transfer_job_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_transfer_job(request)
 
@@ -6061,6 +6065,7 @@ def test_list_transfer_jobs_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_transfer_jobs(request)
 
@@ -6259,6 +6264,7 @@ def test_pause_transfer_operation_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.pause_transfer_operation(request)
 
@@ -6381,6 +6387,7 @@ def test_resume_transfer_operation_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.resume_transfer_operation(request)
 
@@ -6508,6 +6515,7 @@ def test_run_transfer_job_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.run_transfer_job(request)
 
@@ -6645,6 +6653,7 @@ def test_delete_transfer_job_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_transfer_job(request)
 
@@ -6790,6 +6799,7 @@ def test_create_agent_pool_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_agent_pool(request)
 
@@ -6852,6 +6862,7 @@ def test_create_agent_pool_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_agent_pool(**mock_args)
 
@@ -6983,6 +6994,7 @@ def test_update_agent_pool_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_agent_pool(request)
 
@@ -7029,6 +7041,7 @@ def test_update_agent_pool_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_agent_pool(**mock_args)
 
@@ -7158,6 +7171,7 @@ def test_get_agent_pool_rest_required_fields(request_type=transfer.GetAgentPoolR
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_agent_pool(request)
 
@@ -7203,6 +7217,7 @@ def test_get_agent_pool_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_agent_pool(**mock_args)
 
@@ -7342,6 +7357,7 @@ def test_list_agent_pools_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_agent_pools(request)
 
@@ -7396,6 +7412,7 @@ def test_list_agent_pools_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_agent_pools(**mock_args)
 
@@ -7585,6 +7602,7 @@ def test_delete_agent_pool_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_agent_pool(request)
 
@@ -7628,6 +7646,7 @@ def test_delete_agent_pool_rest_flattened():
         json_return_value = ""
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_agent_pool(**mock_args)
 
@@ -8516,6 +8535,7 @@ def test_get_google_service_account_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_google_service_account(request)
 
 
@@ -8552,6 +8572,7 @@ def test_get_google_service_account_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_google_service_account(request)
 
     # Establish that the response is the type that we expect.
@@ -8595,6 +8616,7 @@ def test_get_google_service_account_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = transfer_types.GoogleServiceAccount.to_json(
             transfer_types.GoogleServiceAccount()
         )
@@ -8641,6 +8663,7 @@ def test_create_transfer_job_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_transfer_job(request)
 
 
@@ -8865,6 +8888,7 @@ def test_create_transfer_job_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_transfer_job(request)
 
     # Establish that the response is the type that we expect.
@@ -8909,6 +8933,7 @@ def test_create_transfer_job_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = transfer_types.TransferJob.to_json(transfer_types.TransferJob())
         req.return_value.content = return_value
 
@@ -8953,6 +8978,7 @@ def test_update_transfer_job_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_transfer_job(request)
 
 
@@ -8992,6 +9018,7 @@ def test_update_transfer_job_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_transfer_job(request)
 
     # Establish that the response is the type that we expect.
@@ -9036,6 +9063,7 @@ def test_update_transfer_job_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = transfer_types.TransferJob.to_json(transfer_types.TransferJob())
         req.return_value.content = return_value
 
@@ -9078,6 +9106,7 @@ def test_get_transfer_job_rest_bad_request(request_type=transfer.GetTransferJobR
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_transfer_job(request)
 
 
@@ -9117,6 +9146,7 @@ def test_get_transfer_job_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_transfer_job(request)
 
     # Establish that the response is the type that we expect.
@@ -9159,6 +9189,7 @@ def test_get_transfer_job_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = transfer_types.TransferJob.to_json(transfer_types.TransferJob())
         req.return_value.content = return_value
 
@@ -9203,6 +9234,7 @@ def test_list_transfer_jobs_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_transfer_jobs(request)
 
 
@@ -9238,6 +9270,7 @@ def test_list_transfer_jobs_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_transfer_jobs(request)
 
     # Establish that the response is the type that we expect.
@@ -9278,6 +9311,7 @@ def test_list_transfer_jobs_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = transfer.ListTransferJobsResponse.to_json(
             transfer.ListTransferJobsResponse()
         )
@@ -9324,6 +9358,7 @@ def test_pause_transfer_operation_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.pause_transfer_operation(request)
 
 
@@ -9354,6 +9389,7 @@ def test_pause_transfer_operation_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.pause_transfer_operation(request)
 
     # Establish that the response is the type that we expect.
@@ -9390,6 +9426,7 @@ def test_pause_transfer_operation_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = transfer.PauseTransferOperationRequest()
         metadata = [
@@ -9430,6 +9467,7 @@ def test_resume_transfer_operation_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.resume_transfer_operation(request)
 
 
@@ -9460,6 +9498,7 @@ def test_resume_transfer_operation_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.resume_transfer_operation(request)
 
     # Establish that the response is the type that we expect.
@@ -9497,6 +9536,7 @@ def test_resume_transfer_operation_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = transfer.ResumeTransferOperationRequest()
         metadata = [
@@ -9535,6 +9575,7 @@ def test_run_transfer_job_rest_bad_request(request_type=transfer.RunTransferJobR
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.run_transfer_job(request)
 
 
@@ -9565,6 +9606,7 @@ def test_run_transfer_job_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.run_transfer_job(request)
 
     # Establish that the response is the type that we expect.
@@ -9604,6 +9646,7 @@ def test_run_transfer_job_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
@@ -9648,6 +9691,7 @@ def test_delete_transfer_job_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_transfer_job(request)
 
 
@@ -9678,6 +9722,7 @@ def test_delete_transfer_job_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_transfer_job(request)
 
     # Establish that the response is the type that we expect.
@@ -9714,6 +9759,7 @@ def test_delete_transfer_job_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = transfer.DeleteTransferJobRequest()
         metadata = [
@@ -9754,6 +9800,7 @@ def test_create_agent_pool_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_agent_pool(request)
 
 
@@ -9864,6 +9911,7 @@ def test_create_agent_pool_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_agent_pool(request)
 
     # Establish that the response is the type that we expect.
@@ -9906,6 +9954,7 @@ def test_create_agent_pool_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = transfer_types.AgentPool.to_json(transfer_types.AgentPool())
         req.return_value.content = return_value
 
@@ -9950,6 +9999,7 @@ def test_update_agent_pool_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_agent_pool(request)
 
 
@@ -10060,6 +10110,7 @@ def test_update_agent_pool_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_agent_pool(request)
 
     # Establish that the response is the type that we expect.
@@ -10102,6 +10153,7 @@ def test_update_agent_pool_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = transfer_types.AgentPool.to_json(transfer_types.AgentPool())
         req.return_value.content = return_value
 
@@ -10144,6 +10196,7 @@ def test_get_agent_pool_rest_bad_request(request_type=transfer.GetAgentPoolReque
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_agent_pool(request)
 
 
@@ -10181,6 +10234,7 @@ def test_get_agent_pool_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_agent_pool(request)
 
     # Establish that the response is the type that we expect.
@@ -10221,6 +10275,7 @@ def test_get_agent_pool_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = transfer_types.AgentPool.to_json(transfer_types.AgentPool())
         req.return_value.content = return_value
 
@@ -10263,6 +10318,7 @@ def test_list_agent_pools_rest_bad_request(request_type=transfer.ListAgentPoolsR
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_agent_pools(request)
 
 
@@ -10298,6 +10354,7 @@ def test_list_agent_pools_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_agent_pools(request)
 
     # Establish that the response is the type that we expect.
@@ -10336,6 +10393,7 @@ def test_list_agent_pools_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = transfer.ListAgentPoolsResponse.to_json(
             transfer.ListAgentPoolsResponse()
         )
@@ -10382,6 +10440,7 @@ def test_delete_agent_pool_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_agent_pool(request)
 
 
@@ -10412,6 +10471,7 @@ def test_delete_agent_pool_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_agent_pool(request)
 
     # Establish that the response is the type that we expect.
@@ -10448,6 +10508,7 @@ def test_delete_agent_pool_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = transfer.DeleteAgentPoolRequest()
         metadata = [
@@ -10488,6 +10549,7 @@ def test_cancel_operation_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.cancel_operation(request)
 
 
@@ -10518,6 +10580,7 @@ def test_cancel_operation_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.cancel_operation(request)
 
@@ -10546,6 +10609,7 @@ def test_get_operation_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_operation(request)
 
 
@@ -10576,6 +10640,7 @@ def test_get_operation_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.get_operation(request)
 
@@ -10604,6 +10669,7 @@ def test_list_operations_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_operations(request)
 
 
@@ -10634,6 +10700,7 @@ def test_list_operations_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.list_operations(request)
 

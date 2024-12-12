@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -39,6 +39,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -183,8 +191,11 @@ class DeveloperConnectRestInterceptor:
     def pre_create_connection(
         self,
         request: developer_connect.CreateConnectionRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[developer_connect.CreateConnectionRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        developer_connect.CreateConnectionRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for create_connection
 
         Override in a subclass to manipulate the request or metadata
@@ -206,9 +217,10 @@ class DeveloperConnectRestInterceptor:
     def pre_create_git_repository_link(
         self,
         request: developer_connect.CreateGitRepositoryLinkRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        developer_connect.CreateGitRepositoryLinkRequest, Sequence[Tuple[str, str]]
+        developer_connect.CreateGitRepositoryLinkRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for create_git_repository_link
 
@@ -231,8 +243,11 @@ class DeveloperConnectRestInterceptor:
     def pre_delete_connection(
         self,
         request: developer_connect.DeleteConnectionRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[developer_connect.DeleteConnectionRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        developer_connect.DeleteConnectionRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for delete_connection
 
         Override in a subclass to manipulate the request or metadata
@@ -254,9 +269,10 @@ class DeveloperConnectRestInterceptor:
     def pre_delete_git_repository_link(
         self,
         request: developer_connect.DeleteGitRepositoryLinkRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        developer_connect.DeleteGitRepositoryLinkRequest, Sequence[Tuple[str, str]]
+        developer_connect.DeleteGitRepositoryLinkRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for delete_git_repository_link
 
@@ -279,9 +295,10 @@ class DeveloperConnectRestInterceptor:
     def pre_fetch_git_hub_installations(
         self,
         request: developer_connect.FetchGitHubInstallationsRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        developer_connect.FetchGitHubInstallationsRequest, Sequence[Tuple[str, str]]
+        developer_connect.FetchGitHubInstallationsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for fetch_git_hub_installations
 
@@ -304,8 +321,10 @@ class DeveloperConnectRestInterceptor:
     def pre_fetch_git_refs(
         self,
         request: developer_connect.FetchGitRefsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[developer_connect.FetchGitRefsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        developer_connect.FetchGitRefsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for fetch_git_refs
 
         Override in a subclass to manipulate the request or metadata
@@ -327,9 +346,10 @@ class DeveloperConnectRestInterceptor:
     def pre_fetch_linkable_git_repositories(
         self,
         request: developer_connect.FetchLinkableGitRepositoriesRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        developer_connect.FetchLinkableGitRepositoriesRequest, Sequence[Tuple[str, str]]
+        developer_connect.FetchLinkableGitRepositoriesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for fetch_linkable_git_repositories
 
@@ -352,8 +372,10 @@ class DeveloperConnectRestInterceptor:
     def pre_fetch_read_token(
         self,
         request: developer_connect.FetchReadTokenRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[developer_connect.FetchReadTokenRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        developer_connect.FetchReadTokenRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for fetch_read_token
 
         Override in a subclass to manipulate the request or metadata
@@ -375,8 +397,11 @@ class DeveloperConnectRestInterceptor:
     def pre_fetch_read_write_token(
         self,
         request: developer_connect.FetchReadWriteTokenRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[developer_connect.FetchReadWriteTokenRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        developer_connect.FetchReadWriteTokenRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for fetch_read_write_token
 
         Override in a subclass to manipulate the request or metadata
@@ -398,8 +423,10 @@ class DeveloperConnectRestInterceptor:
     def pre_get_connection(
         self,
         request: developer_connect.GetConnectionRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[developer_connect.GetConnectionRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        developer_connect.GetConnectionRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_connection
 
         Override in a subclass to manipulate the request or metadata
@@ -421,9 +448,10 @@ class DeveloperConnectRestInterceptor:
     def pre_get_git_repository_link(
         self,
         request: developer_connect.GetGitRepositoryLinkRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        developer_connect.GetGitRepositoryLinkRequest, Sequence[Tuple[str, str]]
+        developer_connect.GetGitRepositoryLinkRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for get_git_repository_link
 
@@ -446,8 +474,11 @@ class DeveloperConnectRestInterceptor:
     def pre_list_connections(
         self,
         request: developer_connect.ListConnectionsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[developer_connect.ListConnectionsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        developer_connect.ListConnectionsRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for list_connections
 
         Override in a subclass to manipulate the request or metadata
@@ -469,9 +500,10 @@ class DeveloperConnectRestInterceptor:
     def pre_list_git_repository_links(
         self,
         request: developer_connect.ListGitRepositoryLinksRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        developer_connect.ListGitRepositoryLinksRequest, Sequence[Tuple[str, str]]
+        developer_connect.ListGitRepositoryLinksRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for list_git_repository_links
 
@@ -494,8 +526,11 @@ class DeveloperConnectRestInterceptor:
     def pre_update_connection(
         self,
         request: developer_connect.UpdateConnectionRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[developer_connect.UpdateConnectionRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        developer_connect.UpdateConnectionRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for update_connection
 
         Override in a subclass to manipulate the request or metadata
@@ -517,8 +552,10 @@ class DeveloperConnectRestInterceptor:
     def pre_get_location(
         self,
         request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -540,8 +577,10 @@ class DeveloperConnectRestInterceptor:
     def pre_list_locations(
         self,
         request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -563,8 +602,10 @@ class DeveloperConnectRestInterceptor:
     def pre_cancel_operation(
         self,
         request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -584,8 +625,10 @@ class DeveloperConnectRestInterceptor:
     def pre_delete_operation(
         self,
         request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -605,8 +648,10 @@ class DeveloperConnectRestInterceptor:
     def pre_get_operation(
         self,
         request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -628,8 +673,10 @@ class DeveloperConnectRestInterceptor:
     def pre_list_operations(
         self,
         request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -825,7 +872,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create connection method over HTTP.
 
@@ -835,8 +882,10 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -849,6 +898,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             http_options = (
                 _BaseDeveloperConnectRestTransport._BaseCreateConnection._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_connection(
                 request, metadata
             )
@@ -864,6 +914,33 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             query_params = _BaseDeveloperConnectRestTransport._BaseCreateConnection._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.developerconnect_v1.DeveloperConnectClient.CreateConnection",
+                    extra={
+                        "serviceName": "google.cloud.developerconnect.v1.DeveloperConnect",
+                        "rpcName": "CreateConnection",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DeveloperConnectRestTransport._CreateConnection._get_response(
@@ -884,7 +961,29 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_connection(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.developerconnect_v1.DeveloperConnectClient.create_connection",
+                    extra={
+                        "serviceName": "google.cloud.developerconnect.v1.DeveloperConnect",
+                        "rpcName": "CreateConnection",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateGitRepositoryLink(
@@ -923,7 +1022,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the create git repository
             link method over HTTP.
@@ -935,8 +1034,10 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.operations_pb2.Operation:
@@ -949,6 +1050,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             http_options = (
                 _BaseDeveloperConnectRestTransport._BaseCreateGitRepositoryLink._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_git_repository_link(
                 request, metadata
             )
@@ -964,6 +1066,33 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             query_params = _BaseDeveloperConnectRestTransport._BaseCreateGitRepositoryLink._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.developerconnect_v1.DeveloperConnectClient.CreateGitRepositoryLink",
+                    extra={
+                        "serviceName": "google.cloud.developerconnect.v1.DeveloperConnect",
+                        "rpcName": "CreateGitRepositoryLink",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -986,7 +1115,29 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_git_repository_link(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.developerconnect_v1.DeveloperConnectClient.create_git_repository_link",
+                    extra={
+                        "serviceName": "google.cloud.developerconnect.v1.DeveloperConnect",
+                        "rpcName": "CreateGitRepositoryLink",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteConnection(
@@ -1024,7 +1175,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete connection method over HTTP.
 
@@ -1034,8 +1185,10 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1048,6 +1201,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             http_options = (
                 _BaseDeveloperConnectRestTransport._BaseDeleteConnection._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_connection(
                 request, metadata
             )
@@ -1059,6 +1213,33 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             query_params = _BaseDeveloperConnectRestTransport._BaseDeleteConnection._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.developerconnect_v1.DeveloperConnectClient.DeleteConnection",
+                    extra={
+                        "serviceName": "google.cloud.developerconnect.v1.DeveloperConnect",
+                        "rpcName": "DeleteConnection",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DeveloperConnectRestTransport._DeleteConnection._get_response(
@@ -1078,7 +1259,29 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_connection(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.developerconnect_v1.DeveloperConnectClient.delete_connection",
+                    extra={
+                        "serviceName": "google.cloud.developerconnect.v1.DeveloperConnect",
+                        "rpcName": "DeleteConnection",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteGitRepositoryLink(
@@ -1116,7 +1319,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the delete git repository
             link method over HTTP.
@@ -1128,8 +1331,10 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.operations_pb2.Operation:
@@ -1142,6 +1347,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             http_options = (
                 _BaseDeveloperConnectRestTransport._BaseDeleteGitRepositoryLink._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_git_repository_link(
                 request, metadata
             )
@@ -1153,6 +1359,33 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             query_params = _BaseDeveloperConnectRestTransport._BaseDeleteGitRepositoryLink._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.developerconnect_v1.DeveloperConnectClient.DeleteGitRepositoryLink",
+                    extra={
+                        "serviceName": "google.cloud.developerconnect.v1.DeveloperConnect",
+                        "rpcName": "DeleteGitRepositoryLink",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1174,7 +1407,29 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_delete_git_repository_link(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.developerconnect_v1.DeveloperConnectClient.delete_git_repository_link",
+                    extra={
+                        "serviceName": "google.cloud.developerconnect.v1.DeveloperConnect",
+                        "rpcName": "DeleteGitRepositoryLink",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _FetchGitHubInstallations(
@@ -1212,7 +1467,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> developer_connect.FetchGitHubInstallationsResponse:
             r"""Call the fetch git hub
             installations method over HTTP.
@@ -1224,8 +1479,10 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.developer_connect.FetchGitHubInstallationsResponse:
@@ -1237,6 +1494,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             http_options = (
                 _BaseDeveloperConnectRestTransport._BaseFetchGitHubInstallations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_fetch_git_hub_installations(
                 request, metadata
             )
@@ -1248,6 +1506,33 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             query_params = _BaseDeveloperConnectRestTransport._BaseFetchGitHubInstallations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.developerconnect_v1.DeveloperConnectClient.FetchGitHubInstallations",
+                    extra={
+                        "serviceName": "google.cloud.developerconnect.v1.DeveloperConnect",
+                        "rpcName": "FetchGitHubInstallations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1271,7 +1556,33 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             pb_resp = developer_connect.FetchGitHubInstallationsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_fetch_git_hub_installations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        developer_connect.FetchGitHubInstallationsResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.developerconnect_v1.DeveloperConnectClient.fetch_git_hub_installations",
+                    extra={
+                        "serviceName": "google.cloud.developerconnect.v1.DeveloperConnect",
+                        "rpcName": "FetchGitHubInstallations",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _FetchGitRefs(
@@ -1308,7 +1619,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> developer_connect.FetchGitRefsResponse:
             r"""Call the fetch git refs method over HTTP.
 
@@ -1318,8 +1629,10 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.developer_connect.FetchGitRefsResponse:
@@ -1329,6 +1642,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             http_options = (
                 _BaseDeveloperConnectRestTransport._BaseFetchGitRefs._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_fetch_git_refs(request, metadata)
             transcoded_request = _BaseDeveloperConnectRestTransport._BaseFetchGitRefs._get_transcoded_request(
                 http_options, request
@@ -1338,6 +1652,33 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             query_params = _BaseDeveloperConnectRestTransport._BaseFetchGitRefs._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.developerconnect_v1.DeveloperConnectClient.FetchGitRefs",
+                    extra={
+                        "serviceName": "google.cloud.developerconnect.v1.DeveloperConnect",
+                        "rpcName": "FetchGitRefs",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DeveloperConnectRestTransport._FetchGitRefs._get_response(
@@ -1359,7 +1700,31 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             pb_resp = developer_connect.FetchGitRefsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_fetch_git_refs(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = developer_connect.FetchGitRefsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.developerconnect_v1.DeveloperConnectClient.fetch_git_refs",
+                    extra={
+                        "serviceName": "google.cloud.developerconnect.v1.DeveloperConnect",
+                        "rpcName": "FetchGitRefs",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _FetchLinkableGitRepositories(
@@ -1397,7 +1762,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> developer_connect.FetchLinkableGitRepositoriesResponse:
             r"""Call the fetch linkable git
             repositories method over HTTP.
@@ -1409,8 +1774,10 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
-                    metadata (Sequence[Tuple[str, str]]): Strings which should be
-                        sent along with the request as metadata.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
 
                 Returns:
                     ~.developer_connect.FetchLinkableGitRepositoriesResponse:
@@ -1422,6 +1789,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             http_options = (
                 _BaseDeveloperConnectRestTransport._BaseFetchLinkableGitRepositories._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_fetch_linkable_git_repositories(
                 request, metadata
             )
@@ -1433,6 +1801,33 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             query_params = _BaseDeveloperConnectRestTransport._BaseFetchLinkableGitRepositories._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.developerconnect_v1.DeveloperConnectClient.FetchLinkableGitRepositories",
+                    extra={
+                        "serviceName": "google.cloud.developerconnect.v1.DeveloperConnect",
+                        "rpcName": "FetchLinkableGitRepositories",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DeveloperConnectRestTransport._FetchLinkableGitRepositories._get_response(
@@ -1454,7 +1849,33 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             pb_resp = developer_connect.FetchLinkableGitRepositoriesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_fetch_linkable_git_repositories(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        developer_connect.FetchLinkableGitRepositoriesResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.developerconnect_v1.DeveloperConnectClient.fetch_linkable_git_repositories",
+                    extra={
+                        "serviceName": "google.cloud.developerconnect.v1.DeveloperConnect",
+                        "rpcName": "FetchLinkableGitRepositories",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _FetchReadToken(
@@ -1492,7 +1913,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> developer_connect.FetchReadTokenResponse:
             r"""Call the fetch read token method over HTTP.
 
@@ -1502,8 +1923,10 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.developer_connect.FetchReadTokenResponse:
@@ -1515,6 +1938,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             http_options = (
                 _BaseDeveloperConnectRestTransport._BaseFetchReadToken._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_fetch_read_token(
                 request, metadata
             )
@@ -1530,6 +1954,33 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             query_params = _BaseDeveloperConnectRestTransport._BaseFetchReadToken._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.developerconnect_v1.DeveloperConnectClient.FetchReadToken",
+                    extra={
+                        "serviceName": "google.cloud.developerconnect.v1.DeveloperConnect",
+                        "rpcName": "FetchReadToken",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DeveloperConnectRestTransport._FetchReadToken._get_response(
@@ -1552,7 +2003,31 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             pb_resp = developer_connect.FetchReadTokenResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_fetch_read_token(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = developer_connect.FetchReadTokenResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.developerconnect_v1.DeveloperConnectClient.fetch_read_token",
+                    extra={
+                        "serviceName": "google.cloud.developerconnect.v1.DeveloperConnect",
+                        "rpcName": "FetchReadToken",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _FetchReadWriteToken(
@@ -1591,7 +2066,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> developer_connect.FetchReadWriteTokenResponse:
             r"""Call the fetch read write token method over HTTP.
 
@@ -1602,8 +2077,10 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.developer_connect.FetchReadWriteTokenResponse:
@@ -1615,6 +2092,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             http_options = (
                 _BaseDeveloperConnectRestTransport._BaseFetchReadWriteToken._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_fetch_read_write_token(
                 request, metadata
             )
@@ -1630,6 +2108,33 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             query_params = _BaseDeveloperConnectRestTransport._BaseFetchReadWriteToken._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.developerconnect_v1.DeveloperConnectClient.FetchReadWriteToken",
+                    extra={
+                        "serviceName": "google.cloud.developerconnect.v1.DeveloperConnect",
+                        "rpcName": "FetchReadWriteToken",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DeveloperConnectRestTransport._FetchReadWriteToken._get_response(
@@ -1652,7 +2157,31 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             pb_resp = developer_connect.FetchReadWriteTokenResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_fetch_read_write_token(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        developer_connect.FetchReadWriteTokenResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.developerconnect_v1.DeveloperConnectClient.fetch_read_write_token",
+                    extra={
+                        "serviceName": "google.cloud.developerconnect.v1.DeveloperConnect",
+                        "rpcName": "FetchReadWriteToken",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetConnection(
@@ -1689,7 +2218,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> developer_connect.Connection:
             r"""Call the get connection method over HTTP.
 
@@ -1699,8 +2228,10 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.developer_connect.Connection:
@@ -1710,6 +2241,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             http_options = (
                 _BaseDeveloperConnectRestTransport._BaseGetConnection._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_connection(request, metadata)
             transcoded_request = _BaseDeveloperConnectRestTransport._BaseGetConnection._get_transcoded_request(
                 http_options, request
@@ -1719,6 +2251,33 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             query_params = _BaseDeveloperConnectRestTransport._BaseGetConnection._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.developerconnect_v1.DeveloperConnectClient.GetConnection",
+                    extra={
+                        "serviceName": "google.cloud.developerconnect.v1.DeveloperConnect",
+                        "rpcName": "GetConnection",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DeveloperConnectRestTransport._GetConnection._get_response(
@@ -1740,7 +2299,29 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             pb_resp = developer_connect.Connection.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_connection(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = developer_connect.Connection.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.developerconnect_v1.DeveloperConnectClient.get_connection",
+                    extra={
+                        "serviceName": "google.cloud.developerconnect.v1.DeveloperConnect",
+                        "rpcName": "GetConnection",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetGitRepositoryLink(
@@ -1778,7 +2359,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> developer_connect.GitRepositoryLink:
             r"""Call the get git repository link method over HTTP.
 
@@ -1789,8 +2370,10 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.developer_connect.GitRepositoryLink:
@@ -1802,6 +2385,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             http_options = (
                 _BaseDeveloperConnectRestTransport._BaseGetGitRepositoryLink._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_git_repository_link(
                 request, metadata
             )
@@ -1813,6 +2397,33 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             query_params = _BaseDeveloperConnectRestTransport._BaseGetGitRepositoryLink._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.developerconnect_v1.DeveloperConnectClient.GetGitRepositoryLink",
+                    extra={
+                        "serviceName": "google.cloud.developerconnect.v1.DeveloperConnect",
+                        "rpcName": "GetGitRepositoryLink",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1836,7 +2447,31 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             pb_resp = developer_connect.GitRepositoryLink.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_git_repository_link(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = developer_connect.GitRepositoryLink.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.developerconnect_v1.DeveloperConnectClient.get_git_repository_link",
+                    extra={
+                        "serviceName": "google.cloud.developerconnect.v1.DeveloperConnect",
+                        "rpcName": "GetGitRepositoryLink",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListConnections(
@@ -1874,7 +2509,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> developer_connect.ListConnectionsResponse:
             r"""Call the list connections method over HTTP.
 
@@ -1885,8 +2520,10 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.developer_connect.ListConnectionsResponse:
@@ -1898,6 +2535,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             http_options = (
                 _BaseDeveloperConnectRestTransport._BaseListConnections._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_connections(
                 request, metadata
             )
@@ -1909,6 +2547,33 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             query_params = _BaseDeveloperConnectRestTransport._BaseListConnections._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.developerconnect_v1.DeveloperConnectClient.ListConnections",
+                    extra={
+                        "serviceName": "google.cloud.developerconnect.v1.DeveloperConnect",
+                        "rpcName": "ListConnections",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DeveloperConnectRestTransport._ListConnections._get_response(
@@ -1930,7 +2595,31 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             pb_resp = developer_connect.ListConnectionsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_connections(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        developer_connect.ListConnectionsResponse.to_json(response)
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.developerconnect_v1.DeveloperConnectClient.list_connections",
+                    extra={
+                        "serviceName": "google.cloud.developerconnect.v1.DeveloperConnect",
+                        "rpcName": "ListConnections",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListGitRepositoryLinks(
@@ -1968,7 +2657,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> developer_connect.ListGitRepositoryLinksResponse:
             r"""Call the list git repository links method over HTTP.
 
@@ -1979,8 +2668,10 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.developer_connect.ListGitRepositoryLinksResponse:
@@ -1992,6 +2683,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             http_options = (
                 _BaseDeveloperConnectRestTransport._BaseListGitRepositoryLinks._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_git_repository_links(
                 request, metadata
             )
@@ -2003,6 +2695,33 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             query_params = _BaseDeveloperConnectRestTransport._BaseListGitRepositoryLinks._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.developerconnect_v1.DeveloperConnectClient.ListGitRepositoryLinks",
+                    extra={
+                        "serviceName": "google.cloud.developerconnect.v1.DeveloperConnect",
+                        "rpcName": "ListGitRepositoryLinks",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -2026,7 +2745,33 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             pb_resp = developer_connect.ListGitRepositoryLinksResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_git_repository_links(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = (
+                        developer_connect.ListGitRepositoryLinksResponse.to_json(
+                            response
+                        )
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.developerconnect_v1.DeveloperConnectClient.list_git_repository_links",
+                    extra={
+                        "serviceName": "google.cloud.developerconnect.v1.DeveloperConnect",
+                        "rpcName": "ListGitRepositoryLinks",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateConnection(
@@ -2065,7 +2810,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the update connection method over HTTP.
 
@@ -2075,8 +2820,10 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -2089,6 +2836,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             http_options = (
                 _BaseDeveloperConnectRestTransport._BaseUpdateConnection._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_connection(
                 request, metadata
             )
@@ -2104,6 +2852,33 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             query_params = _BaseDeveloperConnectRestTransport._BaseUpdateConnection._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.developerconnect_v1.DeveloperConnectClient.UpdateConnection",
+                    extra={
+                        "serviceName": "google.cloud.developerconnect.v1.DeveloperConnect",
+                        "rpcName": "UpdateConnection",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DeveloperConnectRestTransport._UpdateConnection._get_response(
@@ -2124,7 +2899,29 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_connection(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.developerconnect_v1.DeveloperConnectClient.update_connection",
+                    extra={
+                        "serviceName": "google.cloud.developerconnect.v1.DeveloperConnect",
+                        "rpcName": "UpdateConnection",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -2312,7 +3109,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.Location:
             r"""Call the get location method over HTTP.
 
@@ -2322,8 +3119,10 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.Location: Response from GetLocation method.
@@ -2332,6 +3131,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             http_options = (
                 _BaseDeveloperConnectRestTransport._BaseGetLocation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_location(request, metadata)
             transcoded_request = _BaseDeveloperConnectRestTransport._BaseGetLocation._get_transcoded_request(
                 http_options, request
@@ -2341,6 +3141,33 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             query_params = _BaseDeveloperConnectRestTransport._BaseGetLocation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.developerconnect_v1.DeveloperConnectClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.developerconnect.v1.DeveloperConnect",
+                        "rpcName": "GetLocation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DeveloperConnectRestTransport._GetLocation._get_response(
@@ -2361,6 +3188,27 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.developerconnect_v1.DeveloperConnectAsyncClient.GetLocation",
+                    extra={
+                        "serviceName": "google.cloud.developerconnect.v1.DeveloperConnect",
+                        "rpcName": "GetLocation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -2401,7 +3249,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> locations_pb2.ListLocationsResponse:
             r"""Call the list locations method over HTTP.
 
@@ -2411,8 +3259,10 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
@@ -2421,6 +3271,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             http_options = (
                 _BaseDeveloperConnectRestTransport._BaseListLocations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
             transcoded_request = _BaseDeveloperConnectRestTransport._BaseListLocations._get_transcoded_request(
                 http_options, request
@@ -2430,6 +3281,33 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             query_params = _BaseDeveloperConnectRestTransport._BaseListLocations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.developerconnect_v1.DeveloperConnectClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.developerconnect.v1.DeveloperConnect",
+                        "rpcName": "ListLocations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DeveloperConnectRestTransport._ListLocations._get_response(
@@ -2450,6 +3328,27 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.developerconnect_v1.DeveloperConnectAsyncClient.ListLocations",
+                    extra={
+                        "serviceName": "google.cloud.developerconnect.v1.DeveloperConnect",
+                        "rpcName": "ListLocations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -2492,7 +3391,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the cancel operation method over HTTP.
 
@@ -2502,13 +3401,16 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseDeveloperConnectRestTransport._BaseCancelOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
@@ -2524,6 +3426,33 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             query_params = _BaseDeveloperConnectRestTransport._BaseCancelOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.developerconnect_v1.DeveloperConnectClient.CancelOperation",
+                    extra={
+                        "serviceName": "google.cloud.developerconnect.v1.DeveloperConnect",
+                        "rpcName": "CancelOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DeveloperConnectRestTransport._CancelOperation._get_response(
@@ -2582,7 +3511,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> None:
             r"""Call the delete operation method over HTTP.
 
@@ -2592,13 +3521,16 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseDeveloperConnectRestTransport._BaseDeleteOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
             )
@@ -2610,6 +3542,33 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             query_params = _BaseDeveloperConnectRestTransport._BaseDeleteOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.developerconnect_v1.DeveloperConnectClient.DeleteOperation",
+                    extra={
+                        "serviceName": "google.cloud.developerconnect.v1.DeveloperConnect",
+                        "rpcName": "DeleteOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DeveloperConnectRestTransport._DeleteOperation._get_response(
@@ -2666,7 +3625,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the get operation method over HTTP.
 
@@ -2676,8 +3635,10 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.
@@ -2686,6 +3647,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             http_options = (
                 _BaseDeveloperConnectRestTransport._BaseGetOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseDeveloperConnectRestTransport._BaseGetOperation._get_transcoded_request(
                 http_options, request
@@ -2695,6 +3657,33 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             query_params = _BaseDeveloperConnectRestTransport._BaseGetOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.developerconnect_v1.DeveloperConnectClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.developerconnect.v1.DeveloperConnect",
+                        "rpcName": "GetOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DeveloperConnectRestTransport._GetOperation._get_response(
@@ -2715,6 +3704,27 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.developerconnect_v1.DeveloperConnectAsyncClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.developerconnect.v1.DeveloperConnect",
+                        "rpcName": "GetOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -2755,7 +3765,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.ListOperationsResponse:
             r"""Call the list operations method over HTTP.
 
@@ -2765,8 +3775,10 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
@@ -2775,6 +3787,7 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             http_options = (
                 _BaseDeveloperConnectRestTransport._BaseListOperations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseDeveloperConnectRestTransport._BaseListOperations._get_transcoded_request(
                 http_options, request
@@ -2784,6 +3797,33 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             query_params = _BaseDeveloperConnectRestTransport._BaseListOperations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.developerconnect_v1.DeveloperConnectClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.developerconnect.v1.DeveloperConnect",
+                        "rpcName": "ListOperations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = DeveloperConnectRestTransport._ListOperations._get_response(
@@ -2804,6 +3844,27 @@ class DeveloperConnectRestTransport(_BaseDeveloperConnectRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.developerconnect_v1.DeveloperConnectAsyncClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.developerconnect.v1.DeveloperConnect",
+                        "rpcName": "ListOperations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property

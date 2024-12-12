@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -38,6 +38,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -86,8 +94,10 @@ class PlacementServiceRestInterceptor:
     def pre_get_placement(
         self,
         request: placement_service.GetPlacementRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[placement_service.GetPlacementRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        placement_service.GetPlacementRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_placement
 
         Override in a subclass to manipulate the request or metadata
@@ -109,8 +119,10 @@ class PlacementServiceRestInterceptor:
     def pre_list_placements(
         self,
         request: placement_service.ListPlacementsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[placement_service.ListPlacementsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        placement_service.ListPlacementsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_placements
 
         Override in a subclass to manipulate the request or metadata
@@ -132,8 +144,10 @@ class PlacementServiceRestInterceptor:
     def pre_get_operation(
         self,
         request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -273,7 +287,7 @@ class PlacementServiceRestTransport(_BasePlacementServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> placement_messages.Placement:
             r"""Call the get placement method over HTTP.
 
@@ -283,8 +297,10 @@ class PlacementServiceRestTransport(_BasePlacementServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.placement_messages.Placement:
@@ -294,6 +310,7 @@ class PlacementServiceRestTransport(_BasePlacementServiceRestTransport):
             http_options = (
                 _BasePlacementServiceRestTransport._BaseGetPlacement._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_placement(request, metadata)
             transcoded_request = _BasePlacementServiceRestTransport._BaseGetPlacement._get_transcoded_request(
                 http_options, request
@@ -303,6 +320,33 @@ class PlacementServiceRestTransport(_BasePlacementServiceRestTransport):
             query_params = _BasePlacementServiceRestTransport._BaseGetPlacement._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.ads.admanager_v1.PlacementServiceClient.GetPlacement",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.PlacementService",
+                        "rpcName": "GetPlacement",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = PlacementServiceRestTransport._GetPlacement._get_response(
@@ -324,7 +368,29 @@ class PlacementServiceRestTransport(_BasePlacementServiceRestTransport):
             pb_resp = placement_messages.Placement.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_placement(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = placement_messages.Placement.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.ads.admanager_v1.PlacementServiceClient.get_placement",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.PlacementService",
+                        "rpcName": "GetPlacement",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListPlacements(
@@ -361,7 +427,7 @@ class PlacementServiceRestTransport(_BasePlacementServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> placement_service.ListPlacementsResponse:
             r"""Call the list placements method over HTTP.
 
@@ -371,8 +437,10 @@ class PlacementServiceRestTransport(_BasePlacementServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.placement_service.ListPlacementsResponse:
@@ -384,6 +452,7 @@ class PlacementServiceRestTransport(_BasePlacementServiceRestTransport):
             http_options = (
                 _BasePlacementServiceRestTransport._BaseListPlacements._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_placements(request, metadata)
             transcoded_request = _BasePlacementServiceRestTransport._BaseListPlacements._get_transcoded_request(
                 http_options, request
@@ -393,6 +462,33 @@ class PlacementServiceRestTransport(_BasePlacementServiceRestTransport):
             query_params = _BasePlacementServiceRestTransport._BaseListPlacements._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.ads.admanager_v1.PlacementServiceClient.ListPlacements",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.PlacementService",
+                        "rpcName": "ListPlacements",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = PlacementServiceRestTransport._ListPlacements._get_response(
@@ -414,7 +510,31 @@ class PlacementServiceRestTransport(_BasePlacementServiceRestTransport):
             pb_resp = placement_service.ListPlacementsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_placements(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = placement_service.ListPlacementsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.ads.admanager_v1.PlacementServiceClient.list_placements",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.PlacementService",
+                        "rpcName": "ListPlacements",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -476,7 +596,7 @@ class PlacementServiceRestTransport(_BasePlacementServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the get operation method over HTTP.
 
@@ -486,8 +606,10 @@ class PlacementServiceRestTransport(_BasePlacementServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.
@@ -496,6 +618,7 @@ class PlacementServiceRestTransport(_BasePlacementServiceRestTransport):
             http_options = (
                 _BasePlacementServiceRestTransport._BaseGetOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BasePlacementServiceRestTransport._BaseGetOperation._get_transcoded_request(
                 http_options, request
@@ -505,6 +628,33 @@ class PlacementServiceRestTransport(_BasePlacementServiceRestTransport):
             query_params = _BasePlacementServiceRestTransport._BaseGetOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.ads.admanager_v1.PlacementServiceClient.GetOperation",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.PlacementService",
+                        "rpcName": "GetOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = PlacementServiceRestTransport._GetOperation._get_response(
@@ -525,6 +675,27 @@ class PlacementServiceRestTransport(_BasePlacementServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.ads.admanager_v1.PlacementServiceAsyncClient.GetOperation",
+                    extra={
+                        "serviceName": "google.ads.admanager.v1.PlacementService",
+                        "rpcName": "GetOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property

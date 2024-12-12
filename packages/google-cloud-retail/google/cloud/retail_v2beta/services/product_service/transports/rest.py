@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import dataclasses
 import json  # type: ignore
+import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -43,6 +43,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
+try:
+    from google.api_core import client_logging  # type: ignore
+
+    CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
+except ImportError:  # pragma: NO COVER
+    CLIENT_LOGGING_SUPPORTED = False
+
+_LOGGER = logging.getLogger(__name__)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -175,8 +183,11 @@ class ProductServiceRestInterceptor:
     def pre_add_fulfillment_places(
         self,
         request: product_service.AddFulfillmentPlacesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[product_service.AddFulfillmentPlacesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        product_service.AddFulfillmentPlacesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for add_fulfillment_places
 
         Override in a subclass to manipulate the request or metadata
@@ -198,8 +209,11 @@ class ProductServiceRestInterceptor:
     def pre_add_local_inventories(
         self,
         request: product_service.AddLocalInventoriesRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[product_service.AddLocalInventoriesRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        product_service.AddLocalInventoriesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
         """Pre-rpc interceptor for add_local_inventories
 
         Override in a subclass to manipulate the request or metadata
@@ -221,8 +235,10 @@ class ProductServiceRestInterceptor:
     def pre_create_product(
         self,
         request: product_service.CreateProductRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[product_service.CreateProductRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        product_service.CreateProductRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for create_product
 
         Override in a subclass to manipulate the request or metadata
@@ -242,8 +258,10 @@ class ProductServiceRestInterceptor:
     def pre_delete_product(
         self,
         request: product_service.DeleteProductRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[product_service.DeleteProductRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        product_service.DeleteProductRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for delete_product
 
         Override in a subclass to manipulate the request or metadata
@@ -254,8 +272,10 @@ class ProductServiceRestInterceptor:
     def pre_export_products(
         self,
         request: export_config.ExportProductsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[export_config.ExportProductsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        export_config.ExportProductsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for export_products
 
         Override in a subclass to manipulate the request or metadata
@@ -277,8 +297,10 @@ class ProductServiceRestInterceptor:
     def pre_get_product(
         self,
         request: product_service.GetProductRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[product_service.GetProductRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        product_service.GetProductRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_product
 
         Override in a subclass to manipulate the request or metadata
@@ -298,8 +320,10 @@ class ProductServiceRestInterceptor:
     def pre_import_products(
         self,
         request: import_config.ImportProductsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[import_config.ImportProductsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        import_config.ImportProductsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for import_products
 
         Override in a subclass to manipulate the request or metadata
@@ -321,8 +345,10 @@ class ProductServiceRestInterceptor:
     def pre_list_products(
         self,
         request: product_service.ListProductsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[product_service.ListProductsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        product_service.ListProductsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_products
 
         Override in a subclass to manipulate the request or metadata
@@ -344,8 +370,10 @@ class ProductServiceRestInterceptor:
     def pre_purge_products(
         self,
         request: purge_config.PurgeProductsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[purge_config.PurgeProductsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        purge_config.PurgeProductsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for purge_products
 
         Override in a subclass to manipulate the request or metadata
@@ -367,9 +395,10 @@ class ProductServiceRestInterceptor:
     def pre_remove_fulfillment_places(
         self,
         request: product_service.RemoveFulfillmentPlacesRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        product_service.RemoveFulfillmentPlacesRequest, Sequence[Tuple[str, str]]
+        product_service.RemoveFulfillmentPlacesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for remove_fulfillment_places
 
@@ -392,9 +421,10 @@ class ProductServiceRestInterceptor:
     def pre_remove_local_inventories(
         self,
         request: product_service.RemoveLocalInventoriesRequest,
-        metadata: Sequence[Tuple[str, str]],
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        product_service.RemoveLocalInventoriesRequest, Sequence[Tuple[str, str]]
+        product_service.RemoveLocalInventoriesRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
     ]:
         """Pre-rpc interceptor for remove_local_inventories
 
@@ -417,8 +447,10 @@ class ProductServiceRestInterceptor:
     def pre_set_inventory(
         self,
         request: product_service.SetInventoryRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[product_service.SetInventoryRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        product_service.SetInventoryRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for set_inventory
 
         Override in a subclass to manipulate the request or metadata
@@ -440,8 +472,10 @@ class ProductServiceRestInterceptor:
     def pre_update_product(
         self,
         request: product_service.UpdateProductRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[product_service.UpdateProductRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        product_service.UpdateProductRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for update_product
 
         Override in a subclass to manipulate the request or metadata
@@ -461,8 +495,10 @@ class ProductServiceRestInterceptor:
     def pre_get_operation(
         self,
         request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -484,8 +520,10 @@ class ProductServiceRestInterceptor:
     def pre_list_operations(
         self,
         request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, str]]]:
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -689,7 +727,7 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the add fulfillment places method over HTTP.
 
@@ -701,8 +739,10 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -715,6 +755,7 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
             http_options = (
                 _BaseProductServiceRestTransport._BaseAddFulfillmentPlaces._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_add_fulfillment_places(
                 request, metadata
             )
@@ -730,6 +771,33 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
             query_params = _BaseProductServiceRestTransport._BaseAddFulfillmentPlaces._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.retail_v2beta.ProductServiceClient.AddFulfillmentPlaces",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2beta.ProductService",
+                        "rpcName": "AddFulfillmentPlaces",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ProductServiceRestTransport._AddFulfillmentPlaces._get_response(
@@ -750,7 +818,29 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_add_fulfillment_places(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.retail_v2beta.ProductServiceClient.add_fulfillment_places",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2beta.ProductService",
+                        "rpcName": "AddFulfillmentPlaces",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _AddLocalInventories(
@@ -789,7 +879,7 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the add local inventories method over HTTP.
 
@@ -801,8 +891,10 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -815,6 +907,7 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
             http_options = (
                 _BaseProductServiceRestTransport._BaseAddLocalInventories._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_add_local_inventories(
                 request, metadata
             )
@@ -830,6 +923,33 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
             query_params = _BaseProductServiceRestTransport._BaseAddLocalInventories._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.retail_v2beta.ProductServiceClient.AddLocalInventories",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2beta.ProductService",
+                        "rpcName": "AddLocalInventories",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ProductServiceRestTransport._AddLocalInventories._get_response(
@@ -850,7 +970,29 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_add_local_inventories(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.retail_v2beta.ProductServiceClient.add_local_inventories",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2beta.ProductService",
+                        "rpcName": "AddLocalInventories",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _CreateProduct(
@@ -888,7 +1030,7 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gcr_product.Product:
             r"""Call the create product method over HTTP.
 
@@ -900,8 +1042,10 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.gcr_product.Product:
@@ -914,6 +1058,7 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
             http_options = (
                 _BaseProductServiceRestTransport._BaseCreateProduct._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_create_product(request, metadata)
             transcoded_request = _BaseProductServiceRestTransport._BaseCreateProduct._get_transcoded_request(
                 http_options, request
@@ -927,6 +1072,33 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
             query_params = _BaseProductServiceRestTransport._BaseCreateProduct._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.retail_v2beta.ProductServiceClient.CreateProduct",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2beta.ProductService",
+                        "rpcName": "CreateProduct",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ProductServiceRestTransport._CreateProduct._get_response(
@@ -949,7 +1121,29 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
             pb_resp = gcr_product.Product.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_create_product(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gcr_product.Product.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.retail_v2beta.ProductServiceClient.create_product",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2beta.ProductService",
+                        "rpcName": "CreateProduct",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _DeleteProduct(
@@ -986,7 +1180,7 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ):
             r"""Call the delete product method over HTTP.
 
@@ -998,13 +1192,16 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
             """
 
             http_options = (
                 _BaseProductServiceRestTransport._BaseDeleteProduct._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_delete_product(request, metadata)
             transcoded_request = _BaseProductServiceRestTransport._BaseDeleteProduct._get_transcoded_request(
                 http_options, request
@@ -1014,6 +1211,33 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
             query_params = _BaseProductServiceRestTransport._BaseDeleteProduct._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.retail_v2beta.ProductServiceClient.DeleteProduct",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2beta.ProductService",
+                        "rpcName": "DeleteProduct",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ProductServiceRestTransport._DeleteProduct._get_response(
@@ -1065,7 +1289,7 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the export products method over HTTP.
 
@@ -1076,8 +1300,10 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1090,6 +1316,7 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
             http_options = (
                 _BaseProductServiceRestTransport._BaseExportProducts._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_export_products(request, metadata)
             transcoded_request = _BaseProductServiceRestTransport._BaseExportProducts._get_transcoded_request(
                 http_options, request
@@ -1103,6 +1330,33 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
             query_params = _BaseProductServiceRestTransport._BaseExportProducts._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.retail_v2beta.ProductServiceClient.ExportProducts",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2beta.ProductService",
+                        "rpcName": "ExportProducts",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ProductServiceRestTransport._ExportProducts._get_response(
@@ -1123,7 +1377,29 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_export_products(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.retail_v2beta.ProductServiceClient.export_products",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2beta.ProductService",
+                        "rpcName": "ExportProducts",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _GetProduct(
@@ -1160,7 +1436,7 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> product.Product:
             r"""Call the get product method over HTTP.
 
@@ -1172,8 +1448,10 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.product.Product:
@@ -1186,6 +1464,7 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
             http_options = (
                 _BaseProductServiceRestTransport._BaseGetProduct._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_product(request, metadata)
             transcoded_request = _BaseProductServiceRestTransport._BaseGetProduct._get_transcoded_request(
                 http_options, request
@@ -1197,6 +1476,33 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
                     transcoded_request
                 )
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.retail_v2beta.ProductServiceClient.GetProduct",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2beta.ProductService",
+                        "rpcName": "GetProduct",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ProductServiceRestTransport._GetProduct._get_response(
@@ -1218,7 +1524,29 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
             pb_resp = product.Product.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_get_product(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = product.Product.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.retail_v2beta.ProductServiceClient.get_product",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2beta.ProductService",
+                        "rpcName": "GetProduct",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ImportProducts(
@@ -1256,7 +1584,7 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the import products method over HTTP.
 
@@ -1266,8 +1594,10 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1280,6 +1610,7 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
             http_options = (
                 _BaseProductServiceRestTransport._BaseImportProducts._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_import_products(request, metadata)
             transcoded_request = _BaseProductServiceRestTransport._BaseImportProducts._get_transcoded_request(
                 http_options, request
@@ -1293,6 +1624,33 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
             query_params = _BaseProductServiceRestTransport._BaseImportProducts._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.retail_v2beta.ProductServiceClient.ImportProducts",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2beta.ProductService",
+                        "rpcName": "ImportProducts",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ProductServiceRestTransport._ImportProducts._get_response(
@@ -1313,7 +1671,29 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_import_products(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.retail_v2beta.ProductServiceClient.import_products",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2beta.ProductService",
+                        "rpcName": "ImportProducts",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _ListProducts(
@@ -1350,7 +1730,7 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> product_service.ListProductsResponse:
             r"""Call the list products method over HTTP.
 
@@ -1362,8 +1742,10 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.product_service.ListProductsResponse:
@@ -1376,6 +1758,7 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
             http_options = (
                 _BaseProductServiceRestTransport._BaseListProducts._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_products(request, metadata)
             transcoded_request = _BaseProductServiceRestTransport._BaseListProducts._get_transcoded_request(
                 http_options, request
@@ -1385,6 +1768,33 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
             query_params = _BaseProductServiceRestTransport._BaseListProducts._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.retail_v2beta.ProductServiceClient.ListProducts",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2beta.ProductService",
+                        "rpcName": "ListProducts",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ProductServiceRestTransport._ListProducts._get_response(
@@ -1406,7 +1816,31 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
             pb_resp = product_service.ListProductsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_list_products(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = product_service.ListProductsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.retail_v2beta.ProductServiceClient.list_products",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2beta.ProductService",
+                        "rpcName": "ListProducts",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _PurgeProducts(
@@ -1444,7 +1878,7 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the purge products method over HTTP.
 
@@ -1455,8 +1889,10 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1469,6 +1905,7 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
             http_options = (
                 _BaseProductServiceRestTransport._BasePurgeProducts._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_purge_products(request, metadata)
             transcoded_request = _BaseProductServiceRestTransport._BasePurgeProducts._get_transcoded_request(
                 http_options, request
@@ -1482,6 +1919,33 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
             query_params = _BaseProductServiceRestTransport._BasePurgeProducts._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.retail_v2beta.ProductServiceClient.PurgeProducts",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2beta.ProductService",
+                        "rpcName": "PurgeProducts",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ProductServiceRestTransport._PurgeProducts._get_response(
@@ -1502,7 +1966,29 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_purge_products(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.retail_v2beta.ProductServiceClient.purge_products",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2beta.ProductService",
+                        "rpcName": "PurgeProducts",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _RemoveFulfillmentPlaces(
@@ -1541,7 +2027,7 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the remove fulfillment places method over HTTP.
 
@@ -1553,8 +2039,10 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1567,6 +2055,7 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
             http_options = (
                 _BaseProductServiceRestTransport._BaseRemoveFulfillmentPlaces._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_remove_fulfillment_places(
                 request, metadata
             )
@@ -1582,6 +2071,33 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
             query_params = _BaseProductServiceRestTransport._BaseRemoveFulfillmentPlaces._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.retail_v2beta.ProductServiceClient.RemoveFulfillmentPlaces",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2beta.ProductService",
+                        "rpcName": "RemoveFulfillmentPlaces",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1604,7 +2120,29 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_remove_fulfillment_places(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.retail_v2beta.ProductServiceClient.remove_fulfillment_places",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2beta.ProductService",
+                        "rpcName": "RemoveFulfillmentPlaces",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _RemoveLocalInventories(
@@ -1643,7 +2181,7 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the remove local inventories method over HTTP.
 
@@ -1655,8 +2193,10 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1669,6 +2209,7 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
             http_options = (
                 _BaseProductServiceRestTransport._BaseRemoveLocalInventories._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_remove_local_inventories(
                 request, metadata
             )
@@ -1684,6 +2225,33 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
             query_params = _BaseProductServiceRestTransport._BaseRemoveLocalInventories._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.retail_v2beta.ProductServiceClient.RemoveLocalInventories",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2beta.ProductService",
+                        "rpcName": "RemoveLocalInventories",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = (
@@ -1706,7 +2274,29 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_remove_local_inventories(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.retail_v2beta.ProductServiceClient.remove_local_inventories",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2beta.ProductService",
+                        "rpcName": "RemoveLocalInventories",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _SetInventory(
@@ -1744,7 +2334,7 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the set inventory method over HTTP.
 
@@ -1756,8 +2346,10 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.operations_pb2.Operation:
@@ -1770,6 +2362,7 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
             http_options = (
                 _BaseProductServiceRestTransport._BaseSetInventory._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_set_inventory(request, metadata)
             transcoded_request = _BaseProductServiceRestTransport._BaseSetInventory._get_transcoded_request(
                 http_options, request
@@ -1783,6 +2376,33 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
             query_params = _BaseProductServiceRestTransport._BaseSetInventory._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.retail_v2beta.ProductServiceClient.SetInventory",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2beta.ProductService",
+                        "rpcName": "SetInventory",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ProductServiceRestTransport._SetInventory._get_response(
@@ -1803,7 +2423,29 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
             # Return the response
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_set_inventory(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.retail_v2beta.ProductServiceClient.set_inventory",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2beta.ProductService",
+                        "rpcName": "SetInventory",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     class _UpdateProduct(
@@ -1841,7 +2483,7 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> gcr_product.Product:
             r"""Call the update product method over HTTP.
 
@@ -1853,8 +2495,10 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 ~.gcr_product.Product:
@@ -1867,6 +2511,7 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
             http_options = (
                 _BaseProductServiceRestTransport._BaseUpdateProduct._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_update_product(request, metadata)
             transcoded_request = _BaseProductServiceRestTransport._BaseUpdateProduct._get_transcoded_request(
                 http_options, request
@@ -1880,6 +2525,33 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
             query_params = _BaseProductServiceRestTransport._BaseUpdateProduct._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.retail_v2beta.ProductServiceClient.UpdateProduct",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2beta.ProductService",
+                        "rpcName": "UpdateProduct",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ProductServiceRestTransport._UpdateProduct._get_response(
@@ -1902,7 +2574,29 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
             pb_resp = gcr_product.Product.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
             resp = self._interceptor.post_update_product(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gcr_product.Product.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.retail_v2beta.ProductServiceClient.update_product",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2beta.ProductService",
+                        "rpcName": "UpdateProduct",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
             return resp
 
     @property
@@ -2057,7 +2751,7 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.Operation:
             r"""Call the get operation method over HTTP.
 
@@ -2067,8 +2761,10 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.Operation: Response from GetOperation method.
@@ -2077,6 +2773,7 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
             http_options = (
                 _BaseProductServiceRestTransport._BaseGetOperation._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseProductServiceRestTransport._BaseGetOperation._get_transcoded_request(
                 http_options, request
@@ -2086,6 +2783,33 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
             query_params = _BaseProductServiceRestTransport._BaseGetOperation._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.retail_v2beta.ProductServiceClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2beta.ProductService",
+                        "rpcName": "GetOperation",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ProductServiceRestTransport._GetOperation._get_response(
@@ -2106,6 +2830,27 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.retail_v2beta.ProductServiceAsyncClient.GetOperation",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2beta.ProductService",
+                        "rpcName": "GetOperation",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property
@@ -2146,7 +2891,7 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> operations_pb2.ListOperationsResponse:
             r"""Call the list operations method over HTTP.
 
@@ -2156,8 +2901,10 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
 
             Returns:
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
@@ -2166,6 +2913,7 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
             http_options = (
                 _BaseProductServiceRestTransport._BaseListOperations._get_http_options()
             )
+
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseProductServiceRestTransport._BaseListOperations._get_transcoded_request(
                 http_options, request
@@ -2175,6 +2923,33 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
             query_params = _BaseProductServiceRestTransport._BaseListOperations._get_query_params_json(
                 transcoded_request
             )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.retail_v2beta.ProductServiceClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2beta.ProductService",
+                        "rpcName": "ListOperations",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
 
             # Send the request
             response = ProductServiceRestTransport._ListOperations._get_response(
@@ -2195,6 +2970,27 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.retail_v2beta.ProductServiceAsyncClient.ListOperations",
+                    extra={
+                        "serviceName": "google.cloud.retail.v2beta.ProductService",
+                        "rpcName": "ListOperations",
+                        "httpResponse": http_response,
+                        "metadata": http_response["headers"],
+                    },
+                )
             return resp
 
     @property

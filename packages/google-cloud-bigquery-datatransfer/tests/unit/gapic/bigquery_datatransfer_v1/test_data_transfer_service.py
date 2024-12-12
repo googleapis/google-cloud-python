@@ -7418,6 +7418,7 @@ def test_get_data_source_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_data_source(request)
 
@@ -7465,6 +7466,7 @@ def test_get_data_source_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_data_source(**mock_args)
 
@@ -7605,6 +7607,7 @@ def test_list_data_sources_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_data_sources(request)
 
@@ -7658,6 +7661,7 @@ def test_list_data_sources_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_data_sources(**mock_args)
 
@@ -7866,6 +7870,7 @@ def test_create_transfer_config_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.create_transfer_config(request)
 
@@ -7926,6 +7931,7 @@ def test_create_transfer_config_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.create_transfer_config(**mock_args)
 
@@ -8068,6 +8074,7 @@ def test_update_transfer_config_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.update_transfer_config(request)
 
@@ -8133,6 +8140,7 @@ def test_update_transfer_config_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.update_transfer_config(**mock_args)
 
@@ -8267,6 +8275,7 @@ def test_delete_transfer_config_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_transfer_config(request)
 
@@ -8312,6 +8321,7 @@ def test_delete_transfer_config_rest_flattened():
         json_return_value = ""
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_transfer_config(**mock_args)
 
@@ -8447,6 +8457,7 @@ def test_get_transfer_config_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_transfer_config(request)
 
@@ -8494,6 +8505,7 @@ def test_get_transfer_config_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_transfer_config(**mock_args)
 
@@ -8638,6 +8650,7 @@ def test_list_transfer_configs_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_transfer_configs(request)
 
@@ -8692,6 +8705,7 @@ def test_list_transfer_configs_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_transfer_configs(**mock_args)
 
@@ -8892,6 +8906,7 @@ def test_schedule_transfer_runs_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.schedule_transfer_runs(request)
 
@@ -8950,6 +8965,7 @@ def test_schedule_transfer_runs_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.schedule_transfer_runs(**mock_args)
 
@@ -9089,6 +9105,7 @@ def test_start_manual_transfer_runs_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.start_manual_transfer_runs(request)
 
@@ -9210,6 +9227,7 @@ def test_get_transfer_run_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.get_transfer_run(request)
 
@@ -9257,6 +9275,7 @@ def test_get_transfer_run_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.get_transfer_run(**mock_args)
 
@@ -9389,6 +9408,7 @@ def test_delete_transfer_run_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.delete_transfer_run(request)
 
@@ -9434,6 +9454,7 @@ def test_delete_transfer_run_rest_flattened():
         json_return_value = ""
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.delete_transfer_run(**mock_args)
 
@@ -9578,6 +9599,7 @@ def test_list_transfer_runs_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_transfer_runs(request)
 
@@ -9635,6 +9657,7 @@ def test_list_transfer_runs_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_transfer_runs(**mock_args)
 
@@ -9843,6 +9866,7 @@ def test_list_transfer_logs_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.list_transfer_logs(request)
 
@@ -9899,6 +9923,7 @@ def test_list_transfer_logs_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.list_transfer_logs(**mock_args)
 
@@ -10098,6 +10123,7 @@ def test_check_valid_creds_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.check_valid_creds(request)
 
@@ -10145,6 +10171,7 @@ def test_check_valid_creds_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         client.check_valid_creds(**mock_args)
 
@@ -10278,6 +10305,7 @@ def test_enroll_data_sources_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.enroll_data_sources(request)
 
@@ -10400,6 +10428,7 @@ def test_unenroll_data_sources_rest_required_fields(
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
             response = client.unenroll_data_sources(request)
 
@@ -11416,6 +11445,7 @@ def test_get_data_source_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_data_source(request)
 
 
@@ -11466,6 +11496,7 @@ def test_get_data_source_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_data_source(request)
 
     # Establish that the response is the type that we expect.
@@ -11527,6 +11558,7 @@ def test_get_data_source_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = datatransfer.DataSource.to_json(datatransfer.DataSource())
         req.return_value.content = return_value
 
@@ -11571,6 +11603,7 @@ def test_list_data_sources_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_data_sources(request)
 
 
@@ -11606,6 +11639,7 @@ def test_list_data_sources_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_data_sources(request)
 
     # Establish that the response is the type that we expect.
@@ -11646,6 +11680,7 @@ def test_list_data_sources_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = datatransfer.ListDataSourcesResponse.to_json(
             datatransfer.ListDataSourcesResponse()
         )
@@ -11692,6 +11727,7 @@ def test_create_transfer_config_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.create_transfer_config(request)
 
 
@@ -11849,6 +11885,7 @@ def test_create_transfer_config_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.create_transfer_config(request)
 
     # Establish that the response is the type that we expect.
@@ -11898,6 +11935,7 @@ def test_create_transfer_config_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = transfer.TransferConfig.to_json(transfer.TransferConfig())
         req.return_value.content = return_value
 
@@ -11946,6 +11984,7 @@ def test_update_transfer_config_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.update_transfer_config(request)
 
 
@@ -12107,6 +12146,7 @@ def test_update_transfer_config_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.update_transfer_config(request)
 
     # Establish that the response is the type that we expect.
@@ -12156,6 +12196,7 @@ def test_update_transfer_config_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = transfer.TransferConfig.to_json(transfer.TransferConfig())
         req.return_value.content = return_value
 
@@ -12202,6 +12243,7 @@ def test_delete_transfer_config_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_transfer_config(request)
 
 
@@ -12234,6 +12276,7 @@ def test_delete_transfer_config_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_transfer_config(request)
 
     # Establish that the response is the type that we expect.
@@ -12270,6 +12313,7 @@ def test_delete_transfer_config_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = datatransfer.DeleteTransferConfigRequest()
         metadata = [
@@ -12312,6 +12356,7 @@ def test_get_transfer_config_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_transfer_config(request)
 
 
@@ -12359,6 +12404,7 @@ def test_get_transfer_config_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_transfer_config(request)
 
     # Establish that the response is the type that we expect.
@@ -12408,6 +12454,7 @@ def test_get_transfer_config_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = transfer.TransferConfig.to_json(transfer.TransferConfig())
         req.return_value.content = return_value
 
@@ -12452,6 +12499,7 @@ def test_list_transfer_configs_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_transfer_configs(request)
 
 
@@ -12487,6 +12535,7 @@ def test_list_transfer_configs_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_transfer_configs(request)
 
     # Establish that the response is the type that we expect.
@@ -12527,6 +12576,7 @@ def test_list_transfer_configs_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = datatransfer.ListTransferConfigsResponse.to_json(
             datatransfer.ListTransferConfigsResponse()
         )
@@ -12575,6 +12625,7 @@ def test_schedule_transfer_runs_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.schedule_transfer_runs(request)
 
 
@@ -12610,6 +12661,7 @@ def test_schedule_transfer_runs_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.schedule_transfer_runs(request)
 
     # Establish that the response is the type that we expect.
@@ -12649,6 +12701,7 @@ def test_schedule_transfer_runs_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = datatransfer.ScheduleTransferRunsResponse.to_json(
             datatransfer.ScheduleTransferRunsResponse()
         )
@@ -12697,6 +12750,7 @@ def test_start_manual_transfer_runs_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.start_manual_transfer_runs(request)
 
 
@@ -12732,6 +12786,7 @@ def test_start_manual_transfer_runs_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.start_manual_transfer_runs(request)
 
     # Establish that the response is the type that we expect.
@@ -12771,6 +12826,7 @@ def test_start_manual_transfer_runs_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = datatransfer.StartManualTransferRunsResponse.to_json(
             datatransfer.StartManualTransferRunsResponse()
         )
@@ -12819,6 +12875,7 @@ def test_get_transfer_run_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_transfer_run(request)
 
 
@@ -12862,6 +12919,7 @@ def test_get_transfer_run_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.get_transfer_run(request)
 
     # Establish that the response is the type that we expect.
@@ -12907,6 +12965,7 @@ def test_get_transfer_run_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = transfer.TransferRun.to_json(transfer.TransferRun())
         req.return_value.content = return_value
 
@@ -12953,6 +13012,7 @@ def test_delete_transfer_run_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.delete_transfer_run(request)
 
 
@@ -12985,6 +13045,7 @@ def test_delete_transfer_run_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.delete_transfer_run(request)
 
     # Establish that the response is the type that we expect.
@@ -13021,6 +13082,7 @@ def test_delete_transfer_run_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = datatransfer.DeleteTransferRunRequest()
         metadata = [
@@ -13063,6 +13125,7 @@ def test_list_transfer_runs_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_transfer_runs(request)
 
 
@@ -13100,6 +13163,7 @@ def test_list_transfer_runs_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_transfer_runs(request)
 
     # Establish that the response is the type that we expect.
@@ -13140,6 +13204,7 @@ def test_list_transfer_runs_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = datatransfer.ListTransferRunsResponse.to_json(
             datatransfer.ListTransferRunsResponse()
         )
@@ -13188,6 +13253,7 @@ def test_list_transfer_logs_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_transfer_logs(request)
 
 
@@ -13225,6 +13291,7 @@ def test_list_transfer_logs_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.list_transfer_logs(request)
 
     # Establish that the response is the type that we expect.
@@ -13265,6 +13332,7 @@ def test_list_transfer_logs_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = datatransfer.ListTransferLogsResponse.to_json(
             datatransfer.ListTransferLogsResponse()
         )
@@ -13311,6 +13379,7 @@ def test_check_valid_creds_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.check_valid_creds(request)
 
 
@@ -13346,6 +13415,7 @@ def test_check_valid_creds_rest_call_success(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.check_valid_creds(request)
 
     # Establish that the response is the type that we expect.
@@ -13386,6 +13456,7 @@ def test_check_valid_creds_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         return_value = datatransfer.CheckValidCredsResponse.to_json(
             datatransfer.CheckValidCredsResponse()
         )
@@ -13432,6 +13503,7 @@ def test_enroll_data_sources_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.enroll_data_sources(request)
 
 
@@ -13462,6 +13534,7 @@ def test_enroll_data_sources_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.enroll_data_sources(request)
 
     # Establish that the response is the type that we expect.
@@ -13498,6 +13571,7 @@ def test_enroll_data_sources_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = datatransfer.EnrollDataSourcesRequest()
         metadata = [
@@ -13538,6 +13612,7 @@ def test_unenroll_data_sources_rest_bad_request(
         response_value.status_code = 400
         response_value.request = mock.Mock()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.unenroll_data_sources(request)
 
 
@@ -13568,6 +13643,7 @@ def test_unenroll_data_sources_rest_call_success(request_type):
         json_return_value = ""
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         response = client.unenroll_data_sources(request)
 
     # Establish that the response is the type that we expect.
@@ -13604,6 +13680,7 @@ def test_unenroll_data_sources_rest_interceptors(null_interceptor):
 
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         request = datatransfer.UnenrollDataSourcesRequest()
         metadata = [
@@ -13644,6 +13721,7 @@ def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationReq
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.get_location(request)
 
 
@@ -13674,6 +13752,7 @@ def test_get_location_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.get_location(request)
 
@@ -13702,6 +13781,7 @@ def test_list_locations_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
         client.list_locations(request)
 
 
@@ -13732,6 +13812,7 @@ def test_list_locations_rest(request_type):
         response_value.content = json_return_value.encode("UTF-8")
 
         req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
         response = client.list_locations(request)
 
